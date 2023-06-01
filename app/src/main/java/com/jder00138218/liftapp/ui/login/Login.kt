@@ -2,6 +2,8 @@ package com.jder00138218.liftapp.ui.login
 
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -12,11 +14,15 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.AlertDialogDefaults.shape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -31,11 +37,12 @@ import com.jder00138218.liftapp.R
 
 @Preview(name = "login - view", showBackground = true)
 @Composable
-fun  LoginScreen(){
-    Box(modifier = Modifier
-        .fillMaxSize()
-        .padding(8.dp)
-    ){
+fun LoginScreen() {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(8.dp)
+    ) {
         Login(Modifier.align(Alignment.Center))
     }
 }
@@ -71,13 +78,19 @@ fun Login(modifier: Modifier) {
 
 @Composable
 fun SingIn(modifier: Modifier) {
-    Button(onClick = {}, modifier = modifier
-        .height(60.dp)
-        .width(300.dp)
-        .fillMaxWidth(), colors = ButtonDefaults.buttonColors(
-        containerColor = Color.Red
-    )){
-        Text(text = "Ingresar")
+    Button(
+        onClick = {}, modifier = modifier
+            .height(60.dp)
+            .width(300.dp)
+            .fillMaxWidth(), colors = ButtonDefaults.buttonColors(
+            containerColor = Color.Red
+        )
+    ) {
+        Row() {
+            Icon(modifier = Modifier.size(24.dp), painter = painterResource(id = R.drawable.icon_login), contentDescription = "Icon login" )
+            Text(text = " Ingresar")
+        }
+
     }
 }
 
@@ -86,7 +99,8 @@ fun SingIn(modifier: Modifier) {
 fun Register(modifier: Modifier) {
     Row(modifier = modifier) {
         Text(text = "¿Aun no tienes cuenta?")
-        Text(text = " Registrate", color = Color.Red, modifier = Modifier.clickable {  })
+        Text(text = " Registrate", color = Color.Red, modifier = Modifier.clickable { })
+        Spacer(modifier = Modifier.padding(8.dp))
     }
 }
 
@@ -117,39 +131,68 @@ fun OrSpacer(modifier: Modifier) {
 
 
 @Composable
-fun HeaderImage(modifier: Modifier){
-    Image(painter = painterResource(id = R.drawable.logoliftapp),
+fun HeaderImage(modifier: Modifier) {
+    Image(
+        painter = painterResource(id = R.drawable.logoliftapp),
         contentDescription = "Image of lift app",
         modifier = modifier
     )
 }
 
-@Preview(name = "Email Field", showBackground = true )
+@Preview(name = "Email Field", showBackground = true)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun FieldEmail(){
+fun FieldEmail() {
     OutlinedTextField(value = "", onValueChange = {},
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier.width(350.dp),
         placeholder = { Text(text = "Email") },
         singleLine = true,
-        maxLines = 1
+        maxLines = 1,
+        leadingIcon = {
+            Icon(
+                modifier = Modifier.size(24.dp),
+                painter = painterResource(id = R.drawable.icon_message),
+                contentDescription = "Icon Email"
+            )
+        }
     )
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun FieldPassword(){
+fun FieldPassword() {
     OutlinedTextField(
         value = "", onValueChange = {},
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier.width(350.dp),
         placeholder = { Text(text = "Password") },
         singleLine = true,
-        maxLines = 1
+        maxLines = 1,
+        leadingIcon = {
+            Icon(
+                modifier = Modifier
+                    .size(24.dp)
+                    .clickable { },
+                painter = painterResource(id = R.drawable.icon_password),
+                contentDescription = "Icon Email",
+            )
+        },
+        trailingIcon = {
+            Icon(
+                modifier = Modifier.size(24.dp).clickable {  },
+                painter = painterResource(id = R.drawable.icon_hide),
+                contentDescription = "Hide Icon"
+            )
+        }
+
     )
 }
 
 @Composable
-fun ForgotPassword(modifier: Modifier){
-    Text(text = stringResource(R.string.forgot_passw), modifier.clickable {  }, color = Color(R.color.forgotPaswd))
+fun ForgotPassword(modifier: Modifier) {
+    Text(
+        text = stringResource(R.string.forgot_passw),
+        modifier.clickable { },
+        color = Color(R.color.forgotPaswd)
+    )
 }
 

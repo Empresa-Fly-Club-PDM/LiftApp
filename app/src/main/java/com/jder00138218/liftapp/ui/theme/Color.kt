@@ -1,6 +1,7 @@
 package com.jder00138218.liftapp.ui.theme
 
 import androidx.compose.ui.graphics.Color
+import com.jder00138218.liftapp.R
 
 val Purple80 = Color(0xFFD0BCFF)
 val PurpleGrey80 = Color(0xFFCCC2DC)

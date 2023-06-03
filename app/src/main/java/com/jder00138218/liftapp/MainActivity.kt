@@ -12,6 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.jder00138218.liftapp.ui.login.Login
 import com.jder00138218.liftapp.ui.login.LoginScreen
+import com.jder00138218.liftapp.ui.login.LoginViewModel
 import com.jder00138218.liftapp.ui.theme.LiftAppTheme
 
 class MainActivity : ComponentActivity() {
@@ -24,7 +25,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                   LoginScreen()
+                   LoginScreen(viewModel = LoginViewModel())
                 }
             }
         }

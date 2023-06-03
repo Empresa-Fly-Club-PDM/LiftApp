@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="forgotPaswd">#ADA4A5</color>
-    <color name="test">#EBEB00</color>
+    <color name="gray_text">#ADA4A5</color>
+    <color name="field"> #F7F8F8</color>
 </resources>

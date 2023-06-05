@@ -9,7 +9,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 class LiftApiService {
     fun getRetrofit(): Retrofit {
         return Retrofit.Builder()
-            .baseUrl("Here URL")
+            .baseUrl("http://localhost:8080")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
     }

@@ -89,7 +89,7 @@ fun Login(modifier: Modifier, viewModel: LoginViewModel) {
             Spacer(modifier = Modifier.padding(8.dp))
             ForgotPassword(Modifier.align(Alignment.CenterHorizontally))
             Spacer(modifier = Modifier.padding(8.dp))
-            SingIn(Modifier.align(Alignment.CenterHorizontally))
+            SingIn(viewModel, Modifier.align(Alignment.CenterHorizontally))
             Spacer(modifier = Modifier.padding(36.dp))
         }
 
@@ -104,9 +104,9 @@ fun Login(modifier: Modifier, viewModel: LoginViewModel) {
 }
 
 @Composable
-fun SingIn(modifier: Modifier) {
+fun SingIn(viewModel: LoginViewModel, modifier: Modifier) {
     Button(
-        onClick = {}, modifier = modifier
+        onClick = {viewModel.onLoginClicked()}, modifier = modifier
             .height(60.dp)
             .width(300.dp)
             .fillMaxWidth(), colors = ButtonDefaults.buttonColors(

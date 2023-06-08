@@ -1,6 +1,7 @@
 package com.jder00138218.liftapp.ui.login
 
 
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -17,7 +18,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.icons.Icons
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Divider
@@ -26,15 +26,17 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -42,30 +44,53 @@ import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
-import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.core.content.ContentProviderCompat.requireContext
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.lifecycle.viewmodel.viewModelFactory
 import com.jder00138218.liftapp.R
+import com.jder00138218.liftapp.RetrofitApplication
+import com.jder00138218.liftapp.network.services.AuthService
+import com.jder00138218.liftapp.repositories.CredentialsRepository
+import com.jder00138218.liftapp.ui.login.viewmodel.LoginViewModel
+
+
+/*
+    HOW TO APPLY HERE
+    TODO() ->  val app by lazy { requireActivity().application as RetrofitApplication }
+    TODO() -> setViewModel
+    TODO -> observeStatus
+    TODO -> handleUiStatus
+ */
 
 
 @Preview(name = "Preview", showBackground = true)
 @Composable
 fun previewApp() {
-    LoginScreen(viewModel = LoginViewModel())
+    LoginScreen()
 }
 
 @Composable
-fun LoginScreen(viewModel: LoginViewModel) {
+fun LoginScreen() {
+
+    val loginviewModel: LoginViewModel = viewModel(
+        factory = LoginViewModel.Factory
+    )
+    if( loginviewModel.status.value == LoginUiStatus.Resume){
+
+    }
+
     Box(
         modifier = Modifier
             .fillMaxSize()
             .padding(8.dp)
     ) {
-        Login(Modifier.align(Alignment.Center), viewModel)
+        Login( Modifier.align(Alignment.Center),loginviewModel)// TODO() -> View Model
     }
 }
 
@@ -73,8 +98,8 @@ fun LoginScreen(viewModel: LoginViewModel) {
 fun Login(modifier: Modifier, viewModel: LoginViewModel) {
     val emailUser = viewModel.email
     val password = viewModel.password
-    var passwordVisibility by remember { mutableStateOf(false) }
-    var isVisible by remember { mutableStateOf(viewModel.isVisiblePaswd)}
+    var isVisible by remember { mutableStateOf(viewModel.isVisiblePaswd) }
+
 
     Box(modifier = modifier.fillMaxSize()) {
         Column(
@@ -106,7 +131,7 @@ fun Login(modifier: Modifier, viewModel: LoginViewModel) {
 @Composable
 fun SingIn(viewModel: LoginViewModel, modifier: Modifier) {
     Button(
-        onClick = {viewModel.onLoginClicked()}, modifier = modifier
+        onClick = { viewModel.onLogin() }, modifier = modifier
             .height(60.dp)
             .width(300.dp)
             .fillMaxWidth(), colors = ButtonDefaults.buttonColors(
@@ -176,7 +201,8 @@ fun HeaderImage(modifier: Modifier) {
 fun FieldEmail(email: String, viewModel: LoginViewModel) {
 
     OutlinedTextField(
-        value = email, onValueChange = { newValue -> viewModel.email = newValue },
+        value = email,
+        onValueChange = { newValue -> viewModel.email = newValue },
         modifier = Modifier
             .width(350.dp)
             .clip(RoundedCornerShape(4.dp))
@@ -206,10 +232,11 @@ fun FieldEmail(email: String, viewModel: LoginViewModel) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun FieldPassword(viewModel: LoginViewModel, password: String, isVisible : Boolean) {
+fun FieldPassword(viewModel: LoginViewModel, password: String, isVisible: Boolean) {
 
     OutlinedTextField(
-        value = password, onValueChange = { newValue -> viewModel.password = newValue },
+        value = password,
+        onValueChange = { newValue -> viewModel.password = newValue },
         modifier = Modifier
             .width(350.dp)
             .clip(RoundedCornerShape(4.dp))
@@ -263,4 +290,10 @@ fun ForgotPassword(modifier: Modifier) {
         color = Color(R.color.gray_text)
     )
 }
+
+
+
+
+
+
 

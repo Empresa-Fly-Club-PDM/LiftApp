@@ -5,26 +5,24 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.Card
-import androidx.compose.material3.CardColors
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
@@ -33,11 +31,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.jder00138218.liftapp.R
-import org.w3c.dom.Text
 
-@Preview(name = "Administrator Dashboard", showBackground = true)
+
+@Preview(name = "Verify exercises", showBackground = true)
 @Composable
-fun Dashboard() {
+fun VerifyExercises() {
 
     Box(
         modifier = Modifier
@@ -55,7 +53,7 @@ fun Dashboard() {
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Text(
-                    text = "Solicitudes de verificacion",
+                    text = "Ejercicios Verificados",
                     color = Color.Black,
                     style = TextStyle(
                         fontWeight = FontWeight.Bold,
@@ -73,7 +71,7 @@ fun Dashboard() {
                     .fillMaxWidth()
             ) {
                 items(20) { index ->
-                    CardExercise()
+                    CardExerciseVerify()
                 }
 
             }
@@ -88,16 +86,33 @@ fun Dashboard() {
             ) {
                 Menu()
             }
+
+
+            FloatingActionButton(
+                onClick = { /* Acción del botón flotante */ },
+                modifier = Modifier
+                    .size(width = 110.dp, height = 56.dp)
+                    .offset(
+                        x = 260.dp,
+                        y = 725.dp
+                    ),
+                containerColor = Color.White
+            ) {
+                Row() {
+                    Icon(Icons.Default.Add, contentDescription = "Agregar")
+                    Text(text = "Añadir")
+                }
+            }
         }
+
 
     }
 
 }
 
-
-// This view is for dashboard
+// This is for Verify exercise
 @Composable
-fun CardExercise() {
+fun CardExerciseVerify() {
     Card( // this
         modifier = Modifier
             .fillMaxWidth()
@@ -115,8 +130,16 @@ fun CardExercise() {
             Column(modifier = Modifier.fillMaxWidth(1f)) {
 
                 Row() {
-                    Text(text = "Juan Daniel Escobar Rivera", fontWeight = FontWeight.Bold)
-                    // Icon
+                    Text(
+                        text = "Press de banca",
+                        fontWeight = FontWeight.Bold,
+                        modifier = Modifier.weight(1f)
+                    )
+                    Icon(
+                        painter = painterResource(id = R.drawable.shield_done),
+                        contentDescription = "Verify Icon",
+                        modifier = Modifier.size(20.dp)
+                    )
                 }
 
 
@@ -126,8 +149,8 @@ fun CardExercise() {
                         .fillMaxWidth(1f),
                     horizontalArrangement = Arrangement.Start
                 ) {
-                    ItemEx()
-                    ItemEx()
+                    ItemExVerify()
+                    ItemExVerify()
                 }
 
             }
@@ -139,7 +162,7 @@ fun CardExercise() {
 
 
 @Composable
-fun ItemEx() {
+fun ItemExVerify() {
     Card(
         colors = CardDefaults.cardColors(
             containerColor = Color.White
@@ -148,12 +171,9 @@ fun ItemEx() {
             .size(width = 160.dp, height = 60.dp)
     ) {
         Column(Modifier.padding(8.dp)) {
-            Text(text = "Press de banca", color = Color.Red)
+            Text(text = "Musculo", color = Color.Red)
             Text(text = "Pecho", color = Color(R.color.gray_text))
         }
     }
 
 }
-
-
-

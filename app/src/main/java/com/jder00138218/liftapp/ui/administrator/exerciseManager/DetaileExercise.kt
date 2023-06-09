@@ -37,10 +37,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.jder00138218.liftapp.R
 
-
 @Preview(name = "Description Request", showBackground = true)
 @Composable
-fun DescriptionRequest() {
+fun DetaileExercise() {
 
     Box(
         modifier = Modifier
@@ -53,12 +52,10 @@ fun DescriptionRequest() {
             Column( // 1
                 Modifier
                     .align(Alignment.TopCenter)
-                    .fillMaxHeight(0.14f)
+                    .fillMaxHeight(0.1f)
                     .fillMaxWidth(),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-
-                Column(modifier = Modifier.fillMaxHeight()) {
                     Text(
                         text = "Descripcion de la Solicitud",
                         color = Color.Black,
@@ -67,26 +64,6 @@ fun DescriptionRequest() {
                             fontSize = 24.sp
                         )
                     )
-
-                    Spacer(modifier = Modifier.padding(6.dp))
-
-                    Text(
-                        text = "Usuario: Daniel Rivera",
-                        color = Color.Black,
-                        style = TextStyle(
-                            fontWeight = FontWeight.Bold,
-                            fontSize = 14.sp
-                        )
-                    )
-                    Text(
-                        text = "Puntuacion: 1500 | Intermedio",
-                        color = Color.Black,
-                        style = TextStyle(
-                            fontSize = 10.sp
-                        )
-                    )
-                }
-
             }
 
 
@@ -97,7 +74,7 @@ fun DescriptionRequest() {
                     .fillMaxWidth(),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                FieldsDescription()
+                FieldsDetaile()
             }
 
             Column( // 3
@@ -120,34 +97,34 @@ fun DescriptionRequest() {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun FieldsDescription() {
+fun FieldsDetaile() {
 
-    FieldComponent("Nombre del ejercicio")
+    FieldDetaile("Nombre del ejercicio")
     Spacer(modifier = Modifier.padding(2.dp))
-    FieldComponent("Musculo")
+    FieldDetaile("Musculo")
     Spacer(modifier = Modifier.padding(2.dp))
-    FieldComponent("Tipo")
+    FieldDetaile("Tipo")
     Spacer(modifier = Modifier.padding(2.dp))
-    FieldComponent("Dificultad")
+    FieldDetaile("Dificultad")
     Spacer(modifier = Modifier.padding(2.dp))
-    FieldComponent("Descripcion")
+    FieldDetaile("Descripcion")
     Spacer(modifier = Modifier.padding(2.dp))
-    FieldComponent("Sets")
+    FieldDetaile("Sets")
     Spacer(modifier = Modifier.padding(2.dp))
-    FieldComponent("Repeticiones")
+    FieldDetaile("Repeticiones")
     Spacer(modifier = Modifier.padding(8.dp))
-    Buttons()
+    ButtonsDetaile()
 }
 
 @Composable
-fun Buttons() {
+fun ButtonsDetaile() {
     Row() {
         Button(
             onClick = { }, modifier = Modifier
                 .height(60.dp)
                 .width(175.dp)
                 .fillMaxWidth(), colors = ButtonDefaults.buttonColors(
-                containerColor = Color.Red
+                containerColor = colorResource(id = R.color.buttonGray)
             )
         ) {
 
@@ -160,7 +137,7 @@ fun Buttons() {
                 .height(60.dp)
                 .width(175.dp)
                 .fillMaxWidth(), colors = ButtonDefaults.buttonColors(
-                containerColor = colorResource(id = R.color.buttonGren)
+                containerColor = Color.Red
             )
         ) {
 
@@ -172,7 +149,7 @@ fun Buttons() {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun FieldComponent(name: String) {
+fun FieldDetaile(name: String) {
     OutlinedTextField(
         value = "",
         onValueChange = { },
@@ -191,7 +168,7 @@ fun FieldComponent(name: String) {
             Icon(
                 modifier = Modifier.size(16.dp),
                 painter = painterResource(id = R.drawable.pesa),
-                contentDescription = "Icon Email"
+                contentDescription = "Icon field"
             )
         },
         keyboardOptions = KeyboardOptions(
@@ -200,10 +177,3 @@ fun FieldComponent(name: String) {
         )
     )
 }
-
-
-
-
-
-
-

@@ -69,12 +69,8 @@ import com.jder00138218.liftapp.ui.login.viewmodel.LoginViewModel
  */
 
 
-@Preview(name = "Preview", showBackground = true)
-@Composable
-fun previewApp() {
-    LoginScreen()
-}
 
+@Preview(name = "Preview", showBackground = true)
 @Composable
 fun LoginScreen() {
 

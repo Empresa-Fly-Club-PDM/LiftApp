@@ -12,11 +12,14 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.ArrowForward
+import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.outlined.Add
@@ -25,12 +28,17 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExposedDropdownMenuBox
+import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldColors
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -46,6 +54,8 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
@@ -55,42 +65,7 @@ import androidx.compose.ui.unit.sp
 import com.jder00138218.liftapp.R
 
 
-@Preview
-@Composable
-fun RoutinesHeaderRowComponent() {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(16.dp),
-        horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        IconButton(
-            onClick = { /* Handle back button click */ }
-        ) {
-            Icon(
-                Icons.Default.ArrowBack,
-                contentDescription = "Back"
-            )
-        }
 
-        Text(
-            text = "Routines",
-            textAlign = TextAlign.Center,
-            style = TextStyle(fontSize = 16.sp, fontWeight = FontWeight.Bold),
-            modifier = Modifier.weight(1f)
-        )
-
-        IconButton(
-            onClick = { /* Handle back button click */ }
-        ) {
-            Icon(
-                Icons.Outlined.Add,
-                contentDescription = "Add"
-            )
-        }
-    }
-}
 
 // Search Bar
 @Preview
@@ -100,7 +75,8 @@ fun SearchBar(){
 
     var text by remember { mutableStateOf("search...") }
     OutlinedTextField(value = text, onValueChange = { newText: String ->
-        text = newText }, modifier = Modifier.padding(horizontal = 8.dp)
+        text = newText }, modifier = Modifier
+        .padding(horizontal = 8.dp)
         .fillMaxWidth()
         .clip(RoundedCornerShape(8.dp))
         .background(
@@ -108,31 +84,6 @@ fun SearchBar(){
         )
         .border(width = 0.dp, color = Color.White)
     )
-}
-
-@Composable
-fun RoutineMenuItem(muscleGroup: String){
-    Card(modifier = Modifier
-        .fillMaxWidth()
-        .padding(8.dp)
-        .height(72.dp))
-        { Box(modifier = Modifier.background(colorResource(id = R.color.card))) {
-            Row(modifier = Modifier
-                .fillMaxSize().padding(horizontal = 8.dp), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically
-            ) {
-                Text(text = muscleGroup, style = TextStyle(fontSize = 20.sp, color = Color.Black))
-                Button(modifier = Modifier , onClick = {}, colors = ButtonDefaults.buttonColors(containerColor = colorResource(
-                    id = R.color.buttonRed
-                ), contentColor = Color.White)) {
-                    Icon(
-                        Icons.Default.ArrowForward,
-                        contentDescription = "to $muscleGroup routines"
-                    )
-                }
-            }
-        }
-
-    }
 }
 
 @Preview
@@ -191,6 +142,169 @@ fun UserBottomMenu() {
     }
 }
 
+@Composable
+fun HeaderBarBackArrowCheck(title: String){
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(16.dp),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        IconButton(
+            onClick = { /* Handle back button click */ }
+        ) {
+            Icon(
+                Icons.Default.ArrowBack,
+                contentDescription = "Back"
+            )
+        }
 
+        Text(
+            text = title,
+            textAlign = TextAlign.Center,
+            style = TextStyle(fontSize = 16.sp, fontWeight = FontWeight.Bold),
+            modifier = Modifier.weight(1f)
+        )
+
+        IconButton(
+            onClick = { /* Handle back button click */ },
+
+        ) {
+            Icon(
+                Icons.Default.Check,
+                contentDescription = "Back"
+            )
+        }
+    }
+}
+
+@Composable
+fun HeaderBarBackArrowDumbell(title: String){
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(16.dp),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        IconButton(
+            onClick = { /* Handle back button click */ }
+        ) {
+            Icon(
+                Icons.Default.ArrowBack,
+                contentDescription = "Back"
+            )
+        }
+
+        Text(
+            text = title,
+            textAlign = TextAlign.Center,
+            style = TextStyle(fontSize = 16.sp, fontWeight = FontWeight.Bold),
+            modifier = Modifier.weight(1f)
+        )
+
+        IconButton(
+            onClick = { /* Handle back button click */ },
+
+            ) {
+            Icon(
+                painter = painterResource(R.drawable.pesa),
+                contentDescription = "Pesa icon",
+                tint = colorResource(id = R.color.gray_text),
+                modifier = Modifier.size(30.dp)
+            )
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun CustomInputField(hint: String){
+    OutlinedTextField(
+        value = "",
+        onValueChange = { },
+        modifier = Modifier
+            .width(350.dp)
+            .clip(RoundedCornerShape(4.dp))
+            .border(
+                width = 1.dp,
+                color = colorResource(id = R.color.field)
+            )// With padding show border color
+            .background(colorResource(id = R.color.field)),
+        placeholder = { Text(text = hint, color = Color(R.color.gray_text)) },
+        singleLine = true,
+        maxLines = 1,
+        leadingIcon = {
+            Icon(
+                modifier = Modifier.size(16.dp),
+                painter = painterResource(id = R.drawable.pesa),
+                contentDescription = "Icon field"
+            )
+        },
+        keyboardOptions = KeyboardOptions(
+            keyboardType = KeyboardType.Text,
+            imeAction = ImeAction.Next // Acción IME cuando se presiona la tecla Enter
+        )
+    )
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Preview
+@Composable
+fun CustomSelectField(){
+
+    var isExpanded by remember {
+        mutableStateOf(false)
+    }
+    var option by remember {
+        mutableStateOf("")
+    }
+
+    Box(modifier = Modifier.fillMaxWidth(),
+    contentAlignment = Alignment.Center) {
+        ExposedDropdownMenuBox(expanded = isExpanded, onExpandedChange = {isExpanded = it}) {
+            TextField(value = option, onValueChange = {}, readOnly = true, trailingIcon = {
+                ExposedDropdownMenuDefaults.TrailingIcon(expanded = isExpanded)
+            }, modifier = Modifier
+                .menuAnchor()
+                .width(350.dp)
+                .clip(RoundedCornerShape(4.dp))
+                .border(
+                    width = 1.dp,
+                    color = colorResource(id = R.color.field)
+                )// With padding show border color
+                .background(colorResource(id = R.color.field)),
+                colors = TextFieldDefaults.textFieldColors(containerColor = colorResource(id = R.color.field)) ,
+                placeholder = { Text(text = "Dificultad", color = Color(R.color.gray_text)) },
+                leadingIcon = {
+                    Icon(
+                        modifier = Modifier.size(16.dp),
+                        painter = painterResource(id = R.drawable.pesa),
+                        contentDescription = "Icon field"
+                    )
+                })
+
+            ExposedDropdownMenu(expanded = isExpanded, onDismissRequest = { isExpanded = false }) {
+                DropdownMenuItem(text = { Text(text = "Bajo") },
+                    onClick = {
+                        isExpanded = false
+                        option = "Alto"
+                    })
+                DropdownMenuItem(text = { Text(text = "Medio") },
+                    onClick = {
+                        isExpanded = false
+                        option = "Medio"
+                    })
+                DropdownMenuItem(text = { Text(text = "Alto") },
+                    onClick = {
+                        isExpanded = false
+                        option = "Alto"
+                    })
+            }
+        }
+    }
+
+}
 
 

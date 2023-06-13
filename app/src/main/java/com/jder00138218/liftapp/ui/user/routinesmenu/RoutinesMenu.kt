@@ -32,6 +32,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.jder00138218.liftapp.R
+import com.jder00138218.liftapp.ui.user.HeaderBarBackArrowAdd
 import com.jder00138218.liftapp.ui.user.SearchBar
 import com.jder00138218.liftapp.ui.user.UserBottomMenu
 
@@ -53,7 +54,7 @@ fun RoutinesMenu(){
                 .fillMaxWidth()
                 .fillMaxHeight(0.2f)
                 .padding(bottom = 16.dp)) {
-                RoutinesHeaderRowComponent()
+                HeaderBarBackArrowAdd("Routines")
                 SearchBar()
             }
 
@@ -79,43 +80,6 @@ fun RoutinesMenu(){
         }
     }
 
-}
-
-@Preview
-@Composable
-fun RoutinesHeaderRowComponent() {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(16.dp),
-        horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        IconButton(
-            onClick = { /* Handle back button click */ }
-        ) {
-            Icon(
-                Icons.Default.ArrowBack,
-                contentDescription = "Back"
-            )
-        }
-
-        Text(
-            text = "Routines",
-            textAlign = TextAlign.Center,
-            style = TextStyle(fontSize = 16.sp, fontWeight = FontWeight.Bold),
-            modifier = Modifier.weight(1f)
-        )
-
-        IconButton(
-            onClick = { /* Handle back button click */ }
-        ) {
-            Icon(
-                Icons.Outlined.Add,
-                contentDescription = "Add"
-            )
-        }
-    }
 }
 
 @Composable

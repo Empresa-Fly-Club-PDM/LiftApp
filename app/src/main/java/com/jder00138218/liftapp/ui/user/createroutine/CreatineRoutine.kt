@@ -27,7 +27,7 @@ import androidx.compose.ui.unit.dp
 import com.jder00138218.liftapp.R
 import com.jder00138218.liftapp.ui.user.CustomInputField
 import com.jder00138218.liftapp.ui.user.CustomSelectField
-import com.jder00138218.liftapp.ui.user.HeaderBarBackArroCheck
+import com.jder00138218.liftapp.ui.user.HeaderBarBackArrowCheck
 import com.jder00138218.liftapp.ui.user.UserBottomMenu
 
 @Preview
@@ -42,7 +42,7 @@ fun CreateRoutine(){
                 Row(modifier = Modifier
                     .fillMaxWidth()
                     .fillMaxHeight(0.1f)) {
-                    HeaderBarBackArroCheck(title = "Crear rutina")
+                    HeaderBarBackArrowCheck(title = "Crear rutina")
                 }
                 Column(modifier = Modifier
                     .fillMaxWidth()

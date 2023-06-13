@@ -143,6 +143,41 @@ fun UserBottomMenu() {
 }
 
 @Composable
+fun HeaderBarBackArrowAdd(title: String) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(16.dp),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        IconButton(
+            onClick = { /* Handle back button click */ }
+        ) {
+            Icon(
+                Icons.Default.ArrowBack,
+                contentDescription = "Back"
+            )
+        }
+
+        Text(
+            text = title,
+            textAlign = TextAlign.Center,
+            style = TextStyle(fontSize = 16.sp, fontWeight = FontWeight.Bold),
+            modifier = Modifier.weight(1f)
+        )
+
+        IconButton(
+            onClick = { /* Handle back button click */ }
+        ) {
+            Icon(
+                Icons.Outlined.Add,
+                contentDescription = "Add"
+            )
+        }
+    }
+}
+@Composable
 fun HeaderBarBackArrowCheck(title: String){
     Row(
         modifier = Modifier
@@ -249,6 +284,7 @@ fun CustomInputField(hint: String){
     )
 }
 
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Preview
 @Composable
@@ -297,6 +333,79 @@ fun CustomSelectField(){
                         option = "Medio"
                     })
                 DropdownMenuItem(text = { Text(text = "Alto") },
+                    onClick = {
+                        isExpanded = false
+                        option = "Alto"
+                    })
+            }
+        }
+    }
+
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Preview
+@Composable
+fun CustomTypeSelectField(){
+
+    var isExpanded by remember {
+        mutableStateOf(false)
+    }
+    var option by remember {
+        mutableStateOf("")
+    }
+
+    Box(modifier = Modifier.fillMaxWidth(),
+        contentAlignment = Alignment.Center) {
+        ExposedDropdownMenuBox(expanded = isExpanded, onExpandedChange = {isExpanded = it}) {
+            TextField(value = option, onValueChange = {}, readOnly = true, trailingIcon = {
+                ExposedDropdownMenuDefaults.TrailingIcon(expanded = isExpanded)
+            }, modifier = Modifier
+                .menuAnchor()
+                .width(350.dp)
+                .clip(RoundedCornerShape(4.dp))
+                .border(
+                    width = 1.dp,
+                    color = colorResource(id = R.color.field)
+                )// With padding show border color
+                .background(colorResource(id = R.color.field)),
+                colors = TextFieldDefaults.textFieldColors(containerColor = colorResource(id = R.color.field)) ,
+                placeholder = { Text(text = "Tipo", color = Color(R.color.gray_text)) },
+                leadingIcon = {
+                    Icon(
+                        modifier = Modifier.size(16.dp),
+                        painter = painterResource(id = R.drawable.pesa),
+                        contentDescription = "Icon field"
+                    )
+                })
+
+            ExposedDropdownMenu(expanded = isExpanded, onDismissRequest = { isExpanded = false }) {
+                DropdownMenuItem(text = { Text(text = "Pecho") },
+                    onClick = {
+                        isExpanded = false
+                        option = "Alto"
+                    })
+                DropdownMenuItem(text = { Text(text = "Piernas") },
+                    onClick = {
+                        isExpanded = false
+                        option = "Medio"
+                    })
+                DropdownMenuItem(text = { Text(text = "Espalda") },
+                    onClick = {
+                        isExpanded = false
+                        option = "Alto"
+                    })
+                DropdownMenuItem(text = { Text(text = "Hombros") },
+                    onClick = {
+                        isExpanded = false
+                        option = "Hombros"
+                    })
+                DropdownMenuItem(text = { Text(text = "Cardio") },
+                    onClick = {
+                        isExpanded = false
+                        option = "Alto"
+                    })
+                DropdownMenuItem(text = { Text(text = "Abdomen") },
                     onClick = {
                         isExpanded = false
                         option = "Alto"

@@ -54,7 +54,7 @@ fun RoutinesMenu(){
                 .fillMaxWidth()
                 .fillMaxHeight(0.2f)
                 .padding(bottom = 16.dp)) {
-                HeaderBarBackArrowAdd("Routines")
+                HeaderBarBackArrowAdd("Rutinas")
                 SearchBar()
             }
 

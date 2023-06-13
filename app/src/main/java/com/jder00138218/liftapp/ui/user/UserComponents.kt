@@ -28,6 +28,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -415,5 +416,65 @@ fun CustomTypeSelectField(){
     }
 
 }
+
+@Composable
+fun CardExercise() {
+    Card( // this
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(8.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = colorResource(id = R.color.card)
+        )
+    ) {
+
+        Box(
+            modifier = Modifier
+                .padding(16.dp),
+            contentAlignment = Alignment.Center
+        ) {
+            Column(modifier = Modifier.fillMaxWidth(1f)) {
+
+                Row() {
+                    Text(text = "Juan Daniel Escobar Rivera", fontWeight = FontWeight.Bold)
+                    // Icon
+                }
+
+
+                Row(
+                    modifier = Modifier
+                        .padding(8.dp)
+                        .fillMaxWidth(1f),
+                    horizontalArrangement = Arrangement.Start
+                ) {
+                    ItemEx()
+                    ItemEx()
+                }
+
+            }
+        }
+
+
+    }
+}
+
+@Composable
+fun ItemEx() {
+    Card(
+        colors = CardDefaults.cardColors(
+            containerColor = Color.White
+        ), modifier = Modifier
+            .padding(4.dp)
+            .size(width = 160.dp, height = 60.dp)
+    ) {
+        Column(Modifier.padding(8.dp)) {
+            Text(text = "Press de banca", color = Color.Red)
+            Text(text = "Pecho", color = Color(R.color.gray_text))
+        }
+    }
+
+}
+
+
 
 

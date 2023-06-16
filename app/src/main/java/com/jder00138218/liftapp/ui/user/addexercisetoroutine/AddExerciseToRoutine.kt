@@ -51,6 +51,7 @@ fun AddExerciseToRoutine(){
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Bottom) {
                 UserBottomMenu()
+
             }
         }
     }

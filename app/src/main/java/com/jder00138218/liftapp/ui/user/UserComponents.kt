@@ -24,6 +24,7 @@ import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.outlined.Add
 import androidx.compose.material.icons.outlined.AddCircle
+import androidx.compose.material.icons.outlined.Search
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.ButtonDefaults
@@ -145,6 +146,12 @@ fun UserBottomMenu() {
 
 @Composable
 fun HeaderBarBackArrowAdd(title: String) {
+    var iconHeader = Icons.Outlined.Add
+
+    if(title == "Ranking"){
+        iconHeader = Icons.Outlined.Search
+    }
+
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -172,7 +179,7 @@ fun HeaderBarBackArrowAdd(title: String) {
             onClick = { /* Handle back button click */ }
         ) {
             Icon(
-                Icons.Outlined.Add,
+                imageVector = iconHeader,
                 contentDescription = "Add"
             )
         }

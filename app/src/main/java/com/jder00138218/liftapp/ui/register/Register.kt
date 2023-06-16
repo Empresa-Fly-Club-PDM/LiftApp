@@ -38,6 +38,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.jder00138218.liftapp.R
+import com.jder00138218.liftapp.ui.administrator.exerciseManager.Menu
 
 @Preview(name = "prevRegister", showBackground = true)
 @Composable
@@ -86,7 +87,7 @@ fun prevRegister() {
                     .background(Color.White),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                // Menu() TODO -> ADD MENU
+                Menu()
             }
 
         }
@@ -142,7 +143,7 @@ fun FieldDetaile(name: String) {
 
     if (name == "Nombre completo") {
         colorPH = Color.Red
-        //iconId = R.drawable.profile
+        iconId = R.drawable.profile
     }
 
     if (name == "Genero") {
@@ -293,18 +294,6 @@ fun FieldDetaileWB(name: String) {
                     modifier = Modifier.size(16.dp),
                     painter = painterResource(id = iconId),
                     contentDescription = "Icon field",
-                    tint = colorResource(id = R.color.gray_text)
-                )
-            },
-            trailingIcon = {
-
-                Icon(
-                    modifier = Modifier
-                        .size(16.dp)
-                        .clickable { },
-
-                    painter = painterResource(id = R.drawable.icon_hide),
-                    contentDescription = "Hide Icon",
                     tint = colorResource(id = R.color.gray_text)
                 )
             },

@@ -1,7 +1,8 @@
 package com.jder00138218.liftapp.ui.login
 
 
-import android.widget.Toast
+import android.app.Application
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -26,11 +27,9 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -49,14 +48,9 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.core.content.ContentProviderCompat.requireContext
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.lifecycle.viewmodel.viewModelFactory
 import com.jder00138218.liftapp.R
 import com.jder00138218.liftapp.RetrofitApplication
-import com.jder00138218.liftapp.network.services.AuthService
-import com.jder00138218.liftapp.repositories.CredentialsRepository
 import com.jder00138218.liftapp.ui.login.viewmodel.LoginViewModel
 
 
@@ -74,11 +68,28 @@ import com.jder00138218.liftapp.ui.login.viewmodel.LoginViewModel
 @Composable
 fun LoginScreen() {
 
-    val loginviewModel: LoginViewModel = viewModel(
+    val loginViewModel: LoginViewModel = viewModel(
         factory = LoginViewModel.Factory
     )
-    if( loginviewModel.status.value == LoginUiStatus.Resume){
 
+    when (loginViewModel.status.value) {
+        is LoginUiStatus.Error -> {
+
+        }
+
+        is LoginUiStatus.ErrorWithMessage -> {
+
+        }
+
+        is LoginUiStatus.Success -> {
+            loginViewModel.clearStatus()
+            loginViewModel.clearStatus()
+
+            // app.saveAuthToken(status.token)
+            //  findNavController().navigate(R.id.action_loginFragment_to_welcomeFragment)
+        }
+
+        else -> {}
     }
 
     Box(
@@ -86,15 +97,12 @@ fun LoginScreen() {
             .fillMaxSize()
             .padding(8.dp)
     ) {
-        Login( Modifier.align(Alignment.Center),loginviewModel)// TODO() -> View Model
+        Login(Modifier.align(Alignment.Center), loginViewModel)
     }
 }
 
 @Composable
 fun Login(modifier: Modifier, viewModel: LoginViewModel) {
-    val emailUser = viewModel.email
-    val password = viewModel.password
-    var isVisible by remember { mutableStateOf(viewModel.isVisiblePaswd) }
 
 
     Box(modifier = modifier.fillMaxSize()) {
@@ -104,9 +112,9 @@ fun Login(modifier: Modifier, viewModel: LoginViewModel) {
         ) {
             HeaderImage(Modifier.align(Alignment.CenterHorizontally))
             Spacer(modifier = Modifier.padding(8.dp))
-            FieldEmail(emailUser, viewModel)
+            FieldEmail(viewModel)
             Spacer(modifier = Modifier.padding(8.dp))
-            FieldPassword(viewModel, password, isVisible)
+            FieldPassword(viewModel)
             Spacer(modifier = Modifier.padding(8.dp))
             ForgotPassword(Modifier.align(Alignment.CenterHorizontally))
             Spacer(modifier = Modifier.padding(8.dp))
@@ -124,10 +132,15 @@ fun Login(modifier: Modifier, viewModel: LoginViewModel) {
     }
 }
 
+
 @Composable
 fun SingIn(viewModel: LoginViewModel, modifier: Modifier) {
+
     Button(
-        onClick = { viewModel.onLogin() }, modifier = modifier
+        onClick = {
+            viewModel.onLogin()
+            handleUiStatus(viewModel)
+        }, modifier = modifier
             .height(60.dp)
             .width(300.dp)
             .fillMaxWidth(), colors = ButtonDefaults.buttonColors(
@@ -143,6 +156,41 @@ fun SingIn(viewModel: LoginViewModel, modifier: Modifier) {
             Text(text = " Ingresar")
         }
 
+    }
+}
+
+
+fun handleUiStatus(viewModel: LoginViewModel) {
+    val status = viewModel.status.value
+
+    Log.d("tag", "HandleUIState...")
+    val app = RetrofitApplication()
+    Log.d("", status.toString())
+    Log.d("status", "Done")
+
+    when (status) {
+
+        is LoginUiStatus.Error -> {
+            Log.d("tag", "Error")
+            // Toast.makeText(requireContext(), "An error has occurred", Toast.LENGTH_SHORT).show()
+        }
+
+        is LoginUiStatus.ErrorWithMessage -> {
+            //  Toast.makeText(requireContext(), status.message, Toast.LENGTH_SHORT).show()
+            Log.d("tag", "Error with message")
+        }
+
+        is LoginUiStatus.Success -> {
+            Log.d("tag", "Done 2")
+            viewModel.clearStatus()
+            viewModel.clearData()
+            app.saveAuthToken(status.token)
+
+            Log.d("tag TOKEN", status.token)
+            //  findNavController().navigate(R.id.action_loginFragment_to_welcomeFragment)
+        }
+
+        else -> {}
     }
 }
 
@@ -194,11 +242,16 @@ fun HeaderImage(modifier: Modifier) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun FieldEmail(email: String, viewModel: LoginViewModel) {
+fun FieldEmail(viewModel: LoginViewModel) {
+
+    var emailUser by remember { mutableStateOf(viewModel.email) }
 
     OutlinedTextField(
-        value = email,
-        onValueChange = { newValue -> viewModel.email = newValue },
+        value = emailUser,
+        onValueChange = { newValue ->
+            emailUser = newValue
+            viewModel.email = newValue
+        },
         modifier = Modifier
             .width(350.dp)
             .clip(RoundedCornerShape(4.dp))
@@ -228,11 +281,19 @@ fun FieldEmail(email: String, viewModel: LoginViewModel) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun FieldPassword(viewModel: LoginViewModel, password: String, isVisible: Boolean) {
+fun FieldPassword(viewModel: LoginViewModel) {
+    var password by remember { mutableStateOf(viewModel.password) }
+    var isVisible by remember { mutableStateOf(viewModel.isVisiblePaswd) }
+
+    val visualTransformation =
+        if (isVisible) VisualTransformation.None else PasswordVisualTransformation()
 
     OutlinedTextField(
         value = password,
-        onValueChange = { newValue -> viewModel.password = newValue },
+        onValueChange = { newValue ->
+            password = newValue
+            viewModel.password = newValue
+        },
         modifier = Modifier
             .width(350.dp)
             .clip(RoundedCornerShape(4.dp))
@@ -257,7 +318,7 @@ fun FieldPassword(viewModel: LoginViewModel, password: String, isVisible: Boolea
             Icon(
                 modifier = Modifier
                     .size(16.dp)
-                    .clickable { viewModel.changeVisi(isVisible) },
+                    .clickable { isVisible = !isVisible },
                 painter = painterResource(id = R.drawable.icon_hide),
                 contentDescription = "Hide Icon"
             )
@@ -266,7 +327,7 @@ fun FieldPassword(viewModel: LoginViewModel, password: String, isVisible: Boolea
             keyboardType = KeyboardType.Password,
             imeAction = androidx.compose.ui.text.input.ImeAction.Next // Acción IME cuando se presiona la tecla Enter
         ),
-        visualTransformation = if (isVisible) VisualTransformation.None else PasswordVisualTransformation()
+        visualTransformation = visualTransformation
     )
 }
 

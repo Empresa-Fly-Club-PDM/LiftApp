@@ -1,7 +1,6 @@
 package com.jder00138218.liftapp.ui.login
 
 
-import android.app.Application
 import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -35,7 +34,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -49,9 +47,11 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavHostController
 import com.jder00138218.liftapp.R
 import com.jder00138218.liftapp.RetrofitApplication
 import com.jder00138218.liftapp.ui.login.viewmodel.LoginViewModel
+import com.jder00138218.liftapp.ui.navigation.Rutas
 
 
 /*
@@ -64,45 +64,25 @@ import com.jder00138218.liftapp.ui.login.viewmodel.LoginViewModel
 
 
 
-@Preview(name = "Preview", showBackground = true)
+
 @Composable
-fun LoginScreen() {
+fun LoginScreen(navController: NavHostController) {
 
     val loginViewModel: LoginViewModel = viewModel(
         factory = LoginViewModel.Factory
     )
-
-    when (loginViewModel.status.value) {
-        is LoginUiStatus.Error -> {
-
-        }
-
-        is LoginUiStatus.ErrorWithMessage -> {
-
-        }
-
-        is LoginUiStatus.Success -> {
-            loginViewModel.clearStatus()
-            loginViewModel.clearStatus()
-
-            // app.saveAuthToken(status.token)
-            //  findNavController().navigate(R.id.action_loginFragment_to_welcomeFragment)
-        }
-
-        else -> {}
-    }
 
     Box(
         modifier = Modifier
             .fillMaxSize()
             .padding(8.dp)
     ) {
-        Login(Modifier.align(Alignment.Center), loginViewModel)
+        Login(Modifier.align(Alignment.Center), loginViewModel, navController)
     }
 }
 
 @Composable
-fun Login(modifier: Modifier, viewModel: LoginViewModel) {
+fun Login(modifier: Modifier, viewModel: LoginViewModel, navController: NavHostController) {
 
 
     Box(modifier = modifier.fillMaxSize()) {
@@ -116,7 +96,7 @@ fun Login(modifier: Modifier, viewModel: LoginViewModel) {
             Spacer(modifier = Modifier.padding(8.dp))
             FieldPassword(viewModel)
             Spacer(modifier = Modifier.padding(8.dp))
-            ForgotPassword(Modifier.align(Alignment.CenterHorizontally))
+            ForgotPassword(Modifier.align(Alignment.CenterHorizontally), navController)
             Spacer(modifier = Modifier.padding(8.dp))
             SingIn(viewModel, Modifier.align(Alignment.CenterHorizontally))
             Spacer(modifier = Modifier.padding(36.dp))
@@ -127,7 +107,7 @@ fun Login(modifier: Modifier, viewModel: LoginViewModel) {
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             OrSpacer(Modifier.align(Alignment.CenterHorizontally))
-            Register(Modifier.align(Alignment.CenterHorizontally))
+            Register(Modifier.align(Alignment.CenterHorizontally), navController)
         }
     }
 }
@@ -196,10 +176,10 @@ fun handleUiStatus(viewModel: LoginViewModel) {
 
 
 @Composable
-fun Register(modifier: Modifier) {
+fun Register(modifier: Modifier, navController: NavHostController) {
     Row(modifier = modifier) {
         Text(text = "¿Aun no tienes cuenta?")
-        Text(text = " Registrate", color = Color.Red, modifier = Modifier.clickable { })
+        Text(text = " Registrate", color = Color.Red, modifier = Modifier.clickable {navController.navigate(route = Rutas.Register.ruta) })
         Spacer(modifier = Modifier.padding(8.dp))
     }
 }
@@ -245,6 +225,7 @@ fun HeaderImage(modifier: Modifier) {
 fun FieldEmail(viewModel: LoginViewModel) {
 
     var emailUser by remember { mutableStateOf(viewModel.email) }
+
 
     OutlinedTextField(
         value = emailUser,
@@ -332,7 +313,7 @@ fun FieldPassword(viewModel: LoginViewModel) {
 }
 
 @Composable
-fun ForgotPassword(modifier: Modifier) {
+fun ForgotPassword(modifier: Modifier, navController: NavHostController) {
     val text = stringResource(R.string.forgot_passw)
 
     Text(
@@ -343,7 +324,7 @@ fun ForgotPassword(modifier: Modifier) {
                 append(text)
             }
         },
-        modifier = modifier.clickable { },
+        modifier = modifier.clickable { navController.navigate(route = Rutas.ForgotPss.ruta)},
         color = Color(R.color.gray_text)
     )
 }

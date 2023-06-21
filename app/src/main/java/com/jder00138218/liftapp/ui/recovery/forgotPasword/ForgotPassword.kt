@@ -33,16 +33,12 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
 import com.jder00138218.liftapp.R
 
-@Preview(name = "Preview-Forgot", showBackground = true)
-@Composable
-fun previewRecovery() {
-    Recovery()
-}
 
 @Composable
-fun Recovery() {
+fun Recovery(navController: NavHostController) {
     BlockFields()
 }
 

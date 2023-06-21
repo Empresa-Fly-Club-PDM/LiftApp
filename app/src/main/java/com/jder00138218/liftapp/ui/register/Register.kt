@@ -24,6 +24,10 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -34,15 +38,27 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavHostController
 import com.jder00138218.liftapp.R
 import com.jder00138218.liftapp.ui.administrator.exerciseManager.Menu
+import com.jder00138218.liftapp.ui.register.viewmodel.RegisterViewModel
 
-@Preview(name = "prevRegister", showBackground = true)
+
+
+
 @Composable
-fun prevRegister() {
+fun RegisterScreen(navController: NavHostController) {
+
+    val registerViewModel: RegisterViewModel = viewModel(
+        factory = RegisterViewModel.Factory
+    )
+
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -76,7 +92,7 @@ fun prevRegister() {
                     .fillMaxWidth(),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                FieldsRegister()
+                FieldsRegister(registerViewModel)
             }
 
             Column( // 3
@@ -97,32 +113,33 @@ fun prevRegister() {
 
 
 @Composable
-fun FieldsRegister() {
-    FieldDetaile("Nombre completo")
+fun FieldsRegister(registerViewModel: RegisterViewModel) {
+    FieldDetaile("Nombre completo", registerViewModel)
     Spacer(modifier = Modifier.padding(2.dp))
-    FieldDetaile("Correo")
+    FieldDetaile("Correo", registerViewModel)
     Spacer(modifier = Modifier.padding(2.dp))
-    Fieldpassword("Contraseña")
+    Fieldpassword("Contraseña", registerViewModel)
     Spacer(modifier = Modifier.padding(2.dp))
-    Fieldpassword("Verificar contraseña")
+    Fieldpassword("Verificar contraseña", registerViewModel)
     Spacer(modifier = Modifier.padding(2.dp))
-    FieldDetaile("Genero")
+    FieldDetaile("Genero", registerViewModel)
     Spacer(modifier = Modifier.padding(2.dp))
-    FieldDetaile("Fecha de nacimiento")
+    FieldDetaile("Fecha de nacimiento", registerViewModel)
     Spacer(modifier = Modifier.padding(2.dp))
-    GroupPE()
+    GroupPE(registerViewModel)
     Spacer(modifier = Modifier.padding(2.dp))
-    ButtonsDetaile()
+    ButtonsDetaile(registerViewModel)
     Spacer(modifier = Modifier.padding(2.dp))
     Text(text = "Por favor revisar los datos", color = Color.Red)
 
 }
 
 @Composable
-fun ButtonsDetaile() {
+fun ButtonsDetaile(viewModel: RegisterViewModel) {
+
     Row(modifier = Modifier.padding(8.dp)) {
         Button(
-            onClick = { }, modifier = Modifier
+            onClick = { viewModel.register()}, modifier = Modifier
                 .height(60.dp)
                 .fillMaxWidth(), colors = ButtonDefaults.buttonColors(
                 containerColor = Color.Red
@@ -137,34 +154,60 @@ fun ButtonsDetaile() {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun FieldDetaile(name: String) {
+fun FieldDetaile(name: String, viewModel: RegisterViewModel) {
+
+    var namelUser by remember { mutableStateOf(viewModel.email) }
+    var genreUser by remember { mutableStateOf(viewModel.genre) }
+    var dateUser by remember { mutableStateOf(viewModel.date) }
+    var emailUser by remember { mutableStateOf(viewModel.email) }
+
     var colorPH = Color(R.color.gray_text)
     var iconId = R.drawable.icon_message
+    var value = ""
+    var valueChange: ((String) -> Unit)? = null
+
 
     if (name == "Nombre completo") {
         colorPH = Color.Red
         iconId = R.drawable.profile
+        value = namelUser
+        valueChange = { newValue ->
+            namelUser = newValue
+            viewModel.name = newValue
+        }
+    }
+
+    if (name == "Correo") {
+        value = emailUser
+        valueChange = { newValue ->
+            namelUser = newValue
+            viewModel.email = newValue
+        }
     }
 
     if (name == "Genero") {
         iconId = R.drawable.user
+        value = genreUser
+        valueChange = { newValue ->
+            genreUser = newValue
+            viewModel.genre = newValue
+        }
     }
 
     if (name == "Fecha de nacimiento") {
         iconId = R.drawable.calendar
+        value = dateUser
+        valueChange = { newValue ->
+            dateUser = newValue
+            viewModel.date = newValue
+        }
     }
 
-    if (name == "Peso") {
-        iconId = R.drawable.weight
-    }
 
-    if (name == "Estatura") {
-        iconId = R.drawable.swap
-    }
 
     OutlinedTextField(
-        value = "",
-        onValueChange = { },
+        value = value,
+        onValueChange = valueChange ?: {},
         modifier = Modifier
             .width(350.dp)
             .clip(RoundedCornerShape(4.dp))
@@ -196,15 +239,37 @@ fun FieldDetaile(name: String) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun Fieldpassword(name: String) {
+fun Fieldpassword(name: String, viewModel: RegisterViewModel) {
 
+    var passwordUser by remember { mutableStateOf(viewModel.password) }
+    var isVisible by remember { mutableStateOf(viewModel.isVisiblePaswd) }
+    var value = ""
+    var valueChange: ((String) -> Unit)? = null
     var colorId = colorResource(id = R.color.gray_text)
-    if (name != "Contraseña")
+    if (name != "Contraseña") {
         colorId = Color.Red
+        value = passwordUser
+        valueChange = { newValue ->
+            passwordUser = newValue
+            viewModel.password = newValue
+        }
+    }
+
+    if (name != "Verificar contraseña") {
+        colorId = Color.Red
+        value = passwordUser
+        valueChange = { newValue ->
+            passwordUser = newValue
+            viewModel.password = newValue
+        }
+    }
+
+    val visualTransformation =
+        if (isVisible) VisualTransformation.None else PasswordVisualTransformation()
 
     OutlinedTextField(
-        value = "",
-        onValueChange = { },
+        value = value,
+        onValueChange = valueChange ?: {},
         modifier = Modifier
             .width(350.dp)
             .clip(RoundedCornerShape(4.dp))
@@ -232,7 +297,7 @@ fun Fieldpassword(name: String) {
             Icon(
                 modifier = Modifier
                     .size(16.dp)
-                    .clickable { },
+                    .clickable {isVisible = !isVisible },
                 painter = painterResource(id = R.drawable.icon_hide),
                 contentDescription = "Hide Icon",
                 tint = colorResource(id = R.color.gray_text)
@@ -241,40 +306,59 @@ fun Fieldpassword(name: String) {
         keyboardOptions = KeyboardOptions(
             keyboardType = KeyboardType.Text,
             imeAction = ImeAction.Next
-        )
+        ),
+        visualTransformation = visualTransformation
     )
 }
 
 @Composable
-fun GroupPE() {
+fun GroupPE(viewModel: RegisterViewModel) {
 
-    FieldDetaileWB(name = "Peso")
+    FieldDetaileWB(name = "Peso", viewModel)
     Spacer(modifier = Modifier.padding(2.dp))
-    FieldDetaileWB(name = "Estatura")
+    FieldDetaileWB(name = "Estatura", viewModel)
 
 }
 
+// TODO -> FIX FIELDS WITH NUMBERS
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun FieldDetaileWB(name: String) {
+fun FieldDetaileWB(name: String, viewModel: RegisterViewModel) {
     var iconId = R.drawable.icon_message
     var textB = ""
+    var weigthUser by remember { mutableStateOf(viewModel.weigth) }
+    var heigthUser by remember { mutableStateOf(viewModel.heigth) }
+    var value = ""
+    var valueChange: ((String) -> Unit)? = null
 
     if (name == "Peso") {
-        iconId = R.drawable.weight
-        textB = "LB"
+        iconId = R.drawable.swap
+        textB = "CM"
+        value = weigthUser.toString()
+        valueChange = { newValue ->
+            weigthUser = newValue.toInt()
+            viewModel.weigth = newValue.toInt()
+        }
     }
+
     if (name == "Estatura") {
         iconId = R.drawable.swap
         textB = "CM"
+        value = heigthUser.toString()
+        valueChange = { newValue ->
+            heigthUser = newValue.toDouble()
+            viewModel.heigth = newValue.toDouble()
+        }
     }
+
+
     Row(
         modifier = Modifier.fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.Center
     ) {
         OutlinedTextField(
-            value = "",
-            onValueChange = { },
+            value = value,
+            onValueChange = valueChange ?: {},
             modifier = Modifier
                 .width(280.dp)
                 .clip(RoundedCornerShape(4.dp))

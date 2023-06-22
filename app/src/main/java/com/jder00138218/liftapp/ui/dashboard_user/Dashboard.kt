@@ -42,7 +42,7 @@ import com.jder00138218.liftapp.ui.user.routinesmenu.RoutineMenuItem
 
 @Preview(name = "Dash User", showBackground = true)
 @Composable
-fun DashboardPrev() {
+fun DashboardAdminScreen() {
     var nameUser = "Daniel Rivera"
 
     Box(

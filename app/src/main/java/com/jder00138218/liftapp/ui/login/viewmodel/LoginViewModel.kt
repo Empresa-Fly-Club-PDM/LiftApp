@@ -58,7 +58,7 @@ class LoginViewModel(private val credentialsRepository: CredentialsRepository) :
                     is ApiResponse.ErrorWithMessage -> LoginUiStatus.ErrorWithMessage(response.message)
                     is ApiResponse.Success -> LoginUiStatus.Success(
                         response.data
-                    ) // take token and id user
+                    )
                 }
 
             Log.d("tag status view", _status.value.toString())

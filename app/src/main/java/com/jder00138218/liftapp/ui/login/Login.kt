@@ -54,17 +54,6 @@ import com.jder00138218.liftapp.ui.login.viewmodel.LoginViewModel
 import com.jder00138218.liftapp.ui.navigation.Rutas
 
 
-/*
-    HOW TO APPLY HERE
-    TODO() ->  val app by lazy { requireActivity().application as RetrofitApplication }
-    TODO() -> setViewModel
-    TODO -> observeStatus
-    TODO -> handleUiStatus
- */
-
-
-
-
 @Composable
 fun LoginScreen(navController: NavHostController) {
 
@@ -98,7 +87,7 @@ fun Login(modifier: Modifier, viewModel: LoginViewModel, navController: NavHostC
             Spacer(modifier = Modifier.padding(8.dp))
             ForgotPassword(Modifier.align(Alignment.CenterHorizontally), navController)
             Spacer(modifier = Modifier.padding(8.dp))
-            SingIn(viewModel, Modifier.align(Alignment.CenterHorizontally))
+            SingIn(viewModel, Modifier.align(Alignment.CenterHorizontally), navController)
             Spacer(modifier = Modifier.padding(36.dp))
         }
 
@@ -114,12 +103,13 @@ fun Login(modifier: Modifier, viewModel: LoginViewModel, navController: NavHostC
 
 
 @Composable
-fun SingIn(viewModel: LoginViewModel, modifier: Modifier) {
-
+fun SingIn(viewModel: LoginViewModel, modifier: Modifier, navController: NavHostController) {
+    // TODO -> FIX VALIDATION STATUS
     Button(
         onClick = {
             viewModel.onLogin()
-            handleUiStatus(viewModel)
+            // testNav(navController)
+            handleUiStatus(viewModel, navController)
         }, modifier = modifier
             .height(60.dp)
             .width(300.dp)
@@ -139,24 +129,28 @@ fun SingIn(viewModel: LoginViewModel, modifier: Modifier) {
     }
 }
 
+fun testNav(navController: NavHostController) {
+    navController.navigate(route = Rutas.DashboardAdmin.ruta)
+}
 
-fun handleUiStatus(viewModel: LoginViewModel) {
+
+fun handleUiStatus(viewModel: LoginViewModel, navController: NavHostController) {
     val status = viewModel.status.value
 
     Log.d("tag", "HandleUIState...")
     val app = RetrofitApplication()
-    Log.d("", status.toString())
-    Log.d("status", "Done")
+    Log.d("Tag status on function", status.toString())
+
 
     when (status) {
 
         is LoginUiStatus.Error -> {
             Log.d("tag", "Error")
-            // Toast.makeText(requireContext(), "An error has occurred", Toast.LENGTH_SHORT).show()
+            // TODO() -> Toast.makeText(requireContext(), "An error has occurred", Toast.LENGTH_SHORT).show()
         }
 
         is LoginUiStatus.ErrorWithMessage -> {
-            //  Toast.makeText(requireContext(), status.message, Toast.LENGTH_SHORT).show()
+            //  TODO() -> Toast.makeText(requireContext(), status.message, Toast.LENGTH_SHORT).show()
             Log.d("tag", "Error with message")
         }
 
@@ -165,9 +159,8 @@ fun handleUiStatus(viewModel: LoginViewModel) {
             viewModel.clearStatus()
             viewModel.clearData()
             app.saveAuthToken(status.token)
-
-            Log.d("tag TOKEN", status.token)
-            //  findNavController().navigate(R.id.action_loginFragment_to_welcomeFragment)
+            Log.d("tag TOKEN", status.token) // TODO -> VALIDATE USER
+            navController.navigate(route = Rutas.DashboardAdmin.ruta)
         }
 
         else -> {}
@@ -179,7 +172,10 @@ fun handleUiStatus(viewModel: LoginViewModel) {
 fun Register(modifier: Modifier, navController: NavHostController) {
     Row(modifier = modifier) {
         Text(text = "¿Aun no tienes cuenta?")
-        Text(text = " Registrate", color = Color.Red, modifier = Modifier.clickable {navController.navigate(route = Rutas.Register.ruta) })
+        Text(
+            text = " Registrate",
+            color = Color.Red,
+            modifier = Modifier.clickable { navController.navigate(route = Rutas.Register.ruta) })
         Spacer(modifier = Modifier.padding(8.dp))
     }
 }
@@ -324,7 +320,7 @@ fun ForgotPassword(modifier: Modifier, navController: NavHostController) {
                 append(text)
             }
         },
-        modifier = modifier.clickable { navController.navigate(route = Rutas.ForgotPss.ruta)},
+        modifier = modifier.clickable { navController.navigate(route = Rutas.ForgotPss.ruta) },
         color = Color(R.color.gray_text)
     )
 }

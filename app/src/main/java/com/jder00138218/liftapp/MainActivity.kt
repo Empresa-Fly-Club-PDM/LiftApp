@@ -13,6 +13,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.jder00138218.liftapp.ui.dashboard_user.DashboardAdminScreen
 import com.jder00138218.liftapp.ui.login.LoginScreen
 import com.jder00138218.liftapp.ui.navigation.Rutas
 import com.jder00138218.liftapp.ui.recovery.forgotPasword.Recovery
@@ -51,6 +52,12 @@ fun NavigationGraph(){
         }
         composable(route = Rutas.ForgotPss.ruta){
             Recovery(navController)
+        }
+        composable(route = Rutas.DashboardAdmin.ruta){
+            DashboardAdminScreen()
+        }
+        composable(route = Rutas.DashboardUser.ruta){
+            // TODO ADD SCREEN
         }
     }
 }

@@ -1,4 +1,4 @@
-package com.jder00138218.liftapp.ui.administrator.exerciseManager
+package com.jder00138218.liftapp.ui.users.admin.exerciseManager
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -31,6 +31,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.jder00138218.liftapp.R
+import com.jder00138218.liftapp.ui.users.admin.Menu
 
 
 @Preview(name = "Verify exercises", showBackground = true)

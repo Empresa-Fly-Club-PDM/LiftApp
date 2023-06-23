@@ -1,4 +1,4 @@
-package com.jder00138218.liftapp.ui.dashboard_user
+package com.jder00138218.liftapp.ui.users.user
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -24,10 +24,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.ImageBitmap
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.colorResource
-import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -36,13 +33,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.jder00138218.liftapp.R
-import com.jder00138218.liftapp.ui.administrator.exerciseManager.Menu
-import com.jder00138218.liftapp.ui.user.routinesmenu.RoutineMenuItem
+import com.jder00138218.liftapp.ui.users.admin.Menu
+import com.jder00138218.liftapp.ui.users.user.routinesmenu.RoutineMenuItem
 
 
 @Preview(name = "Dash User", showBackground = true)
 @Composable
-fun DashboardAdminScreen() {
+fun DashboardUserScreen() {
     var nameUser = "Daniel Rivera"
 
     Box(

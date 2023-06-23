@@ -1,5 +1,8 @@
 package com.jder00138218.liftapp.ui.register
 
+import android.content.Context
+import android.util.Log
+import android.widget.DatePicker
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -46,10 +49,14 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.jder00138218.liftapp.R
-import com.jder00138218.liftapp.ui.administrator.exerciseManager.Menu
+import com.jder00138218.liftapp.RetrofitApplication
+import com.jder00138218.liftapp.ui.login.LoginUiStatus
+import com.jder00138218.liftapp.ui.login.decodeHS512TokenWithoutVerification
+import com.jder00138218.liftapp.ui.login.getRoleFromTokenPayload
+import com.jder00138218.liftapp.ui.login.viewmodel.LoginViewModel
+import com.jder00138218.liftapp.ui.navigation.Rutas
+import com.jder00138218.liftapp.ui.users.admin.Menu
 import com.jder00138218.liftapp.ui.register.viewmodel.RegisterViewModel
-
-
 
 
 @Composable
@@ -88,22 +95,11 @@ fun RegisterScreen(navController: NavHostController) {
             Column( // 2
                 Modifier
                     .align(Alignment.Center)
-                    .fillMaxHeight(0.84f)
+                    .fillMaxHeight(0.9f)
                     .fillMaxWidth(),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                FieldsRegister(registerViewModel)
-            }
-
-            Column( // 3
-                Modifier
-                    .align(Alignment.BottomCenter)
-                    .fillMaxHeight(0.06f)
-                    .fillMaxWidth()
-                    .background(Color.White),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                Menu()
+                FieldsRegister(registerViewModel, navController)
             }
 
         }
@@ -113,7 +109,7 @@ fun RegisterScreen(navController: NavHostController) {
 
 
 @Composable
-fun FieldsRegister(registerViewModel: RegisterViewModel) {
+fun FieldsRegister(registerViewModel: RegisterViewModel, navController: NavHostController) {
     FieldDetaile("Nombre completo", registerViewModel)
     Spacer(modifier = Modifier.padding(2.dp))
     FieldDetaile("Correo", registerViewModel)
@@ -128,18 +124,21 @@ fun FieldsRegister(registerViewModel: RegisterViewModel) {
     Spacer(modifier = Modifier.padding(2.dp))
     GroupPE(registerViewModel)
     Spacer(modifier = Modifier.padding(2.dp))
-    ButtonsDetaile(registerViewModel)
+    ButtonsDetaile(registerViewModel, navController)
     Spacer(modifier = Modifier.padding(2.dp))
     Text(text = "Por favor revisar los datos", color = Color.Red)
 
 }
 
 @Composable
-fun ButtonsDetaile(viewModel: RegisterViewModel) {
+fun ButtonsDetaile(viewModel: RegisterViewModel, navController: NavHostController) {
 
     Row(modifier = Modifier.padding(8.dp)) {
         Button(
-            onClick = { viewModel.register()}, modifier = Modifier
+            onClick = {
+                viewModel.onRegister()
+                handleUiStatus(viewModel, navController)
+            }, modifier = Modifier
                 .height(60.dp)
                 .fillMaxWidth(), colors = ButtonDefaults.buttonColors(
                 containerColor = Color.Red
@@ -164,6 +163,8 @@ fun FieldDetaile(name: String, viewModel: RegisterViewModel) {
     var colorPH = Color(R.color.gray_text)
     var iconId = R.drawable.icon_message
     var value = ""
+    var validTextfield = true;
+    var type = KeyboardType.Text
     var valueChange: ((String) -> Unit)? = null
 
 
@@ -179,8 +180,9 @@ fun FieldDetaile(name: String, viewModel: RegisterViewModel) {
 
     if (name == "Correo") {
         value = emailUser
+        type = KeyboardType.Text
         valueChange = { newValue ->
-            namelUser = newValue
+            emailUser = newValue
             viewModel.email = newValue
         }
     }
@@ -197,12 +199,12 @@ fun FieldDetaile(name: String, viewModel: RegisterViewModel) {
     if (name == "Fecha de nacimiento") {
         iconId = R.drawable.calendar
         value = dateUser
+        validTextfield = false
         valueChange = { newValue ->
             dateUser = newValue
             viewModel.date = newValue
         }
     }
-
 
 
     OutlinedTextField(
@@ -231,11 +233,13 @@ fun FieldDetaile(name: String, viewModel: RegisterViewModel) {
             )
         },
         keyboardOptions = KeyboardOptions(
-            keyboardType = KeyboardType.Text,
+            keyboardType = type,
             imeAction = ImeAction.Next // Acción IME cuando se presiona la tecla Enter
         )
     )
+
 }
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -246,6 +250,7 @@ fun Fieldpassword(name: String, viewModel: RegisterViewModel) {
     var value = ""
     var valueChange: ((String) -> Unit)? = null
     var colorId = colorResource(id = R.color.gray_text)
+
     if (name != "Contraseña") {
         colorId = Color.Red
         value = passwordUser
@@ -297,7 +302,7 @@ fun Fieldpassword(name: String, viewModel: RegisterViewModel) {
             Icon(
                 modifier = Modifier
                     .size(16.dp)
-                    .clickable {isVisible = !isVisible },
+                    .clickable { isVisible = !isVisible },
                 painter = painterResource(id = R.drawable.icon_hide),
                 contentDescription = "Hide Icon",
                 tint = colorResource(id = R.color.gray_text)
@@ -326,49 +331,53 @@ fun GroupPE(viewModel: RegisterViewModel) {
 fun FieldDetaileWB(name: String, viewModel: RegisterViewModel) {
     var iconId = R.drawable.icon_message
     var textB = ""
-    var weigthUser by remember { mutableStateOf(viewModel.weigth) }
-    var heigthUser by remember { mutableStateOf(viewModel.heigth) }
+    var weigthUser by remember { mutableStateOf(viewModel.weigth.toString()) }
+    var heigthUser by remember { mutableStateOf(viewModel.heigth.toString()) }
     var value = ""
+    var type = KeyboardType.Number
     var valueChange: ((String) -> Unit)? = null
 
     if (name == "Peso") {
         iconId = R.drawable.swap
         textB = "CM"
-        value = weigthUser.toString()
+        value = weigthUser
         valueChange = { newValue ->
-            weigthUser = newValue.toInt()
-            viewModel.weigth = newValue.toInt()
+            weigthUser = newValue
+            viewModel.weigth = newValue.toIntOrNull() ?: 0
         }
     }
 
     if (name == "Estatura") {
         iconId = R.drawable.swap
         textB = "CM"
-        value = heigthUser.toString()
+        type = KeyboardType.Number
+        value = heigthUser
         valueChange = { newValue ->
-            heigthUser = newValue.toDouble()
-            viewModel.heigth = newValue.toDouble()
+            heigthUser = newValue
+            viewModel.heigth = newValue.toDoubleOrNull() ?: 0.0
         }
     }
 
-
     Row(
         modifier = Modifier.fillMaxWidth(),
-        verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.Center
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.Center
     ) {
         OutlinedTextField(
             value = value,
-            onValueChange = valueChange ?: {},
+            onValueChange = { newValue ->
+                valueChange?.invoke(newValue)
+                value = newValue
+            },
             modifier = Modifier
                 .width(280.dp)
                 .clip(RoundedCornerShape(4.dp))
                 .border(
                     width = 1.dp,
                     color = colorResource(id = R.color.field)
-                )// With padding show border color
+                )
                 .background(colorResource(id = R.color.field)),
             placeholder = {
-
                 Text(text = name, color = colorResource(id = R.color.gray_text))
             },
             singleLine = true,
@@ -382,7 +391,7 @@ fun FieldDetaileWB(name: String, viewModel: RegisterViewModel) {
                 )
             },
             keyboardOptions = KeyboardOptions(
-                keyboardType = KeyboardType.Text,
+                keyboardType = type,
                 imeAction = ImeAction.Next
             )
         )
@@ -407,4 +416,32 @@ fun FieldDetaileWB(name: String, viewModel: RegisterViewModel) {
     }
 }
 
+
+fun handleUiStatus(
+    viewModel: RegisterViewModel,
+    navController: NavHostController,
+) {
+    val status = viewModel.status.value
+
+    when (status) {
+
+        is RegisterUiStatus.Error -> {
+            Log.d("tag", "Error")
+            // TODO() -> Toast.makeText(requireContext(), "An error has occurred", Toast.LENGTH_SHORT).show()
+        }
+
+        is RegisterUiStatus.ErrorWithMessage -> {
+            //  TODO() -> Toast.makeText(requireContext(), status.message, Toast.LENGTH_SHORT).show()
+            Log.d("tag", "Error with message")
+        }
+
+        is RegisterUiStatus.Success -> {
+            viewModel.clearStatus()
+            viewModel.clearData()
+            navController.navigate(route = Rutas.Login.ruta)
+        }
+
+        else -> {}
+    }
+}
 

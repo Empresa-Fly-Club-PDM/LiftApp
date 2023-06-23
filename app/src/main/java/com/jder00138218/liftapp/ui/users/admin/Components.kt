@@ -1,4 +1,4 @@
-package com.jder00138218.liftapp.ui.administrator.exerciseManager
+package com.jder00138218.liftapp.ui.users.admin
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row

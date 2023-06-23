@@ -1,4 +1,4 @@
-package com.jder00138218.liftapp.ui.user.createroutine
+package com.jder00138218.liftapp.ui.users.user.createroutine
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -25,10 +25,10 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.jder00138218.liftapp.R
-import com.jder00138218.liftapp.ui.user.CustomInputField
-import com.jder00138218.liftapp.ui.user.CustomSelectField
-import com.jder00138218.liftapp.ui.user.HeaderBarBackArrowCheck
-import com.jder00138218.liftapp.ui.user.UserBottomMenu
+import com.jder00138218.liftapp.ui.users.user.CustomInputField
+import com.jder00138218.liftapp.ui.users.user.CustomSelectField
+import com.jder00138218.liftapp.ui.users.user.HeaderBarBackArrowCheck
+import com.jder00138218.liftapp.ui.users.user.UserBottomMenu
 
 @Preview
 @Composable

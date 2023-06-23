@@ -1,16 +1,15 @@
-package com.jder00138218.liftapp.ui.user.routineflow
+package com.jder00138218.liftapp.ui.users.user.routineflow
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
@@ -22,45 +21,42 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.jder00138218.liftapp.R
-import com.jder00138218.liftapp.ui.user.CustomInputField
-import com.jder00138218.liftapp.ui.user.CustomSelectField
-import com.jder00138218.liftapp.ui.user.CustomTypeSelectField
-import com.jder00138218.liftapp.ui.user.HeaderBarBackArrowDumbell
-import com.jder00138218.liftapp.ui.user.UserBottomMenu
+import com.jder00138218.liftapp.ui.users.admin.CardExercise
+import com.jder00138218.liftapp.ui.users.user.HeaderBarBackArrowDumbell
+import com.jder00138218.liftapp.ui.users.user.UserBottomMenu
 
 @Preview
 @Composable
-fun RegisterExerciseStats(){
+fun CurrentRoutine(){
     Box(modifier = Modifier
         .fillMaxSize()
-        .background(Color.White)) {
-        Column(modifier = Modifier
+        .background(Color.White)
+    ){
+
+        Column( modifier = Modifier
             .fillMaxSize()
-            .padding(8.dp)) {
+            .padding(8.dp)
+        )
+        {
             Row(modifier = Modifier
                 .fillMaxWidth()
                 .fillMaxHeight(0.1f)) {
-                HeaderBarBackArrowDumbell(title = "Detalles del ejercicio")
+                HeaderBarBackArrowDumbell(title = "Rutina")
             }
-            Column(modifier = Modifier
-                .fillMaxWidth()
-                .fillMaxHeight(0.9f),
-                verticalArrangement = Arrangement.SpaceBetween
-            ){
-                Column(modifier = Modifier
-                    .fillMaxWidth(),
-                    horizontalAlignment = Alignment.CenterHorizontally) {
-                    CustomInputField(hint = "Nombre del ejercicio")
-                    Spacer(modifier = Modifier.height(8.dp))
-                    CustomInputField(hint = "Peso")
-                    Spacer(modifier = Modifier.height(8.dp))
-                    CustomInputField(hint = "Repeticiones")
+
+            Column(modifier = Modifier.fillMaxWidth().fillMaxHeight(0.9f)) {
+                LazyColumn(modifier = Modifier
+                    .fillMaxWidth()
+                    .fillMaxHeight(0.9f)){
+                    items(20) {
+                        CardExercise()
+                    }
                 }
 
                 Button(modifier = Modifier.fillMaxWidth() , onClick = {}, colors = ButtonDefaults.buttonColors(containerColor = colorResource(
-                    id = R.color.buttonGren
+                    id = R.color.buttonGray
                 ), contentColor = Color.White)) {
-                    Text(text = "Registrar peso")
+                    Text(text = "Finalizar rutina")
                 }
             }
 

@@ -1,4 +1,4 @@
-package com.jder00138218.liftapp.ui.user.routinesmenu
+package com.jder00138218.liftapp.ui.users.user.routinesmenu
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -32,9 +32,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.jder00138218.liftapp.R
-import com.jder00138218.liftapp.ui.user.HeaderBarBackArrowAdd
-import com.jder00138218.liftapp.ui.user.SearchBar
-import com.jder00138218.liftapp.ui.user.UserBottomMenu
+import com.jder00138218.liftapp.ui.users.user.HeaderBarBackArrowAdd
+import com.jder00138218.liftapp.ui.users.user.SearchBar
+import com.jder00138218.liftapp.ui.users.user.UserBottomMenu
 
 @Preview(name = "RoutinesMenu", showBackground = true)
 @Composable

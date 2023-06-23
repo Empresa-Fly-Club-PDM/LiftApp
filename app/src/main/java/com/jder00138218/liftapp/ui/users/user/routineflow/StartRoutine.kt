@@ -1,4 +1,4 @@
-package com.jder00138218.liftapp.ui.user.routineflow
+package com.jder00138218.liftapp.ui.users.user.routineflow
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -21,14 +21,13 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.jder00138218.liftapp.R
-import com.jder00138218.liftapp.ui.administrator.exerciseManager.CardExercise
-import com.jder00138218.liftapp.ui.user.HeaderBarBackArrowAdd
-import com.jder00138218.liftapp.ui.user.HeaderBarBackArrowDumbell
-import com.jder00138218.liftapp.ui.user.UserBottomMenu
+import com.jder00138218.liftapp.ui.users.admin.CardExercise
+import com.jder00138218.liftapp.ui.users.user.HeaderBarBackArrowAdd
+import com.jder00138218.liftapp.ui.users.user.UserBottomMenu
 
 @Preview
 @Composable
-fun CurrentRoutine(){
+fun StartRoutine(){
     Box(modifier = Modifier
         .fillMaxSize()
         .background(Color.White)
@@ -42,7 +41,7 @@ fun CurrentRoutine(){
             Row(modifier = Modifier
                 .fillMaxWidth()
                 .fillMaxHeight(0.1f)) {
-                HeaderBarBackArrowDumbell(title = "Rutina")
+                HeaderBarBackArrowAdd(title = "Rutina")
             }
 
             Column(modifier = Modifier.fillMaxWidth().fillMaxHeight(0.9f)) {
@@ -55,9 +54,9 @@ fun CurrentRoutine(){
                 }
 
                 Button(modifier = Modifier.fillMaxWidth() , onClick = {}, colors = ButtonDefaults.buttonColors(containerColor = colorResource(
-                    id = R.color.buttonGray
+                    id = R.color.buttonGren
                 ), contentColor = Color.White)) {
-                    Text(text = "Finalizar rutina")
+                    Text(text = "Iniciar rutina")
                 }
             }
 

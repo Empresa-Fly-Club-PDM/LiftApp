@@ -52,7 +52,7 @@ class LoginViewModel(private val credentialsRepository: CredentialsRepository) :
     private fun login(email: String, password: String) {
 
         viewModelScope.launch {
-            _status.value =
+            _status.value = (
                 when (val response = credentialsRepository.login(email, password)) {
                     is ApiResponse.Error -> LoginUiStatus.Error(response.exception)
                     is ApiResponse.ErrorWithMessage -> LoginUiStatus.ErrorWithMessage(response.message)
@@ -60,6 +60,7 @@ class LoginViewModel(private val credentialsRepository: CredentialsRepository) :
                         response.data
                     )
                 }
+            )
 
             Log.d("tag status view", _status.value.toString())
         }

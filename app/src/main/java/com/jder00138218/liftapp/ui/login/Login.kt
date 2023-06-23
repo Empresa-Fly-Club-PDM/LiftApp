@@ -1,6 +1,7 @@
 package com.jder00138218.liftapp.ui.login
 
 
+import android.content.Context
 import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -34,6 +35,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -52,6 +54,18 @@ import com.jder00138218.liftapp.R
 import com.jder00138218.liftapp.RetrofitApplication
 import com.jder00138218.liftapp.ui.login.viewmodel.LoginViewModel
 import com.jder00138218.liftapp.ui.navigation.Rutas
+import java.nio.charset.StandardCharsets
+
+import io.jsonwebtoken.Claims
+import io.jsonwebtoken.Jws
+import io.jsonwebtoken.JwtException
+import io.jsonwebtoken.Jwts
+import io.jsonwebtoken.SignatureAlgorithm
+import io.jsonwebtoken.security.Keys
+import org.json.JSONObject
+import java.security.Key
+
+import java.util.Base64
 
 
 @Composable
@@ -105,11 +119,11 @@ fun Login(modifier: Modifier, viewModel: LoginViewModel, navController: NavHostC
 @Composable
 fun SingIn(viewModel: LoginViewModel, modifier: Modifier, navController: NavHostController) {
     // TODO -> FIX VALIDATION STATUS
+    val context = LocalContext.current
     Button(
         onClick = {
+            handleUiStatus(viewModel, navController, context)
             viewModel.onLogin()
-            // testNav(navController)
-            handleUiStatus(viewModel, navController)
         }, modifier = modifier
             .height(60.dp)
             .width(300.dp)
@@ -134,11 +148,12 @@ fun testNav(navController: NavHostController) {
 }
 
 
-fun handleUiStatus(viewModel: LoginViewModel, navController: NavHostController) {
+fun handleUiStatus(viewModel: LoginViewModel, navController: NavHostController, context: Context) {
     val status = viewModel.status.value
 
     Log.d("tag", "HandleUIState...")
-    val app = RetrofitApplication()
+    val app = context.applicationContext as RetrofitApplication
+
     Log.d("Tag status on function", status.toString())
 
 
@@ -159,12 +174,41 @@ fun handleUiStatus(viewModel: LoginViewModel, navController: NavHostController) 
             viewModel.clearStatus()
             viewModel.clearData()
             app.saveAuthToken(status.token)
+
+            val responInfo = decodeHS512TokenWithoutVerification(status.token)
+            val rolUser = getRoleFromTokenPayload(responInfo)
             Log.d("tag TOKEN", status.token) // TODO -> VALIDATE USER
-            navController.navigate(route = Rutas.DashboardAdmin.ruta)
+            Log.d("return by HS", rolUser.toString())
+
+            if (rolUser == "USER") {
+                navController.navigate(route = Rutas.DashboardUser.ruta)
+            }
+
+            if (rolUser == "ADMIN") {
+                navController.navigate(route = Rutas.DashboardAdmin.ruta)
+            }
+
         }
 
         else -> {}
     }
+}
+
+
+fun getRoleFromTokenPayload(payloadJson: String): String? {
+    val jsonObject = JSONObject(payloadJson)
+    return jsonObject.getString("roles")
+}
+
+
+fun decodeHS512TokenWithoutVerification(token: String): String {
+
+    val base64UrlEncodedPayload = token.split(".")[1] // Obtiene la sección de carga útil del token
+    val payloadJson = String(
+        Base64.getUrlDecoder().decode(base64UrlEncodedPayload)
+    ) // Decodifica la carga útil en formato JSON
+
+    return payloadJson // Devuelve la carga útil del token
 }
 
 

@@ -13,12 +13,13 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.jder00138218.liftapp.ui.dashboard_user.DashboardAdminScreen
+import com.jder00138218.liftapp.ui.users.admin.DashboardAdminScreen
 import com.jder00138218.liftapp.ui.login.LoginScreen
 import com.jder00138218.liftapp.ui.navigation.Rutas
 import com.jder00138218.liftapp.ui.recovery.forgotPasword.Recovery
 import com.jder00138218.liftapp.ui.register.RegisterScreen
 import com.jder00138218.liftapp.ui.theme.LiftAppTheme
+import com.jder00138218.liftapp.ui.users.user.DashboardUserScreen
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -57,7 +58,7 @@ fun NavigationGraph(){
             DashboardAdminScreen()
         }
         composable(route = Rutas.DashboardUser.ruta){
-            // TODO ADD SCREEN
+            DashboardUserScreen()
         }
     }
 }

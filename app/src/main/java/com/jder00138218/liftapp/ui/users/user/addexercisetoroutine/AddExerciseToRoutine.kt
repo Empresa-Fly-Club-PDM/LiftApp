@@ -1,4 +1,4 @@
-package com.jder00138218.liftapp.ui.user.addexercisetoroutine
+package com.jder00138218.liftapp.ui.users.user.addexercisetoroutine
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -14,12 +14,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.jder00138218.liftapp.ui.user.CardExercise
-import com.jder00138218.liftapp.ui.user.HeaderBarBackArrowAdd
-import com.jder00138218.liftapp.ui.user.HeaderBarBackArrowDumbell
-import com.jder00138218.liftapp.ui.user.SearchBar
-import com.jder00138218.liftapp.ui.user.UserBottomMenu
-import com.jder00138218.liftapp.ui.user.routinesmenu.RoutineMenuItem
+import com.jder00138218.liftapp.ui.users.user.CardExercise
+import com.jder00138218.liftapp.ui.users.user.HeaderBarBackArrowAdd
+import com.jder00138218.liftapp.ui.users.user.HeaderBarBackArrowDumbell
+import com.jder00138218.liftapp.ui.users.user.SearchBar
+import com.jder00138218.liftapp.ui.users.user.UserBottomMenu
+import com.jder00138218.liftapp.ui.users.user.routinesmenu.RoutineMenuItem
 
 @Preview
 @Composable

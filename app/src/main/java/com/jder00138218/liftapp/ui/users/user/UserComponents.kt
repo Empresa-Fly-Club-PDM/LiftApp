@@ -1,4 +1,4 @@
-package com.jder00138218.liftapp.ui.user
+package com.jder00138218.liftapp.ui.users.user
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border

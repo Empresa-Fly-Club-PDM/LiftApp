@@ -25,7 +25,7 @@ class CredentialsRepository(private val api: AuthService) {
 
 
         } catch (e: HttpException) {
-            if (e.code() == 400) {
+            if (e.code() == 401) {
                 return ApiResponse.ErrorWithMessage("Invalid email or password")
 
             }

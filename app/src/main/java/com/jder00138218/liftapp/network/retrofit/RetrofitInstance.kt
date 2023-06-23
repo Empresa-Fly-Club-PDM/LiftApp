@@ -6,11 +6,10 @@ import com.jder00138218.liftapp.network.services.AuthService
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
+const val BASE_URL = "https://liftapp.pro/"
 object RetrofitInstance {
 
     private  var token = ""
-    private val BASE_URL = "http://localhost:8080"
-
 
     fun setToken(token: String){
         this.token = token

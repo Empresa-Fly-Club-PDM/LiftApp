@@ -1,11 +1,11 @@
-package com.jder00138218.liftapp.ui.recovery.forgotPasword
+package com.jder00138218.liftapp.ui.users.admin.exerciseManager
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -29,21 +29,19 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavHostController
 import com.jder00138218.liftapp.R
+import com.jder00138218.liftapp.ui.users.admin.Menu
 
 
+@Preview(name = "Create Exercise", showBackground = true)
 @Composable
-fun Recovery(navController: NavHostController) {
-    BlockFields()
-}
+fun CreateExercise() {
 
-@Composable
-fun BlockFields() {
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -52,12 +50,15 @@ fun BlockFields() {
 
         Box(modifier = Modifier.fillMaxSize()) {
 
-            Column(
-                Modifier.align(Alignment.TopCenter),
+            Column( // 1
+                Modifier
+                    .align(Alignment.TopCenter)
+                    .fillMaxHeight(0.1f)
+                    .fillMaxWidth(),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Text(
-                    text = "¿Olvido su Contraseña?",
+                    text = "Crear Ejercicio",
                     color = Color.Black,
                     style = TextStyle(
                         fontWeight = FontWeight.Bold,
@@ -66,68 +67,100 @@ fun BlockFields() {
                 )
             }
 
-            Column(Modifier.align(Alignment.Center)) {
-                Text(text = "Ingrese su correo para la recuperación")
-                Spacer(modifier = Modifier.padding(8.dp))
-                FieldEmail()
 
-            }
-
-            Column(
-                Modifier.align(Alignment.BottomCenter),
+            Column( // 2
+                Modifier
+                    .align(Alignment.Center)
+                    .fillMaxHeight(0.76f)
+                    .fillMaxWidth(),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Confirm(Modifier.align(Alignment.CenterHorizontally))
+                FieldsDetaileCreate()
             }
+
+            Column( // 3
+                Modifier
+                    .align(Alignment.BottomCenter)
+                    .fillMaxHeight(0.06f)
+                    .fillMaxWidth()
+                    .background(Color.White),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Menu()
+            }
+
         }
+
     }
+
+}
+
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun FieldsDetaileCreate() {
+
+    FieldDetaileCreate("Nombre del ejercicio")
+    Spacer(modifier = Modifier.padding(2.dp))
+    FieldDetaileCreate("Musculo")
+    Spacer(modifier = Modifier.padding(2.dp))
+    FieldDetaileCreate("Tipo")
+    Spacer(modifier = Modifier.padding(2.dp))
+    FieldDetaileCreate("Dificultad")
+    Spacer(modifier = Modifier.padding(2.dp))
+    FieldDetaileCreate("Descripcion")
+    Spacer(modifier = Modifier.padding(2.dp))
+    FieldDetaileCreate("Sets")
+    Spacer(modifier = Modifier.padding(2.dp))
+    FieldDetaileCreate("Repeticiones")
+    Spacer(modifier = Modifier.padding(8.dp))
+    ButtonsCreate()
+}
+
+@Composable
+fun ButtonsCreate() {
+
+        Button(
+            onClick = { }, modifier = Modifier
+                .height(60.dp)
+                .width(175.dp)
+                .fillMaxWidth(), colors = ButtonDefaults.buttonColors(
+                containerColor = colorResource(id = R.color.buttonGren)
+            )
+        ) {
+            Text(text = " Confirmar")
+
+        }
+
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun FieldEmail() {
-
+fun FieldDetaileCreate(name: String) {
     OutlinedTextField(
         value = "",
         onValueChange = { },
         modifier = Modifier
             .width(350.dp)
             .clip(RoundedCornerShape(4.dp))
-            .background(colorResource(id = R.color.field))
             .border(
                 width = 1.dp,
                 color = colorResource(id = R.color.field)
-            )
+            )// With padding show border color
             .background(colorResource(id = R.color.field)),
-        placeholder = { Text(text = "Correo", color = Color(R.color.gray_text)) },
+        placeholder = { Text(text = name, color = Color(R.color.gray_text)) },
         singleLine = true,
         maxLines = 1,
         leadingIcon = {
             Icon(
                 modifier = Modifier.size(16.dp),
-                painter = painterResource(id = R.drawable.icon_message),
-                contentDescription = "Icon Email"
+                painter = painterResource(id = R.drawable.pesa),
+                contentDescription = "Icon field"
             )
         },
         keyboardOptions = KeyboardOptions(
-            keyboardType = KeyboardType.Email,
-            imeAction = androidx.compose.ui.text.input.ImeAction.Next // Acción IME cuando se presiona la tecla Enter
-        ),
-    )
-}
-
-@Composable
-fun Confirm(modifier: Modifier) {
-    Button(
-        onClick = { }, modifier = modifier
-            .height(60.dp)
-            .width(300.dp)
-            .fillMaxWidth(), colors = ButtonDefaults.buttonColors(
-            containerColor = Color.Red
+            keyboardType = KeyboardType.Text,
+            imeAction = ImeAction.Next // Acción IME cuando se presiona la tecla Enter
         )
-    ) {
-        Row() {
-            Text(text = "Recuperar Contraseña")
-        }
-    }
+    )
 }

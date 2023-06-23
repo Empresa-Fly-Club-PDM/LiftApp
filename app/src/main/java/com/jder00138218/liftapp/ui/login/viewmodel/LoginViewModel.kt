@@ -1,5 +1,6 @@
 package com.jder00138218.liftapp.ui.login.viewmodel
 
+import android.util.Log
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
@@ -17,6 +18,7 @@ import com.jder00138218.liftapp.network.ApiResponse
 import com.jder00138218.liftapp.network.retrofit.RetrofitInstance
 import com.jder00138218.liftapp.repositories.CredentialsRepository
 import com.jder00138218.liftapp.ui.login.LoginUiStatus
+import com.jder00138218.liftapp.ui.login.handleUiStatus
 import kotlinx.coroutines.launch
 
 class LoginViewModel(private val credentialsRepository: CredentialsRepository) : ViewModel() {
@@ -25,13 +27,19 @@ class LoginViewModel(private val credentialsRepository: CredentialsRepository) :
     private var _email by mutableStateOf("")
     private var _password by mutableStateOf("")
     private var _isVisiblePaswd by mutableStateOf(false)
-    private val _status = mutableStateOf<LoginUiStatus>(LoginUiStatus.Resume)
+    private var _status = mutableStateOf<LoginUiStatus>(LoginUiStatus.Resume)
 
-    var email: String = ""
+    var email: String
         get() = _email
+        set(value) {
+            _email = value
+        }
 
-    var password: String = ""
+    var password: String
         get() = _password
+        set(value) {
+            _password = value
+        }
 
     var isVisiblePaswd: Boolean = true
         get() = _isVisiblePaswd
@@ -40,24 +48,28 @@ class LoginViewModel(private val credentialsRepository: CredentialsRepository) :
         get() = _status
 
 
-    fun changeVisi(value: Boolean): Boolean {
-        return value != true
-    }
 
     private fun login(email: String, password: String) {
+
         viewModelScope.launch {
-            _status.value =
-                when(val response = credentialsRepository.login(email, password)){
+            _status.value = (
+                when (val response = credentialsRepository.login(email, password)) {
                     is ApiResponse.Error -> LoginUiStatus.Error(response.exception)
                     is ApiResponse.ErrorWithMessage -> LoginUiStatus.ErrorWithMessage(response.message)
-                    is ApiResponse.Success -> LoginUiStatus.Success(response.data)
+                    is ApiResponse.Success -> LoginUiStatus.Success(
+                        response.data
+                    )
                 }
+            )
 
+            Log.d("tag status view", _status.value.toString())
         }
+
     }
 
-    fun onLogin(){
-        if(!validateData()){
+    fun onLogin() {
+
+        if (!validateData()) {
             _status.value = LoginUiStatus.ErrorWithMessage("Wrong Imformation")
             return
         }

@@ -27,6 +27,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -86,8 +87,6 @@ fun LoginScreen(navController: NavHostController) {
 
 @Composable
 fun Login(modifier: Modifier, viewModel: LoginViewModel, navController: NavHostController) {
-
-
     Box(modifier = modifier.fillMaxSize()) {
         Column(
             modifier = Modifier.align(Alignment.Center),
@@ -122,15 +121,12 @@ fun SingIn(viewModel: LoginViewModel, modifier: Modifier, navController: NavHost
     val context = LocalContext.current
     Button(
         onClick = {
-            handleUiStatus(viewModel, navController, context)
-            viewModel.onLogin()
+            viewModel.onLogin(navController, context)
         }, modifier = modifier
             .height(60.dp)
             .width(300.dp)
-            .fillMaxWidth(), colors = ButtonDefaults.buttonColors(
-            containerColor = Color.Red
-        )
-    ) {
+            .fillMaxWidth(), colors = ButtonDefaults.buttonColors(containerColor = Color.Red))
+    {
         Row() {
             Icon(
                 modifier = Modifier.size(24.dp),
@@ -145,53 +141,6 @@ fun SingIn(viewModel: LoginViewModel, modifier: Modifier, navController: NavHost
 
 fun testNav(navController: NavHostController) {
     navController.navigate(route = Rutas.DashboardAdmin.ruta)
-}
-
-
-fun handleUiStatus(viewModel: LoginViewModel, navController: NavHostController, context: Context) {
-    val status = viewModel.status.value
-
-    Log.d("tag", "HandleUIState...")
-    val app = context.applicationContext as RetrofitApplication
-
-    Log.d("Tag status on function", status.toString())
-
-
-    when (status) {
-
-        is LoginUiStatus.Error -> {
-            Log.d("tag", "Error")
-            // TODO() -> Toast.makeText(requireContext(), "An error has occurred", Toast.LENGTH_SHORT).show()
-        }
-
-        is LoginUiStatus.ErrorWithMessage -> {
-            //  TODO() -> Toast.makeText(requireContext(), status.message, Toast.LENGTH_SHORT).show()
-            Log.d("tag", "Error with message")
-        }
-
-        is LoginUiStatus.Success -> {
-            Log.d("tag", "Done 2")
-            viewModel.clearStatus()
-            viewModel.clearData()
-            app.saveAuthToken(status.token)
-
-            val responInfo = decodeHS512TokenWithoutVerification(status.token)
-            val rolUser = getRoleFromTokenPayload(responInfo)
-            Log.d("tag TOKEN", status.token) // TODO -> VALIDATE USER
-            Log.d("return by HS", rolUser.toString())
-
-            if (rolUser == "USER") {
-                navController.navigate(route = Rutas.DashboardUser.ruta)
-            }
-
-            if (rolUser == "ADMIN") {
-                navController.navigate(route = Rutas.DashboardAdmin.ruta)
-            }
-
-        }
-
-        else -> {}
-    }
 }
 
 
@@ -263,10 +212,7 @@ fun HeaderImage(modifier: Modifier) {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun FieldEmail(viewModel: LoginViewModel) {
-
     var emailUser by remember { mutableStateOf(viewModel.email) }
-
-
     OutlinedTextField(
         value = emailUser,
         onValueChange = { newValue ->

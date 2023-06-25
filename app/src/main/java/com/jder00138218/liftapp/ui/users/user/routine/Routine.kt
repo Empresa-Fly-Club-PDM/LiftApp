@@ -40,13 +40,13 @@ fun Routine(){
                 HeaderBarBackArrowAdd(title = "Rutina")
             }
 
-            LazyColumn(modifier = Modifier
+           /* LazyColumn(modifier = Modifier
                 .fillMaxWidth()
                 .fillMaxHeight(0.9f)){
                 items(20) {
                     CardExercise()
                 }
-            }
+            }*/
 
             Column(modifier = Modifier
                 .fillMaxHeight()

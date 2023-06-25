@@ -45,13 +45,13 @@ fun StartRoutine(){
             }
 
             Column(modifier = Modifier.fillMaxWidth().fillMaxHeight(0.9f)) {
-                LazyColumn(modifier = Modifier
+                /*LazyColumn(modifier = Modifier
                     .fillMaxWidth()
                     .fillMaxHeight(0.9f)){
                     items(20) {
                         CardExercise()
                     }
-                }
+                }*/
 
                 Button(modifier = Modifier.fillMaxWidth() , onClick = {}, colors = ButtonDefaults.buttonColors(containerColor = colorResource(
                     id = R.color.buttonGren

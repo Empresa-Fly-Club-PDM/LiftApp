@@ -136,8 +136,8 @@ fun ButtonsDetaile(viewModel: RegisterViewModel, navController: NavHostControlle
     Row(modifier = Modifier.padding(8.dp)) {
         Button(
             onClick = {
-                viewModel.onRegister()
-                handleUiStatus(viewModel, navController)
+                viewModel.onRegister(navController)
+
             }, modifier = Modifier
                 .height(60.dp)
                 .fillMaxWidth(), colors = ButtonDefaults.buttonColors(
@@ -417,31 +417,5 @@ fun FieldDetaileWB(name: String, viewModel: RegisterViewModel) {
 }
 
 
-fun handleUiStatus(
-    viewModel: RegisterViewModel,
-    navController: NavHostController,
-) {
-    val status = viewModel.status.value
 
-    when (status) {
-
-        is RegisterUiStatus.Error -> {
-            Log.d("tag", "Error")
-            // TODO() -> Toast.makeText(requireContext(), "An error has occurred", Toast.LENGTH_SHORT).show()
-        }
-
-        is RegisterUiStatus.ErrorWithMessage -> {
-            //  TODO() -> Toast.makeText(requireContext(), status.message, Toast.LENGTH_SHORT).show()
-            Log.d("tag", "Error with message")
-        }
-
-        is RegisterUiStatus.Success -> {
-            viewModel.clearStatus()
-            viewModel.clearData()
-            navController.navigate(route = Rutas.Login.ruta)
-        }
-
-        else -> {}
-    }
-}
 

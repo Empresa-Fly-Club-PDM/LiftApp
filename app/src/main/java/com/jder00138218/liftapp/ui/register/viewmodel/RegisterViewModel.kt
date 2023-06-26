@@ -11,10 +11,12 @@ import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.AP
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
+import androidx.navigation.NavHostController
 import com.jder00138218.liftapp.RetrofitApplication
 import com.jder00138218.liftapp.network.ApiResponse
 import com.jder00138218.liftapp.repositories.CredentialsRepository
 import com.jder00138218.liftapp.ui.login.LoginUiStatus
+import com.jder00138218.liftapp.ui.navigation.Rutas
 import com.jder00138218.liftapp.ui.register.RegisterUiStatus
 import kotlinx.coroutines.launch
 
@@ -91,7 +93,8 @@ class RegisterViewModel(private val repository: CredentialsRepository) : ViewMod
         genre: String,
         date: String,
         weigth: Int,
-        heigth: Double
+        heigth: Double,
+        navController: NavHostController
     ) {
         viewModelScope.launch {
             _status.value = (
@@ -105,10 +108,11 @@ class RegisterViewModel(private val repository: CredentialsRepository) : ViewMod
                         is ApiResponse.Success -> RegisterUiStatus.Success
                     }
                     )
+            handleUiStatus(navController)
         }
     }
 
-    fun onRegister() {
+    fun onRegister(navController: NavHostController) {
         if (!validateData()) {
             _status.value = RegisterUiStatus.ErrorWithMessage("Wrong Information")
             return
@@ -120,7 +124,7 @@ class RegisterViewModel(private val repository: CredentialsRepository) : ViewMod
         Log.d("data", date)
         Log.d("data", weigth.toString())
         Log.d("data", heigth.toString())
-        register(name, email, password, genre, date, weigth, heigth)
+        register(name, email, password, genre, date, weigth, heigth, navController)
     }
 
     private fun validateData(): Boolean {
@@ -150,6 +154,33 @@ class RegisterViewModel(private val repository: CredentialsRepository) : ViewMod
         _weigth = 0
     }
 
+    fun handleUiStatus(
+        navController: NavHostController,
+    ) {
+        val status = _status.value
+
+        when (status) {
+
+            is RegisterUiStatus.Error -> {
+                Log.d("tag", "Error")
+                // TODO() -> Toast.makeText(requireContext(), "An error has occurred", Toast.LENGTH_SHORT).show()
+            }
+
+            is RegisterUiStatus.ErrorWithMessage -> {
+                //  TODO() -> Toast.makeText(requireContext(), status.message, Toast.LENGTH_SHORT).show()
+                Log.d("tag", "Error with message")
+            }
+
+            is RegisterUiStatus.Success -> {
+                clearStatus()
+                clearData()
+                navController.navigate(route = Rutas.Login.ruta)
+            }
+
+            else -> {}
+        }
+    }
+
 
     companion object {
         val Factory = viewModelFactory {
@@ -161,3 +192,5 @@ class RegisterViewModel(private val repository: CredentialsRepository) : ViewMod
     }
 
 }
+
+

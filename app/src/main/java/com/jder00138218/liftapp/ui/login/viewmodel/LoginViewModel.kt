@@ -49,9 +49,6 @@ class LoginViewModel(private val credentialsRepository: CredentialsRepository) :
     var isVisiblePaswd: Boolean = true
         get() = _isVisiblePaswd
 
-    val status: MutableLiveData<LoginUiStatus>
-        get() = _status
-
 
     private fun login(email: String, password: String,navController: NavHostController,context:Context) {
         Log.d("tag",email)

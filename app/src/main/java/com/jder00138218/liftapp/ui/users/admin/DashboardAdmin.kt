@@ -28,14 +28,18 @@ import androidx.compose.ui.unit.sp
 import com.jder00138218.liftapp.R
 import androidx.compose.foundation.lazy.items
 import androidx.compose.ui.platform.LocalContext
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.jder00138218.liftapp.RetrofitApplication
 import com.jder00138218.liftapp.network.dto.exercise.exercise
+import com.jder00138218.liftapp.ui.login.viewmodel.LoginViewModel
 import com.jder00138218.liftapp.ui.users.admin.DasboardAdminViewmodel.DashboardAdminViewmodel
 
 @Preview(name = "Administrator Dashboard", showBackground = true)
 @Composable
 fun DashboardAdminScreen() {
-    val vm = DashboardAdminViewmodel()
+    val vm: DashboardAdminViewmodel = viewModel(
+        factory = DashboardAdminViewmodel.Factory
+    )
 
 
     LaunchedEffect(Unit, block = {

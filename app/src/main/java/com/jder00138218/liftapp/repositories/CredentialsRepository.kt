@@ -12,22 +12,12 @@ class CredentialsRepository(private val api: AuthService) {
 
 
     suspend fun login(email: String, password: String): ApiResponse<String> {
-
         try {
-
-
             val response = api.login(LoginRequest(email, password))
-
-            Log.d("response 1", "${response}")
-            Log.d("response", "${response.email},${response.id},${response.accesToken}")
-
             return ApiResponse.Success(response.accesToken)
-
-
         } catch (e: HttpException) {
             if (e.code() == 401) {
                 return ApiResponse.ErrorWithMessage("Invalid email or password")
-
             }
             return ApiResponse.Error(e)
         } catch (e: IOException) {

@@ -39,7 +39,6 @@ import androidx.navigation.NavController
 import com.jder00138218.liftapp.R
 import com.jder00138218.liftapp.ui.users.admin.Menu
 
-@Preview(name = "Description Request", showBackground = true)
 @Composable
 fun DetaileExercise(navController: NavController) {
 
@@ -66,13 +65,14 @@ fun DetaileExercise(navController: NavController) {
                             fontSize = 24.sp
                         )
                     )
+                    UserInfoSection(name = "henry", score = 1000)
             }
 
 
             Column( // 2
                 Modifier
                     .align(Alignment.Center)
-                    .fillMaxHeight(0.76f)
+                    .fillMaxHeight(0.60f)
                     .fillMaxWidth(),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
@@ -116,6 +116,17 @@ fun FieldsDetaile() {
     FieldDetaile("Repeticiones")
     Spacer(modifier = Modifier.padding(8.dp))
     ButtonsDetaile()
+}
+
+@Composable
+fun UserInfoSection(name: String, score: Int){
+    Column(modifier = Modifier
+        .fillMaxWidth()
+        .padding(8.dp)
+    ) {
+        Text(text = "Usuario: " + name, fontWeight = FontWeight.Bold)
+        Text(text = "Puntuacion: " +score, fontWeight = FontWeight.Light)
+    }
 }
 
 @Composable

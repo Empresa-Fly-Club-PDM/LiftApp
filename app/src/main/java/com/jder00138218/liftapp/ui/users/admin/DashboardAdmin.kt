@@ -23,18 +23,13 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.jder00138218.liftapp.R
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.AlertDialogDefaults.containerColor
-import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import com.jder00138218.liftapp.RetrofitApplication
 import com.jder00138218.liftapp.network.dto.exercise.exercise
-import com.jder00138218.liftapp.ui.login.viewmodel.LoginViewModel
 import com.jder00138218.liftapp.ui.navigation.Rutas
 import com.jder00138218.liftapp.ui.users.admin.DasboardAdminViewmodel.DashboardAdminViewmodel
 
@@ -71,6 +66,7 @@ fun DashboardAdminScreen(navController: NavController) {
                         fontSize = 24.sp
                     )
                 )
+                Text(text = "user name")
             }
 
 
@@ -101,8 +97,6 @@ fun DashboardAdminScreen(navController: NavController) {
     }
 
 }
-
-
 // This view is for dashboard
 @Composable
 fun CardExercise(currentexc:exercise, navController: NavController) {
@@ -110,7 +104,7 @@ fun CardExercise(currentexc:exercise, navController: NavController) {
         modifier = Modifier
             .fillMaxWidth()
             .padding(8.dp)
-            .clickable { navController.navigate(route = Rutas.AdminDetailExercise.ruta)},
+            .clickable { navController.navigate(route = Rutas.AdminDetailExercise.ruta) },
             colors = CardDefaults.cardColors(
             containerColor = colorResource(id = R.color.card)
         )

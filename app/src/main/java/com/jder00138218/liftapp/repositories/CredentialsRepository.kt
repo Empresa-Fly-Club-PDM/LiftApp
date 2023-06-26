@@ -16,6 +16,7 @@ class CredentialsRepository(private val api: AuthService) {
             val response = api.login(LoginRequest(email, password))
             return ApiResponse.Success(response.accesToken)
         } catch (e: HttpException) {
+
             if (e.code() == 401) {
                 return ApiResponse.ErrorWithMessage("Invalid email or password")
             }

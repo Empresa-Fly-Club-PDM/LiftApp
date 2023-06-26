@@ -25,7 +25,7 @@ class RetrofitApplication: Application() {
     }
 
 
-    fun getToken(): String = prefs.getString(USER_TOKEN, "")!!
+    fun getToken(): String = prefs.getString(USER_TOKEN, "b")!!
 
     val credentialsRepository: CredentialsRepository by lazy {
         CredentialsRepository(getApiService())

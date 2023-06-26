@@ -1,6 +1,7 @@
 package com.jder00138218.liftapp.ui.users.admin
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -27,16 +28,18 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.jder00138218.liftapp.R
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.AlertDialogDefaults.containerColor
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
 import com.jder00138218.liftapp.RetrofitApplication
 import com.jder00138218.liftapp.network.dto.exercise.exercise
 import com.jder00138218.liftapp.ui.login.viewmodel.LoginViewModel
+import com.jder00138218.liftapp.ui.navigation.Rutas
 import com.jder00138218.liftapp.ui.users.admin.DasboardAdminViewmodel.DashboardAdminViewmodel
 
-@Preview(name = "Administrator Dashboard", showBackground = true)
 @Composable
-fun DashboardAdminScreen() {
+fun DashboardAdminScreen(navController: NavController) {
     val vm: DashboardAdminViewmodel = viewModel(
         factory = DashboardAdminViewmodel.Factory
     )
@@ -79,7 +82,7 @@ fun DashboardAdminScreen() {
                     .fillMaxWidth()
             ) {
                 items(vm.exercises) { index ->
-                    CardExercise(index)
+                    CardExercise(index, navController)
                 }
             }
 
@@ -102,12 +105,13 @@ fun DashboardAdminScreen() {
 
 // This view is for dashboard
 @Composable
-fun CardExercise(currentexc:exercise) {
+fun CardExercise(currentexc:exercise, navController: NavController) {
     Card( // this
         modifier = Modifier
             .fillMaxWidth()
-            .padding(8.dp),
-        colors = CardDefaults.cardColors(
+            .padding(8.dp)
+            .clickable { navController.navigate(route = Rutas.AdminDetailExercise.ruta)},
+            colors = CardDefaults.cardColors(
             containerColor = colorResource(id = R.color.card)
         )
     ) {

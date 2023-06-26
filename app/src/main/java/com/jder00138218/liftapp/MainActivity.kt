@@ -19,6 +19,7 @@ import com.jder00138218.liftapp.ui.navigation.Rutas
 import com.jder00138218.liftapp.ui.recovery.forgotPasword.Recovery
 import com.jder00138218.liftapp.ui.register.RegisterScreen
 import com.jder00138218.liftapp.ui.theme.LiftAppTheme
+import com.jder00138218.liftapp.ui.users.admin.exerciseManager.DetaileExercise
 import com.jder00138218.liftapp.ui.users.user.DashboardUserScreen
 
 class MainActivity : ComponentActivity() {
@@ -55,10 +56,13 @@ fun NavigationGraph(){
             Recovery(navController)
         }
         composable(route = Rutas.DashboardAdmin.ruta){
-            DashboardAdminScreen()
+            DashboardAdminScreen(navController)
         }
         composable(route = Rutas.DashboardUser.ruta){
             DashboardUserScreen()
+        }
+        composable(route = Rutas.AdminDetailExercise.ruta){
+            DetaileExercise(navController)
         }
     }
 }

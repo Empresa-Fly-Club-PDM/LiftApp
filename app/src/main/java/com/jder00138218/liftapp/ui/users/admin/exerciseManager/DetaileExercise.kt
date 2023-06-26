@@ -164,7 +164,8 @@ fun ButtonsDetaile() {
 @Composable
 fun FieldDetaile(name: String) {
     OutlinedTextField(
-        value = "",
+        value = name,
+        readOnly = true,
         onValueChange = { },
         modifier = Modifier
             .width(350.dp)

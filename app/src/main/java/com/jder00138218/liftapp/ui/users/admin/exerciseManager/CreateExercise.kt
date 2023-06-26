@@ -34,13 +34,13 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.jder00138218.liftapp.R
 import com.jder00138218.liftapp.ui.users.admin.Menu
 
 
-@Preview(name = "Create Exercise", showBackground = true)
 @Composable
-fun CreateExercise() {
+fun CreateExercise(navController: NavController) {
 
     Box(
         modifier = Modifier
@@ -86,7 +86,7 @@ fun CreateExercise() {
                     .background(Color.White),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Menu()
+                Menu(navController)
             }
 
         }

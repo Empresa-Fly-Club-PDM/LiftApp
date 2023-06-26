@@ -68,7 +68,7 @@ fun RankingUsers() {
                     .background(Color.White),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Menu()
+
             }
 
         }

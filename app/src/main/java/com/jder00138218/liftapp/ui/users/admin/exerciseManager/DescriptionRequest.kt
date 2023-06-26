@@ -35,13 +35,13 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.jder00138218.liftapp.R
 import com.jder00138218.liftapp.ui.users.admin.Menu
 
 
-@Preview(name = "Description Request", showBackground = true)
 @Composable
-fun DescriptionRequest() {
+fun DescriptionRequest(navController: NavController) {
 
     Box(
         modifier = Modifier
@@ -109,7 +109,7 @@ fun DescriptionRequest() {
                     .background(Color.White),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Menu()
+                Menu(navController)
             }
 
         }

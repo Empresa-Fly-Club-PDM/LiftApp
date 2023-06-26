@@ -7,5 +7,8 @@ sealed  class Rutas(var ruta : String) {
     object DashboardAdmin:Rutas("ruta_dash_admin")
     object DashboardUser:Rutas("ruta_dash_user")
     object AdminDetailExercise:Rutas("ruta_admin_exercise_details")
+    object AdminVerifyExercise:Rutas("ruta_admin_verify_exercise")
+    object AdminCreateExercise:Rutas("ruta_admin_create_exercise")
+    object AdminDescriptionRequest:Rutas("ruta_admin_description_request")
 
 }

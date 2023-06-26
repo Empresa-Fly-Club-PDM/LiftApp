@@ -30,13 +30,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.jder00138218.liftapp.R
 import com.jder00138218.liftapp.ui.users.admin.Menu
 
-
-@Preview(name = "Verify exercises", showBackground = true)
 @Composable
-fun VerifyExercises() {
+fun VerifyExercises(navController: NavController) {
 
     Box(
         modifier = Modifier
@@ -85,7 +84,7 @@ fun VerifyExercises() {
                     .background(Color.White),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Menu()
+                Menu(navController)
             }
 
 

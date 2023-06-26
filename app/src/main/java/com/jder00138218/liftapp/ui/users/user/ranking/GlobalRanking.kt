@@ -63,7 +63,7 @@ fun GlobalRankingUsers() {
                     .background(Color.White),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Menu()
+
             }
 
         }

@@ -1,5 +1,6 @@
 package com.jder00138218.liftapp.ui.users.admin
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -15,20 +16,23 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.jder00138218.liftapp.R
-@Preview
+import com.jder00138218.liftapp.ui.navigation.Rutas
+
 @Composable
-fun Menu() {
+fun Menu(navController: NavController) {
     Row(
         modifier = Modifier
             .fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
         Button(
-            onClick = { /* Acción del primer botón */ },
+            onClick = {navController.navigate(route = Rutas.DashboardAdmin.ruta)},
             modifier = Modifier
                 .weight(1f)
-                .fillMaxHeight(), colors = ButtonDefaults.buttonColors(
+                .fillMaxHeight(),
+            colors = ButtonDefaults.buttonColors(
                 containerColor = Color.White
             )
         ) {
@@ -41,7 +45,7 @@ fun Menu() {
         }
 
         Button(
-            onClick = { /* Acción del segundo botón */ },
+            onClick = {},
             modifier = Modifier
                 .weight(1f)
                 .fillMaxHeight(), colors = ButtonDefaults.buttonColors(
@@ -57,7 +61,7 @@ fun Menu() {
         }
 
         Button(
-            onClick = { /* Acción del tercer botón */ },
+            onClick = {navController.navigate(route = Rutas.AdminVerifyExercise.ruta)},
             modifier = Modifier
                 .weight(1f)
                 .fillMaxHeight(), colors = ButtonDefaults.buttonColors(

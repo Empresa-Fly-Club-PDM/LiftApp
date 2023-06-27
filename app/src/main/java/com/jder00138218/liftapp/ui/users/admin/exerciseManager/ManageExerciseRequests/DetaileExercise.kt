@@ -3,6 +3,7 @@ package com.jder00138218.liftapp.ui.users.admin.exerciseManager.ManageExerciseRe
 import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -14,8 +15,10 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -67,50 +70,25 @@ fun DetaileExercise(navController: NavHostController) {
             .fillMaxSize()
             .padding(8.dp)
     ) {
-        Box(modifier = Modifier.fillMaxSize()) {
-            Column( // 1
-                Modifier
-                    .align(Alignment.TopCenter)
-                    .fillMaxHeight(0.1f)
-                    .fillMaxWidth(),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                    Text(
-                        text = "Descripcion de la Solicitud",
-                        color = Color.Black,
-                        style = TextStyle(
-                            fontWeight = FontWeight.Bold,
-                            fontSize = 24.sp
-                        )
+            Column(modifier = Modifier
+                .fillMaxSize(),
+                verticalArrangement = Arrangement.SpaceBetween
+                ) {
+
+                Text(
+                    text = "Descripcion de la Solicitud",
+                    color = Color.Black,
+                    style = TextStyle(
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 24.sp
                     )
-                    UserInfoSection(name = detailExercise.user.nombrecompleto, detailExercise.user.points)
-            }
-
-
-            Column( // 2
-                Modifier
-                    .align(Alignment.Center)
-                    .fillMaxHeight(0.60f)
-                    .fillMaxWidth(),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
+                )
+                UserInfoSection(name = detailExercise.user.nombrecompleto, detailExercise.user.points)
                 FieldsDetaile(detailExercise,detailExerciseViewmodel,navController)
-            }
-
-            Column( // 3
-                Modifier
-                    .align(Alignment.BottomCenter)
-                    .fillMaxHeight(0.06f)
-                    .fillMaxWidth()
-                    .background(Color.White),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
+                ButtonsDetaile(detailExercise.id,detailExerciseViewmodel, navController)
                 Menu(navController)
             }
-
         }
-
-    }
 
 }
 
@@ -118,21 +96,25 @@ fun DetaileExercise(navController: NavHostController) {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun FieldsDetaile(exercise: exercise,detailExerciseViewmodel: DetailExerciseViewmodel,navController: NavHostController) {
-    FieldDetaile(exercise.name)
-    Spacer(modifier = Modifier.padding(2.dp))
-    FieldDetaile(exercise.muscle)
-    Spacer(modifier = Modifier.padding(2.dp))
-    FieldDetaile(exercise.type)
-    Spacer(modifier = Modifier.padding(2.dp))
-    FieldDetaile(exercise.difficulty)
-    Spacer(modifier = Modifier.padding(2.dp))
-    FieldDetaile(exercise.description)
-    Spacer(modifier = Modifier.padding(2.dp))
-    FieldDetaile(exercise.sets.toString())
-    Spacer(modifier = Modifier.padding(2.dp))
-    FieldDetaile(exercise.reps.toString())
-    Spacer(modifier = Modifier.padding(8.dp))
-    ButtonsDetaile(exercise.id,detailExerciseViewmodel, navController)
+    Column(modifier = Modifier
+        .fillMaxWidth()
+        .fillMaxHeight(0.5f)
+        .verticalScroll(rememberScrollState())) {
+        FieldDetaile(exercise.name)
+        Spacer(modifier = Modifier.padding(2.dp))
+        FieldDetaile(exercise.muscle)
+        Spacer(modifier = Modifier.padding(2.dp))
+        FieldDetaile(exercise.type)
+        Spacer(modifier = Modifier.padding(2.dp))
+        FieldDetaile(exercise.difficulty)
+        Spacer(modifier = Modifier.padding(2.dp))
+        FieldDetaile(exercise.description)
+        Spacer(modifier = Modifier.padding(2.dp))
+        FieldDetaile(exercise.sets.toString())
+        Spacer(modifier = Modifier.padding(2.dp))
+        FieldDetaile(exercise.reps.toString())
+        Spacer(modifier = Modifier.padding(8.dp))
+    }
 }
 
 @Composable

@@ -154,13 +154,13 @@ fun Menu(navController: NavController) {
     Row(
         modifier = Modifier
             .fillMaxWidth(),
-        horizontalArrangement = Arrangement.SpaceBetween
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.Bottom
     ) {
         Button(
             onClick = {navController.navigate(route = Rutas.DashboardAdmin.ruta)},
             modifier = Modifier
-                .weight(1f)
-                .fillMaxHeight(),
+                .weight(1f),
             colors = ButtonDefaults.buttonColors(
                 containerColor = Color.White
             )
@@ -177,7 +177,7 @@ fun Menu(navController: NavController) {
             onClick = {navController.navigate(route = Rutas.AdminProfile.ruta)},
             modifier = Modifier
                 .weight(1f)
-                .fillMaxHeight(), colors = ButtonDefaults.buttonColors(
+                , colors = ButtonDefaults.buttonColors(
                 containerColor = Color.White
             )
         ) {
@@ -192,8 +192,7 @@ fun Menu(navController: NavController) {
         Button(
             onClick = {navController.navigate(route = Rutas.AdminVerifyExercise.ruta)},
             modifier = Modifier
-                .weight(1f)
-                .fillMaxHeight(), colors = ButtonDefaults.buttonColors(
+                .weight(1f), colors = ButtonDefaults.buttonColors(
                 containerColor = Color.White
             )
         ) {

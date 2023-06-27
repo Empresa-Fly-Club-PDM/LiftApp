@@ -1,5 +1,6 @@
 package com.jder00138218.liftapp.ui.users.admin.exerciseManager.ManageExerciseRequests
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
@@ -31,6 +32,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
@@ -41,20 +43,24 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 import com.jder00138218.liftapp.R
 import com.jder00138218.liftapp.network.dto.exercise.exercise
+import com.jder00138218.liftapp.ui.navigation.Rutas
 import com.jder00138218.liftapp.ui.users.admin.Menu
 import com.jder00138218.liftapp.ui.users.admin.exerciseManager.ManageExerciseRequests.viewModel.DetailExerciseViewmodel
 
 @Composable
-fun DetaileExercise(navController: NavController) {
+fun DetaileExercise(navController: NavHostController) {
     val navBackStackEntry = navController.currentBackStackEntry
     val exerciseid = navBackStackEntry?.arguments?.getInt("id")
-
+    Log.d("idlog",exerciseid.toString())
     val detailExerciseViewmodel:DetailExerciseViewmodel = viewModel(
         factory = DetailExerciseViewmodel.Factory
     )
-    detailExerciseViewmodel.getDetailExercise(exerciseid)
+    if(exerciseid!=0){
+        detailExerciseViewmodel.getDetailExercise(exerciseid)
+    }
     val detailExercise = detailExerciseViewmodel.exercise
     Box(
         modifier = Modifier
@@ -88,7 +94,7 @@ fun DetaileExercise(navController: NavController) {
                     .fillMaxWidth(),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                FieldsDetaile(detailExercise)
+                FieldsDetaile(detailExercise,detailExerciseViewmodel,navController)
             }
 
             Column( // 3
@@ -111,7 +117,7 @@ fun DetaileExercise(navController: NavController) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun FieldsDetaile(exercise: exercise) {
+fun FieldsDetaile(exercise: exercise,detailExerciseViewmodel: DetailExerciseViewmodel,navController: NavHostController) {
     FieldDetaile(exercise.name)
     Spacer(modifier = Modifier.padding(2.dp))
     FieldDetaile(exercise.muscle)
@@ -126,7 +132,7 @@ fun FieldsDetaile(exercise: exercise) {
     Spacer(modifier = Modifier.padding(2.dp))
     FieldDetaile(exercise.reps.toString())
     Spacer(modifier = Modifier.padding(8.dp))
-    ButtonsDetaile()
+    ButtonsDetaile(exercise.id,detailExerciseViewmodel, navController)
 }
 
 @Composable
@@ -141,10 +147,12 @@ fun UserInfoSection(name: String, score: Int){
 }
 
 @Composable
-fun ButtonsDetaile() {
+fun ButtonsDetaile(id: Int? , detailExerciseViewmodel: DetailExerciseViewmodel,navController: NavHostController) {
     Row() {
         Button(
-            onClick = { }, modifier = Modifier
+            onClick = {
+                detailExerciseViewmodel.denyExercise(id,navController)
+            }, modifier = Modifier
                 .height(60.dp)
                 .width(175.dp)
                 .fillMaxWidth(), colors = ButtonDefaults.buttonColors(

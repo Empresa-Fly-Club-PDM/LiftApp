@@ -31,7 +31,6 @@ class LoginViewModel(private val credentialsRepository: CredentialsRepository) :
     private var _password by mutableStateOf("")
     private var _isVisiblePaswd by mutableStateOf(false)
     val _status = MutableLiveData<LoginUiStatus>(LoginUiStatus.Resume)
-    val buttonClicked = mutableStateOf(false)
 
 
     var email: String
@@ -51,8 +50,6 @@ class LoginViewModel(private val credentialsRepository: CredentialsRepository) :
 
 
     private fun login(email: String, password: String,navController: NavHostController,context:Context) {
-        Log.d("tag",email)
-        Log.d("tag",password)
         viewModelScope.launch {
             _status.value = (
                 when (val response = credentialsRepository.login(email, password)) {
@@ -63,7 +60,6 @@ class LoginViewModel(private val credentialsRepository: CredentialsRepository) :
                     )
                 }
             )
-            Log.d("tag status view", _status.value.toString())
             handleUiStatus(navController, context)
         }
     }

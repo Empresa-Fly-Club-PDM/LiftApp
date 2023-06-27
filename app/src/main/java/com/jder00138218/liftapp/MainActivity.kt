@@ -58,7 +58,7 @@ fun NavigationGraph(){
         composable(route = Rutas.ForgotPss.ruta){
             Recovery(navController)
         }
-        composable(route = Rutas.DashboardAdmin.ruta){
+        composable(route = Rutas.DashboardAdmin.ruta,){
             DashboardAdminScreen(navController)
         }
         composable(route = Rutas.DashboardUser.ruta){

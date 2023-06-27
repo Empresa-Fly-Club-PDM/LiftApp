@@ -105,7 +105,7 @@ fun DetaileExercise(navController: NavHostController) {
                     .background(Color.White),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Menu()
+                Menu(navController)
             }
 
         }

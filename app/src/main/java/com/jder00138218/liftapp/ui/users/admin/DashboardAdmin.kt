@@ -88,7 +88,7 @@ fun DashboardAdminScreen(navController: NavController) {
                     .background(Color.White),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Menu()
+                Menu(navController)
             }
         }
 

@@ -88,7 +88,7 @@ fun DashboardUserScreen() {
                     .background(Color.White),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Menu()
+
             }
 
         }

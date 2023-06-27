@@ -1,5 +1,6 @@
 package com.jder00138218.liftapp.ui.users.admin.exerciseManager.VerifiedExerciseView
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -14,10 +15,14 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.outlined.Add
+import androidx.compose.material.icons.outlined.Search
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -27,16 +32,25 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.jder00138218.liftapp.R
+import com.jder00138218.liftapp.ui.navigation.Rutas
+import com.jder00138218.liftapp.ui.users.admin.AdminHeaderBarBackArrowAdd
 import com.jder00138218.liftapp.ui.users.admin.Menu
 
-
-@Preview(name = "Verify exercises", showBackground = true)
 @Composable
-fun VerifyExercises() {
+fun VerifyExercises(navController: NavController) {
+
+    val handleAddOnClick = {
+        navController.navigate(route = Rutas.AdminCreateExercise.ruta)
+    }
+    val handleBackOnClick = {
+        navController.navigate(route = Rutas.DashboardAdmin.ruta)
+    }
 
     Box(
         modifier = Modifier
@@ -46,29 +60,12 @@ fun VerifyExercises() {
 
         Box(modifier = Modifier.fillMaxSize()) {
 
-            Column(
-                Modifier
-                    .align(Alignment.TopCenter)
-                    .fillMaxHeight(0.04f)
-                    .fillMaxWidth(),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                Text(
-                    text = "Ejercicios Verificados",
-                    color = Color.Black,
-                    style = TextStyle(
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 24.sp
-                    )
-                )
-            }
-
-
+            AdminHeaderBarBackArrowAdd(title = "Ejercicios Verificados", navController = navController, addOnClick = {handleAddOnClick()}, backOnClick = {handleBackOnClick()})
 
             LazyColumn(
                 Modifier
                     .align(Alignment.Center)
-                    .fillMaxHeight(0.9f)
+                    .fillMaxHeight(0.5f)
                     .fillMaxWidth()
             ) {
                 items(20) { index ->
@@ -85,7 +82,7 @@ fun VerifyExercises() {
                     .background(Color.White),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Menu()
+                Menu(navController)
             }
 
 

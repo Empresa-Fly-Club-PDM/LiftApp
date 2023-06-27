@@ -10,5 +10,6 @@ sealed  class Rutas(var ruta : String) {
     object AdminVerifyExercise:Rutas("ruta_admin_verify_exercise")
     object AdminCreateExercise:Rutas("ruta_admin_create_exercise")
     object AdminDescriptionRequest:Rutas("ruta_admin_description_request")
+    object AdminProfile:Rutas("ruta_admin_profile")
 
 }

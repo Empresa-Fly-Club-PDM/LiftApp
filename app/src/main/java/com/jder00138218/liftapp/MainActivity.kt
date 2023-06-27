@@ -19,6 +19,7 @@ import com.jder00138218.liftapp.ui.navigation.Rutas
 import com.jder00138218.liftapp.ui.recovery.forgotPasword.Recovery
 import com.jder00138218.liftapp.ui.register.RegisterScreen
 import com.jder00138218.liftapp.ui.theme.LiftAppTheme
+import com.jder00138218.liftapp.ui.users.admin.AdminProfile
 import com.jder00138218.liftapp.ui.users.admin.exerciseManager.CreateExercise
 import com.jder00138218.liftapp.ui.users.admin.exerciseManager.DescriptionRequest
 import com.jder00138218.liftapp.ui.users.admin.exerciseManager.DetaileExercise
@@ -75,6 +76,9 @@ fun NavigationGraph(){
         }
         composable(route = Rutas.AdminDescriptionRequest.ruta){
             DescriptionRequest(navController)
+        }
+        composable(route = Rutas.AdminProfile.ruta){
+            AdminProfile(navController)
         }
     }
 }

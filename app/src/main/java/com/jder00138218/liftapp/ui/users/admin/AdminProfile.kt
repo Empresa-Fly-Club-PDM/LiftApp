@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -32,11 +33,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.jder00138218.liftapp.R
+import com.jder00138218.liftapp.ui.users.user.UserBottomMenu
+import com.jder00138218.liftapp.ui.users.user.routinesmenu.RoutineMenuItem
 import java.time.format.TextStyle
 
-@Preview
 @Composable
-fun AdminProfile(){
+fun AdminProfile(navController: NavController){
     Box(modifier = Modifier
         .fillMaxSize()
         .background(Color.White)
@@ -48,12 +50,25 @@ fun AdminProfile(){
             ){
 
             Column(modifier = Modifier
-                .fillMaxSize()) {
+                .fillMaxSize()
+                .fillMaxHeight()) {
 
-                AdminHeaderBarBackArrowDumbell(title = "Perfil")
-                AdminProfileInfoRow(text = "Usuario")
-                AccountCard()
-                LogoutCard()
+                Column(modifier = Modifier
+                    .fillMaxWidth()
+                    .fillMaxHeight(0.8f)) {
+                    AdminHeaderBarBackArrowDumbell(title = "Perfil", navController)
+                    AdminProfileInfoRow(text = "Usuario")
+                    AccountCard()
+                    LogoutCard()
+                }
+                Column(modifier = Modifier
+                    .fillMaxHeight(0.2f)
+                    .fillMaxWidth()
+                    .background(Color.White),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Bottom) {
+                    Menu(navController)
+                }
             }
 
 

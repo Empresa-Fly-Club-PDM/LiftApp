@@ -37,7 +37,7 @@ import com.jder00138218.liftapp.ui.navigation.Rutas
 
 
 @Composable
-fun AdminHeaderBarBackArrowDumbell(title: String){
+fun AdminHeaderBarBackArrowDumbell(title: String,  navController: NavController){
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -46,7 +46,7 @@ fun AdminHeaderBarBackArrowDumbell(title: String){
         verticalAlignment = Alignment.CenterVertically
     ) {
         IconButton(
-            onClick = { /* Handle back button click */ }
+            onClick = { navController.navigate(route = Rutas.DashboardAdmin.ruta)}
         ) {
             Icon(
                 Icons.Default.ArrowBack,
@@ -174,7 +174,7 @@ fun Menu(navController: NavController) {
         }
 
         Button(
-            onClick = {},
+            onClick = {navController.navigate(route = Rutas.AdminProfile.ruta)},
             modifier = Modifier
                 .weight(1f)
                 .fillMaxHeight(), colors = ButtonDefaults.buttonColors(

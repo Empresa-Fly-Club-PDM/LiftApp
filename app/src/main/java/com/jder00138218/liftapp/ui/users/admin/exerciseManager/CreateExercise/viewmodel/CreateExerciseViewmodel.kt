@@ -98,6 +98,7 @@ class CreateExerciseViewmodel(private val exerciseRepository: ExerciseRepository
         val userid = app.getUserId()
         if (!validateData()) {
             _status.value = CreateExerciseUIStatus.ErrorWithMessage("Verificar Imformation")
+            Toast.makeText(context, "Verificar campos vacios", Toast.LENGTH_SHORT).show()
             return
         }
 

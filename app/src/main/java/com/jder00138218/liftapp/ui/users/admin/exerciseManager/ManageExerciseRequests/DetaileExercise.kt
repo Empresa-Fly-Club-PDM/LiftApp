@@ -148,10 +148,11 @@ fun UserInfoSection(name: String, score: Int){
 
 @Composable
 fun ButtonsDetaile(id: Int? , detailExerciseViewmodel: DetailExerciseViewmodel,navController: NavHostController) {
+    val context = LocalContext.current
     Row() {
         Button(
             onClick = {
-                detailExerciseViewmodel.denyExercise(id,navController)
+                detailExerciseViewmodel.denyExercise(id,navController,context)
             }, modifier = Modifier
                 .height(60.dp)
                 .width(175.dp)
@@ -166,7 +167,7 @@ fun ButtonsDetaile(id: Int? , detailExerciseViewmodel: DetailExerciseViewmodel,n
 
         Button(
             onClick = {
-                      detailExerciseViewmodel.verifyExercise(id,navController)
+                      detailExerciseViewmodel.verifyExercise(id,navController,context)
             }, modifier = Modifier
                 .height(60.dp)
                 .width(175.dp)

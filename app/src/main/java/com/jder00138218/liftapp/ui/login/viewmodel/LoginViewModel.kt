@@ -67,6 +67,7 @@ class LoginViewModel(private val credentialsRepository: CredentialsRepository) :
     fun onLogin(navController: NavHostController,context:Context) {
         if (!validateData()) {
             _status.value = LoginUiStatus.ErrorWithMessage("Wrong Imformation")
+            Toast.makeText(context, "Verificar campos vacios", Toast.LENGTH_SHORT).show()
             return
         }
         login(email, password,navController,context)

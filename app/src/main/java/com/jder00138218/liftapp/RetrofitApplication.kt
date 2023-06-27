@@ -33,6 +33,8 @@ class RetrofitApplication: Application() {
 
     fun getToken(): String = prefs.getString(USER_TOKEN, "b")!!
 
+    fun getUserId():Int? = USER_ID
+
     val credentialsRepository: CredentialsRepository by lazy {
         CredentialsRepository(getApiService())
     }
@@ -51,7 +53,12 @@ class RetrofitApplication: Application() {
         editor.apply()
     }
 
+    fun saveUserID(id:Int?){
+        USER_ID = id
+    }
+
     companion object{
         private const val USER_TOKEN = "user_token"
+        private var USER_ID:Int?=0
     }
 }

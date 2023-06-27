@@ -1,4 +1,4 @@
-package com.jder00138218.liftapp.ui.users.admin.exerciseManager
+package com.jder00138218.liftapp.ui.users.admin.exerciseManager.VerifiedExerciseView
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement

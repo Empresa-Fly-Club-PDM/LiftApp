@@ -53,6 +53,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.jder00138218.liftapp.R
 import com.jder00138218.liftapp.RetrofitApplication
+import com.jder00138218.liftapp.network.dto.user.user
 import com.jder00138218.liftapp.ui.login.viewmodel.LoginViewModel
 import com.jder00138218.liftapp.ui.navigation.Rutas
 import java.nio.charset.StandardCharsets
@@ -147,6 +148,13 @@ fun testNav(navController: NavHostController) {
 fun getRoleFromTokenPayload(payloadJson: String): String? {
     val jsonObject = JSONObject(payloadJson)
     return jsonObject.getString("roles")
+}
+
+fun getIdFromTokenPayload(payloadJson: String):Int?{
+    val jsonObject = JSONObject(payloadJson)
+    val userData = jsonObject.getString("sub")
+    val userid = userData.split(",")[0].toIntOrNull()
+    return userid
 }
 
 

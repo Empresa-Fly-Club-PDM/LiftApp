@@ -18,10 +18,12 @@ import androidx.lifecycle.viewmodel.viewModelFactory
 import androidx.navigation.NavHostController
 import com.jder00138218.liftapp.RetrofitApplication
 import com.jder00138218.liftapp.network.ApiResponse
+import com.jder00138218.liftapp.network.dto.user.user
 import com.jder00138218.liftapp.network.retrofit.RetrofitInstance
 import com.jder00138218.liftapp.repositories.CredentialsRepository
 import com.jder00138218.liftapp.ui.login.LoginUiStatus
 import com.jder00138218.liftapp.ui.login.decodeHS512TokenWithoutVerification
+import com.jder00138218.liftapp.ui.login.getIdFromTokenPayload
 import com.jder00138218.liftapp.ui.login.getRoleFromTokenPayload
 import com.jder00138218.liftapp.ui.navigation.Rutas
 import kotlinx.coroutines.launch
@@ -33,14 +35,12 @@ class LoginViewModel(private val credentialsRepository: CredentialsRepository) :
     val _status = MutableLiveData<LoginUiStatus>(LoginUiStatus.Resume)
 
 
-    var email: String
-        get() = _email
+    var email: String get() = _email
         set(value) {
             _email = value
         }
 
-    var password: String
-        get() = _password
+    var password: String get() = _password
         set(value) {
             _password = value
         }
@@ -55,9 +55,7 @@ class LoginViewModel(private val credentialsRepository: CredentialsRepository) :
                 when (val response = credentialsRepository.login(email, password)) {
                     is ApiResponse.Error -> LoginUiStatus.Error(response.exception)
                     is ApiResponse.ErrorWithMessage -> LoginUiStatus.ErrorWithMessage(response.message)
-                    is ApiResponse.Success -> LoginUiStatus.Success(
-                        response.data
-                    )
+                    is ApiResponse.Success -> LoginUiStatus.Success(response.data)
                 }
             )
             handleUiStatus(navController, context)
@@ -93,7 +91,10 @@ class LoginViewModel(private val credentialsRepository: CredentialsRepository) :
                 app.saveAuthToken(status.token)
                 val responInfo = decodeHS512TokenWithoutVerification(status.token)
                 val rolUser = getRoleFromTokenPayload(responInfo)
+                val userId = getIdFromTokenPayload(responInfo)
+                app.saveUserID(userId)
                 Log.d("tag TOKEN", status.token) // TODO -> VALIDATE USER
+                Log.d("userid",app.getUserId().toString())
                 Log.d("return by HS", rolUser.toString())
                 if (rolUser == "USER") {
                     navController.navigate(route = Rutas.DashboardUser.ruta)

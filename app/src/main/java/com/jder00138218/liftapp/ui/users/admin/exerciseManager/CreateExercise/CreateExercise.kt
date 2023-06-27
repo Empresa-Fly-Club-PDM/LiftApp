@@ -1,4 +1,4 @@
-package com.jder00138218.liftapp.ui.users.admin.exerciseManager
+package com.jder00138218.liftapp.ui.users.admin.exerciseManager.CreateExercise
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border

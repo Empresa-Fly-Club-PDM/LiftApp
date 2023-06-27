@@ -18,7 +18,7 @@ class VerifiedExercisesViewModel(private val exerciseRepository: ExerciseReposit
     val exercises: List<exercise>
         get() = _exercises
 
-    fun getSolicitudes(query:String) {
+    fun getVeriedEercises(query:String) {
         viewModelScope.launch {
             _exercises.clear()
             _exercises.addAll(exerciseRepository.getVerified(query))

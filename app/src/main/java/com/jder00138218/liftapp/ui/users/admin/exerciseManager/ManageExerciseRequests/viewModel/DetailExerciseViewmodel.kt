@@ -53,6 +53,21 @@ class DetailExerciseViewmodel(private val detailExerciseRepository: DetailExerci
 
         }
     }
+    fun verifyExercise(id:Int?,navController: NavHostController) {
+        viewModelScope.launch {
+            _status.value = (
+                    when (val response = detailExerciseRepository.verifyExercise(id)) {
+                        is ApiResponse.Error -> DetailUIStatus.Error(response.exception)
+                        is ApiResponse.ErrorWithMessage -> DetailUIStatus.ErrorWithMessage(response.message)
+                        is ApiResponse.Success -> DetailUIStatus.Success(
+                            response.data
+                        )
+                    }
+                    )
+            navController.navigate(Rutas.DashboardAdmin.ruta)
+
+        }
+    }
 
     companion object {
         val Factory = viewModelFactory {

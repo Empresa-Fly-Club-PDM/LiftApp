@@ -165,7 +165,9 @@ fun ButtonsDetaile(id: Int? , detailExerciseViewmodel: DetailExerciseViewmodel,n
         }
 
         Button(
-            onClick = { }, modifier = Modifier
+            onClick = {
+                      detailExerciseViewmodel.verifyExercise(id,navController)
+            }, modifier = Modifier
                 .height(60.dp)
                 .width(175.dp)
                 .fillMaxWidth(), colors = ButtonDefaults.buttonColors(

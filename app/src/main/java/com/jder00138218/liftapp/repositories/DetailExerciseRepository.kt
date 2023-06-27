@@ -27,4 +27,21 @@ class DetailExerciseRepository(private val api: VerifyDenyExerciseService) {
             return ApiResponse.Error(e)
         }
     }
+
+    suspend fun verifyExercise(id:Int?): ApiResponse<String> {
+        try {
+            val response = api.verifyExercise(id)
+            return ApiResponse.Success(response.toString())
+        } catch (e: HttpException) {
+
+            if (e.code() == 202) {
+                return ApiResponse.ErrorWithMessage("Ejercicio Verificado")
+            }
+            return ApiResponse.Error(e)
+        } catch (e: IOException) {
+            return ApiResponse.Error(e)
+        }
+    }
+
+
 }

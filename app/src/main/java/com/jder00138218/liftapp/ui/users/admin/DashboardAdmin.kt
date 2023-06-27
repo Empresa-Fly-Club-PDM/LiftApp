@@ -1,6 +1,5 @@
 package com.jder00138218.liftapp.ui.users.admin
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -28,13 +27,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.jder00138218.liftapp.R
 import androidx.compose.foundation.lazy.items
-import androidx.core.os.bundleOf
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.jder00138218.liftapp.network.dto.exercise.exercise
-import com.jder00138218.liftapp.ui.navigation.Rutas
-import com.jder00138218.liftapp.ui.users.admin.DasboardAdminViewmodel.DashboardAdminViewmodel
-import com.jder00138218.liftapp.ui.users.admin.exerciseManager.ManageExerciseRequests.viewModel.DetailExerciseViewmodel
+import com.jder00138218.liftapp.ui.users.admin.viewmodel.DashboardAdminViewmodel
 
 @Composable
 fun DashboardAdminScreen(navController: NavController) {

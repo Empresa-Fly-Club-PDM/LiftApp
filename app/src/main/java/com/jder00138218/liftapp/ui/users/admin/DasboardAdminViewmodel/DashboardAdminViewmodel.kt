@@ -28,19 +28,7 @@ class DashboardAdminViewmodel (private val exerciseRepository: ExerciseRepositor
         get() = _exercises
 
     private val exerciseService = RetrofitInstance.getExerciseService()
-/*
-    fun fetchExercises(query:String) {
-        exerciseService.getSolicitudes(token,query).enqueue(object : Callback<List<exercise>> {
-            override fun onResponse(call: Call<List<exercise>>, response: Response<List<exercise>>) {
-                if (response.isSuccessful) {
-                    _exercises.value = response.body()
-                }
-            }
-            override fun onFailure(call: Call<List<exercise>>, t: Throwable) {
-                // Handle error
-            }
-        })
-    }*/
+
 fun getSolicitudes(query:String) {
     viewModelScope.launch {
             _exercises.clear()

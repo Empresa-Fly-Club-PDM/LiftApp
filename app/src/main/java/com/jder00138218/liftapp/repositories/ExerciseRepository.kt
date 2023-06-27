@@ -8,4 +8,5 @@ class ExerciseRepository(private val api:ExerciseService) {
         val exercises: List<exercise> = api.getSolicitudes(query)
         return exercises
     }
+
 }

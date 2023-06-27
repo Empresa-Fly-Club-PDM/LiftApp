@@ -6,6 +6,7 @@ import androidx.compose.ui.platform.LocalContext
 import com.jder00138218.liftapp.RetrofitApplication
 import com.jder00138218.liftapp.network.services.AuthService
 import com.jder00138218.liftapp.network.services.ExerciseService
+import com.jder00138218.liftapp.network.services.VerifyDenyExerciseService
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -38,6 +39,9 @@ object RetrofitInstance {
 
     fun getExerciseService():ExerciseService{
         return retrofit.create(ExerciseService::class.java)
+    }
+    fun getVerifyDenyExerciseService():VerifyDenyExerciseService{
+        return retrofit.create(VerifyDenyExerciseService::class.java)
     }
 
 }

@@ -1,4 +1,4 @@
-package com.jder00138218.liftapp.ui.users.admin.exerciseManager
+package com.jder00138218.liftapp.ui.users.admin.exerciseManager.ManageExerciseRequests
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -22,6 +22,11 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -32,24 +37,31 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.jder00138218.liftapp.R
+import com.jder00138218.liftapp.network.dto.exercise.exercise
 import com.jder00138218.liftapp.ui.users.admin.Menu
+import com.jder00138218.liftapp.ui.users.admin.exerciseManager.ManageExerciseRequests.viewModel.DetailExerciseViewmodel
 
 @Composable
 fun DetaileExercise(navController: NavController) {
+    val navBackStackEntry = navController.currentBackStackEntry
+    val exerciseid = navBackStackEntry?.arguments?.getInt("id")
 
+    val detailExerciseViewmodel:DetailExerciseViewmodel = viewModel(
+        factory = DetailExerciseViewmodel.Factory
+    )
+    detailExerciseViewmodel.getDetailExercise(exerciseid)
+    val detailExercise = detailExerciseViewmodel.exercise
     Box(
         modifier = Modifier
             .fillMaxSize()
             .padding(8.dp)
     ) {
-
         Box(modifier = Modifier.fillMaxSize()) {
-
             Column( // 1
                 Modifier
                     .align(Alignment.TopCenter)
@@ -65,7 +77,7 @@ fun DetaileExercise(navController: NavController) {
                             fontSize = 24.sp
                         )
                     )
-                    UserInfoSection(name = "henry", score = 1000)
+                    UserInfoSection(name = detailExercise.user.nombrecompleto, detailExercise.user.points)
             }
 
 
@@ -76,7 +88,7 @@ fun DetaileExercise(navController: NavController) {
                     .fillMaxWidth(),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                FieldsDetaile()
+                FieldsDetaile(detailExercise)
             }
 
             Column( // 3
@@ -99,21 +111,20 @@ fun DetaileExercise(navController: NavController) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun FieldsDetaile() {
-
-    FieldDetaile("Nombre del ejercicio")
+fun FieldsDetaile(exercise: exercise) {
+    FieldDetaile(exercise.name)
     Spacer(modifier = Modifier.padding(2.dp))
-    FieldDetaile("Musculo")
+    FieldDetaile(exercise.muscle)
     Spacer(modifier = Modifier.padding(2.dp))
-    FieldDetaile("Tipo")
+    FieldDetaile(exercise.type)
     Spacer(modifier = Modifier.padding(2.dp))
-    FieldDetaile("Dificultad")
+    FieldDetaile(exercise.difficulty)
     Spacer(modifier = Modifier.padding(2.dp))
-    FieldDetaile("Descripcion")
+    FieldDetaile(exercise.description)
     Spacer(modifier = Modifier.padding(2.dp))
-    FieldDetaile("Sets")
+    FieldDetaile(exercise.sets.toString())
     Spacer(modifier = Modifier.padding(2.dp))
-    FieldDetaile("Repeticiones")
+    FieldDetaile(exercise.reps.toString())
     Spacer(modifier = Modifier.padding(8.dp))
     ButtonsDetaile()
 }

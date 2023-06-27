@@ -1,5 +1,6 @@
 package com.jder00138218.liftapp.ui.users.admin
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -27,18 +28,19 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.jder00138218.liftapp.R
 import androidx.compose.foundation.lazy.items
+import androidx.core.os.bundleOf
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.jder00138218.liftapp.network.dto.exercise.exercise
 import com.jder00138218.liftapp.ui.navigation.Rutas
 import com.jder00138218.liftapp.ui.users.admin.DasboardAdminViewmodel.DashboardAdminViewmodel
+import com.jder00138218.liftapp.ui.users.admin.exerciseManager.ManageExerciseRequests.viewModel.DetailExerciseViewmodel
 
 @Composable
 fun DashboardAdminScreen(navController: NavController) {
     val vm: DashboardAdminViewmodel = viewModel(
         factory = DashboardAdminViewmodel.Factory
     )
-
 
     LaunchedEffect(Unit, block = {
         vm.getSolicitudes("")
@@ -104,7 +106,8 @@ fun CardExercise(currentexc:exercise, navController: NavController) {
         modifier = Modifier
             .fillMaxWidth()
             .padding(8.dp)
-            .clickable { navController.navigate(route = Rutas.AdminDetailExercise.ruta) },
+            .clickable {
+                navController.navigate(route = "ruta_admin_exercise_details/"+currentexc.id)},
             colors = CardDefaults.cardColors(
             containerColor = colorResource(id = R.color.card)
         )

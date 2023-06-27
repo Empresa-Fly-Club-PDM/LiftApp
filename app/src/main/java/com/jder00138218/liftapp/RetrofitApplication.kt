@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import com.jder00138218.liftapp.network.retrofit.RetrofitInstance
 import com.jder00138218.liftapp.repositories.CredentialsRepository
+import com.jder00138218.liftapp.repositories.DetailExerciseRepository
 import com.jder00138218.liftapp.repositories.ExerciseRepository
 
 class RetrofitApplication: Application() {
@@ -24,11 +25,20 @@ class RetrofitApplication: Application() {
         getExerciseService()
     }
 
+    private fun getVerifyDenyExerciseService()= with(RetrofitInstance){
+        setToken(getToken())
+        getVerifyDenyExerciseService()
+    }
+
 
     fun getToken(): String = prefs.getString(USER_TOKEN, "b")!!
 
     val credentialsRepository: CredentialsRepository by lazy {
         CredentialsRepository(getApiService())
+    }
+
+    val detailExerciseRepository: DetailExerciseRepository by lazy {
+        DetailExerciseRepository(getVerifyDenyExerciseService())
     }
 
     val exerciseRepository: ExerciseRepository by lazy{

@@ -1,13 +1,12 @@
-package com.jder00138218.liftapp.ui.users.admin.exerciseManager.CreateExercise
+package com.jder00138218.liftapp.ui.users.admin.exerciseManager.updateexercise
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -16,7 +15,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
@@ -46,22 +44,19 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import com.jder00138218.liftapp.R
-import com.jder00138218.liftapp.ui.login.viewmodel.LoginViewModel
+import com.jder00138218.liftapp.ui.navigation.Rutas
 import com.jder00138218.liftapp.ui.users.admin.Menu
 import com.jder00138218.liftapp.ui.users.admin.exerciseManager.CreateExercise.viewmodel.CreateExerciseViewmodel
 
-
 @Composable
-fun CreateExercise(navController: NavHostController) {
+fun AdminUpdateExercise(navController: NavHostController) {
     val createExerciseViewmodel: CreateExerciseViewmodel = viewModel(
-    factory = CreateExerciseViewmodel.Factory
+        factory = CreateExerciseViewmodel.Factory
     )
 
     Box(
@@ -75,7 +70,7 @@ fun CreateExercise(navController: NavHostController) {
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
-                text = "Crear Ejercicio",
+                text = "Detalle de ejercicio",
                 color = Color.Black,
                 style = TextStyle(
                     fontWeight = FontWeight.Bold,
@@ -83,7 +78,7 @@ fun CreateExercise(navController: NavHostController) {
                 )
             )
             FieldsDetaileCreate(createExerciseViewmodel,navController)
-            ButtonsCreate(createExerciseViewmodel,navController)
+            ButtonsUpdate(0,createExerciseViewmodel,navController)
             Menu(navController)
         }
 
@@ -94,7 +89,7 @@ fun CreateExercise(navController: NavHostController) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun FieldsDetaileCreate(viewmodel: CreateExerciseViewmodel,navController:NavHostController) {
+fun FieldsDetaileCreate(viewmodel: CreateExerciseViewmodel, navController: NavHostController) {
     Column(modifier = Modifier
         .verticalScroll(rememberScrollState())) {
         FieldName(viewmodel)
@@ -116,20 +111,37 @@ fun FieldsDetaileCreate(viewmodel: CreateExerciseViewmodel,navController:NavHost
 }
 
 @Composable
-fun ButtonsCreate(viewmodel: CreateExerciseViewmodel, navController: NavHostController) { val context = LocalContext.current
+fun ButtonsUpdate(id: Int?, createExerciseViewmodel: CreateExerciseViewmodel, navController: NavHostController) {
+    val context = LocalContext.current
+    Row() {
         Button(
-            onClick = {viewmodel.onCreate(navController, context)
+            onClick = {
             }, modifier = Modifier
                 .height(60.dp)
                 .width(175.dp)
                 .fillMaxWidth(), colors = ButtonDefaults.buttonColors(
-                containerColor = colorResource(id = R.color.buttonGren)
+                containerColor = colorResource(id = R.color.buttonGray)
             )
         ) {
-            Text(text = " Confirmar")
+
+            Text(text = " Editar")
 
         }
 
+        Button(
+            onClick = {
+            }, modifier = Modifier
+                .height(60.dp)
+                .width(175.dp)
+                .fillMaxWidth(), colors = ButtonDefaults.buttonColors(
+                containerColor = Color.Red
+            )
+        ) {
+
+            Text(text = "Eliminar")
+
+        }
+    }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -436,8 +448,3 @@ fun FieldReps(viewmodel: CreateExerciseViewmodel) {
         )
     )
 }
-
-
-
-
-

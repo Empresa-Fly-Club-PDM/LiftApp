@@ -2,6 +2,7 @@ package com.jder00138218.liftapp.ui.users.admin.exerciseManager.VerifiedExercise
 
 import android.util.Log
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -40,6 +41,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 import com.jder00138218.liftapp.R
 import com.jder00138218.liftapp.network.dto.exercise.exercise
 import com.jder00138218.liftapp.ui.navigation.Rutas
@@ -69,51 +71,23 @@ fun VerifyExercises(navController: NavController) {
             .padding(8.dp)
     ) {
 
-        Box(modifier = Modifier.fillMaxSize()) {
-
+        Column(modifier = Modifier
+            .fillMaxSize(),
+            verticalArrangement = Arrangement.SpaceBetween,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ){
             AdminHeaderBarBackArrowAdd(title = "Ejercicios Verificados", navController = navController, addOnClick = {handleAddOnClick()}, backOnClick = {handleBackOnClick()})
-
             LazyColumn(
                 Modifier
-                    .align(Alignment.Center)
-                    .fillMaxHeight(0.5f)
                     .fillMaxWidth()
+                    .fillMaxHeight(0.9f)
             ) {
                 items(vm.exercises) { index ->
-                    CardExerciseVerify(index)
-                }
-
-            }
-
-            Column(
-                Modifier
-                    .align(Alignment.BottomCenter)
-                    .fillMaxHeight(0.06f)
-                    .fillMaxWidth()
-                    .background(Color.White),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                Menu(navController)
-            }
-
-
-            FloatingActionButton(
-                onClick = { /* Acción del botón flotante */ },
-                modifier = Modifier
-                    .size(width = 110.dp, height = 56.dp)
-                    .offset(
-                        x = 260.dp,
-                        y = 725.dp
-                    ),
-                containerColor = Color.White
-            ) {
-                Row() {
-                    Icon(Icons.Default.Add, contentDescription = "Agregar")
-                    Text(text = "Añadir")
+                    CardExerciseVerify(index, navController)
                 }
             }
+            Menu(navController)
         }
-
 
     }
 
@@ -121,11 +95,12 @@ fun VerifyExercises(navController: NavController) {
 
 // This is for Verify exercise
 @Composable
-fun CardExerciseVerify(exercise: exercise) {
+fun CardExerciseVerify(exercise: exercise, navController: NavController) {
     Card( // this
         modifier = Modifier
             .fillMaxWidth()
-            .padding(8.dp),
+            .padding(8.dp)
+            .clickable{ navController.navigate(route = Rutas.AdminUpdateExercise.ruta) },
         colors = CardDefaults.cardColors(
             containerColor = colorResource(id = R.color.card)
         )

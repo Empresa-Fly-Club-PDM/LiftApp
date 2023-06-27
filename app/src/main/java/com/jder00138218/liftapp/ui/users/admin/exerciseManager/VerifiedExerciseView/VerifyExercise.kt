@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ArrowBack
@@ -25,6 +26,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -36,15 +38,24 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.jder00138218.liftapp.R
+import com.jder00138218.liftapp.network.dto.exercise.exercise
 import com.jder00138218.liftapp.ui.navigation.Rutas
 import com.jder00138218.liftapp.ui.users.admin.AdminHeaderBarBackArrowAdd
 import com.jder00138218.liftapp.ui.users.admin.Menu
+import com.jder00138218.liftapp.ui.users.admin.exerciseManager.VerifiedExerciseView.viewmodel.VerifiedExercisesViewModel
+import com.jder00138218.liftapp.ui.users.admin.viewmodel.DashboardAdminViewmodel
 
 @Composable
 fun VerifyExercises(navController: NavController) {
-
+    val vm: VerifiedExercisesViewModel = viewModel(
+        factory = VerifiedExercisesViewModel.Factory
+    )
+    LaunchedEffect(Unit, block = {
+        vm.getVeriedEercises("")
+    })
     val handleAddOnClick = {
         navController.navigate(route = Rutas.AdminCreateExercise.ruta)
     }
@@ -68,8 +79,8 @@ fun VerifyExercises(navController: NavController) {
                     .fillMaxHeight(0.5f)
                     .fillMaxWidth()
             ) {
-                items(20) { index ->
-                    CardExerciseVerify()
+                items(vm.exercises) { index ->
+                    CardExerciseVerify(index)
                 }
 
             }
@@ -110,7 +121,7 @@ fun VerifyExercises(navController: NavController) {
 
 // This is for Verify exercise
 @Composable
-fun CardExerciseVerify() {
+fun CardExerciseVerify(exercise: exercise) {
     Card( // this
         modifier = Modifier
             .fillMaxWidth()
@@ -129,7 +140,7 @@ fun CardExerciseVerify() {
 
                 Row() {
                     Text(
-                        text = "Press de banca",
+                        text = exercise.name,
                         fontWeight = FontWeight.Bold,
                         modifier = Modifier.weight(1f)
                     )
@@ -147,8 +158,8 @@ fun CardExerciseVerify() {
                         .fillMaxWidth(1f),
                     horizontalArrangement = Arrangement.Start
                 ) {
-                    ItemExVerify()
-                    ItemExVerify()
+                    ItemExVerify(exercise)
+                    ItemExVerifyRight(exercise)
                 }
 
             }
@@ -160,7 +171,7 @@ fun CardExerciseVerify() {
 
 
 @Composable
-fun ItemExVerify() {
+fun ItemExVerify(exercise: exercise) {
     Card(
         colors = CardDefaults.cardColors(
             containerColor = Color.White
@@ -170,7 +181,24 @@ fun ItemExVerify() {
     ) {
         Column(Modifier.padding(8.dp)) {
             Text(text = "Musculo", color = Color.Red)
-            Text(text = "Pecho", color = Color(R.color.gray_text))
+            Text(text = exercise.muscle, color = Color(R.color.gray_text))
+        }
+    }
+
+}
+
+@Composable
+fun ItemExVerifyRight(exercise: exercise) {
+    Card(
+        colors = CardDefaults.cardColors(
+            containerColor = Color.White
+        ), modifier = Modifier
+            .padding(4.dp)
+            .size(width = 160.dp, height = 60.dp)
+    ) {
+        Column(Modifier.padding(8.dp)) {
+            Text(text = exercise.type, color = Color.Red)
+            Text(text = "${exercise.reps}x${exercise.sets}", color = Color(R.color.gray_text))
         }
     }
 

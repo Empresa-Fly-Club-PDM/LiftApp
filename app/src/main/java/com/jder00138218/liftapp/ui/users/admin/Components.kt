@@ -1,5 +1,6 @@
 package com.jder00138218.liftapp.ui.users.admin
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
@@ -22,6 +23,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.semantics.Role.Companion.Image
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -31,6 +33,79 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.jder00138218.liftapp.R
 import com.jder00138218.liftapp.ui.navigation.Rutas
+
+
+
+@Composable
+fun AdminHeaderBarBackArrowDumbell(title: String){
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(16.dp),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        IconButton(
+            onClick = { /* Handle back button click */ }
+        ) {
+            Icon(
+                Icons.Default.ArrowBack,
+                contentDescription = "Back"
+            )
+        }
+
+        Text(
+            text = title,
+            textAlign = TextAlign.Center,
+            style = TextStyle(fontSize = 16.sp, fontWeight = FontWeight.Bold),
+            modifier = Modifier.weight(1f)
+        )
+
+        IconButton(
+            onClick = { /* Handle back button click */ },
+
+            ) {
+            Icon(
+                painter = painterResource(R.drawable.pesa),
+                contentDescription = "Pesa icon",
+                tint = colorResource(id = R.color.gray_text),
+                modifier = Modifier.size(30.dp)
+            )
+        }
+    }
+}
+@Composable
+fun AdminProfileInfoRow(text: String) {
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = Modifier
+            .fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceBetween,
+    ) {
+        Image(
+            painter = painterResource(R.drawable.pesa),
+            contentDescription = "Image",
+            modifier = Modifier.size(48.dp)
+        )
+
+        Text(
+            text = text,
+            modifier = Modifier.padding(start = 16.dp),
+            style = TextStyle(color = Color.Black, fontSize = 16.sp)
+        )
+
+        Button(
+            onClick = {},
+            colors = ButtonDefaults.buttonColors(containerColor = colorResource(
+                id = R.color.buttonRed))
+        ) {
+            Text(
+                text = "Editar",
+                color = Color.White
+            )
+        }
+    }
+}
 
 @Composable
 fun AdminHeaderBarBackArrowAdd(title: String, navController: NavController, addOnClick: () ->Unit, backOnClick: () -> Unit) {

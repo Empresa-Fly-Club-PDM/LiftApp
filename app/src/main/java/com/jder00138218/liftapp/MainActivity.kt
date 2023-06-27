@@ -24,10 +24,9 @@ import com.jder00138218.liftapp.ui.register.RegisterScreen
 import com.jder00138218.liftapp.ui.theme.LiftAppTheme
 import com.jder00138218.liftapp.ui.users.admin.exerciseManager.ManageExerciseRequests.DetaileExercise
 import com.jder00138218.liftapp.ui.users.admin.AdminProfile
-import com.jder00138218.liftapp.ui.users.admin.exerciseManager.CreateExercise
+import com.jder00138218.liftapp.ui.users.admin.exerciseManager.CreateExercise.CreateExercise
 import com.jder00138218.liftapp.ui.users.admin.exerciseManager.DescriptionRequest
-import com.jder00138218.liftapp.ui.users.admin.exerciseManager.DetaileExercise
-import com.jder00138218.liftapp.ui.users.admin.exerciseManager.VerifyExercises
+import com.jder00138218.liftapp.ui.users.admin.exerciseManager.VerifiedExerciseView.VerifyExercises
 import com.jder00138218.liftapp.ui.users.user.DashboardUserScreen
 
 class MainActivity : ComponentActivity() {

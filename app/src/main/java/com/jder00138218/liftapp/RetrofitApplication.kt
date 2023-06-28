@@ -7,6 +7,7 @@ import com.jder00138218.liftapp.network.retrofit.RetrofitInstance
 import com.jder00138218.liftapp.repositories.CredentialsRepository
 import com.jder00138218.liftapp.repositories.DetailExerciseRepository
 import com.jder00138218.liftapp.repositories.ExerciseRepository
+import com.jder00138218.liftapp.repositories.UserRepository
 
 class RetrofitApplication: Application() {
     private val prefs: SharedPreferences by lazy {
@@ -30,6 +31,11 @@ class RetrofitApplication: Application() {
         getVerifyDenyExerciseService()
     }
 
+    private fun getUserRepository()= with(RetrofitInstance){
+        setToken(getToken())
+        getUserService()
+    }
+
 
     fun getToken(): String = prefs.getString(USER_TOKEN, "b")!!
 
@@ -45,6 +51,10 @@ class RetrofitApplication: Application() {
 
     val exerciseRepository: ExerciseRepository by lazy{
         ExerciseRepository(getExerciseService())
+    }
+
+    val userRepository:UserRepository by lazy{
+        UserRepository(getUserRepository())
     }
 
     fun saveAuthToken(token: String){

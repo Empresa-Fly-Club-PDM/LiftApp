@@ -1,9 +1,11 @@
 package com.jder00138218.liftapp.ui.users.admin.userManager.CreateAdmin
 
 import android.app.DatePickerDialog
+import android.util.Log
 import android.widget.DatePicker
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -51,22 +53,26 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.TextFieldValue
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.jder00138218.liftapp.R
+import com.jder00138218.liftapp.ui.login.viewmodel.LoginViewModel
 import com.jder00138218.liftapp.ui.users.admin.Menu
 import com.jder00138218.liftapp.ui.users.admin.exerciseManager.CreateExercise.viewmodel.CreateExerciseViewmodel
+import com.jder00138218.liftapp.ui.users.admin.userManager.CreateAdmin.viewmodel.CreateAdminViewModel
 import java.util.Calendar
 import java.util.Date
 
 @Composable
 fun CreateAdmin(navController: NavHostController) {
-    val createExerciseViewmodel: CreateExerciseViewmodel = viewModel(
-        factory = CreateExerciseViewmodel.Factory
+    val createAdminViewModel: CreateAdminViewModel = viewModel(
+        factory = CreateAdminViewModel.Factory
     )
     Box(
         modifier = Modifier
@@ -79,15 +85,15 @@ fun CreateAdmin(navController: NavHostController) {
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
-                text = "Detalle de ejercicio",
+                text = "Añadir Administrador",
                 color = Color.Black,
                 style = TextStyle(
                     fontWeight = FontWeight.Bold,
                     fontSize = 24.sp
                 )
             )
-            CreateAdminFields(createExerciseViewmodel,navController)
-            ButtonsCreateAdmin(createExerciseViewmodel,navController)
+            CreateAdminFields(createAdminViewModel,navController)
+            ButtonsCreateAdmin(createAdminViewModel,navController)
             Menu(navController)
         }
 
@@ -98,7 +104,7 @@ fun CreateAdmin(navController: NavHostController) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CreateAdminFields(viewmodel: CreateExerciseViewmodel, navController: NavHostController) {
+fun CreateAdminFields(viewmodel: CreateAdminViewModel, navController: NavHostController) {
     Column(modifier = Modifier
         .verticalScroll(rememberScrollState())) {
         FieldName(viewmodel)
@@ -109,8 +115,6 @@ fun CreateAdminFields(viewmodel: CreateExerciseViewmodel, navController: NavHost
         Spacer(modifier = Modifier.padding(2.dp))
         FieldConfirmPassword(viewmodel)
         Spacer(modifier = Modifier.padding(8.dp))
-        DateInputField()
-        Spacer(modifier = Modifier.padding(2.dp))
     }
 
 }
@@ -151,13 +155,13 @@ fun ButtonsUpdate(id: Int?, createExerciseViewmodel: CreateExerciseViewmodel, na
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun FieldName(viewmodel: CreateExerciseViewmodel) {
-    var name by remember { mutableStateOf(viewmodel.name) }
+fun FieldName(viewmodel: CreateAdminViewModel) {
+    var nombrecompleto by remember { mutableStateOf(viewmodel.nombrecompleto) }
     OutlinedTextField(
-        value = name,
+        value = nombrecompleto,
         onValueChange = { newValue ->
-            name = newValue
-            viewmodel.name= newValue
+            nombrecompleto = newValue
+            viewmodel.nombrecompleto= newValue
         },
         modifier = Modifier
             .width(350.dp)
@@ -185,13 +189,13 @@ fun FieldName(viewmodel: CreateExerciseViewmodel) {
 }
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun FieldEmail(viewmodel: CreateExerciseViewmodel) {
-    var muscle by remember { mutableStateOf(viewmodel.muscle) }
+fun FieldEmail(viewmodel: CreateAdminViewModel) {
+    var email by remember { mutableStateOf(viewmodel.email) }
     OutlinedTextField(
-        value = muscle,
+        value = email,
         onValueChange = { newValue ->
-            muscle = newValue
-            viewmodel.muscle= newValue
+            email = newValue
+            viewmodel.email= newValue
         },
         modifier = Modifier
             .width(350.dp)
@@ -220,107 +224,108 @@ fun FieldEmail(viewmodel: CreateExerciseViewmodel) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun FieldPassword(viewmodel: CreateExerciseViewmodel) {
-    var description by remember { mutableStateOf(viewmodel.description) }
+fun FieldPassword(viewModel: CreateAdminViewModel) {
+    var password by remember { mutableStateOf(viewModel.password) }
+    var isVisible by remember { mutableStateOf(viewModel.isVisiblePaswd) }
+
+    val visualTransformation =
+        if (isVisible) VisualTransformation.None else PasswordVisualTransformation()
+
     OutlinedTextField(
-        value = description,
+        value = password,
         onValueChange = { newValue ->
-            description = newValue
-            viewmodel.description= newValue
+            password = newValue
+            viewModel.password = newValue
         },
         modifier = Modifier
             .width(350.dp)
             .clip(RoundedCornerShape(4.dp))
+            .background(colorResource(id = R.color.field))
             .border(
                 width = 1.dp,
                 color = colorResource(id = R.color.field)
-            )// With padding show border color
-            .background(colorResource(id = R.color.field)),
-        placeholder = { Text(text = "Descripción", color = Color(R.color.gray_text)) },
+            ),
+        placeholder = { Text(text = "Password", color = Color(R.color.gray_text)) },
         singleLine = true,
         maxLines = 1,
         leadingIcon = {
             Icon(
-                modifier = Modifier.size(16.dp),
-                painter = painterResource(id = R.drawable.pesa),
-                contentDescription = "Icon field"
+                modifier = Modifier
+                    .size(16.dp),
+                painter = painterResource(id = R.drawable.icon_password),
+                contentDescription = "Icon Password",
+            )
+        },
+        trailingIcon = {
+
+            Icon(
+                modifier = Modifier
+                    .size(16.dp)
+                    .clickable { isVisible = !isVisible },
+                painter = painterResource(id = R.drawable.icon_hide),
+                contentDescription = "Hide Icon"
             )
         },
         keyboardOptions = KeyboardOptions(
-            keyboardType = KeyboardType.Text,
-            imeAction = ImeAction.Next // Acción IME cuando se presiona la tecla Enter
-        )
+            keyboardType = KeyboardType.Password,
+            imeAction = androidx.compose.ui.text.input.ImeAction.Next // Acción IME cuando se presiona la tecla Enter
+        ),
+        visualTransformation = visualTransformation
     )
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun FieldConfirmPassword(viewmodel: CreateExerciseViewmodel) {
-    var Sets by remember { mutableStateOf(viewmodel.sets) }
+fun FieldConfirmPassword(viewModel: CreateAdminViewModel) {
+    var confirmpassword by remember { mutableStateOf(viewModel.confirmpassword) }
+    var isVisible by remember { mutableStateOf(viewModel.isVisiblePaswd) }
+
+    val visualTransformation =
+        if (isVisible) VisualTransformation.None else PasswordVisualTransformation()
+
     OutlinedTextField(
-        value = Sets,
+        value = confirmpassword,
         onValueChange = { newValue ->
-            Sets = newValue
-            viewmodel.sets= newValue
+            confirmpassword = newValue
+            viewModel.confirmpassword = newValue
         },
         modifier = Modifier
             .width(350.dp)
             .clip(RoundedCornerShape(4.dp))
+            .background(colorResource(id = R.color.field))
             .border(
                 width = 1.dp,
                 color = colorResource(id = R.color.field)
-            )// With padding show border color
-            .background(colorResource(id = R.color.field)),
-        placeholder = { Text(text = "Sets", color = Color(R.color.gray_text)) },
+            ),
+        placeholder = { Text(text = "Password", color = Color(R.color.gray_text)) },
         singleLine = true,
         maxLines = 1,
         leadingIcon = {
             Icon(
-                modifier = Modifier.size(16.dp),
-                painter = painterResource(id = R.drawable.pesa),
-                contentDescription = "Icon field"
+                modifier = Modifier
+                    .size(16.dp),
+                painter = painterResource(id = R.drawable.icon_password),
+                contentDescription = "Icon Password",
             )
         },
-        keyboardOptions = KeyboardOptions(
-            keyboardType = KeyboardType.Number,
-            imeAction = ImeAction.Next // Acción IME cuando se presiona la tecla Enter
-        )
-    )
-}
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun FieldReps(viewmodel: CreateExerciseViewmodel) {
-    var reps by remember { mutableStateOf(viewmodel.reps) }
-    OutlinedTextField(
-        value = reps,
-        onValueChange = { newValue ->
-            reps = newValue
-            viewmodel.reps= newValue
-        },
-        modifier = Modifier
-            .width(350.dp)
-            .clip(RoundedCornerShape(4.dp))
-            .border(
-                width = 1.dp,
-                color = colorResource(id = R.color.field)
-            )// With padding show border color
-            .background(colorResource(id = R.color.field)),
-        placeholder = { Text(text = "Repeticiones", color = Color(R.color.gray_text)) },
-        singleLine = true,
-        maxLines = 1,
-        leadingIcon = {
+        trailingIcon = {
+
             Icon(
-                modifier = Modifier.size(16.dp),
-                painter = painterResource(id = R.drawable.pesa),
-                contentDescription = "Icon field"
+                modifier = Modifier
+                    .size(16.dp)
+                    .clickable { isVisible = !isVisible },
+                painter = painterResource(id = R.drawable.icon_hide),
+                contentDescription = "Hide Icon"
             )
         },
         keyboardOptions = KeyboardOptions(
-            keyboardType = KeyboardType.Number,
-            imeAction = ImeAction.Next // Acción IME cuando se presiona la tecla Enter
-        )
+            keyboardType = KeyboardType.Password,
+            imeAction = androidx.compose.ui.text.input.ImeAction.Next // Acción IME cuando se presiona la tecla Enter
+        ),
+        visualTransformation = visualTransformation
     )
 }
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -380,7 +385,7 @@ fun DateInputField() {
 }
 
 @Composable
-fun ButtonsCreateAdmin(viewmodel: CreateExerciseViewmodel, navController: NavHostController) { val context = LocalContext.current
+fun ButtonsCreateAdmin(viewmodel: CreateAdminViewModel, navController: NavHostController) { val context = LocalContext.current
     Button(
         onClick = {viewmodel.onCreate(navController, context)
         }, modifier = Modifier

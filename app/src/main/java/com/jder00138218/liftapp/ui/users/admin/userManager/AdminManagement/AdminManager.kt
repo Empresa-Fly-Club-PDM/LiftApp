@@ -94,7 +94,7 @@ fun AdminManager(navController: NavController){
                     .fillMaxHeight(0.9f)
             ) {
                 items(vm.users) {
-                    AdminInfoRow(name = it.nombrecompleto, navController = navController)
+                    AdminInfoRow(name = it.nombrecompleto,it.id, navController = navController)
                 }
             }
             Menu(navController)
@@ -104,7 +104,7 @@ fun AdminManager(navController: NavController){
 }
 
 @Composable
-fun AdminInfoRow(name: String, navController: NavController){
+fun AdminInfoRow(name: String, id:Int?, navController: NavController){
 
     Row(modifier = Modifier
         .fillMaxWidth()
@@ -113,7 +113,7 @@ fun AdminInfoRow(name: String, navController: NavController){
         Text(text = name)
 
         Button(
-            onClick = {  },
+            onClick = {navController.navigate(route = "ruta_admin_update_admin/" + id) },
             modifier = Modifier,
             colors = ButtonDefaults.buttonColors(containerColor = colorResource(
                 id = R.color.buttonGray)

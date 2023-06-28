@@ -66,6 +66,7 @@ class AdminUpdateExerciseViewModel(private val exerciseRepository: ExerciseRepos
                         )
                     }
                     )
+            clearData()
             handleUiStatus(navController,context)
         }
     }
@@ -86,7 +87,7 @@ class AdminUpdateExerciseViewModel(private val exerciseRepository: ExerciseRepos
         when (status) {
             is AdminUpdateExerciseUIStatus.Error -> {
                 Log.d("tag", "Error")
-                Toast.makeText(context, "Error en inicio de sesión", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, "Error", Toast.LENGTH_SHORT).show()
             }
             is AdminUpdateExerciseUIStatus.ErrorWithMessage -> {
                 Toast.makeText(context, "Verificar datos ingresados", Toast.LENGTH_SHORT).show()

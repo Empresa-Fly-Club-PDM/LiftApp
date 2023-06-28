@@ -68,8 +68,6 @@ fun AdminUpdateExercise(navController: NavHostController) {
     if(exerciseid!=0){
         adminUpdateExerciseViewModel.getDetailExercise(exerciseid)
     }
-    var detailExercise = adminUpdateExerciseViewModel.exercise
-    Log.d("recievedData", detailExercise.toString() )
     Box(
         modifier = Modifier
             .fillMaxSize()

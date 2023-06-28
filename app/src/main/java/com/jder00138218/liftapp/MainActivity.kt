@@ -28,6 +28,7 @@ import com.jder00138218.liftapp.ui.users.admin.exerciseManager.VerifiedExerciseV
 import com.jder00138218.liftapp.ui.users.admin.exerciseManager.updateexercise.AdminUpdateExercise
 import com.jder00138218.liftapp.ui.users.admin.userManager.AdminManagement.AdminManager
 import com.jder00138218.liftapp.ui.users.admin.userManager.CreateAdmin.CreateAdmin
+import com.jder00138218.liftapp.ui.users.admin.userManager.UpdateAdmin.UpdateAdmin
 import com.jder00138218.liftapp.ui.users.user.DashboardUserScreen
 
 class MainActivity : ComponentActivity() {
@@ -97,6 +98,13 @@ fun NavigationGraph(){
         }
         composable(route = Rutas.AdminCreateAdmin.ruta){
             CreateAdmin(navController)
+        }
+        composable(route = Rutas.UpdateAdmin.ruta,
+            arguments= listOf(navArgument("id"){
+                type = NavType.IntType
+            })
+        ){
+            UpdateAdmin(navController)
         }
     }
 }

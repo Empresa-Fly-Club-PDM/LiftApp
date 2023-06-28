@@ -19,10 +19,37 @@ class UserRepository (private val api: UserService){
         val userdetails: user = api.getUserDetails(id)
         return userdetails
     }
+    suspend fun deleteUser(id:Int?): ApiResponse<String> {
+        try {
+            val response = api.deleteUser(id)
+            return ApiResponse.Success(response.toString())
+        } catch (e: HttpException) {
 
+            if (e.code() == 410) {
+                return ApiResponse.ErrorWithMessage("Eliminado correctamente")
+            }
+            return ApiResponse.Error(e)
+        } catch (e: IOException) {
+            return ApiResponse.Error(e)
+        }
+    }
     suspend fun createUser(nombrecompleto: String,email: String,password: String): ApiResponse<String> {
         try {
             val response = api.createUser(PostUserRequest(nombrecompleto,email,password))
+            return ApiResponse.Success(response.toString())
+        } catch (e: HttpException) {
+
+            if (e.code() == 500) {
+                return ApiResponse.ErrorWithMessage("Campos invalidos")
+            }
+            return ApiResponse.Error(e)
+        } catch (e: IOException) {
+            return ApiResponse.Error(e)
+        }
+    }
+    suspend fun editUser(nombrecompleto: String,email: String,password: String,id: Int?): ApiResponse<String> {
+        try {
+            val response = api.editUser(PostUserRequest(nombrecompleto,email,password),id)
             return ApiResponse.Success(response.toString())
         } catch (e: HttpException) {
 

@@ -1,5 +1,6 @@
 package com.jder00138218.liftapp.ui.users.admin.adminProfile
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -28,6 +29,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 import com.jder00138218.liftapp.LiftAppApplication
 import com.jder00138218.liftapp.R
 import com.jder00138218.liftapp.network.dto.user.user
@@ -66,7 +68,7 @@ fun AdminProfile(navController: NavController){
                 horizontalAlignment = Alignment.CenterHorizontally) {
 
                 AccountCard(navController, detailUser)
-                LogoutCard()
+                LogoutCard(app, navController)
             }
 
             Menu(navController)
@@ -103,7 +105,7 @@ fun AccountCard(navController: NavController, detailUser:user) {
 
             AdminProfileInfoRow(text = detailUser.nombrecompleto.toString())
             Button(
-                onClick = {},
+                onClick = {navController.navigate(route = "ruta_admin_update_admin/" + detailUser.id) },
                 modifier = Modifier
                     .fillMaxWidth()
                     .background(Color.White)
@@ -146,7 +148,7 @@ fun AccountCard(navController: NavController, detailUser:user) {
 }
 
 @Composable
-fun LogoutCard() {
+fun LogoutCard(app:LiftAppApplication, navController:NavController) {
     Card(
         modifier = Modifier
             .fillMaxWidth(),
@@ -170,7 +172,10 @@ fun LogoutCard() {
             )
 
             Button(
-                onClick = { /* Handle logout button click */ },
+                onClick = {
+                    app.saveAuthToken("user_token")
+                    Log.d("checkToken",app.getToken())
+                    navController.navigate(route = Rutas.Login.ruta)},
                 modifier = Modifier,
                 colors = ButtonDefaults.buttonColors(containerColor = colorResource(
                     id = R.color.buttonRed))

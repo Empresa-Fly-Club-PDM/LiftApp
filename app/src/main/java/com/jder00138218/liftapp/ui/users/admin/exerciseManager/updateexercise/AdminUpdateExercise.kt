@@ -142,6 +142,7 @@ fun ButtonsUpdate(id: Int?, adminUpdateExerciseViewModel: AdminUpdateExerciseVie
 
         Button(
             onClick = {
+                      adminUpdateExerciseViewModel.deleteExercise(id, navController,context)
             }, modifier = Modifier
                 .height(60.dp)
                 .width(175.dp)

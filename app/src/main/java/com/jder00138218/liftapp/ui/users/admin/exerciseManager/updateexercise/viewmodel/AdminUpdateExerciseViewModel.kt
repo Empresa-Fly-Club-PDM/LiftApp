@@ -104,6 +104,23 @@ class AdminUpdateExerciseViewModel(private val exerciseRepository: ExerciseRepos
             }
         }
     }
+
+    fun deleteExercise(id:Int?,navController: NavHostController,context:Context) {
+        viewModelScope.launch {
+            _status.value = (
+                    when (val response = exerciseRepository.deleteExercise(id)) {
+                        is ApiResponse.Error -> AdminUpdateExerciseUIStatus.Error(response.exception)
+                        is ApiResponse.ErrorWithMessage -> AdminUpdateExerciseUIStatus.ErrorWithMessage(response.message)
+                        is ApiResponse.Success -> AdminUpdateExerciseUIStatus.Success(
+                            response.data
+                        )
+                    }
+                    )
+            Toast.makeText(context, "Ejercicio Eliminado", Toast.LENGTH_SHORT).show()
+            navController.navigate(Rutas.AdminVerifyExercise.ruta)
+
+        }
+    }
     private fun validateData(): Boolean {
         when {
             _description.isEmpty() -> return false

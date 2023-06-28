@@ -21,14 +21,21 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.jder00138218.liftapp.R
+import com.jder00138218.liftapp.ui.navigation.Rutas
 import com.jder00138218.liftapp.ui.users.admin.Menu
 import com.jder00138218.liftapp.ui.users.user.HeaderBarBackArrowAdd
 
-@Preview(name = "Ranking User", showBackground = true)
 @Composable
-fun RankingUsers() {
+fun RankingUsers(navController: NavController, ) {
 
+    val handleAddOnClick = {
+        navController.navigate(route = Rutas.UserCreateRoutine.ruta)
+    }
+    val handleBackOnClick = {
+        navController.navigate(route = Rutas.DashboardUser.ruta)
+    }
 
     Box(
         modifier = Modifier
@@ -46,7 +53,7 @@ fun RankingUsers() {
                     .fillMaxWidth()
                     .padding(8.dp),
             ) {
-                HeaderBarBackArrowAdd("Ranking")
+                HeaderBarBackArrowAdd("Ranking", navController, addOnClick = handleAddOnClick, backOnClick = handleBackOnClick)
             }
 
 

@@ -10,6 +10,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.ArrowForward
@@ -33,6 +35,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.jder00138218.liftapp.R
+import com.jder00138218.liftapp.ui.navigation.Rutas
+import com.jder00138218.liftapp.ui.users.admin.exerciseManager.VerifiedExerciseView.CardExerciseVerify
 import com.jder00138218.liftapp.ui.users.user.HeaderBarBackArrowAdd
 import com.jder00138218.liftapp.ui.users.user.SearchBar
 import com.jder00138218.liftapp.ui.users.user.UserBottomMenu
@@ -40,43 +44,38 @@ import com.jder00138218.liftapp.ui.users.user.UserBottomMenu
 @Composable
 fun RoutinesMenu(navController: NavController){
 
+    val handleAddOnClick = {
+        navController.navigate(route = Rutas.UserCreateRoutine.ruta)
+    }
+    val handleBackOnClick = {
+        navController.navigate(route = Rutas.DashboardUser.ruta)
+    }
+
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .padding(8.dp)
             .background(Color.White)
     ) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
+                .padding(8.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.SpaceBetween
         ) {
-            Column(modifier = Modifier
-                .fillMaxWidth()
-                .fillMaxHeight(0.2f)
-                .padding(bottom = 16.dp)) {
-                HeaderBarBackArrowAdd("Rutinas")
-                SearchBar()
-            }
 
-            Column(modifier = Modifier
-                .fillMaxWidth()
-                .fillMaxHeight(0.8f)) {
-                RoutineMenuItem(muscleGroup = "Pecho")
-                RoutineMenuItem(muscleGroup = "Espalda")
-                RoutineMenuItem(muscleGroup = "Pierna")
-                RoutineMenuItem(muscleGroup = "Hombros")
-                RoutineMenuItem(muscleGroup = "Abdomen")
-                RoutineMenuItem(muscleGroup = "Cardio")
+            HeaderBarBackArrowAdd(title = "Ejercicios Verificados", navController = navController, addOnClick = {handleAddOnClick()}, backOnClick = {handleBackOnClick()})
+            SearchBar()
+            LazyColumn(
+                Modifier
+                    .fillMaxWidth()
+                    .fillMaxHeight(0.7f)
+            ) {
+                items(20) {
+                    RoutineMenuItem(muscleGroup = "BAK")
+                }
             }
-
-            Column(modifier = Modifier
-                .fillMaxHeight()
-                .fillMaxWidth()
-                .background(Color.White),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Bottom) {
-                UserBottomMenu(navController)
-            }
+            UserBottomMenu(navController)
         }
     }
 
@@ -90,7 +89,8 @@ fun RoutineMenuItem(muscleGroup: String){
         .height(72.dp))
     { Box(modifier = Modifier.background(colorResource(id = R.color.card))) {
         Row(modifier = Modifier
-            .fillMaxSize().padding(horizontal = 8.dp), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically
+            .fillMaxSize()
+            .padding(horizontal = 8.dp), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically
         ) {
             Text(text = muscleGroup, style = TextStyle(fontSize = 20.sp, color = Color.Black))
             Button(modifier = Modifier , onClick = {}, colors = ButtonDefaults.buttonColors(containerColor = colorResource(

@@ -13,15 +13,22 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import com.jder00138218.liftapp.ui.navigation.Rutas
 import com.jder00138218.liftapp.ui.users.admin.Menu
 import com.jder00138218.liftapp.ui.users.user.HeaderBarBackArrowAdd
 import com.jder00138218.liftapp.ui.users.user.SearchBar
 
 
-@Preview(name = "Global Ranking", showBackground = true)
 @Composable
-fun GlobalRankingUsers() {
+fun GlobalRankingUsers(navController: NavController) {
 
+    val handleAddOnClick = {
+        navController.navigate(route = Rutas.UserCreateRoutine.ruta)
+    }
+    val handleBackOnClick = {
+        navController.navigate(route = Rutas.DashboardUser.ruta)
+    }
 
     Box(
         modifier = Modifier
@@ -39,7 +46,7 @@ fun GlobalRankingUsers() {
                     .fillMaxWidth()
                     .padding(8.dp),
             ) {
-                HeaderBarBackArrowAdd("Ranking")
+                HeaderBarBackArrowAdd("Ranking", navController, addOnClick = handleAddOnClick, backOnClick = handleBackOnClick)
             }
 
 

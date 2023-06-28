@@ -88,7 +88,7 @@ fun SearchBar(){
     )
 }
 
-@Preview
+
 @Composable
 fun UserBottomMenu(navController: NavController) {
     Row(
@@ -98,7 +98,7 @@ fun UserBottomMenu(navController: NavController) {
         verticalAlignment = Alignment.Bottom
     ) {
         Button(
-            onClick = {},
+            onClick = {navController.navigate(route = Rutas.DashboardUser.ruta)},
             modifier = Modifier
                 .weight(1f),
             colors = ButtonDefaults.buttonColors(
@@ -114,7 +114,7 @@ fun UserBottomMenu(navController: NavController) {
         }
 
         Button(
-            onClick = {},
+            onClick = {navController.navigate(route = Rutas.UserRoutineMenu.ruta)},
             modifier = Modifier
                 .weight(1f)
             , colors = ButtonDefaults.buttonColors(
@@ -147,7 +147,7 @@ fun UserBottomMenu(navController: NavController) {
 }
 
 @Composable
-fun HeaderBarBackArrowAdd(title: String) {
+fun HeaderBarBackArrowAdd(title: String, navController: NavController, addOnClick: () ->Unit, backOnClick: () -> Unit) {
     var iconHeader = Icons.Outlined.Add
 
     if(title == "Ranking"){
@@ -162,7 +162,7 @@ fun HeaderBarBackArrowAdd(title: String) {
         verticalAlignment = Alignment.CenterVertically
     ) {
         IconButton(
-            onClick = { /* Handle back button click */ }
+            onClick = {backOnClick()}
         ) {
             Icon(
                 Icons.Default.ArrowBack,
@@ -178,7 +178,7 @@ fun HeaderBarBackArrowAdd(title: String) {
         )
 
         IconButton(
-            onClick = { /* Handle back button click */ }
+            onClick = {addOnClick()}
         ) {
             Icon(
                 imageVector = iconHeader,
@@ -197,7 +197,7 @@ fun HeaderBarBackArrowCheck(title: String){
         verticalAlignment = Alignment.CenterVertically
     ) {
         IconButton(
-            onClick = { /* Handle back button click */ }
+            onClick = {  }
         ) {
             Icon(
                 Icons.Default.ArrowBack,

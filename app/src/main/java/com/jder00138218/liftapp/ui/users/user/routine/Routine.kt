@@ -17,12 +17,20 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.jder00138218.liftapp.ui.navigation.Rutas
 import com.jder00138218.liftapp.ui.users.admin.CardExercise
 import com.jder00138218.liftapp.ui.users.user.HeaderBarBackArrowAdd
 import com.jder00138218.liftapp.ui.users.user.UserBottomMenu
 
 @Composable
 fun Routine(navController:NavController){
+
+    val handleAddOnClick = {
+        navController.navigate(route = Rutas.UserCreateRoutine.ruta)
+    }
+    val handleBackOnClick = {
+        navController.navigate(route = Rutas.DashboardUser.ruta)
+    }
 
     Box(modifier = Modifier
         .fillMaxSize()
@@ -37,10 +45,10 @@ fun Routine(navController:NavController){
             Row(modifier = Modifier
                 .fillMaxWidth()
                 .fillMaxHeight(0.1f)) {
-                HeaderBarBackArrowAdd(title = "Rutina")
+                HeaderBarBackArrowAdd("Ranking", navController, addOnClick = handleAddOnClick, backOnClick = handleBackOnClick)
             }
 
-           /* LazyColumn(modifier = Modifier
+            /*LazyColumn(modifier = Modifier
                 .fillMaxWidth()
                 .fillMaxHeight(0.9f)){
                 items(20) {
@@ -54,7 +62,7 @@ fun Routine(navController:NavController){
                 .background(Color.White),
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Bottom) {
-                UserBottomMenu(navController)
+                //UserBottomMenu(navController)
             }
         }
     }

@@ -38,44 +38,26 @@ fun CreateRoutine(navController: NavController){
         .background(Color.White)) {
             Column(modifier = Modifier
                 .fillMaxSize()
-                .padding(8.dp)) {
-                Row(modifier = Modifier
-                    .fillMaxWidth()
-                    .fillMaxHeight(0.1f)) {
-                    HeaderBarBackArrowCheck(title = "Crear rutina")
-                }
-                Column(modifier = Modifier
-                    .fillMaxWidth()
-                    .fillMaxHeight(0.9f),
-                    verticalArrangement = Arrangement.SpaceBetween
-                ){
-                    Column(modifier = Modifier
-                        .fillMaxWidth(),
-                        horizontalAlignment = Alignment.CenterHorizontally) {
-                        CustomInputField(hint = "Nombre de la rutina")
-                        Spacer(modifier = Modifier.height(8.dp))
-                        CustomSelectField()
-                        Spacer(modifier = Modifier.height(8.dp))
-                        CustomInputField(hint = "Tiempo objetivo")
-                        Spacer(modifier = Modifier.height(8.dp))
-                        CustomInputField(hint = "Tag")
-                    }
+                .padding(8.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.SpaceBetween) {
+                HeaderBarBackArrowCheck(title = "Crear rutina")
+                CustomInputField(hint = "Nombre de la rutina")
+                Spacer(modifier = Modifier.height(8.dp))
+                CustomSelectField()
+                Spacer(modifier = Modifier.height(8.dp))
+                CustomInputField(hint = "Tiempo objetivo")
+                Spacer(modifier = Modifier.height(8.dp))
+                CustomInputField(hint = "Tag")
 
-                    Button(modifier = Modifier.fillMaxWidth() , onClick = {}, colors = ButtonDefaults.buttonColors(containerColor = colorResource(
+                    Button(modifier = Modifier.fillMaxWidth()
+                        .height(60.dp), onClick = {}, colors = ButtonDefaults.buttonColors(containerColor = colorResource(
                         id = R.color.buttonGren
                     ), contentColor = Color.White)) {
                         Text(text = "Confirmar")
                     }
-                }
 
-                Column(modifier = Modifier
-                    .fillMaxHeight()
-                    .fillMaxWidth()
-                    .background(Color.White),
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.Bottom) {
-                    UserBottomMenu(navController)
-                }
+                UserBottomMenu(navController)
             }
     }
 }

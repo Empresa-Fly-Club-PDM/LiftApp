@@ -13,12 +13,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowForward
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -37,16 +34,9 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.jder00138218.liftapp.R
 import com.jder00138218.liftapp.ui.navigation.Rutas
-import com.jder00138218.liftapp.ui.users.admin.AccountCard
 import com.jder00138218.liftapp.ui.users.admin.AdminHeaderBarBackArrowAdd
-import com.jder00138218.liftapp.ui.users.admin.AdminHeaderBarBackArrowDumbell
-import com.jder00138218.liftapp.ui.users.admin.AdminProfileInfoRow
-import com.jder00138218.liftapp.ui.users.admin.AdminSearchBar
-import com.jder00138218.liftapp.ui.users.admin.LogoutCard
 import com.jder00138218.liftapp.ui.users.admin.Menu
-import com.jder00138218.liftapp.ui.users.admin.exerciseManager.VerifiedExerciseView.CardExerciseVerify
 import com.jder00138218.liftapp.ui.users.admin.userManager.AdminManagement.viewmodel.AdminManagementViewModel
-import com.jder00138218.liftapp.ui.users.admin.viewmodel.DashboardAdminViewmodel
 import kotlinx.coroutines.delay
 
 @OptIn(ExperimentalMaterial3Api::class)

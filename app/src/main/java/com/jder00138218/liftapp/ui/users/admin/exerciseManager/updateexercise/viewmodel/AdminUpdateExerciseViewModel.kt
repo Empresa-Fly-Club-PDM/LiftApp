@@ -8,20 +8,16 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.APPLICATION_KEY
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import androidx.navigation.NavHostController
-import com.jder00138218.liftapp.RetrofitApplication
+import com.jder00138218.liftapp.LiftAppApplication
 import com.jder00138218.liftapp.network.ApiResponse
 import com.jder00138218.liftapp.network.dto.exercise.exercise
 import com.jder00138218.liftapp.repositories.ExerciseRepository
 import com.jder00138218.liftapp.ui.navigation.Rutas
-import com.jder00138218.liftapp.ui.users.admin.exerciseManager.CreateExercise.CreateExerciseUIStatus
-import com.jder00138218.liftapp.ui.users.admin.exerciseManager.ManageExerciseRequests.DetailUIStatus
-import com.jder00138218.liftapp.ui.users.admin.exerciseManager.ManageExerciseRequests.viewModel.DetailExerciseViewmodel
 import com.jder00138218.liftapp.ui.users.admin.exerciseManager.updateexercise.AdminUpdateExerciseUIStatus
 import kotlinx.coroutines.launch
 
@@ -147,7 +143,7 @@ class AdminUpdateExerciseViewModel(private val exerciseRepository: ExerciseRepos
     companion object {
         val Factory = viewModelFactory {
             initializer {
-                val app = this[APPLICATION_KEY] as RetrofitApplication
+                val app = this[APPLICATION_KEY] as LiftAppApplication
                 AdminUpdateExerciseViewModel(app.exerciseRepository)
             }
         }

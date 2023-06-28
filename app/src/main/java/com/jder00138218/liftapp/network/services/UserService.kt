@@ -14,6 +14,8 @@ import retrofit2.http.Query
 interface UserService {
     @GET("usuario/get/admins")
     suspend fun getAllAdmins(@Query("query") query:String): List<user>
+    @GET("usuario/details/{id}")
+    suspend fun getUserDetails(@Path("id") id:Int?): user
     @POST("usuario/add/admin")
     suspend fun createUser(@Body newUser: PostUserRequest): Response<Void>
 }

@@ -15,6 +15,10 @@ class UserRepository (private val api: UserService){
         val users: List<user> = api.getAllAdmins(query)
         return users
     }
+    suspend fun getUserDetails(id:Int?):user{
+        val userdetails: user = api.getUserDetails(id)
+        return userdetails
+    }
 
     suspend fun createUser(nombrecompleto: String,email: String,password: String): ApiResponse<String> {
         try {

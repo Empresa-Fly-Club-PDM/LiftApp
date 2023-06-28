@@ -1,9 +1,5 @@
 package com.jder00138218.liftapp.network.retrofit
 
-import android.content.Context
-import android.content.SharedPreferences
-import androidx.compose.ui.platform.LocalContext
-import com.jder00138218.liftapp.RetrofitApplication
 import com.jder00138218.liftapp.network.services.AuthService
 import com.jder00138218.liftapp.network.services.ExerciseService
 import com.jder00138218.liftapp.network.services.UserService

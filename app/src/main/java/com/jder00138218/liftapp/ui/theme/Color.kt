@@ -3,10 +3,10 @@ package com.jder00138218.liftapp.ui.theme
 import androidx.compose.ui.graphics.Color
 import com.jder00138218.liftapp.R
 
-val Purple80 = Color(0xFFD0BCFF)
-val PurpleGrey80 = Color(0xFFCCC2DC)
-val Pink80 = Color(0xFFEFB8C8)
+val DarkPrimaryColor = Color(0xFF860000)
+val DarkSecondary = Color(0xFFD84906)
+val DarkTertiary = Color(0xFFFFFFFF)
 
-val Purple40 = Color(0xFF6650a4)
-val PurpleGrey40 = Color(0xFF625b71)
-val Pink40 = Color(0xFF7D5260)
+val LightPrimaryColor = Color(0xFFFF0000)
+val LightSecondarColor = Color(0xFFB10000)
+val LightTertiary = Color(0xFFFFFFFF)

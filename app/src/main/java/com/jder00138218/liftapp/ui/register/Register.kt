@@ -1,8 +1,6 @@
 package com.jder00138218.liftapp.ui.register
 
-import android.content.Context
 import android.util.Log
-import android.widget.DatePicker
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -43,19 +41,12 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.jder00138218.liftapp.R
-import com.jder00138218.liftapp.RetrofitApplication
-import com.jder00138218.liftapp.ui.login.LoginUiStatus
-import com.jder00138218.liftapp.ui.login.decodeHS512TokenWithoutVerification
-import com.jder00138218.liftapp.ui.login.getRoleFromTokenPayload
-import com.jder00138218.liftapp.ui.login.viewmodel.LoginViewModel
 import com.jder00138218.liftapp.ui.navigation.Rutas
-import com.jder00138218.liftapp.ui.users.admin.Menu
 import com.jder00138218.liftapp.ui.register.viewmodel.RegisterViewModel
 
 

@@ -8,19 +8,14 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.APPLICATION_KEY
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import androidx.navigation.NavHostController
-import com.jder00138218.liftapp.RetrofitApplication
+import com.jder00138218.liftapp.LiftAppApplication
 import com.jder00138218.liftapp.network.ApiResponse
 import com.jder00138218.liftapp.repositories.ExerciseRepository
-import com.jder00138218.liftapp.ui.login.LoginUiStatus
-import com.jder00138218.liftapp.ui.login.decodeHS512TokenWithoutVerification
-import com.jder00138218.liftapp.ui.login.getRoleFromTokenPayload
-import com.jder00138218.liftapp.ui.login.viewmodel.LoginViewModel
 import com.jder00138218.liftapp.ui.navigation.Rutas
 import com.jder00138218.liftapp.ui.users.admin.exerciseManager.CreateExercise.CreateExerciseUIStatus
 import kotlinx.coroutines.launch
@@ -94,7 +89,7 @@ class CreateExerciseViewmodel(private val exerciseRepository: ExerciseRepository
 
 
     fun onCreate(navController: NavHostController,context: Context) {
-        val app = context.applicationContext as RetrofitApplication
+        val app = context.applicationContext as LiftAppApplication
         val userid = app.getUserId()
         if (!validateData()) {
             _status.value = CreateExerciseUIStatus.ErrorWithMessage("Verificar Imformation")
@@ -157,7 +152,7 @@ class CreateExerciseViewmodel(private val exerciseRepository: ExerciseRepository
     companion object {
         val Factory = viewModelFactory {
             initializer {
-                val app = this[APPLICATION_KEY] as RetrofitApplication
+                val app = this[APPLICATION_KEY] as LiftAppApplication
                 CreateExerciseViewmodel(app.exerciseRepository)
             }
         }

@@ -58,8 +58,6 @@ fun DashboardAdminScreen(navController: NavController) {
                     fontSize = 24.sp
                 )
             )
-            Text(text = "user name")
-
             LazyColumn(
                 Modifier
                     .fillMaxHeight(0.9f)

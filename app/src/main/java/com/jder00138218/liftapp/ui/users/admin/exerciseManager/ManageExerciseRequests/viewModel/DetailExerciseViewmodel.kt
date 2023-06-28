@@ -3,7 +3,6 @@ package com.jder00138218.liftapp.ui.users.admin.exerciseManager.ManageExerciseRe
 import android.content.Context
 import android.util.Log
 import android.widget.Toast
-import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -12,11 +11,10 @@ import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import androidx.navigation.NavHostController
-import com.jder00138218.liftapp.RetrofitApplication
+import com.jder00138218.liftapp.LiftAppApplication
 import com.jder00138218.liftapp.network.ApiResponse
 import com.jder00138218.liftapp.network.dto.exercise.exercise
 import com.jder00138218.liftapp.repositories.DetailExerciseRepository
-import com.jder00138218.liftapp.ui.login.LoginUiStatus
 import com.jder00138218.liftapp.ui.navigation.Rutas
 import com.jder00138218.liftapp.ui.users.admin.exerciseManager.ManageExerciseRequests.DetailUIStatus
 import kotlinx.coroutines.launch
@@ -36,7 +34,6 @@ class DetailExerciseViewmodel(private val detailExerciseRepository: DetailExerci
         viewModelScope.launch {
             addExercise(detailExerciseRepository.getDetailExercise(id))
         }
-        Log.d("checkexercise",_exercise.toString())
     }
 
      fun denyExercise(id:Int?,navController: NavHostController,context:Context) {
@@ -75,7 +72,7 @@ class DetailExerciseViewmodel(private val detailExerciseRepository: DetailExerci
     companion object {
         val Factory = viewModelFactory {
             initializer {
-                val app = this[APPLICATION_KEY] as RetrofitApplication
+                val app = this[APPLICATION_KEY] as LiftAppApplication
                 DetailExerciseViewmodel(app.detailExerciseRepository)
             }
         }

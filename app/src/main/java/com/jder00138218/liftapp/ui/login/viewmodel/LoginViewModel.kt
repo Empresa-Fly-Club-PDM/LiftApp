@@ -3,14 +3,9 @@ package com.jder00138218.liftapp.ui.login.viewmodel
 import android.content.Context
 import android.util.Log
 import android.widget.Toast
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.core.content.ContentProviderCompat.requireContext
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.APPLICATION_KEY
@@ -18,10 +13,8 @@ import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import androidx.navigation.NavHostController
-import com.jder00138218.liftapp.RetrofitApplication
+import com.jder00138218.liftapp.LiftAppApplication
 import com.jder00138218.liftapp.network.ApiResponse
-import com.jder00138218.liftapp.network.dto.user.user
-import com.jder00138218.liftapp.network.retrofit.RetrofitInstance
 import com.jder00138218.liftapp.repositories.CredentialsRepository
 import com.jder00138218.liftapp.ui.login.LoginUiStatus
 import com.jder00138218.liftapp.ui.login.decodeHS512TokenWithoutVerification
@@ -75,7 +68,7 @@ class LoginViewModel(private val credentialsRepository: CredentialsRepository) :
 
     fun handleUiStatus(navController: NavHostController, context: Context) {
         val status = _status.value
-        val app = context.applicationContext as RetrofitApplication
+        val app = context.applicationContext as LiftAppApplication
         Log.d("tag", "HandleUIState...")
         Log.d("Tag status on function", status.toString())
         when (status) {
@@ -128,7 +121,7 @@ class LoginViewModel(private val credentialsRepository: CredentialsRepository) :
     companion object {
         val Factory = viewModelFactory {
             initializer {
-                val app = this[APPLICATION_KEY] as RetrofitApplication
+                val app = this[APPLICATION_KEY] as LiftAppApplication
                 LoginViewModel(app.credentialsRepository)
             }
         }

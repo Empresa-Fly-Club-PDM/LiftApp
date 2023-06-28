@@ -5,16 +5,14 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.text.font.FontWeight
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.APPLICATION_KEY
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
-import com.jder00138218.liftapp.RetrofitApplication
+import com.jder00138218.liftapp.LiftAppApplication
 import com.jder00138218.liftapp.network.ApiResponse
 import com.jder00138218.liftapp.repositories.CredentialsRepository
-import com.jder00138218.liftapp.ui.login.LoginUiStatus
 import com.jder00138218.liftapp.ui.register.RegisterUiStatus
 import kotlinx.coroutines.launch
 
@@ -154,7 +152,7 @@ class RegisterViewModel(private val repository: CredentialsRepository) : ViewMod
     companion object {
         val Factory = viewModelFactory {
             initializer {
-                val app = this[APPLICATION_KEY] as RetrofitApplication
+                val app = this[APPLICATION_KEY] as LiftAppApplication
                 RegisterViewModel(app.credentialsRepository)
             }
         }

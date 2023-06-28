@@ -2,6 +2,7 @@ package com.jder00138218.liftapp.ui.users.admin.exerciseManager.ManageExerciseRe
 
 import android.content.Context
 import android.util.Log
+import android.widget.Toast
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.MutableLiveData
@@ -38,7 +39,7 @@ class DetailExerciseViewmodel(private val detailExerciseRepository: DetailExerci
         Log.d("checkexercise",_exercise.toString())
     }
 
-     fun denyExercise(id:Int?,navController: NavHostController) {
+     fun denyExercise(id:Int?,navController: NavHostController,context:Context) {
         viewModelScope.launch {
             _status.value = (
                     when (val response = detailExerciseRepository.denyExercise(id)) {
@@ -49,11 +50,12 @@ class DetailExerciseViewmodel(private val detailExerciseRepository: DetailExerci
                         )
                     }
                     )
+            Toast.makeText(context, "Ejercicio denegado y descartado", Toast.LENGTH_SHORT).show()
             navController.navigate(Rutas.DashboardAdmin.ruta)
 
         }
     }
-    fun verifyExercise(id:Int?,navController: NavHostController) {
+    fun verifyExercise(id:Int?,navController: NavHostController, context:Context) {
         viewModelScope.launch {
             _status.value = (
                     when (val response = detailExerciseRepository.verifyExercise(id)) {
@@ -64,6 +66,7 @@ class DetailExerciseViewmodel(private val detailExerciseRepository: DetailExerci
                         )
                     }
                     )
+            Toast.makeText(context, "Ejercicio Verificado", Toast.LENGTH_SHORT).show()
             navController.navigate(Rutas.DashboardAdmin.ruta)
 
         }

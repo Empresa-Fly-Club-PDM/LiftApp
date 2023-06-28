@@ -2,12 +2,14 @@ package com.jder00138218.liftapp.ui.login.viewmodel
 
 import android.content.Context
 import android.util.Log
+import android.widget.Toast
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -65,6 +67,7 @@ class LoginViewModel(private val credentialsRepository: CredentialsRepository) :
     fun onLogin(navController: NavHostController,context:Context) {
         if (!validateData()) {
             _status.value = LoginUiStatus.ErrorWithMessage("Wrong Imformation")
+            Toast.makeText(context, "Verificar campos vacios", Toast.LENGTH_SHORT).show()
             return
         }
         login(email, password,navController,context)
@@ -78,14 +81,12 @@ class LoginViewModel(private val credentialsRepository: CredentialsRepository) :
         when (status) {
             is LoginUiStatus.Error -> {
                 Log.d("tag", "Error")
-                // TODO() -> Toast.makeText(requireContext(), "An error has occurred", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, "Error en inicio de sesión", Toast.LENGTH_SHORT).show()
             }
             is LoginUiStatus.ErrorWithMessage -> {
-                //  TODO() -> Toast.makeText(requireContext(), status.message, Toast.LENGTH_SHORT).show()
-                Log.d("tag", "Error with message")
+                Toast.makeText(context, "Correo o contraseña incorrectos", Toast.LENGTH_SHORT).show()
             }
             is LoginUiStatus.Success -> {
-                Log.d("tag", "Done 2")
                 clearStatus()
                 clearData()
                 app.saveAuthToken(status.token)
@@ -93,9 +94,6 @@ class LoginViewModel(private val credentialsRepository: CredentialsRepository) :
                 val rolUser = getRoleFromTokenPayload(responInfo)
                 val userId = getIdFromTokenPayload(responInfo)
                 app.saveUserID(userId)
-                Log.d("tag TOKEN", status.token) // TODO -> VALIDATE USER
-                Log.d("userid",app.getUserId().toString())
-                Log.d("return by HS", rolUser.toString())
                 if (rolUser == "USER") {
                     navController.navigate(route = Rutas.DashboardUser.ruta)
                 }

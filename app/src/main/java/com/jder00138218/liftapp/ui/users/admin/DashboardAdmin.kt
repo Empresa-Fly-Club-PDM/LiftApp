@@ -46,32 +46,22 @@ fun DashboardAdminScreen(navController: NavController) {
             .fillMaxSize()
             .padding(8.dp)
     ) {
+        Column(modifier = Modifier
+            .fillMaxHeight(),
+            verticalArrangement = Arrangement.SpaceBetween) {
 
-        Box(modifier = Modifier.fillMaxSize()) {
-
-            Column(
-                Modifier
-                    .align(Alignment.TopCenter)
-                    .fillMaxHeight(0.04f)
-                    .fillMaxWidth(),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                Text(
-                    text = "Solicitudes de verificacion",
-                    color = Color.Black,
-                    style = TextStyle(
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 24.sp
-                    )
+            Text(
+                text = "Solicitudes de verificacion",
+                color = Color.Black,
+                style = TextStyle(
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 24.sp
                 )
-                Text(text = "user name")
-            }
-
-
+            )
+            Text(text = "user name")
 
             LazyColumn(
                 Modifier
-                    .align(Alignment.Center)
                     .fillMaxHeight(0.9f)
                     .fillMaxWidth()
             ) {
@@ -80,16 +70,7 @@ fun DashboardAdminScreen(navController: NavController) {
                 }
             }
 
-            Column(
-                Modifier
-                    .align(Alignment.BottomCenter)
-                    .fillMaxHeight(0.06f)
-                    .fillMaxWidth()
-                    .background(Color.White),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                Menu(navController)
-            }
+            Menu(navController)
         }
 
     }
@@ -103,7 +84,8 @@ fun CardExercise(currentexc:exercise, navController: NavController) {
             .fillMaxWidth()
             .padding(8.dp)
             .clickable {
-                navController.navigate(route = "ruta_admin_exercise_details/"+currentexc.id)},
+                navController.navigate(route = "ruta_admin_exercise_details/" + currentexc.id)
+            },
             colors = CardDefaults.cardColors(
             containerColor = colorResource(id = R.color.card)
         )

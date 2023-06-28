@@ -2,6 +2,7 @@ package com.jder00138218.liftapp.ui.users.admin.exerciseManager.CreateExercise.v
 
 import android.content.Context
 import android.util.Log
+import android.widget.Toast
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -29,8 +30,8 @@ class CreateExerciseViewmodel(private val exerciseRepository: ExerciseRepository
     private var _difficulty by mutableStateOf("")
     private var _muscle by mutableStateOf("")
     private var _name by mutableStateOf("")
-    private var _reps by mutableStateOf(0)
-    private var _sets by mutableStateOf(0)
+    private var _reps by mutableStateOf("")
+    private var _sets by mutableStateOf("")
     private var _type by mutableStateOf("")
     val _status = MutableLiveData<CreateExerciseUIStatus>(CreateExerciseUIStatus.Resume)
 
@@ -58,13 +59,13 @@ class CreateExerciseViewmodel(private val exerciseRepository: ExerciseRepository
             _name = value
         }
 
-    var reps: Int
+    var reps: String
         get() = _reps
         set(value) {
             _reps = value
         }
 
-    var sets: Int
+    var sets: String
         get() = _sets
         set(value) {
             _sets = value
@@ -76,7 +77,7 @@ class CreateExerciseViewmodel(private val exerciseRepository: ExerciseRepository
             _type = value
         }
 
-    private fun create(description: String,difficulty: String,muscle: String,name: String,reps: Int,sets: Int,type: String,id:Int?,navController: NavHostController) {
+    private fun create(description: String,difficulty: String,muscle: String,name: String,reps: Int,sets: Int,type: String,id:Int?,navController: NavHostController,context:Context) {
         viewModelScope.launch {
             _status.value = (
                     when (val response = exerciseRepository.createExercise(description, difficulty,muscle,name,reps,sets,type,id)) {
@@ -87,7 +88,7 @@ class CreateExerciseViewmodel(private val exerciseRepository: ExerciseRepository
                         )
                     }
                     )
-            handleUiStatus(navController)
+            handleUiStatus(navController,context)
         }
     }
 
@@ -97,25 +98,26 @@ class CreateExerciseViewmodel(private val exerciseRepository: ExerciseRepository
         val userid = app.getUserId()
         if (!validateData()) {
             _status.value = CreateExerciseUIStatus.ErrorWithMessage("Verificar Imformation")
+            Toast.makeText(context, "Verificar campos vacios", Toast.LENGTH_SHORT).show()
             return
         }
 
-        create(description, difficulty,muscle,name,reps,sets,type,userid,navController)
+        create(description, difficulty,muscle,name,reps.toInt(),sets.toInt(),type,userid,navController,context)
     }
 
-    fun handleUiStatus(navController: NavHostController) {
+    fun handleUiStatus(navController: NavHostController,context:Context) {
         val status = _status.value
         when (status) {
             is CreateExerciseUIStatus.Error -> {
                 Log.d("tag", "Error")
-                // TODO() -> Toast.makeText(requireContext(), "An error has occurred", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, "Error en inicio de sesión", Toast.LENGTH_SHORT).show()
             }
             is CreateExerciseUIStatus.ErrorWithMessage -> {
-                //  TODO() -> Toast.makeText(requireContext(), status.message, Toast.LENGTH_SHORT).show()
-                Log.d("tag", "Error with message")
+                Toast.makeText(context, "Verificar datos ingresados", Toast.LENGTH_SHORT).show()
             }
             is CreateExerciseUIStatus.Success -> {
-                    navController.navigate(route = Rutas.DashboardUser.ruta)
+                Toast.makeText(context, "Ejercicio creado exitosamente", Toast.LENGTH_SHORT).show()
+                navController.navigate(route = Rutas.AdminVerifyExercise.ruta)
             }
             else -> {
                 Log.d("tag","failure")
@@ -129,8 +131,8 @@ class CreateExerciseViewmodel(private val exerciseRepository: ExerciseRepository
             difficulty.isEmpty() -> return false
             muscle.isEmpty() -> return false
             name.isEmpty() -> return false
-            reps==0 -> return false
-            sets==0 ->return false
+            reps.isEmpty() -> return false
+            sets.isEmpty() ->return false
             type.isEmpty() -> return false
         }
         return true
@@ -141,8 +143,8 @@ class CreateExerciseViewmodel(private val exerciseRepository: ExerciseRepository
         _difficulty = ""
         _muscle=""
         _name=""
-        _reps=0
-        _sets=0
+        _reps=""
+        _sets=""
         _type=""
     }
 

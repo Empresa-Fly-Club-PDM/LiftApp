@@ -1,6 +1,8 @@
 package com.jder00138218.liftapp.ui.users.admin
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
@@ -8,18 +10,26 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.outlined.Add
 import androidx.compose.material.icons.outlined.Search
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
@@ -35,6 +45,23 @@ import com.jder00138218.liftapp.R
 import com.jder00138218.liftapp.ui.navigation.Rutas
 
 
+@Preview
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun AdminSearchBar(){
+
+    var text by remember { mutableStateOf("search...") }
+    OutlinedTextField(value = text, onValueChange = { newText: String ->
+        text = newText }, modifier = Modifier
+        .padding(horizontal = 8.dp)
+        .fillMaxWidth()
+        .clip(RoundedCornerShape(8.dp))
+        .background(
+            colorResource(id = R.color.field)
+        )
+        .border(width = 0.dp, color = Color.White)
+    )
+}
 
 @Composable
 fun AdminHeaderBarBackArrowDumbell(title: String,  navController: NavController){
@@ -82,11 +109,6 @@ fun AdminProfileInfoRow(text: String) {
             .fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceBetween,
     ) {
-        Image(
-            painter = painterResource(R.drawable.pesa),
-            contentDescription = "Image",
-            modifier = Modifier.size(48.dp)
-        )
 
         Text(
             text = text,
@@ -154,13 +176,13 @@ fun Menu(navController: NavController) {
     Row(
         modifier = Modifier
             .fillMaxWidth(),
-        horizontalArrangement = Arrangement.SpaceBetween
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.Bottom
     ) {
         Button(
             onClick = {navController.navigate(route = Rutas.DashboardAdmin.ruta)},
             modifier = Modifier
-                .weight(1f)
-                .fillMaxHeight(),
+                .weight(1f),
             colors = ButtonDefaults.buttonColors(
                 containerColor = Color.White
             )
@@ -177,7 +199,7 @@ fun Menu(navController: NavController) {
             onClick = {navController.navigate(route = Rutas.AdminProfile.ruta)},
             modifier = Modifier
                 .weight(1f)
-                .fillMaxHeight(), colors = ButtonDefaults.buttonColors(
+                , colors = ButtonDefaults.buttonColors(
                 containerColor = Color.White
             )
         ) {
@@ -192,8 +214,7 @@ fun Menu(navController: NavController) {
         Button(
             onClick = {navController.navigate(route = Rutas.AdminVerifyExercise.ruta)},
             modifier = Modifier
-                .weight(1f)
-                .fillMaxHeight(), colors = ButtonDefaults.buttonColors(
+                .weight(1f), colors = ButtonDefaults.buttonColors(
                 containerColor = Color.White
             )
         ) {

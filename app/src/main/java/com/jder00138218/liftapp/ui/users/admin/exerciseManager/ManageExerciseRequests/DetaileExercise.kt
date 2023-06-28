@@ -57,7 +57,6 @@ import com.jder00138218.liftapp.ui.users.admin.exerciseManager.ManageExerciseReq
 fun DetaileExercise(navController: NavHostController) {
     val navBackStackEntry = navController.currentBackStackEntry
     val exerciseid = navBackStackEntry?.arguments?.getInt("id")
-    Log.d("idlog",exerciseid.toString())
     val detailExerciseViewmodel:DetailExerciseViewmodel = viewModel(
         factory = DetailExerciseViewmodel.Factory
     )

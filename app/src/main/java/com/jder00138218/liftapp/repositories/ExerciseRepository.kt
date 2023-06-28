@@ -18,6 +18,26 @@ class ExerciseRepository(private val api:ExerciseService) {
         val exercises: List<exercise> = api.getVerified(query)
         return exercises
     }
+
+    suspend fun getDetailExercise(id:Int?): exercise {
+        val exercise: exercise = api.getExcDetail(id)
+        return exercise
+    }
+
+    suspend fun deleteExercise(id:Int?): ApiResponse<String> {
+        try {
+            val response = api.deleteExercise(id)
+            return ApiResponse.Success(response.toString())
+        } catch (e: HttpException) {
+
+            if (e.code() == 410) {
+                return ApiResponse.ErrorWithMessage("Eliminado correctamente")
+            }
+            return ApiResponse.Error(e)
+        } catch (e: IOException) {
+            return ApiResponse.Error(e)
+        }
+    }
     suspend fun createExercise(description: String,difficulty: String,muscle: String,name: String,reps: Int,sets: Int,type: String,id:Int?): ApiResponse<String> {
         try {
             val response = api.createExercise(PostVerifiedExerciseRequest(description,difficulty,muscle,name,reps,sets,type),id)
@@ -26,6 +46,21 @@ class ExerciseRepository(private val api:ExerciseService) {
 
             if (e.code() == 500) {
                 return ApiResponse.ErrorWithMessage("Invalid Fields")
+            }
+            return ApiResponse.Error(e)
+        } catch (e: IOException) {
+            return ApiResponse.Error(e)
+        }
+    }
+
+    suspend fun editExercise(description: String,difficulty: String,muscle: String,name: String,reps: Int,sets: Int,type: String,id:Int?): ApiResponse<String> {
+        try {
+            val response = api.editExercise(PostVerifiedExerciseRequest(description,difficulty,muscle,name,reps,sets,type),id)
+            return ApiResponse.Success(response.toString())
+        } catch (e: HttpException) {
+
+            if (e.code() == 500) {
+                return ApiResponse.ErrorWithMessage("Campos invalidos")
             }
             return ApiResponse.Error(e)
         } catch (e: IOException) {

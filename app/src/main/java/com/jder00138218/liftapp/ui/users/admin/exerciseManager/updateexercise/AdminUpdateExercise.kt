@@ -1,5 +1,6 @@
 package com.jder00138218.liftapp.ui.users.admin.exerciseManager.updateexercise
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -47,18 +48,28 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.lifecycle.viewmodel.viewModelFactory
 import androidx.navigation.NavHostController
 import com.jder00138218.liftapp.R
+import com.jder00138218.liftapp.network.dto.exercise.exercise
 import com.jder00138218.liftapp.ui.navigation.Rutas
 import com.jder00138218.liftapp.ui.users.admin.Menu
 import com.jder00138218.liftapp.ui.users.admin.exerciseManager.CreateExercise.viewmodel.CreateExerciseViewmodel
+import com.jder00138218.liftapp.ui.users.admin.exerciseManager.ManageExerciseRequests.viewModel.DetailExerciseViewmodel
+import com.jder00138218.liftapp.ui.users.admin.exerciseManager.updateexercise.viewmodel.AdminUpdateExerciseViewModel
 
 @Composable
 fun AdminUpdateExercise(navController: NavHostController) {
-    val createExerciseViewmodel: CreateExerciseViewmodel = viewModel(
-        factory = CreateExerciseViewmodel.Factory
+    val navBackStackEntry = navController.currentBackStackEntry
+    val exerciseid = navBackStackEntry?.arguments?.getInt("id")
+    val adminUpdateExerciseViewModel: AdminUpdateExerciseViewModel = viewModel(
+        factory = AdminUpdateExerciseViewModel.Factory
     )
-
+    if(exerciseid!=0){
+        adminUpdateExerciseViewModel.getDetailExercise(exerciseid)
+    }
+    var detailExercise = adminUpdateExerciseViewModel.exercise
+    Log.d("recievedData", detailExercise.toString() )
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -77,8 +88,8 @@ fun AdminUpdateExercise(navController: NavHostController) {
                     fontSize = 24.sp
                 )
             )
-            FieldsDetaileCreate(createExerciseViewmodel,navController)
-            ButtonsUpdate(0,createExerciseViewmodel,navController)
+            FieldsDetaileCreate(navController,adminUpdateExerciseViewModel)
+            ButtonsUpdate(exerciseid,adminUpdateExerciseViewModel,navController)
             Menu(navController)
         }
 
@@ -89,33 +100,34 @@ fun AdminUpdateExercise(navController: NavHostController) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun FieldsDetaileCreate(viewmodel: CreateExerciseViewmodel, navController: NavHostController) {
+fun FieldsDetaileCreate(navController: NavHostController,adminUpdateExerciseViewModel: AdminUpdateExerciseViewModel) {
     Column(modifier = Modifier
         .verticalScroll(rememberScrollState())) {
-        FieldName(viewmodel)
+        FieldName(adminUpdateExerciseViewModel)
         Spacer(modifier = Modifier.padding(2.dp))
-        FieldMuscle(viewmodel)
+        FieldMuscle(adminUpdateExerciseViewModel)
         Spacer(modifier = Modifier.padding(2.dp))
-        FieldType(viewmodel)
+        FieldType(adminUpdateExerciseViewModel)
         Spacer(modifier = Modifier.padding(2.dp))
-        FieldDifficulty(viewmodel)
+        FieldDifficulty(adminUpdateExerciseViewModel)
         Spacer(modifier = Modifier.padding(2.dp))
-        FieldDescription(viewmodel)
+        FieldDescription(adminUpdateExerciseViewModel)
         Spacer(modifier = Modifier.padding(2.dp))
-        FieldSets(viewmodel)
+        FieldSets(adminUpdateExerciseViewModel)
         Spacer(modifier = Modifier.padding(2.dp))
-        FieldReps(viewmodel)
+        FieldReps(adminUpdateExerciseViewModel)
         Spacer(modifier = Modifier.padding(8.dp))
     }
 
 }
 
 @Composable
-fun ButtonsUpdate(id: Int?, createExerciseViewmodel: CreateExerciseViewmodel, navController: NavHostController) {
+fun ButtonsUpdate(id: Int?, adminUpdateExerciseViewModel: AdminUpdateExerciseViewModel, navController: NavHostController) {
     val context = LocalContext.current
     Row() {
         Button(
             onClick = {
+                      adminUpdateExerciseViewModel.onUpdate(navController,context,id)
             }, modifier = Modifier
                 .height(60.dp)
                 .width(175.dp)
@@ -130,6 +142,7 @@ fun ButtonsUpdate(id: Int?, createExerciseViewmodel: CreateExerciseViewmodel, na
 
         Button(
             onClick = {
+                      adminUpdateExerciseViewModel.deleteExercise(id, navController,context)
             }, modifier = Modifier
                 .height(60.dp)
                 .width(175.dp)
@@ -146,13 +159,11 @@ fun ButtonsUpdate(id: Int?, createExerciseViewmodel: CreateExerciseViewmodel, na
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun FieldName(viewmodel: CreateExerciseViewmodel) {
-    var name by remember { mutableStateOf(viewmodel.name) }
+fun FieldName(adminUpdateExerciseViewModel: AdminUpdateExerciseViewModel) {
     OutlinedTextField(
-        value = name,
-        onValueChange = { newValue ->
-            name = newValue
-            viewmodel.name= newValue
+        value = adminUpdateExerciseViewModel._name,
+        onValueChange = {newValue ->
+            adminUpdateExerciseViewModel._name= newValue
         },
         modifier = Modifier
             .width(350.dp)
@@ -180,13 +191,11 @@ fun FieldName(viewmodel: CreateExerciseViewmodel) {
 }
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun FieldMuscle(viewmodel: CreateExerciseViewmodel) {
-    var muscle by remember { mutableStateOf(viewmodel.muscle) }
+fun FieldMuscle(adminUpdateExerciseViewModel: AdminUpdateExerciseViewModel) {
     OutlinedTextField(
-        value = muscle,
+        value = adminUpdateExerciseViewModel._muscle,
         onValueChange = { newValue ->
-            muscle = newValue
-            viewmodel.muscle= newValue
+            adminUpdateExerciseViewModel._muscle= newValue
         },
         modifier = Modifier
             .width(350.dp)
@@ -215,22 +224,18 @@ fun FieldMuscle(viewmodel: CreateExerciseViewmodel) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun FieldType(viewmodel: CreateExerciseViewmodel){
+fun FieldType(adminUpdateExerciseViewModel: AdminUpdateExerciseViewModel){
+    Log.d("recievedData",adminUpdateExerciseViewModel._type)
 
     var isExpanded by remember {
         mutableStateOf(false)
-    }
-    var type by remember {
-        mutableStateOf(viewmodel.type)
     }
 
     Box(modifier = Modifier.fillMaxWidth(),
         contentAlignment = Alignment.Center) {
         ExposedDropdownMenuBox(expanded = isExpanded, onExpandedChange = {isExpanded = it}) {
-            TextField(value = type, onValueChange = {
-                    newValue ->
-                type = newValue
-                viewmodel.type= newValue
+            TextField(value = adminUpdateExerciseViewModel._type, onValueChange = {
+
             }, readOnly = true, trailingIcon = {
                 ExposedDropdownMenuDefaults.TrailingIcon(expanded = isExpanded)
             }, modifier = Modifier
@@ -243,7 +248,7 @@ fun FieldType(viewmodel: CreateExerciseViewmodel){
                 )// With padding show border color
                 .background(colorResource(id = R.color.field)),
                 colors = TextFieldDefaults.textFieldColors(containerColor = colorResource(id = R.color.field)) ,
-                placeholder = { Text(text ="Tip de estimulo", color = Color(R.color.gray_text)) },
+                placeholder = { Text(text ="Tipo de estimulo", color = Color(R.color.gray_text)) },
                 leadingIcon = {
                     Icon(
                         modifier = Modifier.size(16.dp),
@@ -256,22 +261,17 @@ fun FieldType(viewmodel: CreateExerciseViewmodel){
                 DropdownMenuItem(text = { Text(text = "Hipertrofia") },
                     onClick = {
                         isExpanded = false
-                        viewmodel.type = "Hipertrofia"
-                        type = viewmodel.type
+                        adminUpdateExerciseViewModel._type= "Hipertrofia"
                     })
                 DropdownMenuItem(text = { Text(text = "Estres") },
                     onClick = {
                         isExpanded = false
-                        viewmodel.type = "Estres"
-                        type = viewmodel.type
-
+                        adminUpdateExerciseViewModel._type= "Estres"
                     })
                 DropdownMenuItem(text = { Text(text = "Fuerza") },
                     onClick = {
                         isExpanded = false
-                        viewmodel.type = "Fuerza"
-                        type = viewmodel.type
-
+                        adminUpdateExerciseViewModel._type= "Fuerza"
                     })
             }
         }
@@ -282,22 +282,16 @@ fun FieldType(viewmodel: CreateExerciseViewmodel){
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun FieldDifficulty(viewmodel: CreateExerciseViewmodel){
+fun FieldDifficulty(adminUpdateExerciseViewModel: AdminUpdateExerciseViewModel){
 
     var isExpanded by remember {
         mutableStateOf(false)
-    }
-    var difficulty by remember {
-        mutableStateOf(viewmodel.difficulty)
     }
 
     Box(modifier = Modifier.fillMaxWidth(),
         contentAlignment = Alignment.Center) {
         ExposedDropdownMenuBox(expanded = isExpanded, onExpandedChange = {isExpanded = it}) {
-            TextField(value = difficulty, onValueChange = {
-                    newValue ->
-                difficulty = newValue
-                viewmodel.difficulty= newValue
+            TextField(value = adminUpdateExerciseViewModel._difficulty, onValueChange = {
             }, readOnly = true, trailingIcon = {
                 ExposedDropdownMenuDefaults.TrailingIcon(expanded = isExpanded)
             }, modifier = Modifier
@@ -323,21 +317,17 @@ fun FieldDifficulty(viewmodel: CreateExerciseViewmodel){
                 DropdownMenuItem(text = { Text(text = "Bajo") },
                     onClick = {
                         isExpanded = false
-                        viewmodel.difficulty = "Bajo"
-                        difficulty = viewmodel.difficulty
+                        adminUpdateExerciseViewModel._difficulty = "Bajo"
                     })
                 DropdownMenuItem(text = { Text(text = "Medio") },
                     onClick = {
                         isExpanded = false
-                        viewmodel.difficulty = "Medio"
-                        difficulty = viewmodel.difficulty
+                        adminUpdateExerciseViewModel._difficulty = "Medio"
                     })
                 DropdownMenuItem(text = { Text(text = "Alto") },
                     onClick = {
                         isExpanded = false
-                        viewmodel.difficulty = "Alto"
-                        difficulty = viewmodel.difficulty
-
+                        adminUpdateExerciseViewModel._difficulty = "Alto"
                     })
             }
         }
@@ -347,13 +337,11 @@ fun FieldDifficulty(viewmodel: CreateExerciseViewmodel){
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun FieldDescription(viewmodel: CreateExerciseViewmodel) {
-    var description by remember { mutableStateOf(viewmodel.description) }
+fun FieldDescription(adminUpdateExerciseViewModel: AdminUpdateExerciseViewModel) {
     OutlinedTextField(
-        value = description,
-        onValueChange = { newValue ->
-            description = newValue
-            viewmodel.description= newValue
+        value = adminUpdateExerciseViewModel._description,
+        onValueChange = {newValue->
+            adminUpdateExerciseViewModel._description=newValue
         },
         modifier = Modifier
             .width(350.dp)
@@ -382,13 +370,11 @@ fun FieldDescription(viewmodel: CreateExerciseViewmodel) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun FieldSets(viewmodel: CreateExerciseViewmodel) {
-    var Sets by remember { mutableStateOf(viewmodel.sets) }
+fun FieldSets(adminUpdateExerciseViewModel: AdminUpdateExerciseViewModel) {
     OutlinedTextField(
-        value = Sets,
-        onValueChange = { newValue ->
-            Sets = newValue
-            viewmodel.sets= newValue
+        value = adminUpdateExerciseViewModel._sets,
+        onValueChange = {newValue->
+            adminUpdateExerciseViewModel._sets=newValue
         },
         modifier = Modifier
             .width(350.dp)
@@ -416,13 +402,11 @@ fun FieldSets(viewmodel: CreateExerciseViewmodel) {
 }
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun FieldReps(viewmodel: CreateExerciseViewmodel) {
-    var reps by remember { mutableStateOf(viewmodel.reps) }
+fun FieldReps(adminUpdateExerciseViewModel: AdminUpdateExerciseViewModel) {
     OutlinedTextField(
-        value = reps,
-        onValueChange = { newValue ->
-            reps = newValue
-            viewmodel.reps= newValue
+        value = adminUpdateExerciseViewModel._reps,
+        onValueChange = {newValue->
+            adminUpdateExerciseViewModel._reps=newValue
         },
         modifier = Modifier
             .width(350.dp)

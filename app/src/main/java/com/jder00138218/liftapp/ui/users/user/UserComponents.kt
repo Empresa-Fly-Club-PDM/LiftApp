@@ -69,6 +69,22 @@ import com.jder00138218.liftapp.R
 import com.jder00138218.liftapp.ui.navigation.Rutas
 
 
+@Composable
+fun UserProfileInfoRow(text: String) {
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = Modifier
+            .fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceBetween,
+    ) {
+
+        Text(
+            text = text,
+            modifier = Modifier.padding(start = 16.dp),
+            style = TextStyle(color = Color.Black, fontSize = 16.sp)
+        )
+    }
+}
 // Search Bar
 @Preview
 @OptIn(ExperimentalMaterial3Api::class)
@@ -114,7 +130,7 @@ fun UserBottomMenu(navController: NavController) {
         }
 
         Button(
-            onClick = {},
+            onClick = {navController.navigate(route = Rutas.UserProfile.ruta)},
             modifier = Modifier
                 .weight(1f)
             , colors = ButtonDefaults.buttonColors(

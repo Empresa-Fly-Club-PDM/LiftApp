@@ -29,6 +29,7 @@ sealed  class Rutas(var ruta : String) {
     object UserAddExercise:Rutas("ruta_user_add_exercise")
     object UserExerciseDetail:Rutas("rutas_user_exercise_detail")
     object UserRanking:Rutas("rutas_user_ranking")
+    object UserProfile:Rutas("rutas_user_profile")
 
 
 }

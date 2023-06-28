@@ -33,6 +33,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.jder00138218.liftapp.R
+import com.jder00138218.liftapp.ui.navigation.Rutas
 import com.jder00138218.liftapp.ui.users.user.UserBottomMenu
 import com.jder00138218.liftapp.ui.users.user.routinesmenu.RoutineMenuItem
 import java.time.format.TextStyle
@@ -41,49 +42,30 @@ import java.time.format.TextStyle
 fun AdminProfile(navController: NavController){
     Box(modifier = Modifier
         .fillMaxSize()
+        .padding(8.dp)
         .background(Color.White)
         ){
 
-        Box(modifier = Modifier
-            .fillMaxSize()
-            .padding(8.dp)
-            ){
-
-            Column(modifier = Modifier
-                .fillMaxSize()
-                .fillMaxHeight()) {
-
-                Column(modifier = Modifier
-                    .fillMaxWidth()
-                    .fillMaxHeight(0.8f)) {
-                    AdminHeaderBarBackArrowDumbell(title = "Perfil", navController)
-                    AdminProfileInfoRow(text = "Usuario")
-                    AccountCard()
-                    LogoutCard()
-                }
-                Column(modifier = Modifier
-                    .fillMaxHeight(0.2f)
-                    .fillMaxWidth()
-                    .background(Color.White),
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.Bottom) {
-                    Menu(navController)
-                }
-            }
-
-
+        Column(modifier = Modifier
+            .fillMaxSize(),
+            verticalArrangement = Arrangement.SpaceBetween,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            AdminHeaderBarBackArrowDumbell(title = "Perfil", navController)
+            AdminProfileInfoRow(text = "Usuario")
+            AccountCard(navController)
+            LogoutCard()
+            Menu(navController)
         }
-
 
     }
 }
 
 @Composable
-fun AccountCard() {
+fun AccountCard(navController: NavController) {
     Card(
         modifier = Modifier
-            .fillMaxWidth()
-            .padding(16.dp),
+            .fillMaxWidth(),
         colors = CardDefaults.cardColors(
             containerColor = Color.White,
         ),
@@ -124,7 +106,7 @@ fun AccountCard() {
             }
 
             Button(
-                onClick = {},
+                onClick = {navController.navigate(route = Rutas.AdminAdminManager.ruta)},
                 modifier = Modifier
                     .fillMaxWidth()
                     .background(Color.White)
@@ -133,7 +115,7 @@ fun AccountCard() {
                 colors = ButtonDefaults.buttonColors(containerColor = Color.White)
             ) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
-                    Text("Gestionar usuarios", color = Color.Black)
+                    Text("Gestionar administradores",  color = Color.Black)
                     Icon(
                         imageVector = Icons.Default.ArrowForward,
                         contentDescription = null,
@@ -150,8 +132,7 @@ fun AccountCard() {
 fun LogoutCard() {
     Card(
         modifier = Modifier
-            .fillMaxWidth()
-            .padding(8.dp),
+            .fillMaxWidth(),
 
     ) {
         Row(

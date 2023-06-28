@@ -49,7 +49,6 @@ import com.jder00138218.liftapp.ui.navigation.Rutas
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AdminSearchBar(){
-
     var text by remember { mutableStateOf("search...") }
     OutlinedTextField(value = text, onValueChange = { newText: String ->
         text = newText }, modifier = Modifier

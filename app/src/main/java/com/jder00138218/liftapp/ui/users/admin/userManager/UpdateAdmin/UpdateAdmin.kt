@@ -1,7 +1,6 @@
-package com.jder00138218.liftapp.ui.users.admin.userManager.CreateAdmin
+package com.jder00138218.liftapp.ui.users.admin.userManager.UpdateAdmin
 
 import android.app.DatePickerDialog
-import android.util.Log
 import android.widget.DatePicker
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -21,22 +20,13 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.ExposedDropdownMenuBox
-import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
-import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -48,13 +38,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
-import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -62,18 +50,24 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.jder00138218.liftapp.R
-import com.jder00138218.liftapp.ui.login.viewmodel.LoginViewModel
 import com.jder00138218.liftapp.ui.users.admin.Menu
 import com.jder00138218.liftapp.ui.users.admin.exerciseManager.CreateExercise.viewmodel.CreateExerciseViewmodel
 import com.jder00138218.liftapp.ui.users.admin.userManager.CreateAdmin.viewmodel.CreateAdminViewModel
+import com.jder00138218.liftapp.ui.users.admin.userManager.UpdateAdmin.viewmodel.UpdateAdminViewModel
 import java.util.Calendar
 import java.util.Date
 
 @Composable
-fun CreateAdmin(navController: NavHostController) {
-    val createAdminViewModel: CreateAdminViewModel = viewModel(
-        factory = CreateAdminViewModel.Factory
+fun UpdateAdmin(navController: NavHostController) {
+    val navBackStackEntry = navController.currentBackStackEntry
+    val userid = navBackStackEntry?.arguments?.getInt("id")
+    val updateAdminViewModel: UpdateAdminViewModel = viewModel(
+        factory = UpdateAdminViewModel.Factory
     )
+
+    if(userid!=0){
+        updateAdminViewModel.getUserDetail(userid)
+    }
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -92,8 +86,8 @@ fun CreateAdmin(navController: NavHostController) {
                     fontSize = 24.sp
                 )
             )
-            CreateAdminFields(createAdminViewModel,navController)
-            ButtonsCreateAdmin(createAdminViewModel,navController)
+            CreateAdminFields(updateAdminViewModel,navController)
+            ButtonsUpdate(userid,updateAdminViewModel,navController)
             Menu(navController)
         }
 
@@ -104,7 +98,7 @@ fun CreateAdmin(navController: NavHostController) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CreateAdminFields(viewmodel: CreateAdminViewModel, navController: NavHostController) {
+fun CreateAdminFields(viewmodel: UpdateAdminViewModel, navController: NavHostController) {
     Column(modifier = Modifier
         .verticalScroll(rememberScrollState())) {
         FieldName(viewmodel)
@@ -120,11 +114,11 @@ fun CreateAdminFields(viewmodel: CreateAdminViewModel, navController: NavHostCon
 }
 
 @Composable
-fun ButtonsUpdate(id: Int?, createExerciseViewmodel: CreateExerciseViewmodel, navController: NavHostController) {
+fun ButtonsUpdate(id: Int?, updateAdminViewModel: UpdateAdminViewModel, navController: NavHostController) {
     val context = LocalContext.current
     Row() {
         Button(
-            onClick = {
+            onClick = {updateAdminViewModel.onUpdate(id,navController,context)
             }, modifier = Modifier
                 .height(60.dp)
                 .width(175.dp)
@@ -138,7 +132,7 @@ fun ButtonsUpdate(id: Int?, createExerciseViewmodel: CreateExerciseViewmodel, na
         }
 
         Button(
-            onClick = {
+            onClick = {updateAdminViewModel.deleteUser(id, navController,context)
             }, modifier = Modifier
                 .height(60.dp)
                 .width(175.dp)
@@ -155,13 +149,11 @@ fun ButtonsUpdate(id: Int?, createExerciseViewmodel: CreateExerciseViewmodel, na
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun FieldName(viewmodel: CreateAdminViewModel) {
-    var nombrecompleto by remember { mutableStateOf(viewmodel.nombrecompleto) }
+fun FieldName(viewmodel: UpdateAdminViewModel) {
     OutlinedTextField(
-        value = nombrecompleto,
+        value = viewmodel._nombrecompleto,
         onValueChange = { newValue ->
-            nombrecompleto = newValue
-            viewmodel.nombrecompleto= newValue
+            viewmodel._nombrecompleto= newValue
         },
         modifier = Modifier
             .width(350.dp)
@@ -189,13 +181,11 @@ fun FieldName(viewmodel: CreateAdminViewModel) {
 }
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun FieldEmail(viewmodel: CreateAdminViewModel) {
-    var email by remember { mutableStateOf(viewmodel.email) }
+fun FieldEmail(viewmodel: UpdateAdminViewModel) {
     OutlinedTextField(
-        value = email,
+        value = viewmodel._email,
         onValueChange = { newValue ->
-            email = newValue
-            viewmodel.email= newValue
+            viewmodel._email= newValue
         },
         modifier = Modifier
             .width(350.dp)
@@ -224,18 +214,15 @@ fun FieldEmail(viewmodel: CreateAdminViewModel) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun FieldPassword(viewModel: CreateAdminViewModel) {
-    var password by remember { mutableStateOf(viewModel.password) }
-    var isVisible by remember { mutableStateOf(viewModel.isVisiblePaswd) }
-
+fun FieldPassword(viewModel: UpdateAdminViewModel) {
+    var isVisible by remember { mutableStateOf(viewModel._isVisiblePaswd) }
     val visualTransformation =
         if (isVisible) VisualTransformation.None else PasswordVisualTransformation()
 
     OutlinedTextField(
-        value = password,
+        value = viewModel._password,
         onValueChange = { newValue ->
-            password = newValue
-            viewModel.password = newValue
+            viewModel._password = newValue
         },
         modifier = Modifier
             .width(350.dp)
@@ -268,7 +255,7 @@ fun FieldPassword(viewModel: CreateAdminViewModel) {
         },
         keyboardOptions = KeyboardOptions(
             keyboardType = KeyboardType.Password,
-            imeAction = androidx.compose.ui.text.input.ImeAction.Next // Acción IME cuando se presiona la tecla Enter
+            imeAction = ImeAction.Next // Acción IME cuando se presiona la tecla Enter
         ),
         visualTransformation = visualTransformation
     )
@@ -276,18 +263,16 @@ fun FieldPassword(viewModel: CreateAdminViewModel) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun FieldConfirmPassword(viewModel: CreateAdminViewModel) {
-    var confirmpassword by remember { mutableStateOf(viewModel.confirmpassword) }
-    var isVisible by remember { mutableStateOf(viewModel.isVisiblePaswd) }
+fun FieldConfirmPassword(viewModel: UpdateAdminViewModel) {
+    var isVisible by remember { mutableStateOf(viewModel._isVisiblePaswd) }
 
     val visualTransformation =
         if (isVisible) VisualTransformation.None else PasswordVisualTransformation()
 
     OutlinedTextField(
-        value = confirmpassword,
+        value = viewModel._confirmpassowrd,
         onValueChange = { newValue ->
-            confirmpassword = newValue
-            viewModel.confirmpassword = newValue
+            viewModel._confirmpassowrd = newValue
         },
         modifier = Modifier
             .width(350.dp)
@@ -320,7 +305,7 @@ fun FieldConfirmPassword(viewModel: CreateAdminViewModel) {
         },
         keyboardOptions = KeyboardOptions(
             keyboardType = KeyboardType.Password,
-            imeAction = androidx.compose.ui.text.input.ImeAction.Next // Acción IME cuando se presiona la tecla Enter
+            imeAction = ImeAction.Next // Acción IME cuando se presiona la tecla Enter
         ),
         visualTransformation = visualTransformation
     )
@@ -371,8 +356,8 @@ fun DateInputField() {
             modifier = Modifier
                 .fillMaxWidth(),
             onClick = {
-            mDatePickerDialog.show()
-        }, colors = ButtonDefaults.buttonColors(contentColor = colorResource(id = R.color.field)) ) {
+                mDatePickerDialog.show()
+            }, colors = ButtonDefaults.buttonColors(contentColor = colorResource(id = R.color.field)) ) {
             Text(text = "Seleccionar Fecha de Nacimiento", color = Color.LightGray)
         }
 
@@ -382,20 +367,4 @@ fun DateInputField() {
         // Displaying the mDate value in the Text
         Text(text = "Fecha de nacimiento: ${mDate.value}", textAlign = TextAlign.Center)
     }
-}
-
-@Composable
-fun ButtonsCreateAdmin(viewmodel: CreateAdminViewModel, navController: NavHostController) { val context = LocalContext.current
-    Button(
-        onClick = {viewmodel.onCreate(navController, context)
-        }, modifier = Modifier
-            .height(60.dp)
-            .fillMaxWidth(), colors = ButtonDefaults.buttonColors(
-            containerColor = colorResource(id = R.color.buttonGren)
-        )
-    ) {
-        Text(text = " Confirmar")
-
-    }
-
 }

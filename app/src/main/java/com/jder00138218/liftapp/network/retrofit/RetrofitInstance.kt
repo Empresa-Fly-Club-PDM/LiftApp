@@ -1,11 +1,8 @@
 package com.jder00138218.liftapp.network.retrofit
 
-import android.content.Context
-import android.content.SharedPreferences
-import androidx.compose.ui.platform.LocalContext
-import com.jder00138218.liftapp.RetrofitApplication
 import com.jder00138218.liftapp.network.services.AuthService
 import com.jder00138218.liftapp.network.services.ExerciseService
+import com.jder00138218.liftapp.network.services.UserService
 import com.jder00138218.liftapp.network.services.VerifyDenyExerciseService
 import okhttp3.OkHttpClient
 import okhttp3.ResponseBody
@@ -63,6 +60,10 @@ object RetrofitInstance {
     }
     fun getVerifyDenyExerciseService():VerifyDenyExerciseService{
         return retrofit.create(VerifyDenyExerciseService::class.java)
+    }
+
+    fun getUserService():UserService{
+        return retrofit.create(UserService::class.java)
     }
 
 }

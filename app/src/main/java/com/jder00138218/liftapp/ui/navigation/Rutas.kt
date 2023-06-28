@@ -16,5 +16,6 @@ sealed  class Rutas(var ruta : String) {
     object AdminAdminManager:Rutas("ruta_admin_admin_manager")
     object AdminCreateAdmin:Rutas("ruta_crear_admin")
     object AdminUpdateExercise:Rutas("ruta_admin_update_exercise/{id}")
+    object UpdateAdmin:Rutas("ruta_admin_update_admin/{id}")
 
 }

@@ -1,8 +1,6 @@
 package com.jder00138218.liftapp.ui.login
 
 
-import android.content.Context
-import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -27,7 +25,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -47,25 +44,14 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.withStyle
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.jder00138218.liftapp.R
-import com.jder00138218.liftapp.RetrofitApplication
-import com.jder00138218.liftapp.network.dto.user.user
 import com.jder00138218.liftapp.ui.login.viewmodel.LoginViewModel
 import com.jder00138218.liftapp.ui.navigation.Rutas
-import java.nio.charset.StandardCharsets
 
-import io.jsonwebtoken.Claims
-import io.jsonwebtoken.Jws
-import io.jsonwebtoken.JwtException
-import io.jsonwebtoken.Jwts
-import io.jsonwebtoken.SignatureAlgorithm
-import io.jsonwebtoken.security.Keys
 import org.json.JSONObject
-import java.security.Key
 
 import java.util.Base64
 

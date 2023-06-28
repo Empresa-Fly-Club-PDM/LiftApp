@@ -6,9 +6,8 @@ import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.AP
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
-import com.jder00138218.liftapp.RetrofitApplication
+import com.jder00138218.liftapp.LiftAppApplication
 import com.jder00138218.liftapp.network.dto.exercise.exercise
-import com.jder00138218.liftapp.network.retrofit.RetrofitInstance
 import com.jder00138218.liftapp.repositories.ExerciseRepository
 import kotlinx.coroutines.launch
 
@@ -27,7 +26,7 @@ fun getSolicitudes(query:String) {
     companion object {
         val Factory = viewModelFactory {
             initializer {
-                val app = this[APPLICATION_KEY] as RetrofitApplication
+                val app = this[APPLICATION_KEY] as LiftAppApplication
                 DashboardAdminViewmodel(app.exerciseRepository)
             }
         }

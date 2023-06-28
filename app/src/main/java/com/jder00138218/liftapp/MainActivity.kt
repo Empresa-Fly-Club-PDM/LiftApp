@@ -15,7 +15,6 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.jder00138218.liftapp.network.dto.exercise.exercise
 import com.jder00138218.liftapp.ui.users.admin.DashboardAdminScreen
 import com.jder00138218.liftapp.ui.login.LoginScreen
 import com.jder00138218.liftapp.ui.navigation.Rutas
@@ -23,12 +22,13 @@ import com.jder00138218.liftapp.ui.recovery.forgotPasword.Recovery
 import com.jder00138218.liftapp.ui.register.RegisterScreen
 import com.jder00138218.liftapp.ui.theme.LiftAppTheme
 import com.jder00138218.liftapp.ui.users.admin.exerciseManager.ManageExerciseRequests.DetaileExercise
-import com.jder00138218.liftapp.ui.users.admin.AdminProfile
+import com.jder00138218.liftapp.ui.users.admin.adminProfile.AdminProfile
 import com.jder00138218.liftapp.ui.users.admin.exerciseManager.CreateExercise.CreateExercise
 import com.jder00138218.liftapp.ui.users.admin.exerciseManager.VerifiedExerciseView.VerifyExercises
 import com.jder00138218.liftapp.ui.users.admin.exerciseManager.updateexercise.AdminUpdateExercise
 import com.jder00138218.liftapp.ui.users.admin.userManager.AdminManagement.AdminManager
 import com.jder00138218.liftapp.ui.users.admin.userManager.CreateAdmin.CreateAdmin
+import com.jder00138218.liftapp.ui.users.admin.userManager.UpdateAdmin.UpdateAdmin
 import com.jder00138218.liftapp.ui.users.user.DashboardUserScreen
 
 class MainActivity : ComponentActivity() {
@@ -98,6 +98,13 @@ fun NavigationGraph(){
         }
         composable(route = Rutas.AdminCreateAdmin.ruta){
             CreateAdmin(navController)
+        }
+        composable(route = Rutas.UpdateAdmin.ruta,
+            arguments= listOf(navArgument("id"){
+                type = NavType.IntType
+            })
+        ){
+            UpdateAdmin(navController)
         }
     }
 }

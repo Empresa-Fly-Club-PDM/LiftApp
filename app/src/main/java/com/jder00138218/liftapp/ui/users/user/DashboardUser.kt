@@ -1,5 +1,6 @@
 package com.jder00138218.liftapp.ui.users.user
 
+import android.graphics.drawable.Drawable
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -24,6 +25,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
@@ -32,17 +34,32 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import com.jder00138218.liftapp.LiftAppApplication
 import com.jder00138218.liftapp.R
+import com.jder00138218.liftapp.network.dto.lift.lift
+import com.jder00138218.liftapp.network.dto.user.user
 import com.jder00138218.liftapp.ui.users.admin.Menu
 import com.jder00138218.liftapp.ui.users.user.routinesmenu.RoutineMenuItem
-
+import com.jder00138218.liftapp.ui.users.user.viewmodel.DashboardUserLiftViewModel
+import com.jder00138218.liftapp.ui.users.user.viewmodel.DashboardUserViewModel
 
 
 @Composable
 fun DashboardUserScreen(navController: NavController) {
-    var nameUser = "Daniel Rivera"
-
+    val dashboardUserViewModel:DashboardUserViewModel= viewModel(
+        factory = DashboardUserViewModel.Factory
+    )
+    val dashboardUserLiftViewModel:DashboardUserLiftViewModel = viewModel(
+        factory = DashboardUserLiftViewModel.Factory
+    )
+    val context = LocalContext.current
+    val app = context.applicationContext as LiftAppApplication
+    dashboardUserViewModel.getUserDetails(app.getUserId())
+    dashboardUserLiftViewModel.getUserBestLift(app.getUserId())
+    val detailUser = dashboardUserViewModel.user
+    val detailHighligt:lift? = dashboardUserLiftViewModel.lift
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -56,14 +73,14 @@ fun DashboardUserScreen(navController: NavController) {
 
             Text(text = "Bienvenido,", color = colorResource(id = R.color.gray_text))
             Text(
-                text = "${nameUser}",
+                text = detailUser.nombrecompleto,
                 color = Color.Black,
                 style = TextStyle(
                     fontWeight = FontWeight.Bold,
                     fontSize = 24.sp
                 )
             )
-            MainInfoUser()
+            MainInfoUser(detailUser, detailHighligt)
             UserBottomMenu(navController)
         }
 
@@ -73,10 +90,10 @@ fun DashboardUserScreen(navController: NavController) {
 }
 
 @Composable
-fun MainInfoUser() {
+fun MainInfoUser(detailUser: user, detailLift: lift?) {
     Column() {
-        BestInfoUser("")
-        InfoUser()
+        BestInfoUser(detailLift)
+        InfoUser(detailUser)
         RankingFriends()
         RoutineMenuItem("Rutinas")
     }
@@ -94,41 +111,24 @@ fun RankingFriends() {
             containerColor = colorResource(id = R.color.bcCard),
         )
     ) {
-        Row() {
+        Row(modifier = Modifier
+            .fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically) {
 
-            Column(
-                verticalArrangement = Arrangement.Top, // Alinear elementos en la parte superior
+            Text(text = "Ver rankings", color = Color.White)
+            Button(
+                onClick = { /* Acción del botón */ },
+                shape = RoundedCornerShape(8.dp),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color.White
+                ),
                 modifier = Modifier.padding(8.dp)
             ) {
-                Text(
-                    text = "De tus amigos...",
-                    color = Color.White,
-                    fontWeight = FontWeight.Bold,
-                    modifier = Modifier.padding(4.dp)
-                )// Aplica el estilo de texto en negrita)
-                ItemFriend("${index} Nombre Usuario")
-                ItemFriend("${index} Nombre Usuario")
-                ItemFriend("${index} Nombre Usuario")
+                Text(text = "Rankings", color = Color.Red)
             }
 
-            Row(
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Spacer(modifier = Modifier.weight(1f)) // Espacio flexible para empujar el botón hacia la derecha
-                Button(
-                    onClick = { /* Acción del botón */ },
-                    shape = RoundedCornerShape(8.dp),
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = Color.White
-                    ),
-                    modifier = Modifier.padding(8.dp)
-                ) {
-                    Text(text = "Rankings", color = Color.Red)
-                }
-            }
         }
-
-
     }
 }
 
@@ -144,26 +144,26 @@ fun ItemFriend(name: String) {
 
 
 @Composable
-fun InfoUser() {
+fun InfoUser(detailUser: user) {
     Column() {
         Row() {
-            dataItem("Heigth", "180cm")
-            dataItem("Weigth", "65Kg")
+            dataItem("Altura", detailUser.height.toString()+" Cm")
+            dataItem("Peso", detailUser.weight.toString()+" Lb")
             dataItem("Age", "22yo")
         }
         Spacer(modifier = Modifier.padding(4.dp))
         Row() {
             Image(
-                painter = painterResource(id = R.drawable.level_user),
+                painter = painterResource(id = gentRankDrawable(detailUser.points)),
                 contentDescription = "Image Level",
                 modifier = Modifier
                     .width(250.dp)
                     .height(180.dp)
             )
             Column() {
-                dataItem("Puntaje", "1102")
+                dataItem("Puntaje", detailUser.points.toString())
                 Spacer(modifier = Modifier.padding(2.dp))
-                dataItem("Nivel", "Elite")
+                dataItem("Nivel", getRank(detailUser.points))
             }
 
         }
@@ -207,7 +207,7 @@ fun dataItem(type: String, data: String) {
 
 
 @Composable
-fun BestInfoUser(muscleGroup: String) {
+fun BestInfoUser(detailLift: lift?) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -233,8 +233,8 @@ fun BestInfoUser(muscleGroup: String) {
                     )
                 )
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                    Text(text = "500 LB", color = Color.Red)
-                    Text(text = "Leg Press", color = Color.DarkGray)
+                    Text(text = "${detailLift?.weight} LB", color = Color.Red)
+                    Text(text = handleHighlightName(detailLift?.exercisename), color = Color.DarkGray)
                 }
 
             }
@@ -242,3 +242,62 @@ fun BestInfoUser(muscleGroup: String) {
     }
 }
 
+fun getRank(user_points:Int):String{
+    var rank:String =""
+    if(user_points<4000){
+        rank = "Novato"
+    }else if(user_points>=4000 && user_points<10000){
+        rank = "Básico 1"
+    }else if(user_points>=10000 && user_points<18000){
+        rank = "Básico 2"
+    }else if(user_points>=18000 && user_points<26000){
+        rank = "Básico 3"
+    }else if(user_points>=26000 && user_points<36000){
+        rank = "Intermedio 1"
+    }else if(user_points>=36000 && user_points<48000){
+        rank = "Intermedio 2"
+    }else if(user_points>=48000 && user_points<64000){
+        rank = "Intermedio 3"
+    }else if(user_points>=64000 && user_points<88000){
+        rank = "Élite 1"
+    }else if(user_points>=88000 && user_points<120000){
+        rank = "Élite 2"
+    }else if(user_points>=120000){
+        rank = "Élite 3"
+    }
+    return rank
+}
+
+fun gentRankDrawable(user_points:Int):Int{
+    var logo = 0
+    if(user_points<4000){
+        logo = R.drawable.novato
+    }else if(user_points>=4000 && user_points<10000){
+        logo = R.drawable.basico1
+    }else if(user_points>=10000 && user_points<18000){
+        logo = R.drawable.basico2
+    }else if(user_points>=18000 && user_points<26000){
+        logo = R.drawable.basico3
+    }else if(user_points>=26000 && user_points<36000){
+        logo = R.drawable.intermedio1
+    }else if(user_points>=36000 && user_points<48000){
+        logo = R.drawable.intermedio2
+    }else if(user_points>=48000 && user_points<64000){
+        logo = R.drawable.intermedio3
+    }else if(user_points>=64000 && user_points<88000){
+        logo = R.drawable.elite1
+    }else if(user_points>=88000 && user_points<120000){
+        logo = R.drawable.elite2
+    }else if(user_points>=120000){
+        logo = R.drawable.elite3
+    }
+    return logo
+}
+
+fun handleHighlightName(name:String?):String{
+    var auxname = name
+    if(auxname == null){
+        auxname =""
+    }
+    return auxname
+}

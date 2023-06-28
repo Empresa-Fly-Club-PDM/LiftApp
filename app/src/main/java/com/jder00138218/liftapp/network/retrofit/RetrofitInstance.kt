@@ -2,6 +2,7 @@ package com.jder00138218.liftapp.network.retrofit
 
 import com.jder00138218.liftapp.network.services.AuthService
 import com.jder00138218.liftapp.network.services.ExerciseService
+import com.jder00138218.liftapp.network.services.LiftService
 import com.jder00138218.liftapp.network.services.UserService
 import com.jder00138218.liftapp.network.services.VerifyDenyExerciseService
 import okhttp3.OkHttpClient
@@ -64,6 +65,10 @@ object RetrofitInstance {
 
     fun getUserService():UserService{
         return retrofit.create(UserService::class.java)
+    }
+
+    fun getLiftService():LiftService{
+        return retrofit.create(LiftService::class.java)
     }
 
 }

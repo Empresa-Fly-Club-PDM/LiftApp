@@ -1,10 +1,12 @@
 package com.jder00138218.liftapp.ui.users.admin.adminProfile
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -27,8 +29,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 import com.jder00138218.liftapp.LiftAppApplication
 import com.jder00138218.liftapp.R
+import com.jder00138218.liftapp.network.dto.user.user
 import com.jder00138218.liftapp.ui.navigation.Rutas
 import com.jder00138218.liftapp.ui.users.admin.AdminHeaderBarBackArrowDumbell
 import com.jder00138218.liftapp.ui.users.admin.AdminProfileInfoRow
@@ -57,9 +61,16 @@ fun AdminProfile(navController: NavController){
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             AdminHeaderBarBackArrowDumbell(title = "Perfil", navController)
-            AdminProfileInfoRow(text = detailUser.nombrecompleto.toString())
-            AccountCard(navController)
-            LogoutCard()
+            Column(modifier = Modifier
+                .fillMaxWidth()
+                .fillMaxHeight(0.7f),
+                verticalArrangement = Arrangement.SpaceBetween,
+                horizontalAlignment = Alignment.CenterHorizontally) {
+
+                AccountCard(navController, detailUser)
+                LogoutCard(app, navController)
+            }
+
             Menu(navController)
         }
 
@@ -67,7 +78,7 @@ fun AdminProfile(navController: NavController){
 }
 
 @Composable
-fun AccountCard(navController: NavController) {
+fun AccountCard(navController: NavController, detailUser:user) {
     Card(
         modifier = Modifier
             .fillMaxWidth(),
@@ -86,12 +97,15 @@ fun AccountCard(navController: NavController) {
                 style = androidx.compose.ui.text.TextStyle(
                     fontSize = 18.sp,
                     fontWeight = FontWeight.Bold
+
                 ),
+                color = Color.Black,
                 modifier = Modifier.padding(bottom = 16.dp)
             )
 
+            AdminProfileInfoRow(text = detailUser.nombrecompleto.toString())
             Button(
-                onClick = {},
+                onClick = {navController.navigate(route = "ruta_admin_update_admin/" + detailUser.id) },
                 modifier = Modifier
                     .fillMaxWidth()
                     .background(Color.White)
@@ -134,7 +148,7 @@ fun AccountCard(navController: NavController) {
 }
 
 @Composable
-fun LogoutCard() {
+fun LogoutCard(app:LiftAppApplication, navController:NavController) {
     Card(
         modifier = Modifier
             .fillMaxWidth(),
@@ -158,7 +172,10 @@ fun LogoutCard() {
             )
 
             Button(
-                onClick = { /* Handle logout button click */ },
+                onClick = {
+                    app.saveAuthToken("user_token")
+                    Log.d("checkToken",app.getToken())
+                    navController.navigate(route = Rutas.Login.ruta)},
                 modifier = Modifier,
                 colors = ButtonDefaults.buttonColors(containerColor = colorResource(
                     id = R.color.buttonRed))

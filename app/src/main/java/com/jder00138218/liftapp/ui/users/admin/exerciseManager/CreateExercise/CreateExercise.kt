@@ -96,7 +96,8 @@ fun CreateExercise(navController: NavHostController) {
 @Composable
 fun FieldsDetaileCreate(viewmodel: CreateExerciseViewmodel,navController:NavHostController) {
     Column(modifier = Modifier
-        .verticalScroll(rememberScrollState())) {
+        .verticalScroll(rememberScrollState()),
+    horizontalAlignment = Alignment.CenterHorizontally) {
         FieldName(viewmodel)
         Spacer(modifier = Modifier.padding(2.dp))
         FieldMuscle(viewmodel)
@@ -211,8 +212,8 @@ fun FieldType(viewmodel: CreateExerciseViewmodel){
         mutableStateOf(viewmodel.type)
     }
 
-    Box(modifier = Modifier.fillMaxWidth(),
-        contentAlignment = Alignment.Center) {
+    Column(modifier = Modifier.fillMaxWidth(),
+        horizontalAlignment = Alignment.CenterHorizontally) {
         ExposedDropdownMenuBox(expanded = isExpanded, onExpandedChange = {isExpanded = it}) {
             TextField(value = type, onValueChange = {
                     newValue ->
@@ -221,8 +222,8 @@ fun FieldType(viewmodel: CreateExerciseViewmodel){
             }, readOnly = true, trailingIcon = {
                 ExposedDropdownMenuDefaults.TrailingIcon(expanded = isExpanded)
             }, modifier = Modifier
-                .menuAnchor()
                 .width(350.dp)
+                .menuAnchor()
                 .clip(RoundedCornerShape(4.dp))
                 .border(
                     width = 1.dp,
@@ -230,7 +231,7 @@ fun FieldType(viewmodel: CreateExerciseViewmodel){
                 )// With padding show border color
                 .background(colorResource(id = R.color.field)),
                 colors = TextFieldDefaults.textFieldColors(containerColor = colorResource(id = R.color.field)) ,
-                placeholder = { Text(text ="Tip de estimulo", color = Color(R.color.gray_text)) },
+                placeholder = { Text(text ="Tipo de estimulo", color = Color(R.color.gray_text)) },
                 leadingIcon = {
                     Icon(
                         modifier = Modifier.size(16.dp),
@@ -278,8 +279,8 @@ fun FieldDifficulty(viewmodel: CreateExerciseViewmodel){
         mutableStateOf(viewmodel.difficulty)
     }
 
-    Box(modifier = Modifier.fillMaxWidth(),
-        contentAlignment = Alignment.Center) {
+    Column(modifier = Modifier.fillMaxWidth(),
+        horizontalAlignment = Alignment.CenterHorizontally) {
         ExposedDropdownMenuBox(expanded = isExpanded, onExpandedChange = {isExpanded = it}) {
             TextField(value = difficulty, onValueChange = {
                     newValue ->

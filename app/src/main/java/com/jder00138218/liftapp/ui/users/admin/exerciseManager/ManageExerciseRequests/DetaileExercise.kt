@@ -71,7 +71,8 @@ fun DetaileExercise(navController: NavHostController) {
     ) {
             Column(modifier = Modifier
                 .fillMaxSize(),
-                verticalArrangement = Arrangement.SpaceBetween
+                verticalArrangement = Arrangement.SpaceBetween,
+                horizontalAlignment = Alignment.CenterHorizontally
                 ) {
 
                 Text(
@@ -98,7 +99,8 @@ fun FieldsDetaile(exercise: exercise,detailExerciseViewmodel: DetailExerciseView
     Column(modifier = Modifier
         .fillMaxWidth()
         .fillMaxHeight(0.5f)
-        .verticalScroll(rememberScrollState())) {
+        .verticalScroll(rememberScrollState()),
+        horizontalAlignment = Alignment.CenterHorizontally) {
         FieldDetaile(exercise.name)
         Spacer(modifier = Modifier.padding(2.dp))
         FieldDetaile(exercise.muscle)

@@ -114,17 +114,6 @@ fun AdminProfileInfoRow(text: String) {
             modifier = Modifier.padding(start = 16.dp),
             style = TextStyle(color = Color.Black, fontSize = 16.sp)
         )
-
-        Button(
-            onClick = {},
-            colors = ButtonDefaults.buttonColors(containerColor = colorResource(
-                id = R.color.buttonRed))
-        ) {
-            Text(
-                text = "Editar",
-                color = Color.White
-            )
-        }
     }
 }
 

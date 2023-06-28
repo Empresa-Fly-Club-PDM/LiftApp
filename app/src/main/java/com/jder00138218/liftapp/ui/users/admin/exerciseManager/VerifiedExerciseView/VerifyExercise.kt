@@ -100,7 +100,8 @@ fun CardExerciseVerify(exercise: exercise, navController: NavController) {
         modifier = Modifier
             .fillMaxWidth()
             .padding(8.dp)
-            .clickable{ navController.navigate(route = Rutas.AdminUpdateExercise.ruta) },
+            .clickable{navController.navigate(route = "ruta_admin_update_exercise/" + exercise.id)
+            },
         colors = CardDefaults.cardColors(
             containerColor = colorResource(id = R.color.card)
         )

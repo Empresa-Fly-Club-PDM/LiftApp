@@ -84,7 +84,11 @@ fun NavigationGraph(){
         composable(route = Rutas.AdminProfile.ruta){
             AdminProfile(navController)
         }
-        composable(route = Rutas.AdminUpdateExercise.ruta){
+        composable(route = Rutas.AdminUpdateExercise.ruta,
+            arguments= listOf(navArgument("id"){
+                type = NavType.IntType
+            })
+            ){
             AdminUpdateExercise(navController)
         }
     }

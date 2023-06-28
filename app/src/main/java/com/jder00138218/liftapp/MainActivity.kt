@@ -30,6 +30,12 @@ import com.jder00138218.liftapp.ui.users.admin.userManager.AdminManagement.Admin
 import com.jder00138218.liftapp.ui.users.admin.userManager.CreateAdmin.CreateAdmin
 import com.jder00138218.liftapp.ui.users.admin.userManager.UpdateAdmin.UpdateAdmin
 import com.jder00138218.liftapp.ui.users.user.DashboardUserScreen
+import com.jder00138218.liftapp.ui.users.user.addexercisetoroutine.AddExerciseToRoutine
+import com.jder00138218.liftapp.ui.users.user.createroutine.CreateRoutine
+import com.jder00138218.liftapp.ui.users.user.ranking.GlobalRankingUsers
+import com.jder00138218.liftapp.ui.users.user.routine.Routine
+import com.jder00138218.liftapp.ui.users.user.routinesmenu.RoutinesMenu
+import com.jder00138218.liftapp.ui.users.user.userexercisedetails.UserExerciseDetails
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -105,6 +111,25 @@ fun NavigationGraph(){
             })
         ){
             UpdateAdmin(navController)
+        }
+
+        composable(route = Rutas.UserRoutineMenu.ruta){
+            RoutinesMenu(navController)
+        }
+        composable(route = Rutas.UserRoutine.ruta){
+            Routine(navController)
+        }
+        composable(route = Rutas.UserRanking.ruta){
+            GlobalRankingUsers(navController)
+        }
+        composable(route = Rutas.UserCreateRoutine.ruta){
+            CreateRoutine(navController)
+        }
+        composable(route = Rutas.UserAddExercise.ruta){
+            AddExerciseToRoutine(navController)
+        }
+        composable(route = Rutas.UserExerciseDetail.ruta){
+            UserExerciseDetails(navController)
         }
     }
 }

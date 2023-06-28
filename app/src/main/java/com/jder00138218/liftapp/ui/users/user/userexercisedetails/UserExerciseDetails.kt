@@ -19,19 +19,17 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.jder00138218.liftapp.R
 import com.jder00138218.liftapp.ui.users.user.CustomInputField
 import com.jder00138218.liftapp.ui.users.user.CustomSelectField
 import com.jder00138218.liftapp.ui.users.user.CustomTypeSelectField
-import com.jder00138218.liftapp.ui.users.user.HeaderBarBackArrowCheck
 import com.jder00138218.liftapp.ui.users.user.HeaderBarBackArrowDumbell
 import com.jder00138218.liftapp.ui.users.user.UserBottomMenu
 
 @Composable
-fun ExerciseDetails(navController: NavController){
+fun UserExerciseDetails(navController: NavController){
     Box(modifier = Modifier
         .fillMaxSize()
         .background(Color.White)) {

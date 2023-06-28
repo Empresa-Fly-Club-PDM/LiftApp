@@ -22,12 +22,21 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.jder00138218.liftapp.R
+import com.jder00138218.liftapp.ui.navigation.Rutas
 import com.jder00138218.liftapp.ui.users.admin.CardExercise
 import com.jder00138218.liftapp.ui.users.user.HeaderBarBackArrowAdd
 import com.jder00138218.liftapp.ui.users.user.UserBottomMenu
 
 @Composable
 fun StartRoutine(navController: NavController){
+
+    val handleAddOnClick = {
+        navController.navigate(route = Rutas.UserCreateRoutine.ruta)
+    }
+    val handleBackOnClick = {
+        navController.navigate(route = Rutas.DashboardUser.ruta)
+    }
+
     Box(modifier = Modifier
         .fillMaxSize()
         .background(Color.White)
@@ -41,7 +50,7 @@ fun StartRoutine(navController: NavController){
             Row(modifier = Modifier
                 .fillMaxWidth()
                 .fillMaxHeight(0.1f)) {
-                HeaderBarBackArrowAdd(title = "Rutina")
+                HeaderBarBackArrowAdd("Ranking", navController, addOnClick = handleAddOnClick, backOnClick = handleBackOnClick)
             }
 
             Column(modifier = Modifier.fillMaxWidth().fillMaxHeight(0.9f)) {

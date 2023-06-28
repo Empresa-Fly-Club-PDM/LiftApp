@@ -3,9 +3,13 @@ package com.jder00138218.liftapp.ui.navigation
 import com.jder00138218.liftapp.network.dto.exercise.exercise
 
 sealed  class Rutas(var ruta : String) {
+
+    //auth
     object Login:Rutas("ruta_login")
     object Register:Rutas("ruta_register")
     object ForgotPss:Rutas("ruta_forgotpss")
+
+    //admin
     object DashboardAdmin:Rutas("ruta_dash_admin")
     object DashboardUser:Rutas("ruta_dash_user")
     object AdminDetailExercise:Rutas("ruta_admin_exercise_details/{id}")
@@ -17,5 +21,14 @@ sealed  class Rutas(var ruta : String) {
     object AdminCreateAdmin:Rutas("ruta_crear_admin")
     object AdminUpdateExercise:Rutas("ruta_admin_update_exercise/{id}")
     object UpdateAdmin:Rutas("ruta_admin_update_admin/{id}")
+
+    //User
+    object UserRoutineMenu:Rutas("ruta_user_routine_menu")
+    object UserCreateRoutine:Rutas("ruta_user_create_routine")
+    object UserRoutine:Rutas("ruta_user_routine")
+    object UserAddExercise:Rutas("ruta_user_add_exercise")
+    object UserExerciseDetail:Rutas("rutas_user_exercise_detail")
+    object UserRanking:Rutas("rutas_user_ranking")
+
 
 }

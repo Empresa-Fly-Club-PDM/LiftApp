@@ -35,6 +35,7 @@ import com.jder00138218.liftapp.ui.users.user.createroutine.CreateRoutine
 import com.jder00138218.liftapp.ui.users.user.ranking.GlobalRankingUsers
 import com.jder00138218.liftapp.ui.users.user.routine.Routine
 import com.jder00138218.liftapp.ui.users.user.routinesmenu.RoutinesMenu
+import com.jder00138218.liftapp.ui.users.user.userprofile.UserProfile
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -129,6 +130,9 @@ fun NavigationGraph(){
         }
         composable(route = Rutas.UserExerciseDetail.ruta){
             UserPersonalExerciseDetails(navController)
+        }
+        composable(route = Rutas.UserProfile.ruta){
+            UserProfile(navController)
         }
     }
 }

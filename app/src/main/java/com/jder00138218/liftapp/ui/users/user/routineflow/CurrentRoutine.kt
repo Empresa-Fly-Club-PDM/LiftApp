@@ -20,14 +20,13 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.jder00138218.liftapp.R
 import com.jder00138218.liftapp.ui.users.admin.CardExercise
 import com.jder00138218.liftapp.ui.users.user.HeaderBarBackArrowDumbell
 import com.jder00138218.liftapp.ui.users.user.UserBottomMenu
-
-@Preview
 @Composable
-fun CurrentRoutine(){
+fun CurrentRoutine(navController: NavController){
     Box(modifier = Modifier
         .fillMaxSize()
         .background(Color.White)
@@ -66,7 +65,7 @@ fun CurrentRoutine(){
                 .background(Color.White),
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Bottom) {
-                UserBottomMenu()
+                UserBottomMenu(navController)
             }
         }
     }

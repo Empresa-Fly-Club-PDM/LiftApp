@@ -64,9 +64,9 @@ import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.jder00138218.liftapp.R
-
-
+import com.jder00138218.liftapp.ui.navigation.Rutas
 
 
 // Search Bar
@@ -90,17 +90,18 @@ fun SearchBar(){
 
 @Preview
 @Composable
-fun UserBottomMenu() {
+fun UserBottomMenu(navController: NavController) {
     Row(
         modifier = Modifier
             .fillMaxWidth(),
-        horizontalArrangement = Arrangement.SpaceBetween
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.Bottom
     ) {
         Button(
-            onClick = { /* Acción del primer botón */ },
+            onClick = {},
             modifier = Modifier
-                .weight(1f)
-               , colors = ButtonDefaults.buttonColors(
+                .weight(1f),
+            colors = ButtonDefaults.buttonColors(
                 containerColor = Color.White
             )
         ) {
@@ -113,9 +114,10 @@ fun UserBottomMenu() {
         }
 
         Button(
-            onClick = { /* Acción del segundo botón */ },
+            onClick = {},
             modifier = Modifier
-                .weight(1f), colors = ButtonDefaults.buttonColors(
+                .weight(1f)
+            , colors = ButtonDefaults.buttonColors(
                 containerColor = Color.White
             )
         ) {
@@ -128,7 +130,7 @@ fun UserBottomMenu() {
         }
 
         Button(
-            onClick = { /* Acción del tercer botón */ },
+            onClick = {},
             modifier = Modifier
                 .weight(1f), colors = ButtonDefaults.buttonColors(
                 containerColor = Color.White

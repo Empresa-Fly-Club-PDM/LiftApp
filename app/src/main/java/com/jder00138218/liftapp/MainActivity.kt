@@ -68,7 +68,7 @@ fun NavigationGraph(){
             DashboardAdminScreen(navController)
         }
         composable(route = Rutas.DashboardUser.ruta){
-            DashboardUserScreen()
+            DashboardUserScreen(navController)
         }
         composable(route = Rutas.AdminDetailExercise.ruta,
             arguments = listOf(navArgument("id"){

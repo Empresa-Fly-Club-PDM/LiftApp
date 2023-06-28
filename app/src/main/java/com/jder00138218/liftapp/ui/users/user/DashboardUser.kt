@@ -32,65 +32,39 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.jder00138218.liftapp.R
 import com.jder00138218.liftapp.ui.users.admin.Menu
 import com.jder00138218.liftapp.ui.users.user.routinesmenu.RoutineMenuItem
 
 
-@Preview(name = "Dash User", showBackground = true)
+
 @Composable
-fun DashboardUserScreen() {
+fun DashboardUserScreen(navController: NavController) {
     var nameUser = "Daniel Rivera"
 
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .padding(8.dp)
     ) {
 
-        Box(modifier = Modifier.fillMaxSize()) {
+        Column(modifier = Modifier
+            .fillMaxSize()
+            .padding(8.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.SpaceBetween) {
 
-            Column(
-                // 1
-                Modifier
-                    .align(Alignment.TopCenter)
-                    .fillMaxHeight(0.1f)
-                    .fillMaxWidth()
-                    .padding(8.dp),
-            ) {
-                Text(text = "Bienvenido,", color = colorResource(id = R.color.gray_text))
-                Text(
-                    text = "${nameUser}",
-                    color = Color.Black,
-                    style = TextStyle(
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 24.sp
-                    )
+            Text(text = "Bienvenido,", color = colorResource(id = R.color.gray_text))
+            Text(
+                text = "${nameUser}",
+                color = Color.Black,
+                style = TextStyle(
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 24.sp
                 )
-            }
-
-
-            Column( // 2
-                Modifier
-                    .align(Alignment.Center)
-                    .fillMaxHeight(0.84f)
-                    .fillMaxWidth(),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                MainInfoUser()
-            }
-
-            Column( // 3
-                Modifier
-                    .align(Alignment.BottomCenter)
-                    .fillMaxHeight(0.06f)
-                    .fillMaxWidth()
-                    .background(Color.White),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-
-            }
-
+            )
+            MainInfoUser()
+            UserBottomMenu(navController)
         }
 
     }

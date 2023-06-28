@@ -14,6 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.jder00138218.liftapp.ui.users.user.CardExercise
 import com.jder00138218.liftapp.ui.users.user.HeaderBarBackArrowAdd
 import com.jder00138218.liftapp.ui.users.user.HeaderBarBackArrowDumbell
@@ -23,7 +24,7 @@ import com.jder00138218.liftapp.ui.users.user.routinesmenu.RoutineMenuItem
 
 @Preview
 @Composable
-fun AddExerciseToRoutine(){
+fun AddExerciseToRoutine(navController: NavController){
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -50,7 +51,7 @@ fun AddExerciseToRoutine(){
                 .background(Color.White),
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Bottom) {
-                UserBottomMenu()
+                UserBottomMenu(navController)
 
             }
         }

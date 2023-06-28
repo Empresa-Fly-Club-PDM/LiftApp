@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -29,6 +30,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.jder00138218.liftapp.LiftAppApplication
 import com.jder00138218.liftapp.R
+import com.jder00138218.liftapp.network.dto.user.user
 import com.jder00138218.liftapp.ui.navigation.Rutas
 import com.jder00138218.liftapp.ui.users.admin.AdminHeaderBarBackArrowDumbell
 import com.jder00138218.liftapp.ui.users.admin.AdminProfileInfoRow
@@ -57,9 +59,16 @@ fun AdminProfile(navController: NavController){
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             AdminHeaderBarBackArrowDumbell(title = "Perfil", navController)
-            AdminProfileInfoRow(text = detailUser.nombrecompleto.toString())
-            AccountCard(navController)
-            LogoutCard()
+            Column(modifier = Modifier
+                .fillMaxWidth()
+                .fillMaxHeight(0.7f),
+                verticalArrangement = Arrangement.SpaceBetween,
+                horizontalAlignment = Alignment.CenterHorizontally) {
+
+                AccountCard(navController, detailUser)
+                LogoutCard()
+            }
+
             Menu(navController)
         }
 
@@ -67,7 +76,7 @@ fun AdminProfile(navController: NavController){
 }
 
 @Composable
-fun AccountCard(navController: NavController) {
+fun AccountCard(navController: NavController, detailUser:user) {
     Card(
         modifier = Modifier
             .fillMaxWidth(),
@@ -86,10 +95,13 @@ fun AccountCard(navController: NavController) {
                 style = androidx.compose.ui.text.TextStyle(
                     fontSize = 18.sp,
                     fontWeight = FontWeight.Bold
+
                 ),
+                color = Color.Black,
                 modifier = Modifier.padding(bottom = 16.dp)
             )
 
+            AdminProfileInfoRow(text = detailUser.nombrecompleto.toString())
             Button(
                 onClick = {},
                 modifier = Modifier

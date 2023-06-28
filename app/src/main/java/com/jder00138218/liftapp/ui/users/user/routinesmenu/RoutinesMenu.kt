@@ -72,7 +72,7 @@ fun RoutinesMenu(navController: NavController){
                     .fillMaxHeight(0.7f)
             ) {
                 items(20) {
-                    RoutineMenuItem(muscleGroup = "BAK")
+                    RoutineMenuItem(muscleGroup = "BAK",navController)
                 }
             }
             UserBottomMenu(navController)
@@ -82,7 +82,7 @@ fun RoutinesMenu(navController: NavController){
 }
 
 @Composable
-fun RoutineMenuItem(muscleGroup: String){
+fun RoutineMenuItem(muscleGroup: String,navController: NavController){
     Card(modifier = Modifier
         .fillMaxWidth()
         .padding(8.dp)

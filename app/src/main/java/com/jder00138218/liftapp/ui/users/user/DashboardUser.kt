@@ -84,7 +84,6 @@ fun DashboardUserScreen(navController: NavController) {
                     fontSize = 24.sp
                 )
             )
-
             MainInfoUser(detailUser, detailHighligt, navController)
             UserBottomMenu(navController)
         }
@@ -94,6 +93,7 @@ fun DashboardUserScreen(navController: NavController) {
 
 }
 
+@Composable
 fun RoutineMenuCard(muscleGroup: String, navController: NavController){
     Card(modifier = Modifier
         .fillMaxWidth()
@@ -101,7 +101,8 @@ fun RoutineMenuCard(muscleGroup: String, navController: NavController){
         .height(72.dp))
     { Box(modifier = Modifier.background(colorResource(id = R.color.card))) {
         Row(modifier = Modifier
-            .fillMaxSize().padding(horizontal = 8.dp), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically
+            .fillMaxSize()
+            .padding(horizontal = 8.dp), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically
         ) {
             Text(text = muscleGroup, style = TextStyle(fontSize = 20.sp, color = Color.Black))
             Button(modifier = Modifier , onClick = {navController.navigate(route = Rutas.UserRoutineMenu.ruta)}, colors = ButtonDefaults.buttonColors(containerColor = colorResource(
@@ -118,12 +119,12 @@ fun RoutineMenuCard(muscleGroup: String, navController: NavController){
     }
 }
 @Composable
-fun MainInfoUser(detailUser: user, detailLift: lift?, navController: navController) {
+fun MainInfoUser(detailUser: user, detailLift: lift?, navController: NavController) {
     Column() {
         BestInfoUser(detailLift)
         InfoUser(detailUser)
-        RankingFriends()
-        RoutineMenuItem("Rutinas", navController)
+        RankingFriends(navController)
+        RoutineMenuCard("Rutinas", navController)
     }
 }
 
@@ -139,10 +140,12 @@ fun RankingFriends(navController: NavController) {
             containerColor = colorResource(id = R.color.bcCard),
         )
     ) {
-            Row(
-                verticalAlignment = Alignment.CenterVertically
+            Row(modifier = Modifier
+                .fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                Spacer(modifier = Modifier.weight(1f)) // Espacio flexible para empujar el botón hacia la derecha
+                Text(text = "Rankings", color = Color.White)
                 Button(
                     onClick = {},
                     shape = RoundedCornerShape(8.dp),
@@ -156,7 +159,6 @@ fun RankingFriends(navController: NavController) {
             }
         }
     }
-}
 
 @Composable
 fun ItemFriend(name: String) {

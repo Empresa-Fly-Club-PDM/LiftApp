@@ -1,5 +1,3 @@
-package com.jder00138218.liftapp.ui.users.user.userexercisedetails
-
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -29,7 +27,7 @@ import com.jder00138218.liftapp.ui.users.user.HeaderBarBackArrowDumbell
 import com.jder00138218.liftapp.ui.users.user.UserBottomMenu
 
 @Composable
-fun UserExerciseDetails(navController: NavController){
+fun UserPersonalExerciseDetails(navController: NavController){
     Box(modifier = Modifier
         .fillMaxSize()
         .background(Color.White)) {

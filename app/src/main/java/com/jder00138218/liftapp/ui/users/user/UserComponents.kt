@@ -114,7 +114,7 @@ fun UserBottomMenu(navController: NavController) {
         }
 
         Button(
-            onClick = {navController.navigate(route = Rutas.UserRoutineMenu.ruta)},
+            onClick = {},
             modifier = Modifier
                 .weight(1f)
             , colors = ButtonDefaults.buttonColors(

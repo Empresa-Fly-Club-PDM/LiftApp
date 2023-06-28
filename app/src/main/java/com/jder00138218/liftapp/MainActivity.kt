@@ -1,5 +1,5 @@
 package com.jder00138218.liftapp
-
+import UserPersonalExerciseDetails
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -35,7 +35,6 @@ import com.jder00138218.liftapp.ui.users.user.createroutine.CreateRoutine
 import com.jder00138218.liftapp.ui.users.user.ranking.GlobalRankingUsers
 import com.jder00138218.liftapp.ui.users.user.routine.Routine
 import com.jder00138218.liftapp.ui.users.user.routinesmenu.RoutinesMenu
-import com.jder00138218.liftapp.ui.users.user.userexercisedetails.UserExerciseDetails
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -129,7 +128,7 @@ fun NavigationGraph(){
             AddExerciseToRoutine(navController)
         }
         composable(route = Rutas.UserExerciseDetail.ruta){
-            UserExerciseDetails(navController)
+            UserPersonalExerciseDetails(navController)
         }
     }
 }

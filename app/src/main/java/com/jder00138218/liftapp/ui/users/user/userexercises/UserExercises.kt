@@ -41,21 +41,20 @@ import androidx.navigation.NavController
 import com.jder00138218.liftapp.LiftAppApplication
 import com.jder00138218.liftapp.R
 import com.jder00138218.liftapp.network.dto.exercise.exercise
+import com.jder00138218.liftapp.ui.navigation.Rutas
 import com.jder00138218.liftapp.ui.users.user.HeaderBarBackArrowAdd
 import com.jder00138218.liftapp.ui.users.user.HeaderBarBackArrowCheck
 import com.jder00138218.liftapp.ui.users.user.UserBottomMenu
 import com.jder00138218.liftapp.ui.users.user.addexercisetoroutine.CardExercise
 import com.jder00138218.liftapp.ui.users.user.addexercisetoroutine.viewmodel.AddExerciseToRoutineViewModel
+import com.jder00138218.liftapp.ui.users.user.userexercises.viewmodel.UserExercisesViewModel
 import kotlinx.coroutines.delay
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun UserExercises(navController: NavController){
-
-    val navBackStackEntry = navController.currentBackStackEntry
-    val routineid = navBackStackEntry?.arguments?.getInt("routineid")
-    val vm: AddExerciseToRoutineViewModel = viewModel(
-        factory = AddExerciseToRoutineViewModel.Factory
+    val vm: UserExercisesViewModel = viewModel(
+        factory = UserExercisesViewModel.Factory
     )
     var text by remember { mutableStateOf("") }
     val context = LocalContext.current
@@ -65,7 +64,7 @@ fun UserExercises(navController: NavController){
         val currentText = text
         delay(500) // Add a short delay before executing the search
         if (currentText == text) { // Ensure the text hasn't changed during the delay
-            vm.searchExerciseDatabase(text,app.getUserId())
+            vm.getPersonalExercises(text,app.getUserId())
         }
     }
 
@@ -85,10 +84,10 @@ fun UserExercises(navController: NavController){
             .fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.SpaceBetween) {
-            HeaderBarBackArrowAdd(title = "Mis Ejercicios", navController = navController, addOnClick = {navController.popBackStack()}, backOnClick = {navController.popBackStack()})
+            HeaderBarBackArrowAdd(title = "Mis Ejercicios", navController = navController, addOnClick = {navController.navigate(route = Rutas.UserAddExercises.ruta)}, backOnClick = {navController.popBackStack()})
             OutlinedTextField(value = text, onValueChange = { newText: String ->
                 text = newText
-                vm.searchExerciseDatabase(text,app.getUserId())}, modifier = Modifier
+                vm.getPersonalExercises(text,app.getUserId())}, modifier = Modifier
                 .padding(horizontal = 8.dp)
                 .fillMaxWidth()
                 .clip(RoundedCornerShape(8.dp))
@@ -104,7 +103,7 @@ fun UserExercises(navController: NavController){
                     .fillMaxHeight(0.7f)
             ) {
                 items(vm.exercises) {
-                    CardUserExercise(it, routineid,navController, vm)
+                    CardUserExercise(it,navController, vm)
                 }
             }
             UserBottomMenu(navController)
@@ -113,14 +112,13 @@ fun UserExercises(navController: NavController){
 }
 
 @Composable
-fun CardUserExercise(exercise: exercise, routineid:Int?, navController: NavController, addExerciseToRoutineViewModel: AddExerciseToRoutineViewModel) {
+fun CardUserExercise(exercise: exercise, navController: NavController, addExerciseToRoutineViewModel: UserExercisesViewModel) {
     val context = LocalContext.current
     Card( // this
         modifier = Modifier
             .fillMaxWidth()
             .padding(8.dp)
             .clickable {
-                addExerciseToRoutineViewModel.addExercise(routineid,exercise.id, navController ,context)
             },
         colors = CardDefaults.cardColors(
             containerColor = colorResource(id = R.color.card)

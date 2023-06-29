@@ -29,4 +29,10 @@ interface ExerciseService {
     suspend fun editExercise(@Body updatedExercise:PostVerifiedExerciseRequest,@Path("id") id:Int?):Response<Void>
     @DELETE("ejercicio/delete/{id}")
     suspend fun deleteExercise(@Path("id") id: Int?):Response<Void>
+    @GET("ejercicio/get/users/{id}")
+    suspend fun getPersonalExercises(@Path("id") id:Int?,@Query("query")query:String):List<exercise>
+    @POST("ejercicio/post/user/personal/{id}")
+    suspend fun createPersonalExercise(@Body newExercise: PostVerifiedExerciseRequest,@Path("id") id: Int?): Response<Void>
+    @POST("ejercicio/post/user/{id}")
+    suspend fun solVerifictaion(@Body newExercise: PostVerifiedExerciseRequest,@Path("id") id: Int?): Response<Void>
 }

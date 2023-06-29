@@ -123,7 +123,7 @@ fun UserBottomMenu(navController: NavController) {
         ) {
             Icon(
                 painter = painterResource(R.drawable.inbox),
-                contentDescription = "Imbox icon",
+                contentDescription = "Inbox icon",
                 tint = Color.Red,
                 modifier = Modifier.size(20.dp)
             )
@@ -146,7 +146,7 @@ fun UserBottomMenu(navController: NavController) {
         }
 
         Button(
-            onClick = {},
+            onClick = {navController.navigate(route = Rutas.UserExercises.ruta)},
             modifier = Modifier
                 .weight(1f), colors = ButtonDefaults.buttonColors(
                 containerColor = Color.White
@@ -204,7 +204,7 @@ fun HeaderBarBackArrowAdd(title: String, navController: NavController, addOnClic
     }
 }
 @Composable
-fun HeaderBarBackArrowCheck(title: String){
+fun HeaderBarBackArrowCheck(title: String, navController: NavController, backOnClick: () -> Unit, checkOnClick: () -> Unit){
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -213,7 +213,7 @@ fun HeaderBarBackArrowCheck(title: String){
         verticalAlignment = Alignment.CenterVertically
     ) {
         IconButton(
-            onClick = {  }
+            onClick = { backOnClick() }
         ) {
             Icon(
                 Icons.Default.ArrowBack,
@@ -229,7 +229,7 @@ fun HeaderBarBackArrowCheck(title: String){
         )
 
         IconButton(
-            onClick = { /* Handle back button click */ },
+            onClick = { checkOnClick()},
 
         ) {
             Icon(
@@ -241,7 +241,7 @@ fun HeaderBarBackArrowCheck(title: String){
 }
 
 @Composable
-fun HeaderBarBackArrowDumbell(title: String){
+fun HeaderBarBackArrowDumbell(title: String, navController: NavController, backOnClick: () -> Unit){
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -250,7 +250,7 @@ fun HeaderBarBackArrowDumbell(title: String){
         verticalAlignment = Alignment.CenterVertically
     ) {
         IconButton(
-            onClick = { /* Handle back button click */ }
+            onClick = { backOnClick()}
         ) {
             Icon(
                 Icons.Default.ArrowBack,

@@ -59,10 +59,12 @@ import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import com.jder00138218.liftapp.LiftAppApplication
 import com.jder00138218.liftapp.R
+import com.jder00138218.liftapp.ui.navigation.Rutas
 import com.jder00138218.liftapp.ui.users.admin.exerciseManager.CreateExercise.viewmodel.CreateExerciseViewmodel
 import com.jder00138218.liftapp.ui.users.user.CustomInputField
 import com.jder00138218.liftapp.ui.users.user.CustomSelectField
 import com.jder00138218.liftapp.ui.users.user.HeaderBarBackArrowCheck
+import com.jder00138218.liftapp.ui.users.user.HeaderBarBackArrowDumbell
 import com.jder00138218.liftapp.ui.users.user.UserBottomMenu
 import com.jder00138218.liftapp.ui.users.user.createroutine.viewmodel.CreateRoutineViewModel
 import java.sql.Time
@@ -75,6 +77,13 @@ fun CreateRoutine(navController: NavHostController){
     val context = LocalContext.current
     val app = context.applicationContext as LiftAppApplication
 
+    val handleAddOnClick = {
+        navController.navigate(route = Rutas.AdminCreateExercise.ruta)
+    }
+    val handleBackOnClick = {
+        navController.popBackStack()
+    }
+
     Box(modifier = Modifier
         .fillMaxSize()
         .background(Color.White)) {
@@ -84,7 +93,7 @@ fun CreateRoutine(navController: NavHostController){
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.SpaceBetween) {
 
-            HeaderBarBackArrowCheck(title = "Crear rutina")
+            HeaderBarBackArrowDumbell(title = "Crear rutina", navController, backOnClick = {handleBackOnClick()})
 
             Column(modifier = Modifier
                 .fillMaxWidth()
@@ -116,7 +125,8 @@ fun CreateRoutine(navController: NavHostController){
 @Composable
 fun TimeSelector(viewmodel: CreateRoutineViewModel){
     Row(modifier = Modifier
-        .fillMaxWidth()) {
+        .fillMaxWidth(),
+    horizontalArrangement = Arrangement.Center) {
         CustomHourInputField(viewmodel)
         CustomMinuteInputField(viewmodel)
     }

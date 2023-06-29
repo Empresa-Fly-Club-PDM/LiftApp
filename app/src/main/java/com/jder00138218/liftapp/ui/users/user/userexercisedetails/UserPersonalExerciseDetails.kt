@@ -37,7 +37,7 @@ fun UserPersonalExerciseDetails(navController: NavController){
             Row(modifier = Modifier
                 .fillMaxWidth()
                 .fillMaxHeight(0.1f)) {
-                HeaderBarBackArrowDumbell(title = "Detalles del ejercicio")
+                HeaderBarBackArrowDumbell(title = "Detalles del ejercicio", navController, backOnClick = {navController.popBackStack()})
             }
             Column(modifier = Modifier
                 .fillMaxWidth()

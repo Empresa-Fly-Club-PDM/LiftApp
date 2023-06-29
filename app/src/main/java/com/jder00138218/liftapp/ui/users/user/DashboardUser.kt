@@ -67,6 +67,7 @@ fun DashboardUserScreen(navController: NavController) {
     Box(
         modifier = Modifier
             .fillMaxSize()
+            .background(color = Color.White)
     ) {
 
         Column(modifier = Modifier

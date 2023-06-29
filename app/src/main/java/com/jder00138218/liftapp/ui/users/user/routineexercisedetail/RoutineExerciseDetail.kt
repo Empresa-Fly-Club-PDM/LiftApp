@@ -53,10 +53,12 @@ import com.jder00138218.liftapp.network.dto.routine.routine
 import com.jder00138218.liftapp.ui.navigation.Rutas
 import com.jder00138218.liftapp.ui.users.admin.Menu
 import com.jder00138218.liftapp.ui.users.admin.exerciseManager.ManageExerciseRequests.viewModel.DetailExerciseViewmodel
+import com.jder00138218.liftapp.ui.users.user.HeaderBarBackArrowDumbell
+import com.jder00138218.liftapp.ui.users.user.UserBottomMenu
 import com.jder00138218.liftapp.ui.users.user.routineexercisedetail.viewmodel.RoutineExerciseDetailViewModel
 
 @Composable
-fun RoutineExerciseDetail(navController: NavHostController) {
+fun RoutineExerciseDetail(navController: NavHostController, alternativenavcontroller: NavController) {
     val navBackStackEntry = navController.currentBackStackEntry
     val exerciseid = navBackStackEntry?.arguments?.getInt("id")
     val routineid = navBackStackEntry?.arguments?.getInt("routineid")
@@ -74,6 +76,7 @@ fun RoutineExerciseDetail(navController: NavHostController) {
         modifier = Modifier
             .fillMaxSize()
             .padding(8.dp)
+            .background(color = Color.White)
     ) {
         Column(modifier = Modifier
             .fillMaxSize(),
@@ -81,17 +84,10 @@ fun RoutineExerciseDetail(navController: NavHostController) {
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
 
-            Text(
-                text = "Detalle del ejercicio",
-                color = Color.Black,
-                style = TextStyle(
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 24.sp
-                )
-            )
+            HeaderBarBackArrowDumbell(title = "Detalle del ejercicio", navController = alternativenavcontroller, backOnClick = {navController.popBackStack()})
             FieldsDetaile(detailExercise,detailExerciseViewmodel,navController)
             ButtonsDetaile(detailExercise.id,routineid,routineExerciseDetailViewModel, navController)
-            Menu(navController)
+            UserBottomMenu(navController)
         }
     }
 

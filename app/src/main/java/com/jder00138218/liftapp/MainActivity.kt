@@ -36,6 +36,7 @@ import com.jder00138218.liftapp.ui.users.user.ranking.GlobalRankingUsers
 import com.jder00138218.liftapp.ui.users.user.routinedetail.RoutineDetail
 import com.jder00138218.liftapp.ui.users.user.routineexercisedetail.RoutineExerciseDetail
 import com.jder00138218.liftapp.ui.users.user.routinesmenu.RoutinesMenu
+import com.jder00138218.liftapp.ui.users.user.userexercises.UserExercises
 import com.jder00138218.liftapp.ui.users.user.userprofile.UserProfile
 
 class MainActivity : ComponentActivity() {
@@ -149,7 +150,10 @@ fun NavigationGraph(){
                 type = NavType.IntType
             })
             ){
-            RoutineExerciseDetail(navController)
+            RoutineExerciseDetail(navController, navController)
+        }
+        composable(route = Rutas.UserExercises.ruta){
+            UserExercises(navController)
         }
     }
 }

@@ -1,6 +1,5 @@
-package com.jder00138218.liftapp.ui.users.user.addexercisetoroutine
+package com.jder00138218.liftapp.ui.users.user.userexercises
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -11,16 +10,11 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowForward
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -40,33 +34,24 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.lifecycle.viewmodel.viewModelFactory
 import androidx.navigation.NavController
 import com.jder00138218.liftapp.LiftAppApplication
 import com.jder00138218.liftapp.R
 import com.jder00138218.liftapp.network.dto.exercise.exercise
-import com.jder00138218.liftapp.network.dto.routine.routine
-import com.jder00138218.liftapp.ui.navigation.Rutas
-import com.jder00138218.liftapp.ui.users.user.CardExercise
 import com.jder00138218.liftapp.ui.users.user.HeaderBarBackArrowAdd
 import com.jder00138218.liftapp.ui.users.user.HeaderBarBackArrowCheck
-import com.jder00138218.liftapp.ui.users.user.HeaderBarBackArrowDumbell
-import com.jder00138218.liftapp.ui.users.user.SearchBar
 import com.jder00138218.liftapp.ui.users.user.UserBottomMenu
+import com.jder00138218.liftapp.ui.users.user.addexercisetoroutine.CardExercise
 import com.jder00138218.liftapp.ui.users.user.addexercisetoroutine.viewmodel.AddExerciseToRoutineViewModel
-import com.jder00138218.liftapp.ui.users.user.routinesmenu.RoutineMenuItem
-import com.jder00138218.liftapp.ui.users.user.routinesmenu.viewmodel.RoutineMenuViewModel
 import kotlinx.coroutines.delay
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AddExerciseToRoutine(navController: NavController){
+fun UserExercises(navController: NavController){
+
     val navBackStackEntry = navController.currentBackStackEntry
     val routineid = navBackStackEntry?.arguments?.getInt("routineid")
     val vm: AddExerciseToRoutineViewModel = viewModel(
@@ -83,6 +68,7 @@ fun AddExerciseToRoutine(navController: NavController){
             vm.searchExerciseDatabase(text,app.getUserId())
         }
     }
+
     val handleAddOnClick = {
         navController.popBackStack()
     }
@@ -90,20 +76,16 @@ fun AddExerciseToRoutine(navController: NavController){
         navController.popBackStack()
     }
 
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(Color.White)
-    ) {
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(8.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.SpaceBetween
-        ) {
+    Box(modifier = Modifier
+        .fillMaxSize()
+        .background(Color.White)
+        .padding(8.dp)) {
 
-            HeaderBarBackArrowCheck(title = "Seleccionar ejercicios", navController = navController, checkOnClick = {navController.popBackStack()}, backOnClick = {navController.popBackStack()})
+        Column(modifier = Modifier
+            .fillMaxSize(),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.SpaceBetween) {
+            HeaderBarBackArrowAdd(title = "Mis Ejercicios", navController = navController, addOnClick = {navController.popBackStack()}, backOnClick = {navController.popBackStack()})
             OutlinedTextField(value = text, onValueChange = { newText: String ->
                 text = newText
                 vm.searchExerciseDatabase(text,app.getUserId())}, modifier = Modifier
@@ -122,17 +104,16 @@ fun AddExerciseToRoutine(navController: NavController){
                     .fillMaxHeight(0.7f)
             ) {
                 items(vm.exercises) {
-                    CardExercise(it, routineid,navController, vm)
+                    CardUserExercise(it, routineid,navController, vm)
                 }
             }
             UserBottomMenu(navController)
         }
     }
-
 }
 
 @Composable
-fun CardExercise(exercise: exercise, routineid:Int?, navController: NavController,addExerciseToRoutineViewModel: AddExerciseToRoutineViewModel) {
+fun CardUserExercise(exercise: exercise, routineid:Int?, navController: NavController, addExerciseToRoutineViewModel: AddExerciseToRoutineViewModel) {
     val context = LocalContext.current
     Card( // this
         modifier = Modifier
@@ -173,8 +154,8 @@ fun CardExercise(exercise: exercise, routineid:Int?, navController: NavControlle
                         .fillMaxWidth(1f),
                     horizontalArrangement = Arrangement.Start
                 ) {
-                    ItemEx(exercise)
-                    ItemExRight(exercise)
+                    ItemUserEx(exercise)
+                    ItemUserExRight(exercise)
                 }
 
             }
@@ -186,7 +167,7 @@ fun CardExercise(exercise: exercise, routineid:Int?, navController: NavControlle
 
 
 @Composable
-fun ItemEx(exercise: exercise) {
+fun ItemUserEx(exercise: exercise) {
     Card(
         colors = CardDefaults.cardColors(
             containerColor = Color.White
@@ -203,7 +184,7 @@ fun ItemEx(exercise: exercise) {
 }
 
 @Composable
-fun ItemExRight(exercise: exercise) {
+fun ItemUserExRight(exercise: exercise) {
     Card(
         colors = CardDefaults.cardColors(
             containerColor = Color.White

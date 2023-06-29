@@ -41,6 +41,7 @@ fun RankingUsers(navController: NavController, ) {
         modifier = Modifier
             .fillMaxSize()
             .padding(8.dp)
+            .background(color = Color.White)
     ) {
 
         Box(modifier = Modifier.fillMaxSize()) {

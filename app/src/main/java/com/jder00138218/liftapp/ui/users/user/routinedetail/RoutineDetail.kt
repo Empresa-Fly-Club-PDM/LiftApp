@@ -69,34 +69,27 @@ fun RoutineDetail(navController:NavController){
 
         Column( modifier = Modifier
             .fillMaxSize()
-            .padding(8.dp)
+            .padding(8.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.SpaceBetween
             )
         {
-            Row(modifier = Modifier
-                .fillMaxWidth()
-                .fillMaxHeight(0.1f)) {
-                HeaderBarBackArrowAdd("Detalle de rutina", navController, addOnClick = handleAddOnClick, backOnClick = handleBackOnClick)
-            }
+
+            HeaderBarBackArrowAdd("Detalle de rutina", navController, addOnClick = handleAddOnClick, backOnClick = handleBackOnClick)
+
 
             LazyColumn(
                 Modifier
-                    .fillMaxHeight(0.9f)
                     .fillMaxWidth()
+                    .fillMaxHeight(0.6f)
             ) {
                 items(vm.exercises) { index ->
                     CardExercise(index, routineid,navController)
                 }
             }
             ButtonDeleteRoutine(routineid,viewmodel = vm, navController = navController )
+            UserBottomMenu(navController)
 
-            Column(modifier = Modifier
-                .fillMaxHeight()
-                .fillMaxWidth()
-                .background(Color.White),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Bottom) {
-                UserBottomMenu(navController)
-            }
         }
     }
 }

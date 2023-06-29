@@ -19,6 +19,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.ArrowForward
+import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.outlined.Add
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -148,7 +149,7 @@ fun RoutineMenuItem(routine:routine,navController: NavController){
                 id = R.color.buttonRed
             ), contentColor = Color.White)) {
                 Icon(
-                    Icons.Default.ArrowForward,
+                    Icons.Default.Edit,
                     contentDescription = "to $routine.na routines"
                 )
             }

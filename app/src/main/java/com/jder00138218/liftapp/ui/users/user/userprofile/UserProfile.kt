@@ -37,6 +37,7 @@ import com.jder00138218.liftapp.ui.users.admin.AdminHeaderBarBackArrowDumbell
 import com.jder00138218.liftapp.ui.users.admin.AdminProfileInfoRow
 import com.jder00138218.liftapp.ui.users.admin.Menu
 import com.jder00138218.liftapp.ui.users.admin.adminProfile.viewmodel.AdminProfileViewModel
+import com.jder00138218.liftapp.ui.users.user.HeaderBarBackArrowDumbell
 import com.jder00138218.liftapp.ui.users.user.UserBottomMenu
 import com.jder00138218.liftapp.ui.users.user.UserProfileInfoRow
 
@@ -60,7 +61,7 @@ fun UserProfile(navController: NavController){
             verticalArrangement = Arrangement.SpaceBetween,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            AdminHeaderBarBackArrowDumbell(title = "Perfil", navController)
+            HeaderBarBackArrowDumbell(title = "Perfil", navController, backOnClick = {navController.popBackStack()})
             Column(modifier = Modifier
                 .fillMaxWidth()
                 .fillMaxHeight(0.7f),

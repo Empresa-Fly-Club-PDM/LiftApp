@@ -40,7 +40,7 @@ fun CurrentRoutine(navController: NavController){
             Row(modifier = Modifier
                 .fillMaxWidth()
                 .fillMaxHeight(0.1f)) {
-                HeaderBarBackArrowDumbell(title = "Rutina")
+                HeaderBarBackArrowDumbell(title = "Rutina", navController, backOnClick = {navController.popBackStack()})
             }
 
             Column(modifier = Modifier.fillMaxWidth().fillMaxHeight(0.9f)) {

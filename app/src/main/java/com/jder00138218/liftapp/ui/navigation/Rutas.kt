@@ -25,11 +25,13 @@ sealed  class Rutas(var ruta : String) {
     //User
     object UserRoutineMenu:Rutas("ruta_user_routine_menu")
     object UserCreateRoutine:Rutas("ruta_user_create_routine")
-    object UserRoutine:Rutas("ruta_user_routine")
-    object UserAddExercise:Rutas("ruta_user_add_exercise")
+    object UserRoutineDetail:Rutas("ruta_user_routine_detail/{id}")
+    object UserAddExerciseToRoutine:Rutas("ruta_user_add_exercise_to_routine")
     object UserExerciseDetail:Rutas("rutas_user_exercise_detail")
     object UserRanking:Rutas("rutas_user_ranking")
     object UserProfile:Rutas("rutas_user_profile")
+    object RoutineExerciseDetail:Rutas("routine_exercise_detail/{id}/{routineid}")
+
 
 
 }

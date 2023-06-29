@@ -1,7 +1,9 @@
 package com.jder00138218.liftapp.ui.users.user.routinesmenu
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -48,6 +50,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.jder00138218.liftapp.LiftAppApplication
 import com.jder00138218.liftapp.R
+import com.jder00138218.liftapp.network.dto.routine.routine
 import com.jder00138218.liftapp.ui.navigation.Rutas
 import com.jder00138218.liftapp.ui.users.admin.exerciseManager.VerifiedExerciseView.CardExerciseVerify
 import com.jder00138218.liftapp.ui.users.admin.userManager.AdminManagement.viewmodel.AdminManagementViewModel
@@ -95,7 +98,7 @@ fun RoutinesMenu(navController: NavController){
             verticalArrangement = Arrangement.SpaceBetween
         ) {
 
-            HeaderBarBackArrowAdd(title = "Ejercicios Verificados", navController = navController, addOnClick = {handleAddOnClick()}, backOnClick = {handleBackOnClick()})
+            HeaderBarBackArrowAdd(title = "Mis Rutinas", navController = navController, addOnClick = {handleAddOnClick()}, backOnClick = {handleBackOnClick()})
             OutlinedTextField(value = text, onValueChange = { newText: String ->
                 text = newText
                 vm.getMyRoutines(text,app.getUserId()) }, modifier = Modifier
@@ -113,7 +116,7 @@ fun RoutinesMenu(navController: NavController){
                     .fillMaxHeight(0.7f)
             ) {
                 items(vm.routines) {
-                    RoutineMenuItem(muscleGroup = it.name,navController)
+                    RoutineMenuItem(routine = it,navController)
                 }
             }
             UserBottomMenu(navController)
@@ -123,23 +126,28 @@ fun RoutinesMenu(navController: NavController){
 }
 
 @Composable
-fun RoutineMenuItem(muscleGroup: String,navController: NavController){
+fun RoutineMenuItem(routine:routine,navController: NavController){
     Card(modifier = Modifier
         .fillMaxWidth()
         .padding(8.dp)
-        .height(72.dp))
+        .height(72.dp)
+    )
+
     { Box(modifier = Modifier.background(colorResource(id = R.color.card))) {
         Row(modifier = Modifier
             .fillMaxSize()
             .padding(horizontal = 8.dp), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically
         ) {
-            Text(text = muscleGroup, style = TextStyle(fontSize = 20.sp, color = Color.Black))
-            Button(modifier = Modifier , onClick = {}, colors = ButtonDefaults.buttonColors(containerColor = colorResource(
+            Text(text = routine.name, style = TextStyle(fontSize = 20.sp, color = Color.Black))
+            Button(modifier = Modifier , onClick = {
+                Log.d("SentData",routine.id.toString())
+                navController.navigate(route = "ruta_user_routine_detail/${routine.id}")},
+                colors = ButtonDefaults.buttonColors(containerColor = colorResource(
                 id = R.color.buttonRed
             ), contentColor = Color.White)) {
                 Icon(
                     Icons.Default.ArrowForward,
-                    contentDescription = "to $muscleGroup routines"
+                    contentDescription = "to $routine.na routines"
                 )
             }
         }

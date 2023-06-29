@@ -33,7 +33,8 @@ import com.jder00138218.liftapp.ui.users.user.DashboardUserScreen
 import com.jder00138218.liftapp.ui.users.user.addexercisetoroutine.AddExerciseToRoutine
 import com.jder00138218.liftapp.ui.users.user.createroutine.CreateRoutine
 import com.jder00138218.liftapp.ui.users.user.ranking.GlobalRankingUsers
-import com.jder00138218.liftapp.ui.users.user.routine.Routine
+import com.jder00138218.liftapp.ui.users.user.routinedetail.RoutineDetail
+import com.jder00138218.liftapp.ui.users.user.routineexercisedetail.RoutineExerciseDetail
 import com.jder00138218.liftapp.ui.users.user.routinesmenu.RoutinesMenu
 import com.jder00138218.liftapp.ui.users.user.userprofile.UserProfile
 
@@ -112,12 +113,15 @@ fun NavigationGraph(){
         ){
             UpdateAdmin(navController)
         }
-
         composable(route = Rutas.UserRoutineMenu.ruta){
             RoutinesMenu(navController)
         }
-        composable(route = Rutas.UserRoutine.ruta){
-            Routine(navController)
+        composable(route = Rutas.UserRoutineDetail.ruta,
+            arguments = listOf(navArgument("id"){
+                type = NavType.IntType
+            })
+            ){
+            RoutineDetail(navController)
         }
         composable(route = Rutas.UserRanking.ruta){
             GlobalRankingUsers(navController)
@@ -125,7 +129,7 @@ fun NavigationGraph(){
         composable(route = Rutas.UserCreateRoutine.ruta){
             CreateRoutine(navController)
         }
-        composable(route = Rutas.UserAddExercise.ruta){
+        composable(route = Rutas.UserAddExerciseToRoutine.ruta){
             AddExerciseToRoutine(navController)
         }
         composable(route = Rutas.UserExerciseDetail.ruta){
@@ -133,6 +137,15 @@ fun NavigationGraph(){
         }
         composable(route = Rutas.UserProfile.ruta){
             UserProfile(navController)
+        }
+        composable(route = Rutas.RoutineExerciseDetail.ruta,
+            arguments = listOf(navArgument("id"){
+                type = NavType.IntType
+            }, navArgument("routineid"){
+                type = NavType.IntType
+            })
+            ){
+            RoutineExerciseDetail(navController)
         }
     }
 }

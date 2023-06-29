@@ -15,6 +15,26 @@ class RoutineRepository(private val api: RoutineService) {
         return routines
     }
 
+    suspend fun getRoutineDetail(id:Int?):List<exercise>{
+        val exercises: List<exercise> = api.getRoutineDetail(id)
+        return exercises
+    }
+
+    suspend fun removExercise(idexc:Int?,idrut:Int?): ApiResponse<String> {
+        try {
+            val response = api.removeExerciseFromRoutine(idexc,idrut)
+            return ApiResponse.Success(response.toString())
+        } catch (e: HttpException) {
+
+            if (e.code() == 202) {
+                return ApiResponse.ErrorWithMessage("Ejercicio Removido")
+            }
+            return ApiResponse.Error(e)
+        } catch (e: IOException) {
+            return ApiResponse.Error(e)
+        }
+    }
+
     suspend fun createRoutine(difficulty: String,name: String,tag: String,time:String,id:Int?): ApiResponse<String> {
         try {
             val response = api.createRoutine(PostRoutineRequest(difficulty,name,tag,time),id)
@@ -22,6 +42,21 @@ class RoutineRepository(private val api: RoutineService) {
         } catch (e: HttpException) {
             if (e.code() == 500) {
                 return ApiResponse.ErrorWithMessage("Campos invalidos")
+            }
+            return ApiResponse.Error(e)
+        } catch (e: IOException) {
+            return ApiResponse.Error(e)
+        }
+    }
+
+    suspend fun deleteRoutine(id:Int?): ApiResponse<String> {
+        try {
+            val response = api.deleteRoutine(id)
+            return ApiResponse.Success(response.toString())
+        } catch (e: HttpException) {
+
+            if (e.code() == 410) {
+                return ApiResponse.ErrorWithMessage("Eliminado correctamente")
             }
             return ApiResponse.Error(e)
         } catch (e: IOException) {

@@ -22,7 +22,6 @@ import com.jder00138218.liftapp.ui.users.user.SearchBar
 import com.jder00138218.liftapp.ui.users.user.UserBottomMenu
 import com.jder00138218.liftapp.ui.users.user.routinesmenu.RoutineMenuItem
 
-@Preview
 @Composable
 fun AddExerciseToRoutine(navController: NavController){
     Box(

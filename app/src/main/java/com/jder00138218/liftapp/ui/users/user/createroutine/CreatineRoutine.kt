@@ -28,14 +28,21 @@ import androidx.compose.material.icons.filled.ArrowForward
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExposedDropdownMenuBox
+import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -47,17 +54,27 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import androidx.navigation.NavHostController
+import com.jder00138218.liftapp.LiftAppApplication
 import com.jder00138218.liftapp.R
+import com.jder00138218.liftapp.ui.users.admin.exerciseManager.CreateExercise.viewmodel.CreateExerciseViewmodel
 import com.jder00138218.liftapp.ui.users.user.CustomInputField
 import com.jder00138218.liftapp.ui.users.user.CustomSelectField
 import com.jder00138218.liftapp.ui.users.user.HeaderBarBackArrowCheck
 import com.jder00138218.liftapp.ui.users.user.UserBottomMenu
+import com.jder00138218.liftapp.ui.users.user.createroutine.viewmodel.CreateRoutineViewModel
 import java.sql.Time
 
 @Composable
-fun CreateRoutine(navController: NavController){
+fun CreateRoutine(navController: NavHostController){
+    val createRoutineViewModel: CreateRoutineViewModel = viewModel(
+        factory = CreateRoutineViewModel.Factory
+    )
     val context = LocalContext.current
+    val app = context.applicationContext as LiftAppApplication
+
     Box(modifier = Modifier
         .fillMaxSize()
         .background(Color.White)) {
@@ -66,38 +83,26 @@ fun CreateRoutine(navController: NavController){
             .padding(8.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.SpaceBetween) {
-                HeaderBarBackArrowCheck(title = "Crear rutina")
 
-                Column(modifier = Modifier
-                    .fillMaxWidth()
-                    .verticalScroll(rememberScrollState()),
+            HeaderBarBackArrowCheck(title = "Crear rutina")
+
+            Column(modifier = Modifier
+                .fillMaxWidth()
+                .verticalScroll(rememberScrollState()),
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.SpaceBetween) {
-                    CustomInputField(hint = "Nombre de la rutina")
-                    Spacer(modifier = Modifier.height(8.dp))
-                    CustomSelectField()
-                    Spacer(modifier = Modifier.height(8.dp))
-                    CustomInputField(hint = "Tiempo objetivo")
-                    Spacer(modifier = Modifier.height(8.dp))
-                    CustomInputField(hint = "Tag")
-                    Spacer(modifier = Modifier.height(8.dp))
-                    TimeSelector()
-                }
-
-                    Button(modifier = Modifier
-                        .fillMaxWidth()
-                        .height(60.dp), onClick = {}, colors = ButtonDefaults.buttonColors(containerColor = colorResource(
-                        id = R.color.buttonGren
-                    ), contentColor = Color.White)) {
-                        Text(text = "Confirmar")
-                    }
-
-                UserBottomMenu(navController)
+                NameInputField(createRoutineViewModel)
+                Spacer(modifier = Modifier.height(8.dp))
+                DifficultyInputField(createRoutineViewModel)
+                Spacer(modifier = Modifier.height(8.dp))
+                TagInputField(createRoutineViewModel)
+                Spacer(modifier = Modifier.height(8.dp))
+                TimeSelector(createRoutineViewModel)
             }
 
             Button(modifier = Modifier
                 .fillMaxWidth()
-                .height(60.dp), onClick = {}, colors = ButtonDefaults.buttonColors(containerColor = colorResource(
+                .height(60.dp), onClick = {createRoutineViewModel.onCreate(navController, context,app.getUserId())}, colors = ButtonDefaults.buttonColors(containerColor = colorResource(
                 id = R.color.buttonGren
             ), contentColor = Color.White)) {
                 Text(text = "Confirmar")
@@ -109,19 +114,22 @@ fun CreateRoutine(navController: NavController){
 }
 
 @Composable
-fun TimeSelector(){
+fun TimeSelector(viewmodel: CreateRoutineViewModel){
     Row(modifier = Modifier
         .fillMaxWidth()) {
-        CustomTimeInputField(hint = "Horas")
-        CustomTimeInputField(hint = "Minutos")
+        CustomHourInputField(viewmodel)
+        CustomMinuteInputField(viewmodel)
     }
 }
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CustomTimeInputField(hint: String){
+fun CustomHourInputField(viewmodel: CreateRoutineViewModel){
+    var hour by remember { mutableStateOf(viewmodel.hour) }
     OutlinedTextField(
-        value = "",
-        onValueChange = { },
+        value = hour,
+        onValueChange = {newValue ->
+            hour = newValue
+            viewmodel.hour= newValue },
         modifier = Modifier
             .width(175.dp)
             .clip(RoundedCornerShape(4.dp))
@@ -130,7 +138,7 @@ fun CustomTimeInputField(hint: String){
                 color = colorResource(id = R.color.field)
             )// With padding show border color
             .background(colorResource(id = R.color.field)),
-        placeholder = { Text(text = hint, color = Color(R.color.gray_text)) },
+        placeholder = { Text(text = "Horas", color = Color(R.color.gray_text)) },
         singleLine = true,
         maxLines = 1,
         keyboardOptions = KeyboardOptions(
@@ -139,4 +147,164 @@ fun CustomTimeInputField(hint: String){
         )
     )
 }
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun CustomMinuteInputField(viewmodel: CreateRoutineViewModel){
+    var minutes by remember { mutableStateOf(viewmodel.minute) }
+    OutlinedTextField(
+        value = minutes,
+        onValueChange = {newValue ->
+            minutes = newValue
+            viewmodel.minute= newValue },
+        modifier = Modifier
+            .width(175.dp)
+            .clip(RoundedCornerShape(4.dp))
+            .border(
+                width = 1.dp,
+                color = colorResource(id = R.color.field)
+            )// With padding show border color
+            .background(colorResource(id = R.color.field)),
+        placeholder = { Text(text = "Minutos", color = Color(R.color.gray_text)) },
+        singleLine = true,
+        maxLines = 1,
+        keyboardOptions = KeyboardOptions(
+            keyboardType = KeyboardType.Text,
+            imeAction = ImeAction.Next // Acción IME cuando se presiona la tecla Enter
+        )
+    )
+}
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun NameInputField(viewmodel:CreateRoutineViewModel){
+    var name by remember { mutableStateOf(viewmodel.name) }
 
+    OutlinedTextField(
+        value = name,
+        onValueChange = { newValue ->
+            name = newValue
+            viewmodel.name= newValue
+        },
+        modifier = Modifier
+            .width(350.dp)
+            .clip(RoundedCornerShape(4.dp))
+            .border(
+                width = 1.dp,
+                color = colorResource(id = R.color.field)
+            )// With padding show border color
+            .background(colorResource(id = R.color.field)),
+        placeholder = { Text(text = "Nombre de la rutina", color = Color(R.color.gray_text)) },
+        singleLine = true,
+        maxLines = 1,
+        leadingIcon = {
+            Icon(
+                modifier = Modifier.size(16.dp),
+                painter = painterResource(id = R.drawable.pesa),
+                contentDescription = "Icon field"
+            )
+        },
+        keyboardOptions = KeyboardOptions(
+            keyboardType = KeyboardType.Text,
+            imeAction = ImeAction.Next // Acción IME cuando se presiona la tecla Enter
+        )
+    )
+}
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun DifficultyInputField(viewmodel: CreateRoutineViewModel){
+
+    var isExpanded by remember {
+        mutableStateOf(false)
+    }
+    var difficulty by remember {
+        mutableStateOf(viewmodel.difficulty)
+    }
+
+    Column(modifier = Modifier.fillMaxWidth(),
+        horizontalAlignment = Alignment.CenterHorizontally) {
+        ExposedDropdownMenuBox(expanded = isExpanded, onExpandedChange = {isExpanded = it}) {
+            TextField(value = difficulty, onValueChange = {
+                    newValue ->
+                difficulty = newValue
+                viewmodel.difficulty= newValue
+            }, readOnly = true, trailingIcon = {
+                ExposedDropdownMenuDefaults.TrailingIcon(expanded = isExpanded)
+            }, modifier = Modifier
+                .menuAnchor()
+                .width(350.dp)
+                .clip(RoundedCornerShape(4.dp))
+                .border(
+                    width = 1.dp,
+                    color = colorResource(id = R.color.field)
+                )// With padding show border color
+                .background(colorResource(id = R.color.field)),
+                colors = TextFieldDefaults.textFieldColors(containerColor = colorResource(id = R.color.field)) ,
+                placeholder = { Text(text = "Dificultad", color = Color(R.color.gray_text)) },
+                leadingIcon = {
+                    Icon(
+                        modifier = Modifier.size(16.dp),
+                        painter = painterResource(id = R.drawable.pesa),
+                        contentDescription = "Icon field"
+                    )
+                })
+
+            ExposedDropdownMenu(expanded = isExpanded, onDismissRequest = { isExpanded = false }) {
+                DropdownMenuItem(text = { Text(text = "Bajo") },
+                    onClick = {
+                        isExpanded = false
+                        viewmodel.difficulty = "Bajo"
+                        difficulty = viewmodel.difficulty
+                    })
+                DropdownMenuItem(text = { Text(text = "Medio") },
+                    onClick = {
+                        isExpanded = false
+                        viewmodel.difficulty = "Medio"
+                        difficulty = viewmodel.difficulty
+                    })
+                DropdownMenuItem(text = { Text(text = "Alto") },
+                    onClick = {
+                        isExpanded = false
+                        viewmodel.difficulty = "Alto"
+                        difficulty = viewmodel.difficulty
+
+                    })
+            }
+        }
+    }
+
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun TagInputField(viewmodel:CreateRoutineViewModel){
+    var tag by remember { mutableStateOf(viewmodel.tag) }
+
+    OutlinedTextField(
+        value = tag,
+        onValueChange = { newValue ->
+            tag = newValue
+            viewmodel.tag= newValue
+        },
+        modifier = Modifier
+            .width(350.dp)
+            .clip(RoundedCornerShape(4.dp))
+            .border(
+                width = 1.dp,
+                color = colorResource(id = R.color.field)
+            )// With padding show border color
+            .background(colorResource(id = R.color.field)),
+        placeholder = { Text(text = "Tag", color = Color(R.color.gray_text)) },
+        singleLine = true,
+        maxLines = 1,
+        leadingIcon = {
+            Icon(
+                modifier = Modifier.size(16.dp),
+                painter = painterResource(id = R.drawable.pesa),
+                contentDescription = "Icon field"
+            )
+        },
+        keyboardOptions = KeyboardOptions(
+            keyboardType = KeyboardType.Text,
+            imeAction = ImeAction.Next // Acción IME cuando se presiona la tecla Enter
+        )
+    )
+}

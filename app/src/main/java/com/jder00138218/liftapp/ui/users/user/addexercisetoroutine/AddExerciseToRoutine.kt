@@ -83,10 +83,10 @@ fun AddExerciseToRoutine(navController: NavController){
         }
     }
     val handleAddOnClick = {
-        navController.navigate(route = Rutas.UserCreateRoutine.ruta)
+        navController.popBackStack()
     }
     val handleBackOnClick = {
-        navController.navigate(route = Rutas.DashboardUser.ruta)
+        navController.popBackStack()
     }
 
     Box(
@@ -112,7 +112,8 @@ fun AddExerciseToRoutine(navController: NavController){
                 .background(
                     colorResource(id = R.color.field)
                 )
-                .border(width = 0.dp, color = Color.White)
+                .border(width = 0.dp, color = Color.White),
+                placeholder = { Text(text = "Buscar..", color = Color(R.color.gray_text)) },
             )
             LazyColumn(
                 Modifier

@@ -108,8 +108,10 @@ fun RoutinesMenu(navController: NavController){
                 .background(
                     colorResource(id = R.color.field)
                 )
-                .border(width = 0.dp, color = Color.White)
-            )
+                .border(width = 0.dp, color = Color.White),
+                placeholder = { Text(text = "Buscar..", color = Color(R.color.gray_text)) },
+
+                )
             LazyColumn(
                 Modifier
                     .fillMaxWidth()

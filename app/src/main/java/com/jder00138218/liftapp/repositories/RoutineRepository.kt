@@ -15,6 +15,11 @@ class RoutineRepository(private val api: RoutineService) {
         return routines
     }
 
+    suspend fun searchExerciseDatabase(query:String, id:Int?):List<exercise>{
+        val exercises: List<exercise> = api.searchExerciseDatabase(id,query)
+        return exercises
+    }
+
     suspend fun getRoutineDetail(id:Int?):List<exercise>{
         val exercises: List<exercise> = api.getRoutineDetail(id)
         return exercises
@@ -34,6 +39,21 @@ class RoutineRepository(private val api: RoutineService) {
             return ApiResponse.Error(e)
         }
     }
+    suspend fun addExercise(idrut:Int?,idexc:Int?): ApiResponse<String> {
+        try {
+            val response = api.addExerciseToRoutine(idrut,idexc)
+            return ApiResponse.Success(response.toString())
+        } catch (e: HttpException) {
+
+            if (e.code() == 202) {
+                return ApiResponse.ErrorWithMessage("Ejercicio Removido")
+            }
+            return ApiResponse.Error(e)
+        } catch (e: IOException) {
+            return ApiResponse.Error(e)
+        }
+    }
+
 
     suspend fun createRoutine(difficulty: String,name: String,tag: String,time:String,id:Int?): ApiResponse<String> {
         try {

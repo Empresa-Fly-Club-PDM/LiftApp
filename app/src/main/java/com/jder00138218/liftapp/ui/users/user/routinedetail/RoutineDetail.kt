@@ -56,7 +56,7 @@ fun RoutineDetail(navController:NavController){
     })
 
     val handleAddOnClick = {
-        navController.navigate(route = Rutas.UserAddExerciseToRoutine.ruta)
+        navController.navigate(route = "ruta_user_add_exercise_to_routine/${routineid}")
     }
     val handleBackOnClick = {
         navController.navigate(route = Rutas.UserRoutineMenu.ruta)

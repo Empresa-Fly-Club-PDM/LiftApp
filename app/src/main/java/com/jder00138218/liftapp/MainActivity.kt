@@ -129,7 +129,11 @@ fun NavigationGraph(){
         composable(route = Rutas.UserCreateRoutine.ruta){
             CreateRoutine(navController)
         }
-        composable(route = Rutas.UserAddExerciseToRoutine.ruta){
+        composable(route = Rutas.UserAddExerciseToRoutine.ruta,
+        arguments = listOf(navArgument("routineid"){
+            type = NavType.IntType
+        })
+            ){
             AddExerciseToRoutine(navController)
         }
         composable(route = Rutas.UserExerciseDetail.ruta){

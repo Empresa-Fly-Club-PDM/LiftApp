@@ -24,9 +24,16 @@ interface RoutineService {
     @GET("routine/detail/{id}")
     suspend fun getRoutineDetail(@Path("id") id:Int?):List<exercise>
 
+    @GET("ejercicio/search/user/verified/{id}")
+    suspend fun searchExerciseDatabase(@Path("id") id:Int?,@Query("query") query:String):List<exercise>
+
     @PUT("routine/removeExercise/{idrut}/{idexc}")
     suspend fun removeExerciseFromRoutine(@Path("idexc") idexc: Int?, @Path("idrut") idrut:Int?): Response<Void>
 
     @DELETE("routine/delete/{id}")
     suspend fun deleteRoutine(@Path("id") id: Int?):Response<Void>
+    @PUT("routine/addExercise/{routineid}/{exerciseid}")
+    suspend fun addExerciseToRoutine(@Path("routineid") routineid:Int?,@Path("exerciseid")exerciseid:Int?):Response<Void>
+
+
 }

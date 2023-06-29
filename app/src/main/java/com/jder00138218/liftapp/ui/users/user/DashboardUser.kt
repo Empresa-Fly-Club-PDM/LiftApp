@@ -147,7 +147,7 @@ fun RankingFriends(navController: NavController) {
             ) {
                 Text(text = "Rankings", color = Color.White)
                 Button(
-                    onClick = {},
+                    onClick = {navController.navigate(route = Rutas.UserRanking.ruta)},
                     shape = RoundedCornerShape(8.dp),
                     colors = ButtonDefaults.buttonColors(
                         containerColor = Color.White

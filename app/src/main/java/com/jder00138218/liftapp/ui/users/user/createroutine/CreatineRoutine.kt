@@ -66,23 +66,33 @@ fun CreateRoutine(navController: NavController){
             .padding(8.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.SpaceBetween) {
+                HeaderBarBackArrowCheck(title = "Crear rutina")
 
-            HeaderBarBackArrowCheck(title = "Crear rutina")
-
-            Column(modifier = Modifier
-                .fillMaxWidth()
-                .verticalScroll(rememberScrollState()),
+                Column(modifier = Modifier
+                    .fillMaxWidth()
+                    .verticalScroll(rememberScrollState()),
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.SpaceBetween) {
-                CustomInputField(hint = "Nombre de la rutina")
-                Spacer(modifier = Modifier.height(8.dp))
-                CustomSelectField()
-                Spacer(modifier = Modifier.height(8.dp))
-                CustomInputField(hint = "Tiempo objetivo")
-                Spacer(modifier = Modifier.height(8.dp))
-                CustomInputField(hint = "Tag")
-                Spacer(modifier = Modifier.height(8.dp))
-                TimeSelector()
+                    CustomInputField(hint = "Nombre de la rutina")
+                    Spacer(modifier = Modifier.height(8.dp))
+                    CustomSelectField()
+                    Spacer(modifier = Modifier.height(8.dp))
+                    CustomInputField(hint = "Tiempo objetivo")
+                    Spacer(modifier = Modifier.height(8.dp))
+                    CustomInputField(hint = "Tag")
+                    Spacer(modifier = Modifier.height(8.dp))
+                    TimeSelector()
+                }
+
+                    Button(modifier = Modifier
+                        .fillMaxWidth()
+                        .height(60.dp), onClick = {}, colors = ButtonDefaults.buttonColors(containerColor = colorResource(
+                        id = R.color.buttonGren
+                    ), contentColor = Color.White)) {
+                        Text(text = "Confirmar")
+                    }
+
+                UserBottomMenu(navController)
             }
 
             Button(modifier = Modifier

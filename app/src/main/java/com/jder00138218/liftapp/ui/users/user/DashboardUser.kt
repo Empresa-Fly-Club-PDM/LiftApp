@@ -273,13 +273,13 @@ fun BestInfoUser(detailLift: lift?) {
 fun getRank(user_points:Int):String{
     var rank:String =""
     if(user_points<4000){
-        rank = "Novato"
+        rank = "Principiante"
     }else if(user_points>=4000 && user_points<10000){
-        rank = "Básico 1"
+        rank = "Novato 1"
     }else if(user_points>=10000 && user_points<18000){
-        rank = "Básico 2"
+        rank = "Novato 2"
     }else if(user_points>=18000 && user_points<26000){
-        rank = "Básico 3"
+        rank = "Novato 3"
     }else if(user_points>=26000 && user_points<36000){
         rank = "Intermedio 1"
     }else if(user_points>=36000 && user_points<48000){

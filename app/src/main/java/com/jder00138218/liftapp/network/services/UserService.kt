@@ -16,6 +16,11 @@ import retrofit2.http.Query
 interface UserService {
     @GET("usuario/get/admins")
     suspend fun getAllAdmins(@Query("query") query:String): List<user>
+
+    @GET("friends/listFriends/{id}")
+    suspend fun getMyFriends(@Path("id") id:Int?): List<user>
+    @GET("usuario/get/users/{id}")
+    suspend fun searchForFriends(@Path("id") id:Int?,@Query("query") query:String): List<user>
     @GET("usuario/details/{id}")
     suspend fun getUserDetails(@Path("id") id:Int?): user
     @POST("usuario/add/admin")
@@ -25,4 +30,8 @@ interface UserService {
 
     @DELETE("usuario/delete/{id}")
     suspend fun deleteUser(@Path("id")id:Int?):Response<Void>
+    @GET("friends/addFriend/{current}/{friend}")
+    suspend fun addFriend(@Path("current") current:Int?,@Path("friend")friend:Int?):Response<Void>
+
+
 }

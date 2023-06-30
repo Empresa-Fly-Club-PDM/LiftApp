@@ -28,6 +28,7 @@ import com.jder00138218.liftapp.ui.users.admin.Menu
 import com.jder00138218.liftapp.ui.users.user.HeaderBarBackArrowAdd
 import com.jder00138218.liftapp.ui.users.user.SearchBar
 import com.jder00138218.liftapp.ui.users.user.friends.FriendInfoRow
+import com.jder00138218.liftapp.ui.users.user.friends.getRank
 import com.jder00138218.liftapp.ui.users.user.routinesmenu.RoutineMenuItem
 
 
@@ -56,7 +57,7 @@ fun GlobalRankingUsers(navController: NavController) {
             SearchBar()
             LazyColumn(modifier = Modifier){
                 items(5) {
-                    FriendInfoRow(name = "friend name", id = 1, navController = navController)
+                    FriendInfoRow(name = "friend name", getRank(1000),id = 1, navController = navController)
                 }
             }
         }

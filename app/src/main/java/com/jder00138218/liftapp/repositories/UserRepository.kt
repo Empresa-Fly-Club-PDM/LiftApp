@@ -15,10 +15,21 @@ class UserRepository (private val api: UserService){
         val users: List<user> = api.getAllAdmins(query)
         return users
     }
+
+    suspend fun searchForfriend(id:Int?, query:String):List<user>{
+        val users: List<user> = api.searchForFriends(id,query)
+        return users
+    }
+
+    suspend fun getMyFriends(id:Int?):List<user>{
+        val users: List<user> = api.getMyFriends(id)
+        return users
+    }
     suspend fun getUserDetails(id:Int?):user{
         val userdetails: user = api.getUserDetails(id)
         return userdetails
     }
+
     suspend fun deleteUser(id:Int?): ApiResponse<String> {
         try {
             val response = api.deleteUser(id)
@@ -27,6 +38,21 @@ class UserRepository (private val api: UserService){
 
             if (e.code() == 410) {
                 return ApiResponse.ErrorWithMessage("Eliminado correctamente")
+            }
+            return ApiResponse.Error(e)
+        } catch (e: IOException) {
+            return ApiResponse.Error(e)
+        }
+    }
+
+    suspend fun addFriend(current:Int?,friend:Int?): ApiResponse<String> {
+        try {
+            val response = api.addFriend(current,friend)
+            return ApiResponse.Success(response.toString())
+        } catch (e: HttpException) {
+
+            if (e.code() == 410) {
+                return ApiResponse.ErrorWithMessage("Amigo agregado")
             }
             return ApiResponse.Error(e)
         } catch (e: IOException) {

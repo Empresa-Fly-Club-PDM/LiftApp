@@ -100,7 +100,8 @@ fun AdminUpdateExercise(navController: NavHostController) {
 @Composable
 fun FieldsDetaileCreate(navController: NavHostController,adminUpdateExerciseViewModel: AdminUpdateExerciseViewModel) {
     Column(modifier = Modifier
-        .verticalScroll(rememberScrollState())) {
+        .verticalScroll(rememberScrollState()),
+        horizontalAlignment = Alignment.CenterHorizontally) {
         FieldName(adminUpdateExerciseViewModel)
         Spacer(modifier = Modifier.padding(2.dp))
         FieldMuscle(adminUpdateExerciseViewModel)

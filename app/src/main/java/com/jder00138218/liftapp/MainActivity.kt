@@ -33,7 +33,9 @@ import com.jder00138218.liftapp.ui.users.user.DashboardUserScreen
 import com.jder00138218.liftapp.ui.users.user.addexercisetoroutine.AddExerciseToRoutine
 import com.jder00138218.liftapp.ui.users.user.adduserexercises.AddUserExercise
 import com.jder00138218.liftapp.ui.users.user.createroutine.CreateRoutine
+import com.jder00138218.liftapp.ui.users.user.friends.FriendsMenu
 import com.jder00138218.liftapp.ui.users.user.ranking.GlobalRankingUsers
+import com.jder00138218.liftapp.ui.users.user.ranking.RankingUsers
 import com.jder00138218.liftapp.ui.users.user.routinedetail.RoutineDetail
 import com.jder00138218.liftapp.ui.users.user.routineexercisedetail.RoutineExerciseDetail
 import com.jder00138218.liftapp.ui.users.user.routinesmenu.RoutinesMenu
@@ -127,7 +129,7 @@ fun NavigationGraph(){
             RoutineDetail(navController)
         }
         composable(route = Rutas.UserRanking.ruta){
-            GlobalRankingUsers(navController)
+            RankingUsers(navController)
         }
         composable(route = Rutas.UserCreateRoutine.ruta){
             CreateRoutine(navController)
@@ -156,6 +158,9 @@ fun NavigationGraph(){
         }
         composable(route = Rutas.UserExercises.ruta){
             UserExercises(navController)
+        }
+        composable(route = Rutas.FriendsMenu.ruta){
+            FriendsMenu(navController)
         }
         composable(route=Rutas.UserAddExercises.ruta){
             AddUserExercise(navController)

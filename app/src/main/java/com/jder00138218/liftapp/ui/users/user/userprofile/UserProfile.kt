@@ -146,7 +146,7 @@ fun UserAccountCard(navController: NavController, detailUser: user) {
             }
 
             Button(
-                onClick = {navController.navigate(route = Rutas.AdminAdminManager.ruta)},
+                onClick = {navController.navigate(route = Rutas.FriendsMenu.ruta)},
                 modifier = Modifier
                     .fillMaxWidth()
                     .background(Color.White)

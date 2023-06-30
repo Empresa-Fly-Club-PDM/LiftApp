@@ -106,7 +106,7 @@ fun UserAccountCard(navController: NavController, detailUser: user) {
 
             UserProfileInfoRow(text = "username")
             Button(
-                onClick = {},
+                onClick = {navController.navigate(Rutas.UpdateUser.ruta)},
                 modifier = Modifier
                     .fillMaxWidth()
                     .background(Color.White)

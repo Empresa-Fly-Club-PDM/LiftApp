@@ -15,6 +15,10 @@ class UserRepository (private val api: UserService){
         val users: List<user> = api.getAllAdmins(query)
         return users
     }
+    suspend fun getRanking(query:String):List<user>{
+        val users: List<user> = api.getRanking(query)
+        return users
+    }
 
     suspend fun searchForfriend(id:Int?, query:String):List<user>{
         val users: List<user> = api.searchForFriends(id,query)

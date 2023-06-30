@@ -33,5 +33,8 @@ interface UserService {
     @GET("friends/addFriend/{current}/{friend}")
     suspend fun addFriend(@Path("current") current:Int?,@Path("friend")friend:Int?):Response<Void>
 
+    @GET("usuario/top5")
+    suspend fun getRanking(@Query("query") query:String):List<user>
+
 
 }

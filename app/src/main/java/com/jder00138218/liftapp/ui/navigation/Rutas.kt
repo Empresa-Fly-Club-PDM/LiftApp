@@ -35,6 +35,7 @@ sealed  class Rutas(var ruta : String) {
     object FriendsMenu:Rutas("ruta_user_friends")
     object UserAddExercises:Rutas("rutas_user_add_exercise")
     object UserUpdateExercises:Rutas("rutas_user_update_exercise/{id}")
+    object FindFriends:Rutas("rutas_find_friends/{id}")
 
 
 

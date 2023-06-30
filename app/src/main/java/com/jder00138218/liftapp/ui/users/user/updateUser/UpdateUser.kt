@@ -1,4 +1,4 @@
-package com.jder00138218.liftapp.ui.users.admin.userManager.UpdateAdmin
+package com.jder00138218.liftapp.ui.users.user.updateUser
 
 import android.app.DatePickerDialog
 import android.widget.DatePicker
@@ -22,10 +22,15 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExposedDropdownMenuBox
+import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -45,20 +50,20 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.jder00138218.liftapp.R
 import com.jder00138218.liftapp.ui.users.admin.Menu
-import com.jder00138218.liftapp.ui.users.admin.exerciseManager.CreateExercise.viewmodel.CreateExerciseViewmodel
-import com.jder00138218.liftapp.ui.users.admin.userManager.CreateAdmin.viewmodel.CreateAdminViewModel
 import com.jder00138218.liftapp.ui.users.admin.userManager.UpdateAdmin.viewmodel.UpdateAdminViewModel
+import com.jder00138218.liftapp.ui.users.user.UserBottomMenu
 import java.util.Calendar
 import java.util.Date
 
 @Composable
-fun UpdateAdmin(navController: NavHostController) {
+fun UpdateUser(navController: NavHostController) {
     val navBackStackEntry = navController.currentBackStackEntry
     val userid = navBackStackEntry?.arguments?.getInt("id")
     val updateAdminViewModel: UpdateAdminViewModel = viewModel(
@@ -79,16 +84,16 @@ fun UpdateAdmin(navController: NavHostController) {
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
-                text = "Añadir Administrador",
+                text = "Informacion de usuario",
                 color = Color.Black,
                 style = TextStyle(
                     fontWeight = FontWeight.Bold,
                     fontSize = 24.sp
                 )
             )
-            CreateAdminFields(updateAdminViewModel,navController)
-            ButtonsUpdate(userid,updateAdminViewModel,navController)
-            Menu(navController)
+            UpdateUserFields(updateAdminViewModel,navController)
+            ButtonsUpdateUser(userid,updateAdminViewModel,navController)
+            UserBottomMenu(navController)
         }
 
     }
@@ -98,8 +103,8 @@ fun UpdateAdmin(navController: NavHostController) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CreateAdminFields(viewmodel: UpdateAdminViewModel, navController: NavHostController) {
-    Column(modifier = Modifier
+    fun UpdateUserFields(viewmodel: UpdateAdminViewModel, navController: NavHostController) {
+    Column(modifier = Modifier.fillMaxWidth()
         .verticalScroll(rememberScrollState()),
         horizontalAlignment = Alignment.CenterHorizontally) {
         FieldName(viewmodel)
@@ -110,42 +115,150 @@ fun CreateAdminFields(viewmodel: UpdateAdminViewModel, navController: NavHostCon
         Spacer(modifier = Modifier.padding(2.dp))
         FieldConfirmPassword(viewmodel)
         Spacer(modifier = Modifier.padding(8.dp))
+        UpdateUserSelectField()
+        Spacer(modifier = Modifier.padding(8.dp))
+        FieldHeight(viewmodel = viewmodel)
+        Spacer(modifier = Modifier.padding(8.dp))
+        FieldWeight(viewmodel = viewmodel)
+    }
+
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Preview
+@Composable
+fun UpdateUserSelectField(){
+
+    var isExpanded by remember {
+        mutableStateOf(false)
+    }
+    var option by remember {
+        mutableStateOf("")
+    }
+
+    Box(modifier = Modifier.fillMaxWidth(),
+        contentAlignment = Alignment.Center) {
+        ExposedDropdownMenuBox(expanded = isExpanded, onExpandedChange = {isExpanded = it}) {
+            TextField(value = option, onValueChange = {}, readOnly = true, trailingIcon = {
+                ExposedDropdownMenuDefaults.TrailingIcon(expanded = isExpanded)
+            }, modifier = Modifier
+                .menuAnchor()
+                .width(350.dp)
+                .clip(RoundedCornerShape(4.dp))
+                .border(
+                    width = 1.dp,
+                    color = colorResource(id = R.color.field)
+                )// With padding show border color
+                .background(colorResource(id = R.color.field)),
+                colors = TextFieldDefaults.textFieldColors(containerColor = colorResource(id = R.color.field)) ,
+                placeholder = { Text(text = "Sexo", color = Color(R.color.gray_text)) },
+                leadingIcon = {
+                    Icon(
+                        modifier = Modifier.size(16.dp),
+                        painter = painterResource(id = R.drawable.pesa),
+                        contentDescription = "Icon field"
+                    )
+                })
+
+            ExposedDropdownMenu(expanded = isExpanded, onDismissRequest = { isExpanded = false }) {
+                DropdownMenuItem(text = { Text(text = "Masculino") },
+                    onClick = {
+                        isExpanded = false
+                        option = "Alto"
+                    })
+                DropdownMenuItem(text = { Text(text = "Femenino") },
+                    onClick = {
+                        isExpanded = false
+                        option = "Medio"
+                    })
+            }
+        }
     }
 
 }
 
 @Composable
-fun ButtonsUpdate(id: Int?, updateAdminViewModel: UpdateAdminViewModel, navController: NavHostController) {
+fun ButtonsUpdateUser(id: Int?, updateAdminViewModel: UpdateAdminViewModel, navController: NavHostController) {
     val context = LocalContext.current
-    Row() {
+    Row(modifier = Modifier.fillMaxWidth()) {
         Button(
             onClick = {updateAdminViewModel.onUpdate(id,navController,context)
             }, modifier = Modifier
                 .height(60.dp)
-                .width(175.dp)
                 .fillMaxWidth(), colors = ButtonDefaults.buttonColors(
-                containerColor = colorResource(id = R.color.buttonGray)
+                containerColor = colorResource(id = R.color.buttonGren)
             )
         ) {
 
-            Text(text = " Editar")
-
-        }
-
-        Button(
-            onClick = {updateAdminViewModel.deleteUser(id, navController,context)
-            }, modifier = Modifier
-                .height(60.dp)
-                .width(175.dp)
-                .fillMaxWidth(), colors = ButtonDefaults.buttonColors(
-                containerColor = Color.Red
-            )
-        ) {
-
-            Text(text = "Eliminar")
+            Text(text = "Actualizar Informacion")
 
         }
     }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun FieldWeight(viewmodel: UpdateAdminViewModel) {
+    OutlinedTextField(
+        value = viewmodel._nombrecompleto,
+        onValueChange = { newValue ->
+            viewmodel._nombrecompleto= newValue
+        },
+        modifier = Modifier
+            .width(350.dp)
+            .clip(RoundedCornerShape(4.dp))
+            .border(
+                width = 1.dp,
+                color = colorResource(id = R.color.field)
+            )// With padding show border color
+            .background(colorResource(id = R.color.field)),
+        placeholder = { Text(text = "Peso en lb", color = Color(R.color.gray_text)) },
+        singleLine = true,
+        maxLines = 1,
+        leadingIcon = {
+            Icon(
+                modifier = Modifier.size(16.dp),
+                painter = painterResource(id = R.drawable.pesa),
+                contentDescription = "Icon field"
+            )
+        },
+        keyboardOptions = KeyboardOptions(
+            keyboardType = KeyboardType.Text,
+            imeAction = ImeAction.Next // Acción IME cuando se presiona la tecla Enter
+        )
+    )
+}
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun FieldHeight(viewmodel: UpdateAdminViewModel) {
+    OutlinedTextField(
+        value = viewmodel._nombrecompleto,
+        onValueChange = { newValue ->
+            viewmodel._nombrecompleto= newValue
+        },
+        modifier = Modifier
+            .width(350.dp)
+            .clip(RoundedCornerShape(4.dp))
+            .border(
+                width = 1.dp,
+                color = colorResource(id = R.color.field)
+            )// With padding show border color
+            .background(colorResource(id = R.color.field)),
+        placeholder = { Text(text = "Estatura en cm", color = Color(R.color.gray_text)) },
+        singleLine = true,
+        maxLines = 1,
+        leadingIcon = {
+            Icon(
+                modifier = Modifier.size(16.dp),
+                painter = painterResource(id = R.drawable.pesa),
+                contentDescription = "Icon field"
+            )
+        },
+        keyboardOptions = KeyboardOptions(
+            keyboardType = KeyboardType.Text,
+            imeAction = ImeAction.Next // Acción IME cuando se presiona la tecla Enter
+        )
+    )
 }
 
 @OptIn(ExperimentalMaterial3Api::class)

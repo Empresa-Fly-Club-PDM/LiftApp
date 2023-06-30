@@ -118,7 +118,7 @@ fun CardUserExercise(exercise: exercise, navController: NavController, addExerci
         modifier = Modifier
             .fillMaxWidth()
             .padding(8.dp)
-            .clickable {
+            .clickable {navController.navigate(route = "rutas_user_update_exercise/${exercise.id}")
             },
         colors = CardDefaults.cardColors(
             containerColor = colorResource(id = R.color.card)

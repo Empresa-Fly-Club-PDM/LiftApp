@@ -32,8 +32,8 @@ sealed  class Rutas(var ruta : String) {
     object UserProfile:Rutas("rutas_user_profile")
     object RoutineExerciseDetail:Rutas("routine_exercise_detail/{id}/{routineid}")
     object UserExercises:Rutas("rutas_user_exercises")
-
     object UserAddExercises:Rutas("rutas_user_add_exercise")
+    object UserUpdateExercises:Rutas("rutas_user_update_exercise/{id}")
 
 
 }

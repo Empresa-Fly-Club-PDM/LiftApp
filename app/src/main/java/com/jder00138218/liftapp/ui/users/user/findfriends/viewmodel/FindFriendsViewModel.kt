@@ -28,10 +28,10 @@ class FindFriendsViewModel(private val userRepository: UserRepository):ViewModel
     val users: List<user>
         get() = _users
 
-    fun searchForFriends(query:String) {
+    fun searchForFriends(id:Int?,query:String) {
         viewModelScope.launch {
             _users.clear()
-            _users.addAll(userRepository.searchForfriend(query))
+            _users.addAll(userRepository.searchForfriend(id,query))
         }
     }
 

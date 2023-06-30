@@ -34,6 +34,7 @@ import com.jder00138218.liftapp.ui.users.user.addexercisetoroutine.AddExerciseTo
 import com.jder00138218.liftapp.ui.users.user.adduserexercises.AddUserExercise
 import com.jder00138218.liftapp.ui.users.user.createroutine.CreateRoutine
 import com.jder00138218.liftapp.ui.users.user.findfriends.FindFriends
+import com.jder00138218.liftapp.ui.users.user.friendprofile.FriendProfile
 import com.jder00138218.liftapp.ui.users.user.friends.FriendsMenu
 import com.jder00138218.liftapp.ui.users.user.ranking.GlobalRankingUsers
 import com.jder00138218.liftapp.ui.users.user.ranking.RankingUsers
@@ -180,6 +181,13 @@ fun NavigationGraph(){
             })
         ){
             FindFriends(navController)
+        }
+        composable(route= Rutas.FriendProfile.ruta,
+            arguments = listOf(navArgument("id"){
+                type = NavType.IntType
+            })
+            ){
+            FriendProfile(navController)
         }
     }
 }

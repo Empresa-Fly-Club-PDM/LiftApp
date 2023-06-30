@@ -13,6 +13,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Info
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
@@ -90,10 +91,12 @@ fun FriendInfoRow(name: String, rank:String, id:Int?, navController: NavControll
             Text(text = name)
             Text(text = rank)
         }
-        IconButton(onClick = {}) {
+        IconButton(onClick = {
+            navController.navigate("rutas_friend_profile/${id}")
+        }) {
             Icon(
-                imageVector = Icons.Default.Delete,
-                contentDescription = "Delete"
+                imageVector = Icons.Default.Info,
+                contentDescription = "ViewUser"
             )
         }
 

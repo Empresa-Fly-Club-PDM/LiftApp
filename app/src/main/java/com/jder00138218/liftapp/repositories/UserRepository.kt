@@ -16,8 +16,8 @@ class UserRepository (private val api: UserService){
         return users
     }
 
-    suspend fun searchForfriend(query:String):List<user>{
-        val users: List<user> = api.searchForFriends(query)
+    suspend fun searchForfriend(id:Int?, query:String):List<user>{
+        val users: List<user> = api.searchForFriends(id,query)
         return users
     }
 

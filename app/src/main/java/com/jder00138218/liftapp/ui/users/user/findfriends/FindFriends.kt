@@ -54,6 +54,8 @@ import kotlinx.coroutines.delay
 fun FindFriends(navController: NavController){
     val navBackStackEntry = navController.currentBackStackEntry
     val userid = navBackStackEntry?.arguments?.getInt("id")
+    val context = LocalContext.current
+    val app = context.applicationContext as LiftAppApplication
     val vm: FindFriendsViewModel = viewModel(
         factory = FindFriendsViewModel.Factory
     )
@@ -63,7 +65,7 @@ fun FindFriends(navController: NavController){
         val currentText = text
         delay(500) // Add a short delay before executing the search
         if (currentText == text) { // Ensure the text hasn't changed during the delay
-            vm.searchForFriends(text)
+            vm.searchForFriends(app.getUserId(),text)
         }
     }
     val handleAddOnClick = {
@@ -86,7 +88,7 @@ fun FindFriends(navController: NavController){
             HeaderBarBackArrowAdd("Buscar Amigos", navController, addOnClick = handleAddOnClick, backOnClick = handleBackOnClick)
             OutlinedTextField(value = text, onValueChange = { newText: String ->
                 text = newText
-                vm.searchForFriends(text)
+                vm.searchForFriends(app.getUserId(),text)
             }, modifier = Modifier
                 .padding(horizontal = 8.dp)
                 .fillMaxWidth()

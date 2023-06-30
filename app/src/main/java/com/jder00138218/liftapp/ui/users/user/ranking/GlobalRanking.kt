@@ -1,23 +1,34 @@
 package com.jder00138218.liftapp.ui.users.user.ranking
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.jder00138218.liftapp.R
 import com.jder00138218.liftapp.ui.navigation.Rutas
 import com.jder00138218.liftapp.ui.users.admin.Menu
 import com.jder00138218.liftapp.ui.users.user.HeaderBarBackArrowAdd
 import com.jder00138218.liftapp.ui.users.user.SearchBar
+import com.jder00138218.liftapp.ui.users.user.friends.FriendInfoRow
+import com.jder00138218.liftapp.ui.users.user.routinesmenu.RoutineMenuItem
 
 
 @Composable
@@ -37,47 +48,22 @@ fun GlobalRankingUsers(navController: NavController) {
             .background(color = Color.White)
     ) {
 
-        Box(modifier = Modifier.fillMaxSize()) {
+        Column(modifier = Modifier.fillMaxSize(),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.SpaceBetween) {
+            HeaderBarBackArrowAdd("Ranking", navController, addOnClick = handleAddOnClick, backOnClick = handleBackOnClick)
 
-            Column(
-                // 1
-                Modifier
-                    .align(Alignment.TopCenter)
-                    .fillMaxHeight(0.1f)
-                    .fillMaxWidth()
-                    .padding(8.dp),
-            ) {
-                HeaderBarBackArrowAdd("Ranking", navController, addOnClick = handleAddOnClick, backOnClick = handleBackOnClick)
+            SearchBar()
+            LazyColumn(modifier = Modifier){
+                items(5) {
+                    FriendInfoRow(name = "friend name", id = 1, navController = navController)
+                }
             }
-
-
-            Column(
-                Modifier
-                    .align(Alignment.Center)
-                    .fillMaxHeight(0.84f)
-                    .fillMaxWidth()
-                    .padding(8.dp),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                SearchBar()
-                RankingInfo()
-            }
-
-            Column( // 3
-                Modifier
-                    .align(Alignment.BottomCenter)
-                    .fillMaxHeight(0.06f)
-                    .fillMaxWidth()
-                    .background(Color.White),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-
-            }
-
         }
+
+
 
     }
 
 }
-
 

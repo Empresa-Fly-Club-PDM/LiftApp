@@ -48,6 +48,9 @@ import com.jder00138218.liftapp.ui.users.admin.Menu
 import com.jder00138218.liftapp.ui.users.user.routinesmenu.RoutineMenuItem
 import com.jder00138218.liftapp.ui.users.user.viewmodel.DashboardUserLiftViewModel
 import com.jder00138218.liftapp.ui.users.user.viewmodel.DashboardUserViewModel
+import java.time.LocalDate
+import java.time.Period
+import java.time.format.DateTimeFormatter
 
 
 @Composable
@@ -178,7 +181,7 @@ fun InfoUser(detailUser: user) {
         Row() {
             dataItem("Altura", detailUser.height.toString()+" Cm")
             dataItem("Peso", detailUser.weight.toString()+" Lb")
-            dataItem("Age", "22yo")
+            dataItem("Edad", calculateAge(detailUser.fechanac).toString() +" Años")
         }
         Spacer(modifier = Modifier.padding(4.dp))
         Row() {
@@ -329,4 +332,15 @@ fun handleHighlightName(name:String?):String{
         auxname =""
     }
     return auxname
+}
+
+fun calculateAge(dateString: String): Int? {
+    val dateParts = dateString.split("/")
+    if (dateParts.size == 3) {
+        val birthYear = dateParts[2].toInt()
+        val currentYear = LocalDate.now().year
+        val age = currentYear - birthYear
+        return age
+    }
+    return null
 }

@@ -66,7 +66,7 @@ fun AdminProfile(navController: NavController){
                 horizontalAlignment = Alignment.CenterHorizontally) {
 
                 AccountCard(navController, detailUser)
-                LogoutCard()
+                LogoutCard(navController,app)
             }
 
             Menu(navController)
@@ -146,7 +146,7 @@ fun AccountCard(navController: NavController, detailUser:user) {
 }
 
 @Composable
-fun LogoutCard() {
+fun LogoutCard(navController: NavController,app:LiftAppApplication) {
     Card(
         modifier = Modifier
             .fillMaxWidth(),
@@ -170,7 +170,9 @@ fun LogoutCard() {
             )
 
             Button(
-                onClick = { /* Handle logout button click */ },
+                onClick = {
+                    app.saveAuthToken("user_token")
+                    navController.navigate(Rutas.Login.ruta) },
                 modifier = Modifier,
                 colors = ButtonDefaults.buttonColors(containerColor = colorResource(
                     id = R.color.buttonRed))

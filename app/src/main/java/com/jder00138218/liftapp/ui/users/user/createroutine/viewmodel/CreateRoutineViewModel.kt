@@ -30,7 +30,7 @@ class CreateRoutineViewModel(private val routineRepository: RoutineRepository) :
     private var _name by mutableStateOf("")
     private var _tag by mutableStateOf("")
     private var _minute by mutableStateOf("")
-    private var _hour by mutableStateOf("")
+    private var _hour by mutableStateOf("00")
     private var _time by mutableStateOf("")
     val _status = MutableLiveData<CreateRoutineUIStatus>(CreateRoutineUIStatus.Resume)
 
@@ -89,7 +89,7 @@ class CreateRoutineViewModel(private val routineRepository: RoutineRepository) :
             Toast.makeText(context, "Verificar campos vacios", Toast.LENGTH_SHORT).show()
             return
         }
-        if(minute.toInt()<=60 && minute.toInt()>0 && hour.toInt()>0){
+        if(minute.toInt()<=60 && minute.toInt()>0 && hour.toInt()>=0){
             create(difficulty, name,tag,minute,hour,id,navController,context)
         }else{
             Toast.makeText(context, "Duracipon de entrenamiento invalida", Toast.LENGTH_SHORT).show()

@@ -40,6 +40,7 @@ import com.jder00138218.liftapp.ui.users.user.ranking.GlobalRankingUsers
 import com.jder00138218.liftapp.ui.users.user.ranking.RankingUsers
 import com.jder00138218.liftapp.ui.users.user.routinedetail.RoutineDetail
 import com.jder00138218.liftapp.ui.users.user.routineexercisedetail.RoutineExerciseDetail
+import com.jder00138218.liftapp.ui.users.user.routineflow.StartRoutine
 import com.jder00138218.liftapp.ui.users.user.routinesmenu.RoutinesMenu
 import com.jder00138218.liftapp.ui.users.user.updateUser.UpdateUser
 import com.jder00138218.liftapp.ui.users.user.updateuserexercise.UpdateUserExercise
@@ -192,6 +193,9 @@ fun NavigationGraph(){
             })
             ){
             FriendProfile(navController)
+        }
+        composable(route=Rutas.StartRoutine.ruta){
+            StartRoutine(navController)
         }
     }
 }

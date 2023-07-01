@@ -38,6 +38,7 @@ sealed  class Rutas(var ruta : String) {
     object FindFriends:Rutas("rutas_find_friends/{id}")
     object FriendProfile:Rutas("rutas_friend_profile/{id}")
     object UpdateUser:Rutas("rutas_update_user")
+    object StartRoutine:Rutas("rutas_start_routine")
 
 
 

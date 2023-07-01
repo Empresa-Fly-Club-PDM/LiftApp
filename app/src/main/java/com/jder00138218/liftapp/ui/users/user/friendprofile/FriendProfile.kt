@@ -32,6 +32,7 @@ import androidx.navigation.NavController
 import com.jder00138218.liftapp.R
 import com.jder00138218.liftapp.network.dto.lift.lift
 import com.jder00138218.liftapp.network.dto.user.user
+import com.jder00138218.liftapp.ui.users.user.HeaderBarBackArrowDumbell
 import com.jder00138218.liftapp.ui.users.user.UserBottomMenu
 import com.jder00138218.liftapp.ui.users.user.friendprofile.viewmodel.FriendProfileLiftViewModel
 import com.jder00138218.liftapp.ui.users.user.friendprofile.viewmodel.FriendProfileViewModel
@@ -66,6 +67,7 @@ fun FriendProfile(navController: NavController) {
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.SpaceBetween) {
 
+            HeaderBarBackArrowDumbell(title = "Perfil Amigo", navController = navController, backOnClick = {navController.popBackStack()})
             Text(text = "Bienvenido,", color = colorResource(id = R.color.gray_text))
             Text(
                 text = detailUser.nombrecompleto,

@@ -50,6 +50,7 @@ import androidx.navigation.NavHostController
 import com.jder00138218.liftapp.R
 import com.jder00138218.liftapp.ui.users.admin.Menu
 import com.jder00138218.liftapp.ui.users.admin.exerciseManager.CreateExercise.viewmodel.CreateExerciseViewmodel
+import com.jder00138218.liftapp.ui.users.user.HeaderBarBackArrowDumbell
 import com.jder00138218.liftapp.ui.users.user.UserBottomMenu
 import com.jder00138218.liftapp.ui.users.user.adduserexercises.viewmodel.AddUserExercisesViewModel
 
@@ -71,14 +72,7 @@ fun AddUserExercise(navController: NavHostController) {
             verticalArrangement = Arrangement.SpaceBetween,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Text(
-                text = "Crear Ejercicio",
-                color = Color.Black,
-                style = TextStyle(
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 24.sp
-                )
-            )
+            HeaderBarBackArrowDumbell(title = "Crear ejercicio", navController = navController, backOnClick = {navController.popBackStack()})
             FieldsDetaileCreate(addUserExercisesViewModel,navController)
             ButtonsCreate(addUserExercisesViewModel,navController)
             Button(

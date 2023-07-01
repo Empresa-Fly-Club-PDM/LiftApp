@@ -42,6 +42,8 @@ sealed  class Rutas(var ruta : String) {
 
     object CurrentRoutine:Rutas("rutas_courrent_routine/{id}")
 
+    object RegisterLift:Rutas("rutas_register_lift/{exerciseid}/{exercisename}")
+
 
 
 }

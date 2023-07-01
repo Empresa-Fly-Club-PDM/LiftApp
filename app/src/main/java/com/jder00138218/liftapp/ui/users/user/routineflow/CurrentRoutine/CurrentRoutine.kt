@@ -1,4 +1,4 @@
-package com.jder00138218.liftapp.ui.users.user.routineflow
+package com.jder00138218.liftapp.ui.users.user.routineflow.CurrentRoutine
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -29,18 +29,15 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.jder00138218.liftapp.R
 import com.jder00138218.liftapp.network.dto.exercise.exercise
 import com.jder00138218.liftapp.ui.navigation.Rutas
-import com.jder00138218.liftapp.ui.users.admin.CardExercise
 import com.jder00138218.liftapp.ui.users.user.HeaderBarBackArrowDumbell
 import com.jder00138218.liftapp.ui.users.user.UserBottomMenu
 import com.jder00138218.liftapp.ui.users.user.routinedetail.viewmodel.RoutineDetailViewModel
-import com.jder00138218.liftapp.ui.users.user.routineflow.StartRoutine.ButtonDeleteRoutine
 
 @Composable
 fun CurrentRoutine(navController: NavController){
@@ -77,9 +74,8 @@ fun CurrentRoutine(navController: NavController){
                     .fillMaxHeight(0.6f)
             ) {
                 items(vm.exercises) { index ->
-                    com.jder00138218.liftapp.ui.users.user.routineflow.StartRoutine.CardExercise(
+                    CardExercise(
                         index,
-                        routineid,
                         navController
                     )
                 }
@@ -108,13 +104,13 @@ fun ButtonEndRoutine(id:Int?, viewmodel: RoutineDetailViewModel, navController: 
 
 
 @Composable
-fun CardExercise(exercise: exercise, routineid:Int?, navController: NavController) {
+fun CardExercise(exercise: exercise, navController: NavController) {
     Card( // this
         modifier = Modifier
             .fillMaxWidth()
             .padding(8.dp)
             .clickable {
-                navController.navigate(route = "routine_exercise_detail/${exercise.id}/${routineid}")
+                navController.navigate(route = "rutas_register_lift/${exercise.id}/${exercise.name}")
             },
         colors = CardDefaults.cardColors(
             containerColor = colorResource(id = R.color.card)

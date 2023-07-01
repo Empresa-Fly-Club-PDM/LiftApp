@@ -39,7 +39,8 @@ import com.jder00138218.liftapp.ui.users.user.friends.FriendsMenu
 import com.jder00138218.liftapp.ui.users.user.ranking.RankingUsers
 import com.jder00138218.liftapp.ui.users.user.routinedetail.RoutineDetail
 import com.jder00138218.liftapp.ui.users.user.routineexercisedetail.RoutineExerciseDetail
-import com.jder00138218.liftapp.ui.users.user.routineflow.CurrentRoutine
+import com.jder00138218.liftapp.ui.users.user.routineflow.CurrentRoutine.CurrentRoutine
+import com.jder00138218.liftapp.ui.users.user.routineflow.RegisterLift.RegisterExerciseStats
 import com.jder00138218.liftapp.ui.users.user.routineflow.StartRoutine.StartRoutine
 import com.jder00138218.liftapp.ui.users.user.routinesmenu.RoutinesMenu
 import com.jder00138218.liftapp.ui.users.user.updateUser.UpdateUser
@@ -207,6 +208,15 @@ fun NavigationGraph(){
             })
         ){
             CurrentRoutine(navController)
+        }
+        composable(route = Rutas.RegisterLift.ruta,
+            arguments = listOf(navArgument("exerciseid"){
+                type = NavType.IntType
+            }, navArgument("exercisename"){
+                type = NavType.StringType
+            })
+            ){
+            RegisterExerciseStats(navController)
         }
 
 

@@ -73,7 +73,7 @@ fun StartRoutine(navController:NavController){
                     .fillMaxHeight(0.6f)
             ) {
                 items(vm.exercises) { index ->
-                    CardExercise(index, routineid,navController)
+                    CardExercise(index)
                 }
             }
             ButtonDeleteRoutine(routineid,viewmodel = vm, navController = navController )
@@ -101,13 +101,12 @@ fun ButtonDeleteRoutine(id:Int?, viewmodel: RoutineDetailViewModel, navControlle
 
 
 @Composable
-fun CardExercise(exercise: exercise, routineid:Int?, navController: NavController) {
+fun CardExercise(exercise: exercise) {
     Card( // this
         modifier = Modifier
             .fillMaxWidth()
             .padding(8.dp)
             .clickable {
-                navController.navigate(route = "routine_exercise_detail/${exercise.id}/${routineid}")
             },
         colors = CardDefaults.cardColors(
             containerColor = colorResource(id = R.color.card)

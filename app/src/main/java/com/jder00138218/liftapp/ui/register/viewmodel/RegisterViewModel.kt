@@ -146,7 +146,7 @@ class RegisterViewModel(private val repository: CredentialsRepository) : ViewMod
                     Toast.LENGTH_SHORT
                 ).show()
 
-                (genre != "Masculino" && genre != "Femenino") -> Toast.makeText(
+                (genre != "Masculino" || genre != "Femenino") -> Toast.makeText(
                     context,
                     "Genero debe ser Masculino o Femenino",
                     Toast.LENGTH_SHORT
@@ -160,17 +160,20 @@ class RegisterViewModel(private val repository: CredentialsRepository) : ViewMod
             }
 
             return
+        }else{
+            register(name, email, password, genre, date, weigth, heigth, navController, context)
         }
 
-        register(name, email, password, genre, date, weigth, heigth, navController, context)
     }
 
     private fun validateData(): Boolean {
+        Log.d("genr", genre)
         when {
             email.isEmpty() -> return false
             password.isEmpty() -> return false
             passwordVe.isEmpty() -> return false
-            genre.isEmpty() -> return false
+            genre.isEmpty()-> return false
+            (genre != "Masculino" && genre != "Femenino") -> return false
             date.isEmpty() -> return false
             (weigth == 0) -> return false
             (heigth == 0.0) -> return false

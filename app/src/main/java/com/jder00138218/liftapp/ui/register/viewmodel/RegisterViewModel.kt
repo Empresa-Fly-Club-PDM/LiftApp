@@ -1,6 +1,8 @@
 package com.jder00138218.liftapp.ui.register.viewmodel
 
+import android.content.Context
 import android.util.Log
+import android.widget.Toast
 import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -10,11 +12,20 @@ import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.AP
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
+import androidx.navigation.NavHostController
 import com.jder00138218.liftapp.LiftAppApplication
 import com.jder00138218.liftapp.network.ApiResponse
 import com.jder00138218.liftapp.repositories.CredentialsRepository
+
+import com.jder00138218.liftapp.ui.navigation.Rutas
 import com.jder00138218.liftapp.ui.register.RegisterUiStatus
 import kotlinx.coroutines.launch
+import java.lang.Math.abs
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Date
+import java.util.Locale
+
 
 class RegisterViewModel(private val repository: CredentialsRepository) : ViewModel() {
     private var _name by mutableStateOf("")
@@ -88,8 +99,10 @@ class RegisterViewModel(private val repository: CredentialsRepository) : ViewMod
         password: String,
         genre: String,
         date: String,
-        weigth: Double,
-        heigth: Double
+        weigth: Int,
+        heigth: Int,
+        navController: NavHostController,
+        context: Context
     ) {
         viewModelScope.launch {
             _status.value = (
@@ -103,29 +116,64 @@ class RegisterViewModel(private val repository: CredentialsRepository) : ViewMod
                         is ApiResponse.Success -> RegisterUiStatus.Success
                     }
                     )
+            handleUiStatus(navController, context)
         }
     }
 
-    fun onRegister() {
+    fun onRegister(navController: NavHostController, context: Context) {
+        var years = 0
+
+        if (date.isEmpty()) {
+            years = 0
+        } else {
+            years = calcularEdad(date)
+        }
+
         if (!validateData()) {
             _status.value = RegisterUiStatus.ErrorWithMessage("Wrong Information")
+            Toast.makeText(context, "Campos vacios", Toast.LENGTH_SHORT).show()
+            when {
+                (password != passwordVe) -> Toast.makeText(
+                    context,
+                    "Error contraseñas no coinciden",
+                    Toast.LENGTH_SHORT
+                ).show()
+
+
+                (password.length < 8) -> Toast.makeText(
+                    context,
+                    "La contraseña debe ser de al menos 8 caracteres",
+                    Toast.LENGTH_SHORT
+                ).show()
+
+                (genre != "Masculino" || genre != "Femenino") -> Toast.makeText(
+                    context,
+                    "Genero debe ser Masculino o Femenino",
+                    Toast.LENGTH_SHORT
+                ).show()
+
+                (years < 8) -> Toast.makeText(
+                    context,
+                    "Edad invalida",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+
             return
+        }else{
+            register(name, email, password, genre, date, weigth, heigth, navController, context)
         }
-        Log.d("data", name)
-        Log.d("data", email)
-        Log.d("data", password)
-        Log.d("data", genre)
-        Log.d("data", date)
-        Log.d("data", weigth.toString())
-        Log.d("data", heigth.toString())
-        register(name, email, password, genre, date, weigth, heigth)
+
     }
 
     private fun validateData(): Boolean {
+        Log.d("genr", genre)
         when {
             email.isEmpty() -> return false
             password.isEmpty() -> return false
-            genre.isEmpty() -> return false
+            passwordVe.isEmpty() -> return false
+            genre.isEmpty()-> return false
+            (genre != "Masculino" && genre != "Femenino") -> return false
             date.isEmpty() -> return false
             (weigth == 0.0) -> return false
             (heigth == 0.0) -> return false
@@ -148,6 +196,56 @@ class RegisterViewModel(private val repository: CredentialsRepository) : ViewMod
         _weigth = 0.0
     }
 
+    fun handleUiStatus(
+        navController: NavHostController, context: Context
+    ) {
+        val status = _status.value
+
+        when (status) {
+
+            is RegisterUiStatus.Error -> {
+
+                Toast.makeText(context, "Error en registro", Toast.LENGTH_SHORT).show()
+            }
+
+            is RegisterUiStatus.ErrorWithMessage -> {
+                Toast.makeText(context, "Datos no validos", Toast.LENGTH_SHORT).show()
+            }
+
+            is RegisterUiStatus.Success -> {
+                clearStatus()
+                clearData()
+                navController.navigate(route = Rutas.Login.ruta)
+            }
+
+            else -> {}
+        }
+    }
+
+
+    fun calcularEdad(fechaNacimiento: String): Int {
+        val formatoFecha = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+        val fechaNac = formatoFecha.parse(fechaNacimiento)
+        val fechaActual = Date()
+
+        val diff = fechaActual.time - fechaNac.time
+        val edadMillis = abs(diff)
+
+        val calendar = Calendar.getInstance()
+        calendar.timeInMillis = edadMillis
+
+        val anio = calendar.get(Calendar.YEAR) - 1970
+        val mes = calendar.get(Calendar.MONTH)
+        val dia = calendar.get(Calendar.DAY_OF_MONTH)
+
+        // Ajustar la edad si todavía no ha pasado el cumpleaños en el año actual
+        if (mes < 0 || (mes == 0 && dia < 0)) {
+            return anio - 1
+        }
+
+        return anio
+    }
+
 
     companion object {
         val Factory = viewModelFactory {
@@ -159,3 +257,5 @@ class RegisterViewModel(private val repository: CredentialsRepository) : ViewMod
     }
 
 }
+
+

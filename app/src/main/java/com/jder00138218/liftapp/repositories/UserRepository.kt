@@ -93,7 +93,7 @@ class UserRepository (private val api: UserService){
         }
     }
 
-    suspend fun editClient(nombrecompleto: String,email: String,password: String,genero:String,fechanac:String,weight:Double,height:Double,id: Int?): ApiResponse<String> {
+    suspend fun editClient(nombrecompleto: String,email: String,password: String,genero:String,fechanac:String,weight:Int,height:Int,id: Int?): ApiResponse<String> {
         try {
             val response = api.editMyprofile(RegisterRequest(nombrecompleto,email,password,genero,weight,height,fechanac),id)
             return ApiResponse.Success(response.toString())

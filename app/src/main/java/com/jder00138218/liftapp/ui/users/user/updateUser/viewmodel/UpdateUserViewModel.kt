@@ -56,7 +56,7 @@ class UpdateUserViewModel(private val userRepository: UserRepository): ViewModel
             _height = _user.value.height.toString()
         }
     }
-    private fun update(id:Int?, nombrecompleto: String, email: String, password: String,genero:String,fechanac:String,weight:Double,height:Double, navController: NavHostController, context: Context) {
+    private fun update(id:Int?, nombrecompleto: String, email: String, password: String,genero:String,fechanac:String,weight:Int,height:Int, navController: NavHostController, context: Context) {
         viewModelScope.launch {
             _status.value = (
                     when (val response = userRepository.editClient(nombrecompleto, email, password,genero,fechanac,weight,height,id)) {
@@ -80,9 +80,9 @@ class UpdateUserViewModel(private val userRepository: UserRepository): ViewModel
             return
         }
         if(_password.isEmpty() && calculateAge(_fechanac)>=13){
-            update(id, _nombrecompleto, _email,_password,_genero,_fechanac,_weight.toDouble(),_height.toDouble(),navController,context)
+            update(id, _nombrecompleto, _email,_password,_genero,_fechanac,_weight.toInt(),_height.toInt(),navController,context)
         }else if (_password == _confirmpassowrd && _password.length>=8 && calculateAge(_fechanac)>=13){
-            update(id, _nombrecompleto, _email,_password,_genero,_fechanac,_weight.toDouble(),_height.toDouble(),navController,context)
+            update(id, _nombrecompleto, _email,_password,_genero,_fechanac,_weight.toInt(),_height.toInt(),navController,context)
         }else{
             Toast.makeText(context, "Contraseñas muy corta o no coincide", Toast.LENGTH_SHORT).show()
             return

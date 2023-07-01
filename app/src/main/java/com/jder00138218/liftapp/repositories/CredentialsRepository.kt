@@ -30,8 +30,8 @@ class CredentialsRepository(private val api: AuthService) {
         email: String,
         password: String, genre: String,
         date: String,
-        weigth: Double,
-        height: Double,
+        weigth: Int,
+        height: Int,
     ): ApiResponse<String> {
         try {
             val response =

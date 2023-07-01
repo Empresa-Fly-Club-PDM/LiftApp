@@ -34,8 +34,8 @@ class RegisterViewModel(private val repository: CredentialsRepository) : ViewMod
     private var _passwordVe by mutableStateOf("")
     private var _genre by mutableStateOf("")
     private var _date by mutableStateOf("")
-    private var _weigth by mutableStateOf(0.0)
-    private var _height by mutableStateOf(0.0)
+    private var _weigth by mutableStateOf(0)
+    private var _height by mutableStateOf(0)
     private var _isVisiblePaswd by mutableStateOf(false)
     private var _status = mutableStateOf<RegisterUiStatus>(RegisterUiStatus.Resume)
 
@@ -78,13 +78,13 @@ class RegisterViewModel(private val repository: CredentialsRepository) : ViewMod
             _date = value
         }
 
-    var weigth: Double
+    var weigth: Int
         get() = _weigth
         set(value) {
             _weigth = value
         }
 
-    var heigth: Double
+    var heigth: Int
         get() = _height
         set(value) {
             _height = value
@@ -116,6 +116,11 @@ class RegisterViewModel(private val repository: CredentialsRepository) : ViewMod
                         is ApiResponse.Success -> RegisterUiStatus.Success
                     }
                     )
+            Toast.makeText(
+                context,
+                "Usuario registrado",
+                Toast.LENGTH_SHORT
+            ).show()
             handleUiStatus(navController, context)
         }
     }
@@ -175,8 +180,8 @@ class RegisterViewModel(private val repository: CredentialsRepository) : ViewMod
             genre.isEmpty()-> return false
             (genre != "Masculino" && genre != "Femenino") -> return false
             date.isEmpty() -> return false
-            (weigth == 0.0) -> return false
-            (heigth == 0.0) -> return false
+            (weigth == 0) -> return false
+            (heigth == 0) -> return false
         }
         return true
     }
@@ -192,8 +197,8 @@ class RegisterViewModel(private val repository: CredentialsRepository) : ViewMod
         _password = ""
         _genre = ""
         _date = ""
-        _height = 0.0
-        _weigth = 0.0
+        _height = 0
+        _weigth = 0
     }
 
     fun handleUiStatus(

@@ -13,6 +13,6 @@ interface LiftService {
     @GET("lift/myHighlight/{id}")
     suspend fun getMyHighligh(@Path("id") id:Int?):lift?
 
-    @POST("lift/add/{excid}({userid}")
+    @POST("lift/add/{excid}/{userid}")
     suspend fun addRecord(@Body newRecord: PostLift, @Path("excid") excid:Int?, @Path("userid")userid:Int?): Response<Void>
 }

@@ -1,5 +1,6 @@
 package com.jder00138218.liftapp.repositories
 
+import android.util.Log
 import com.jder00138218.liftapp.network.ApiResponse
 import com.jder00138218.liftapp.network.dto.exercise.exercise
 import com.jder00138218.liftapp.network.dto.lift.PostLift
@@ -15,9 +16,9 @@ class LiftRepository(private val api: LiftService){
         return Lift
     }
 
-    suspend fun addRecord(weight: Double,heihgt: Int,excid:Int?,userid:Int?): ApiResponse<String> {
+    suspend fun addRecord(weight: Int,reps: Int,excid:Int?,userid:Int?): ApiResponse<String> {
         try {
-            val response = api.addRecord(PostLift(weight,heihgt),excid,userid)
+            val response = api.addRecord(PostLift(weight,reps),excid,userid)
             return ApiResponse.Success(response.toString())
         } catch (e: HttpException) {
 

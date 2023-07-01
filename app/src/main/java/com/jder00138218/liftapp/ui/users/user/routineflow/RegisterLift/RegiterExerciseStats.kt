@@ -111,7 +111,7 @@ fun RegisterExerciseStats(navController: NavHostController){
 @Composable
 fun ExerciseNameInputField(hint: String?){
     OutlinedTextField(
-        value = "",
+        value = hint.toString(),
         onValueChange = { },
         modifier = Modifier
             .width(350.dp)
@@ -121,7 +121,6 @@ fun ExerciseNameInputField(hint: String?){
                 color = colorResource(id = R.color.field)
             )// With padding show border color
             .background(colorResource(id = R.color.field)),
-        placeholder = { Text(text = hint.toString(), color = Color(R.color.gray_text)) },
         singleLine = true,
         maxLines = 1,
         leadingIcon = {
@@ -173,12 +172,12 @@ fun AchivedWeight(viewmodel:RegisterExerciseStatsViewModel){
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AchivedReps(viewmodel: RegisterExerciseStatsViewModel){
-    var height by remember { mutableStateOf(viewmodel.height) }
+    var reps by remember { mutableStateOf(viewmodel.reps) }
     OutlinedTextField(
-        value = height,
+        value = reps,
         onValueChange = {  newValue ->
-            height = newValue
-            viewmodel.height= newValue},
+            reps = newValue
+            viewmodel.reps= newValue},
         modifier = Modifier
             .width(350.dp)
             .clip(RoundedCornerShape(4.dp))

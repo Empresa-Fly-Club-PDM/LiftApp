@@ -30,12 +30,12 @@ class CredentialsRepository(private val api: AuthService) {
         email: String,
         password: String, genre: String,
         date: String,
-        weigth: Int,
-        height: Double
+        weigth: Double,
+        height: Double,
     ): ApiResponse<String> {
         try {
             val response =
-                api.register(RegisterRequest(name, email, password, genre, date, weigth, height))
+                api.register(RegisterRequest(name, email, password, genre, weigth, height,date))
             return ApiResponse.Success("Created")
         } catch (e: HttpException) {
             if (e.code() == 400) {

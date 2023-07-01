@@ -333,7 +333,7 @@ fun FieldDetaileWB(name: String, viewModel: RegisterViewModel) {
         value = weigthUser
         valueChange = { newValue ->
             weigthUser = newValue
-            viewModel.weigth = newValue.toIntOrNull() ?: 0
+            viewModel.weigth = newValue.toDoubleOrNull() ?: 0.0
         }
     }
 

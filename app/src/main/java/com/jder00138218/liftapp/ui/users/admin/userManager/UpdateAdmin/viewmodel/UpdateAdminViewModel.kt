@@ -73,10 +73,12 @@ class UpdateAdminViewModel(private val userRepository: UserRepository):ViewModel
             Toast.makeText(context, "Verificar campos vacios", Toast.LENGTH_SHORT).show()
             return
         }
-        if(_password==_confirmpassowrd){
+        if(_password.isEmpty()){
+            update(id, _nombrecompleto, _email,_password,navController,context)
+        }else if (_password == _confirmpassowrd && _password.length>=8){
             update(id, _nombrecompleto, _email,_password,navController,context)
         }else{
-            Toast.makeText(context, "Contraseñas no coinciden", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, "Contraseñas muy corta o no coincide", Toast.LENGTH_SHORT).show()
             return
         }
     }

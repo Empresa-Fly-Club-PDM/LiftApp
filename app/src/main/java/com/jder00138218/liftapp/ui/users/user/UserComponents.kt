@@ -64,11 +64,27 @@ import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.jder00138218.liftapp.R
+import com.jder00138218.liftapp.ui.navigation.Rutas
 
 
+@Composable
+fun UserProfileInfoRow(text: String) {
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = Modifier
+            .fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceBetween,
+    ) {
 
-
+        Text(
+            text = text,
+            modifier = Modifier.padding(start = 16.dp),
+            style = TextStyle(color = Color.Black, fontSize = 16.sp)
+        )
+    }
+}
 // Search Bar
 @Preview
 @OptIn(ExperimentalMaterial3Api::class)
@@ -88,34 +104,36 @@ fun SearchBar(){
     )
 }
 
-@Preview
+
 @Composable
-fun UserBottomMenu() {
+fun UserBottomMenu(navController: NavController) {
     Row(
         modifier = Modifier
             .fillMaxWidth(),
-        horizontalArrangement = Arrangement.SpaceBetween
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.Bottom
     ) {
         Button(
-            onClick = { /* Acción del primer botón */ },
+            onClick = {navController.navigate(route = Rutas.DashboardUser.ruta)},
             modifier = Modifier
-                .weight(1f)
-               , colors = ButtonDefaults.buttonColors(
+                .weight(1f),
+            colors = ButtonDefaults.buttonColors(
                 containerColor = Color.White
             )
         ) {
             Icon(
                 painter = painterResource(R.drawable.inbox),
-                contentDescription = "Imbox icon",
+                contentDescription = "Inbox icon",
                 tint = Color.Red,
                 modifier = Modifier.size(20.dp)
             )
         }
 
         Button(
-            onClick = { /* Acción del segundo botón */ },
+            onClick = {navController.navigate(route = Rutas.UserProfile.ruta)},
             modifier = Modifier
-                .weight(1f), colors = ButtonDefaults.buttonColors(
+                .weight(1f)
+            , colors = ButtonDefaults.buttonColors(
                 containerColor = Color.White
             )
         ) {
@@ -128,7 +146,7 @@ fun UserBottomMenu() {
         }
 
         Button(
-            onClick = { /* Acción del tercer botón */ },
+            onClick = {navController.navigate(route = Rutas.UserExercises.ruta)},
             modifier = Modifier
                 .weight(1f), colors = ButtonDefaults.buttonColors(
                 containerColor = Color.White
@@ -145,7 +163,7 @@ fun UserBottomMenu() {
 }
 
 @Composable
-fun HeaderBarBackArrowAdd(title: String) {
+fun HeaderBarBackArrowAdd(title: String, navController: NavController, addOnClick: () ->Unit, backOnClick: () -> Unit) {
     var iconHeader = Icons.Outlined.Add
 
     if(title == "Ranking"){
@@ -160,7 +178,7 @@ fun HeaderBarBackArrowAdd(title: String) {
         verticalAlignment = Alignment.CenterVertically
     ) {
         IconButton(
-            onClick = { /* Handle back button click */ }
+            onClick = {backOnClick()}
         ) {
             Icon(
                 Icons.Default.ArrowBack,
@@ -176,7 +194,7 @@ fun HeaderBarBackArrowAdd(title: String) {
         )
 
         IconButton(
-            onClick = { /* Handle back button click */ }
+            onClick = {addOnClick()}
         ) {
             Icon(
                 imageVector = iconHeader,
@@ -186,7 +204,7 @@ fun HeaderBarBackArrowAdd(title: String) {
     }
 }
 @Composable
-fun HeaderBarBackArrowCheck(title: String){
+fun HeaderBarBackArrowCheck(title: String, navController: NavController, backOnClick: () -> Unit, checkOnClick: () -> Unit){
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -195,7 +213,7 @@ fun HeaderBarBackArrowCheck(title: String){
         verticalAlignment = Alignment.CenterVertically
     ) {
         IconButton(
-            onClick = { /* Handle back button click */ }
+            onClick = { backOnClick() }
         ) {
             Icon(
                 Icons.Default.ArrowBack,
@@ -211,7 +229,7 @@ fun HeaderBarBackArrowCheck(title: String){
         )
 
         IconButton(
-            onClick = { /* Handle back button click */ },
+            onClick = { checkOnClick()},
 
         ) {
             Icon(
@@ -223,7 +241,7 @@ fun HeaderBarBackArrowCheck(title: String){
 }
 
 @Composable
-fun HeaderBarBackArrowDumbell(title: String){
+fun HeaderBarBackArrowDumbell(title: String, navController: NavController, backOnClick: () -> Unit){
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -232,7 +250,7 @@ fun HeaderBarBackArrowDumbell(title: String){
         verticalAlignment = Alignment.CenterVertically
     ) {
         IconButton(
-            onClick = { /* Handle back button click */ }
+            onClick = { backOnClick()}
         ) {
             Icon(
                 Icons.Default.ArrowBack,

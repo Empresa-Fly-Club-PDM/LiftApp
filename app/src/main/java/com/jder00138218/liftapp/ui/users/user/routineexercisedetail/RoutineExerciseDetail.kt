@@ -86,7 +86,7 @@ fun RoutineExerciseDetail(navController: NavHostController, alternativenavcontro
 
             HeaderBarBackArrowDumbell(title = "Detalle del ejercicio", navController = alternativenavcontroller, backOnClick = {navController.popBackStack()})
             FieldsDetaile(detailExercise,detailExerciseViewmodel,navController)
-            ButtonsDetaile(detailExercise.id,routineid,routineExerciseDetailViewModel, navController)
+            ButtonsRoutineExerciseDetaile(detailExercise.id,routineid,routineExerciseDetailViewModel, navController)
             UserBottomMenu(navController)
         }
     }
@@ -120,9 +120,9 @@ fun FieldsDetaile(exercise: exercise,detailExerciseViewmodel: DetailExerciseView
 }
 
 @Composable
-fun ButtonsDetaile(idexc: Int?,idrut:Int? , routineExerciseDetailViewModel: RoutineExerciseDetailViewModel,navController: NavHostController) {
+fun ButtonsRoutineExerciseDetaile(idexc: Int?,idrut:Int? , routineExerciseDetailViewModel: RoutineExerciseDetailViewModel,navController: NavHostController) {
     val context = LocalContext.current
-    Row() {
+    Row(modifier = Modifier.fillMaxWidth()) {
         Button(
             onClick = {routineExerciseDetailViewModel.removeExercise(idexc,idrut,navController,context)
             }, modifier = Modifier

@@ -122,7 +122,7 @@ fun RankingInfoRow(user: user, navController: NavController){
         horizontalArrangement = Arrangement.SpaceBetween) {
         Column(modifier = Modifier
             .fillMaxHeight(), 
-        horizontalAlignment = Alignment.CenterHorizontally, 
+        horizontalAlignment = Alignment.Start,
         verticalArrangement = Arrangement.Center) {
             Text(text = user.nombrecompleto)
             Text(text = getRank(user.points))

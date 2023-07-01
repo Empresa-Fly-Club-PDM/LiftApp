@@ -50,9 +50,6 @@ fun FriendsMenu(navController: NavController){
     val handleAddOnClick = {
         navController.navigate(route = "rutas_find_friends/${app.getUserId()}")
     }
-    val handleBackOnClick = {
-        navController.navigate(route = Rutas.DashboardUser.ruta)
-    }
 
     Box(
         modifier = Modifier
@@ -64,7 +61,7 @@ fun FriendsMenu(navController: NavController){
         Column(modifier = Modifier.fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.SpaceBetween) {
-            HeaderBarBackArrowAdd("Amigos", navController, addOnClick = handleAddOnClick, backOnClick = handleBackOnClick)
+            HeaderBarBackArrowAdd("Amigos", navController, addOnClick = handleAddOnClick, backOnClick = { navController.popBackStack() })
             LazyColumn(modifier = Modifier.fillMaxHeight(0.7f)){
                 items(vm.users) {
                     FriendInfoRow(it.nombrecompleto, getRank(it.points), it.id, navController)
@@ -86,7 +83,7 @@ fun FriendInfoRow(name: String, rank:String, id:Int?, navController: NavControll
         horizontalArrangement = Arrangement.SpaceBetween) {
         Column(modifier = Modifier
             ,
-            horizontalAlignment = Alignment.CenterHorizontally,
+            horizontalAlignment = Alignment.Start,
             verticalArrangement = Arrangement.Center) {
             Text(text = name)
             Text(text = rank)

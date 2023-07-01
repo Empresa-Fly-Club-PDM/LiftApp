@@ -134,6 +134,7 @@ fun RoutineMenuItem(routine:routine,navController: NavController){
         .fillMaxWidth()
         .padding(8.dp)
         .height(72.dp)
+        .clickable(onClick = {navController.navigate(Rutas.StartRoutine.ruta)})
     )
 
     { Box(modifier = Modifier.background(colorResource(id = R.color.card))) {

@@ -43,6 +43,7 @@ import com.jder00138218.liftapp.R
 import com.jder00138218.liftapp.ui.navigation.Rutas
 import com.jder00138218.liftapp.ui.users.admin.userManager.AdminManagement.viewmodel.AdminManagementViewModel
 import com.jder00138218.liftapp.ui.users.user.HeaderBarBackArrowAdd
+import com.jder00138218.liftapp.ui.users.user.HeaderBarBackArrowDumbell
 import com.jder00138218.liftapp.ui.users.user.SearchBar
 import com.jder00138218.liftapp.ui.users.user.UserBottomMenu
 import com.jder00138218.liftapp.ui.users.user.findfriends.viewmodel.FindFriendsViewModel
@@ -68,12 +69,7 @@ fun FindFriends(navController: NavController){
             vm.searchForFriends(app.getUserId(),text)
         }
     }
-    val handleAddOnClick = {
-        navController.navigate(route = Rutas.UserCreateRoutine.ruta)
-    }
-    val handleBackOnClick = {
-        navController.navigate(route = Rutas.DashboardUser.ruta)
-    }
+
 
     Box(
         modifier = Modifier
@@ -85,7 +81,7 @@ fun FindFriends(navController: NavController){
         Column(modifier = Modifier.fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.SpaceBetween) {
-            HeaderBarBackArrowAdd("Buscar Amigos", navController, addOnClick = handleAddOnClick, backOnClick = handleBackOnClick)
+            HeaderBarBackArrowDumbell("Buscar Amigos", navController, backOnClick = {navController.popBackStack()})
             OutlinedTextField(value = text, onValueChange = { newText: String ->
                 text = newText
                 vm.searchForFriends(app.getUserId(),text)
@@ -101,7 +97,7 @@ fun FindFriends(navController: NavController){
             )
             LazyColumn(modifier = Modifier.fillMaxHeight(0.7f)){
                 items(vm.users) {
-                    FriendInfoRow(
+                    FindFriendInfoRow(
                         it.nombrecompleto,
                         it.id, getRank(it.points),
                         navController, vm,userid
@@ -116,18 +112,18 @@ fun FindFriends(navController: NavController){
 }
 
 @Composable
-fun FriendInfoRow(name: String, id:Int,rank:String, navController: NavController,findFriendsViewModel: FindFriendsViewModel,userid:Int?){
+fun FindFriendInfoRow(name: String, id:Int,rank:String, navController: NavController,findFriendsViewModel: FindFriendsViewModel,userid:Int?){
     val context = LocalContext.current
     val app = context.applicationContext as LiftAppApplication
     Row(modifier = Modifier
         .fillMaxWidth()
         .padding(8.dp),
         horizontalArrangement = Arrangement.SpaceBetween) {
-        Text(text = name)
         Column(modifier = Modifier
             ,
-            horizontalAlignment = Alignment.CenterHorizontally,
+            horizontalAlignment = Alignment.Start,
             verticalArrangement = Arrangement.Center) {
+            Text(text = name)
             Text(text = rank)
         }
         IconButton(onClick = {

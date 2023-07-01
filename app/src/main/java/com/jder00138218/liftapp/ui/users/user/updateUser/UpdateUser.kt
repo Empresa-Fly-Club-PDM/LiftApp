@@ -59,6 +59,7 @@ import com.jder00138218.liftapp.LiftAppApplication
 import com.jder00138218.liftapp.R
 import com.jder00138218.liftapp.ui.users.admin.Menu
 import com.jder00138218.liftapp.ui.users.admin.userManager.UpdateAdmin.viewmodel.UpdateAdminViewModel
+import com.jder00138218.liftapp.ui.users.user.HeaderBarBackArrowDumbell
 import com.jder00138218.liftapp.ui.users.user.UserBottomMenu
 import com.jder00138218.liftapp.ui.users.user.updateUser.viewmodel.UpdateUserViewModel
 import java.util.Calendar
@@ -85,16 +86,10 @@ fun UpdateUser(navController: NavHostController) {
             verticalArrangement = Arrangement.SpaceBetween,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Text(
-                text = "Informacion de usuario",
-                color = Color.Black,
-                style = TextStyle(
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 24.sp
-                )
-            )
-            UpdateUserFields(updateUserViewModel,navController)
+            HeaderBarBackArrowDumbell(title = "Informacion de usuario", navController = navController, backOnClick = {navController.popBackStack()})
+            UpdateUserFields(updateAdminViewModel,navController)
             ButtonsUpdateUser(app.getUserId(),updateUserViewModel,navController)
+
             UserBottomMenu(navController)
         }
 

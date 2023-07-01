@@ -61,7 +61,7 @@ fun UserProfile(navController: NavController){
             verticalArrangement = Arrangement.SpaceBetween,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            HeaderBarBackArrowDumbell(title = "Perfil", navController, backOnClick = {navController.popBackStack()})
+            HeaderBarBackArrowDumbell(title = "Perfil", navController, backOnClick = {navController.navigate(Rutas.DashboardUser.ruta)})
             Column(modifier = Modifier
                 .fillMaxWidth()
                 .fillMaxHeight(0.7f),

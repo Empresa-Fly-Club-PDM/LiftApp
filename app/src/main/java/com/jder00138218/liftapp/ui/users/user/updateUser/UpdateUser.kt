@@ -87,7 +87,7 @@ fun UpdateUser(navController: NavHostController) {
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             HeaderBarBackArrowDumbell(title = "Informacion de usuario", navController = navController, backOnClick = {navController.popBackStack()})
-            UpdateUserFields(updateAdminViewModel,navController)
+            UpdateUserFields(updateUserViewModel,navController)
             ButtonsUpdateUser(app.getUserId(),updateUserViewModel,navController)
 
             UserBottomMenu(navController)

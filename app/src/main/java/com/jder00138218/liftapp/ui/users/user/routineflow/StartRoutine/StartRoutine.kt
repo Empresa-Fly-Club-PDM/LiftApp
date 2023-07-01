@@ -1,4 +1,4 @@
-package com.jder00138218.liftapp.ui.users.user.routineflow
+package com.jder00138218.liftapp.ui.users.user.routineflow.StartRoutine
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -29,15 +29,13 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.jder00138218.liftapp.R
 import com.jder00138218.liftapp.network.dto.exercise.exercise
-import com.jder00138218.liftapp.ui.navigation.Rutas
-import com.jder00138218.liftapp.ui.users.admin.CardExercise
 import com.jder00138218.liftapp.ui.users.user.HeaderBarBackArrowAdd
+import com.jder00138218.liftapp.ui.users.user.HeaderBarBackArrowDumbell
 import com.jder00138218.liftapp.ui.users.user.UserBottomMenu
 import com.jder00138218.liftapp.ui.users.user.routinedetail.viewmodel.RoutineDetailViewModel
 
@@ -51,10 +49,6 @@ fun StartRoutine(navController:NavController){
     LaunchedEffect(Unit, block = {
         vm.getRoutineDetails(routineid)
     })
-
-    val handleAddOnClick = {
-        navController.navigate(route = "ruta_user_add_exercise_to_routine/${routineid}")
-    }
 
 
     Box(modifier = Modifier
@@ -70,7 +64,7 @@ fun StartRoutine(navController:NavController){
         )
         {
 
-            HeaderBarBackArrowAdd("Empezar rutina", navController, addOnClick = handleAddOnClick, backOnClick = { navController.popBackStack() })
+            HeaderBarBackArrowDumbell("Empezar rutina", navController, backOnClick = { navController.popBackStack() })
 
 
             LazyColumn(
@@ -92,13 +86,14 @@ fun StartRoutine(navController:NavController){
 @Composable
 fun ButtonDeleteRoutine(id:Int?, viewmodel: RoutineDetailViewModel, navController: NavController) { val context = LocalContext.current
     Button(
-        onClick = { viewmodel.removeRouitne(id, navController, context)}, modifier = Modifier
+        onClick = {navController.navigate("rutas_courrent_routine/${id}")
+        }, modifier = Modifier
             .height(60.dp)
             .fillMaxWidth(), colors = ButtonDefaults.buttonColors(
-            containerColor = colorResource(id = R.color.buttonRed)
+            containerColor = colorResource(id = R.color.buttonGren)
         )
     ) {
-        Text(text = " Eliminar rutina")
+        Text(text = " Iniciar rutina")
 
     }
 

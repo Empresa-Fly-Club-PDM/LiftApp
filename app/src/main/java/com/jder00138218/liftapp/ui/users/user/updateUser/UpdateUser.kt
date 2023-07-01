@@ -55,24 +55,26 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
+import com.jder00138218.liftapp.LiftAppApplication
 import com.jder00138218.liftapp.R
 import com.jder00138218.liftapp.ui.users.admin.Menu
 import com.jder00138218.liftapp.ui.users.admin.userManager.UpdateAdmin.viewmodel.UpdateAdminViewModel
 import com.jder00138218.liftapp.ui.users.user.HeaderBarBackArrowDumbell
 import com.jder00138218.liftapp.ui.users.user.UserBottomMenu
+import com.jder00138218.liftapp.ui.users.user.updateUser.viewmodel.UpdateUserViewModel
 import java.util.Calendar
 import java.util.Date
 
 @Composable
 fun UpdateUser(navController: NavHostController) {
-    val navBackStackEntry = navController.currentBackStackEntry
-    val userid = navBackStackEntry?.arguments?.getInt("id")
-    val updateAdminViewModel: UpdateAdminViewModel = viewModel(
-        factory = UpdateAdminViewModel.Factory
+    val updateUserViewModel: UpdateUserViewModel = viewModel(
+        factory = UpdateUserViewModel.Factory
     )
+    val context = LocalContext.current
+    val app = context.applicationContext as LiftAppApplication
 
-    if(userid!=0){
-        updateAdminViewModel.getUserDetail(userid)
+    if(app.getUserId()!=0){
+        updateUserViewModel.getUserDetail(app.getUserId())
     }
     Box(
         modifier = Modifier
@@ -86,7 +88,8 @@ fun UpdateUser(navController: NavHostController) {
         ) {
             HeaderBarBackArrowDumbell(title = "Informacion de usuario", navController = navController, backOnClick = {navController.popBackStack()})
             UpdateUserFields(updateAdminViewModel,navController)
-            ButtonsUpdateUser(userid,updateAdminViewModel,navController)
+            ButtonsUpdateUser(app.getUserId(),updateUserViewModel,navController)
+
             UserBottomMenu(navController)
         }
 
@@ -97,7 +100,7 @@ fun UpdateUser(navController: NavHostController) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-    fun UpdateUserFields(viewmodel: UpdateAdminViewModel, navController: NavHostController) {
+    fun UpdateUserFields(viewmodel: UpdateUserViewModel, navController: NavHostController) {
     Column(modifier = Modifier
         .fillMaxWidth()
         .verticalScroll(rememberScrollState()),
@@ -110,31 +113,28 @@ fun UpdateUser(navController: NavHostController) {
         Spacer(modifier = Modifier.padding(2.dp))
         FieldConfirmPassword(viewmodel)
         Spacer(modifier = Modifier.padding(8.dp))
-        UpdateUserSelectField()
+        UpdateUserSelectField(viewmodel)
         Spacer(modifier = Modifier.padding(8.dp))
         FieldHeight(viewmodel = viewmodel)
         Spacer(modifier = Modifier.padding(8.dp))
         FieldWeight(viewmodel = viewmodel)
+        Spacer(modifier = Modifier.padding(8.dp))
+        DateInputField(viewmodel)
     }
 
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
-@Preview
 @Composable
-fun UpdateUserSelectField(){
-
+fun UpdateUserSelectField(viewmodel:UpdateUserViewModel){
     var isExpanded by remember {
         mutableStateOf(false)
-    }
-    var option by remember {
-        mutableStateOf("")
     }
 
     Box(modifier = Modifier.fillMaxWidth(),
         contentAlignment = Alignment.Center) {
         ExposedDropdownMenuBox(expanded = isExpanded, onExpandedChange = {isExpanded = it}) {
-            TextField(value = option, onValueChange = {}, readOnly = true, trailingIcon = {
+            TextField(value = viewmodel._genero, onValueChange = {}, readOnly = true, trailingIcon = {
                 ExposedDropdownMenuDefaults.TrailingIcon(expanded = isExpanded)
             }, modifier = Modifier
                 .menuAnchor()
@@ -159,12 +159,12 @@ fun UpdateUserSelectField(){
                 DropdownMenuItem(text = { Text(text = "Masculino") },
                     onClick = {
                         isExpanded = false
-                        option = "Alto"
+                        viewmodel._genero = "Masculino"
                     })
                 DropdownMenuItem(text = { Text(text = "Femenino") },
                     onClick = {
                         isExpanded = false
-                        option = "Medio"
+                        viewmodel._genero = "Femenino"
                     })
             }
         }
@@ -173,11 +173,11 @@ fun UpdateUserSelectField(){
 }
 
 @Composable
-fun ButtonsUpdateUser(id: Int?, updateAdminViewModel: UpdateAdminViewModel, navController: NavHostController) {
+fun ButtonsUpdateUser(id: Int?, updateuserviewmodel: UpdateUserViewModel, navController: NavHostController) {
     val context = LocalContext.current
     Row(modifier = Modifier.fillMaxWidth()) {
         Button(
-            onClick = {updateAdminViewModel.onUpdate(id,navController,context)
+            onClick = {updateuserviewmodel.onUpdate(id,navController,context)
             }, modifier = Modifier
                 .height(60.dp)
                 .fillMaxWidth(), colors = ButtonDefaults.buttonColors(
@@ -193,11 +193,11 @@ fun ButtonsUpdateUser(id: Int?, updateAdminViewModel: UpdateAdminViewModel, navC
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun FieldWeight(viewmodel: UpdateAdminViewModel) {
+fun FieldWeight(viewmodel: UpdateUserViewModel) {
     OutlinedTextField(
-        value = viewmodel._nombrecompleto,
+        value = viewmodel._weight,
         onValueChange = { newValue ->
-            viewmodel._nombrecompleto= newValue
+            viewmodel._weight= newValue
         },
         modifier = Modifier
             .width(350.dp)
@@ -218,18 +218,18 @@ fun FieldWeight(viewmodel: UpdateAdminViewModel) {
             )
         },
         keyboardOptions = KeyboardOptions(
-            keyboardType = KeyboardType.Text,
+            keyboardType = KeyboardType.Number,
             imeAction = ImeAction.Next // Acción IME cuando se presiona la tecla Enter
         )
     )
 }
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun FieldHeight(viewmodel: UpdateAdminViewModel) {
+fun FieldHeight(viewmodel: UpdateUserViewModel) {
     OutlinedTextField(
-        value = viewmodel._nombrecompleto,
+        value = viewmodel._height,
         onValueChange = { newValue ->
-            viewmodel._nombrecompleto= newValue
+            viewmodel._height= newValue
         },
         modifier = Modifier
             .width(350.dp)
@@ -250,7 +250,7 @@ fun FieldHeight(viewmodel: UpdateAdminViewModel) {
             )
         },
         keyboardOptions = KeyboardOptions(
-            keyboardType = KeyboardType.Text,
+            keyboardType = KeyboardType.Number,
             imeAction = ImeAction.Next // Acción IME cuando se presiona la tecla Enter
         )
     )
@@ -258,7 +258,7 @@ fun FieldHeight(viewmodel: UpdateAdminViewModel) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun FieldName(viewmodel: UpdateAdminViewModel) {
+fun FieldName(viewmodel: UpdateUserViewModel) {
     OutlinedTextField(
         value = viewmodel._nombrecompleto,
         onValueChange = { newValue ->
@@ -290,7 +290,7 @@ fun FieldName(viewmodel: UpdateAdminViewModel) {
 }
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun FieldEmail(viewmodel: UpdateAdminViewModel) {
+fun FieldEmail(viewmodel: UpdateUserViewModel) {
     OutlinedTextField(
         value = viewmodel._email,
         onValueChange = { newValue ->
@@ -323,7 +323,7 @@ fun FieldEmail(viewmodel: UpdateAdminViewModel) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun FieldPassword(viewModel: UpdateAdminViewModel) {
+fun FieldPassword(viewModel: UpdateUserViewModel) {
     var isVisible by remember { mutableStateOf(viewModel._isVisiblePaswd) }
     val visualTransformation =
         if (isVisible) VisualTransformation.None else PasswordVisualTransformation()
@@ -372,7 +372,7 @@ fun FieldPassword(viewModel: UpdateAdminViewModel) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun FieldConfirmPassword(viewModel: UpdateAdminViewModel) {
+fun FieldConfirmPassword(viewModel: UpdateUserViewModel) {
     var isVisible by remember { mutableStateOf(viewModel._isVisiblePaswd) }
 
     val visualTransformation =
@@ -423,7 +423,7 @@ fun FieldConfirmPassword(viewModel: UpdateAdminViewModel) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun DateInputField() {
+fun DateInputField(viewModel: UpdateUserViewModel) {
     // Fetching the Local Context
     val mContext = LocalContext.current
 
@@ -445,14 +445,12 @@ fun DateInputField() {
 
     // Declaring a string value to
     // store date in string format
-    val mDate = remember { mutableStateOf("") }
-
     // Declaring DatePickerDialog and setting
     // initial values as current values (present year, month and day)
     val mDatePickerDialog = DatePickerDialog(
         mContext,
         { _: DatePicker, mYear: Int, mMonth: Int, mDayOfMonth: Int ->
-            mDate.value = "$mDayOfMonth/${mMonth+1}/$mYear"
+            viewModel._fechanac = "$mDayOfMonth/${mMonth+1}/$mYear"
         }, mYear, mMonth, mDay
     )
 
@@ -474,6 +472,6 @@ fun DateInputField() {
         Spacer(modifier = Modifier.padding(2.dp))
 
         // Displaying the mDate value in the Text
-        Text(text = "Fecha de nacimiento: ${mDate.value}", textAlign = TextAlign.Center)
+        Text(text = "Fecha de nacimiento: ${viewModel._fechanac}", textAlign = TextAlign.Center)
     }
 }

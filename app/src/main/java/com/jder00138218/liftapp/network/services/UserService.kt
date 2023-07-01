@@ -2,6 +2,7 @@ package com.jder00138218.liftapp.network.services
 
 import com.jder00138218.liftapp.network.dto.exercise.PostVerifiedExerciseRequest
 import com.jder00138218.liftapp.network.dto.exercise.exercise
+import com.jder00138218.liftapp.network.dto.register.RegisterRequest
 import com.jder00138218.liftapp.network.dto.user.PostUserRequest
 import com.jder00138218.liftapp.network.dto.user.user
 import retrofit2.Response
@@ -35,6 +36,9 @@ interface UserService {
 
     @GET("usuario/top5")
     suspend fun getRanking(@Query("query") query:String):List<user>
+
+    @PUT("usuario/edit/{id}")
+    suspend fun editMyprofile(@Body editUser: RegisterRequest,@Path("id") id: Int?):Response<Void>
 
 
 }

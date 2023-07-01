@@ -3,6 +3,7 @@ package com.jder00138218.liftapp.repositories
 import com.jder00138218.liftapp.network.ApiResponse
 import com.jder00138218.liftapp.network.dto.exercise.PostVerifiedExerciseRequest
 import com.jder00138218.liftapp.network.dto.exercise.exercise
+import com.jder00138218.liftapp.network.dto.register.RegisterRequest
 import com.jder00138218.liftapp.network.dto.user.PostUserRequest
 import com.jder00138218.liftapp.network.dto.user.user
 import com.jder00138218.liftapp.network.services.UserService
@@ -91,4 +92,22 @@ class UserRepository (private val api: UserService){
             return ApiResponse.Error(e)
         }
     }
+
+    suspend fun editClient(nombrecompleto: String,email: String,password: String,genero:String,fechanac:String,weight:Double,height:Double,id: Int?): ApiResponse<String> {
+        try {
+            val response = api.editMyprofile(RegisterRequest(nombrecompleto,email,password,genero,weight,height,fechanac),id)
+            return ApiResponse.Success(response.toString())
+        } catch (e: HttpException) {
+
+            if (e.code() == 500) {
+                return ApiResponse.ErrorWithMessage("Campos invalidos")
+            }
+            return ApiResponse.Error(e)
+        } catch (e: IOException) {
+            return ApiResponse.Error(e)
+        }
+    }
+
+
+
 }

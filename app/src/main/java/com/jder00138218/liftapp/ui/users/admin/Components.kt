@@ -63,7 +63,7 @@ fun AdminSearchBar(){
 }
 
 @Composable
-fun AdminHeaderBarBackArrowDumbell(title: String,  navController: NavController){
+fun AdminHeaderBarBackArrowDumbell(title: String,  navController: NavController, backOnClick: () -> Unit){
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -72,7 +72,7 @@ fun AdminHeaderBarBackArrowDumbell(title: String,  navController: NavController)
         verticalAlignment = Alignment.CenterVertically
     ) {
         IconButton(
-            onClick = { navController.navigate(route = Rutas.DashboardAdmin.ruta)}
+            onClick = { backOnClick()}
         ) {
             Icon(
                 Icons.Default.ArrowBack,

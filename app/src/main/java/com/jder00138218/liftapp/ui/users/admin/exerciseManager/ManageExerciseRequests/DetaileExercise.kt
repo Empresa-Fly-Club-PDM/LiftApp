@@ -50,6 +50,7 @@ import androidx.navigation.NavHostController
 import com.jder00138218.liftapp.R
 import com.jder00138218.liftapp.network.dto.exercise.exercise
 import com.jder00138218.liftapp.ui.navigation.Rutas
+import com.jder00138218.liftapp.ui.users.admin.AdminHeaderBarBackArrowDumbell
 import com.jder00138218.liftapp.ui.users.admin.Menu
 import com.jder00138218.liftapp.ui.users.admin.exerciseManager.ManageExerciseRequests.viewModel.DetailExerciseViewmodel
 
@@ -75,14 +76,8 @@ fun DetaileExercise(navController: NavHostController) {
                 horizontalAlignment = Alignment.CenterHorizontally
                 ) {
 
-                Text(
-                    text = "Descripcion de la Solicitud",
-                    color = Color.Black,
-                    style = TextStyle(
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 24.sp
-                    )
-                )
+                AdminHeaderBarBackArrowDumbell(title = "Descripcion de la solicitud", navController = navController, backOnClick = {navController.popBackStack()})
+
                 UserInfoSection(name = detailExercise.user.nombrecompleto, detailExercise.user.points)
                 FieldsDetaile(detailExercise,detailExerciseViewmodel,navController)
                 ButtonsDetaile(detailExercise.id,detailExerciseViewmodel, navController)

@@ -2,7 +2,10 @@ package com.jder00138218.liftapp.ui.users.user.routinedetail.viewmodel
 
 import android.content.Context
 import android.widget.Toast
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -24,6 +27,7 @@ import kotlinx.coroutines.launch
 class RoutineDetailViewModel(private val routineRepository: RoutineRepository):ViewModel() {
     private val _exercises = mutableStateListOf<exercise>()
     val _status = MutableLiveData<RoutineDetailUIStatus>(RoutineDetailUIStatus.Resume)
+    var _time by mutableStateOf(0)
 
     val exercises: List<exercise>
         get() = _exercises

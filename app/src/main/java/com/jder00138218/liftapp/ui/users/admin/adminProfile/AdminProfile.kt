@@ -60,7 +60,7 @@ fun AdminProfile(navController: NavController){
             verticalArrangement = Arrangement.SpaceBetween,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            AdminHeaderBarBackArrowDumbell(title = "Perfil", navController)
+            AdminHeaderBarBackArrowDumbell(title = "Perfil", navController = navController, backOnClick = {navController.popBackStack()})
             Column(modifier = Modifier
                 .fillMaxWidth()
                 .fillMaxHeight(0.7f),

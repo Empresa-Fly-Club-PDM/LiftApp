@@ -1,6 +1,7 @@
-package com.jder00138218.liftapp.ui.users.user.routineflow.CurrentRoutine
+package com.jder00138218.liftapp.ui.users.user.userhistory
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -9,16 +10,16 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -28,98 +29,94 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import com.jder00138218.liftapp.LiftAppApplication
 import com.jder00138218.liftapp.R
 import com.jder00138218.liftapp.network.dto.exercise.exercise
-import com.jder00138218.liftapp.ui.navigation.Rutas
+import com.jder00138218.liftapp.ui.users.user.HeaderBarBackArrowCheck
 import com.jder00138218.liftapp.ui.users.user.HeaderBarBackArrowDumbell
 import com.jder00138218.liftapp.ui.users.user.UserBottomMenu
-import com.jder00138218.liftapp.ui.users.user.routinedetail.viewmodel.RoutineDetailViewModel
+import com.jder00138218.liftapp.ui.users.user.addexercisetoroutine.viewmodel.AddExerciseToRoutineViewModel
 import kotlinx.coroutines.delay
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CurrentRoutine(navController: NavController){
+fun UserHistory(navController: NavController){
     val navBackStackEntry = navController.currentBackStackEntry
-    val routineid = navBackStackEntry?.arguments?.getInt("id")
-    val vm: RoutineDetailViewModel = viewModel(
-        factory = RoutineDetailViewModel.Factory
+    val routineid = navBackStackEntry?.arguments?.getInt("routineid")
+    val vm: AddExerciseToRoutineViewModel = viewModel(
+        factory = AddExerciseToRoutineViewModel.Factory
     )
-    LaunchedEffect(Unit, block = {
-        vm.getRoutineDetails(routineid)
-    })
+    var text by remember { mutableStateOf("") }
+    val context = LocalContext.current
+    val app = context.applicationContext as LiftAppApplication
 
+    LaunchedEffect(text) {
+        val currentText = text
+        delay(500) // Add a short delay before executing the search
+        if (currentText == text) { // Ensure the text hasn't changed during the delay
+            vm.searchExerciseDatabase(text,app.getUserId())
+        }
+    }
 
-
-    Box(modifier = Modifier
-        .fillMaxSize()
-        .background(Color.White)
-    ){
-
-        Column( modifier = Modifier
+    Box(
+        modifier = Modifier
             .fillMaxSize()
-            .padding(8.dp),
+            .background(Color.White)
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(8.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.SpaceBetween
-        )
-        {
+        ) {
 
-            Column(modifier = Modifier.fillMaxWidth(),
-            ) {
-            }
-            HeaderBarBackArrowDumbell("Rutina", navController, backOnClick = { navController.popBackStack() })
-
-            Timer(vm)
+            HeaderBarBackArrowDumbell(title = "Levantamientos registrados", navController = navController, backOnClick = {navController.popBackStack()})
+            OutlinedTextField(value = text, onValueChange = { newText: String ->
+                text = newText
+                vm.searchExerciseDatabase(text,app.getUserId())}, modifier = Modifier
+                .padding(horizontal = 8.dp)
+                .fillMaxWidth()
+                .clip(RoundedCornerShape(8.dp))
+                .background(
+                    colorResource(id = R.color.field)
+                )
+                .border(width = 0.dp, color = Color.White),
+                placeholder = { Text(text = "Buscar..", color = Color(R.color.gray_text)) },
+            )
             LazyColumn(
                 Modifier
                     .fillMaxWidth()
                     .fillMaxHeight(0.7f)
             ) {
-                items(vm.exercises) { index ->
-                    CardExercise(
-                        index,
-                        navController
-                    )
+                items(vm.exercises) {
+                    CardHistoricExercise(it, routineid,navController, vm)
                 }
             }
-            ButtonEndRoutine(routineid,viewmodel = vm, navController = navController )
             UserBottomMenu(navController)
-
         }
     }
-}
-@Composable
-fun ButtonEndRoutine(id:Int?, viewmodel: RoutineDetailViewModel, navController: NavController) { val context = LocalContext.current
-    Button(
-        onClick = {navController.navigate(Rutas.DashboardUser.ruta)
-        }, modifier = Modifier
-            .height(60.dp)
-            .fillMaxWidth(), colors = ButtonDefaults.buttonColors(
-            containerColor = colorResource(id = R.color.buttonRed)
-        )
-    ) {
-        Text(text = "Finalizar rutina")
-
-    }
 
 }
 
-
 @Composable
-fun CardExercise(exercise: exercise, navController: NavController) {
+fun CardHistoricExercise(exercise: exercise, routineid:Int?, navController: NavController, addExerciseToRoutineViewModel: AddExerciseToRoutineViewModel) {
+    val context = LocalContext.current
     Card( // this
         modifier = Modifier
             .fillMaxWidth()
             .padding(8.dp)
             .clickable {
-                navController.navigate(route = "rutas_register_lift/${exercise.id}/${exercise.name}")
+                addExerciseToRoutineViewModel.addExercise(routineid,exercise.id, navController ,context)
             },
         colors = CardDefaults.cardColors(
             containerColor = colorResource(id = R.color.card)
@@ -154,7 +151,7 @@ fun CardExercise(exercise: exercise, navController: NavController) {
                     horizontalArrangement = Arrangement.Start
                 ) {
                     ItemEx(exercise)
-                    com.jder00138218.liftapp.ui.users.user.routineflow.StartRoutine.ItemExRight(exercise)
+                    ItemExRight(exercise)
                 }
 
             }
@@ -197,42 +194,4 @@ fun ItemExRight(exercise: exercise) {
         }
     }
 
-}
-
-private fun formatTime(seconds: Int): String {
-    val minutes = seconds / 60
-    val remainingSeconds = seconds % 60
-    return "%02d:%02d".format(minutes, remainingSeconds)
-}
-@Composable
-fun Timer(vm: RoutineDetailViewModel) {
-    var isRunning by remember { mutableStateOf(false) }
-
-    LaunchedEffect(isRunning) {
-        if (isRunning) {
-            while (true) {
-                delay(1000)
-                vm._time += 1
-            }
-        }
-    }
-
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(16.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Text(
-            text = formatTime(vm._time),
-            modifier = Modifier.padding(bottom = 16.dp),
-            fontSize = 32.sp
-        )
-        Button(
-            onClick = { isRunning = !isRunning },
-            modifier = Modifier.align(Alignment.CenterHorizontally)
-        ) {
-            Text(text = if (isRunning) "Stop" else "Start")
-        }
-    }
 }

@@ -48,7 +48,8 @@ fun DashboardAdminScreen(navController: NavController) {
     ) {
         Column(modifier = Modifier
             .fillMaxHeight(),
-            verticalArrangement = Arrangement.SpaceBetween) {
+            verticalArrangement = Arrangement.SpaceBetween,
+        horizontalAlignment = Alignment.CenterHorizontally) {
 
             Text(
                 text = "Solicitudes de verificacion",

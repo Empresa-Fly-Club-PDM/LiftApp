@@ -8,7 +8,7 @@ data class user(
     val passwordState: Boolean = false,
     val genero: String = "",
     val fechanac: String = "",
-    val weight: Int = 0,
+    val weight: Double = 0.0,
     val height: Double = 0.0,
     val enabledstate: Boolean = false,
     val points: Int = 0,

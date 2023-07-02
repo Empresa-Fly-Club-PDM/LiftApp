@@ -96,10 +96,10 @@ class CreateAdminViewModel(private val userRepository: UserRepository): ViewMode
             Toast.makeText(context, "Verificar campos vacios", Toast.LENGTH_SHORT).show()
             return
         }
-        if(password==confirmpassword){
+        if(password==confirmpassword && password.length>=8){
             create(nombrecompleto, email,password,navController,context)
         }else{
-            Toast.makeText(context, "Contraseñas no coinciden", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, "Revisar ingreso de contraseña", Toast.LENGTH_SHORT).show()
             return
         }
 

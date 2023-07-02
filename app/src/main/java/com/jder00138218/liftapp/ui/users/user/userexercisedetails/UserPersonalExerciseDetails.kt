@@ -1,5 +1,3 @@
-package com.jder00138218.liftapp.ui.users.user.userexercisedetails
-
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -19,19 +17,17 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.jder00138218.liftapp.R
 import com.jder00138218.liftapp.ui.users.user.CustomInputField
 import com.jder00138218.liftapp.ui.users.user.CustomSelectField
 import com.jder00138218.liftapp.ui.users.user.CustomTypeSelectField
-import com.jder00138218.liftapp.ui.users.user.HeaderBarBackArrowCheck
 import com.jder00138218.liftapp.ui.users.user.HeaderBarBackArrowDumbell
 import com.jder00138218.liftapp.ui.users.user.UserBottomMenu
 
-@Preview
 @Composable
-fun ExerciseDetails(){
+fun UserPersonalExerciseDetails(navController: NavController){
     Box(modifier = Modifier
         .fillMaxSize()
         .background(Color.White)) {
@@ -41,7 +37,7 @@ fun ExerciseDetails(){
             Row(modifier = Modifier
                 .fillMaxWidth()
                 .fillMaxHeight(0.1f)) {
-                HeaderBarBackArrowDumbell(title = "Detalles del ejercicio")
+                HeaderBarBackArrowDumbell(title = "Detalles del ejercicio", navController, backOnClick = {navController.popBackStack()})
             }
             Column(modifier = Modifier
                 .fillMaxWidth()
@@ -77,7 +73,7 @@ fun ExerciseDetails(){
                 .background(Color.White),
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Bottom) {
-                UserBottomMenu()
+                UserBottomMenu(navController)
             }
         }
     }

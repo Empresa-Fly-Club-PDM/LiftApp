@@ -100,7 +100,8 @@ fun UpdateAdmin(navController: NavHostController) {
 @Composable
 fun CreateAdminFields(viewmodel: UpdateAdminViewModel, navController: NavHostController) {
     Column(modifier = Modifier
-        .verticalScroll(rememberScrollState())) {
+        .verticalScroll(rememberScrollState()),
+        horizontalAlignment = Alignment.CenterHorizontally) {
         FieldName(viewmodel)
         Spacer(modifier = Modifier.padding(2.dp))
         FieldEmail(viewmodel)

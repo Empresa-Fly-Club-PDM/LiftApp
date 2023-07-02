@@ -14,6 +14,10 @@ class ExerciseRepository(private val api:ExerciseService) {
         return exercises
     }
 
+    suspend fun getPersonalExercises(id:Int?,query:String):List<exercise>{
+        val exercises: List<exercise> = api.getPersonalExercises(id,query)
+        return exercises
+    }
     suspend fun getVerified(query:String):List<exercise>{
         val exercises: List<exercise> = api.getVerified(query)
         return exercises
@@ -41,6 +45,36 @@ class ExerciseRepository(private val api:ExerciseService) {
     suspend fun createExercise(description: String,difficulty: String,muscle: String,name: String,reps: Int,sets: Int,type: String,id:Int?): ApiResponse<String> {
         try {
             val response = api.createExercise(PostVerifiedExerciseRequest(description,difficulty,muscle,name,reps,sets,type),id)
+            return ApiResponse.Success(response.toString())
+        } catch (e: HttpException) {
+
+            if (e.code() == 500) {
+                return ApiResponse.ErrorWithMessage("Invalid Fields")
+            }
+            return ApiResponse.Error(e)
+        } catch (e: IOException) {
+            return ApiResponse.Error(e)
+        }
+    }
+
+    suspend fun createPersonal(description: String,difficulty: String,muscle: String,name: String,reps: Int,sets: Int,type: String,id:Int?): ApiResponse<String> {
+        try {
+            val response = api.createPersonalExercise(PostVerifiedExerciseRequest(description,difficulty,muscle,name,reps,sets,type),id)
+            return ApiResponse.Success(response.toString())
+        } catch (e: HttpException) {
+
+            if (e.code() == 500) {
+                return ApiResponse.ErrorWithMessage("Invalid Fields")
+            }
+            return ApiResponse.Error(e)
+        } catch (e: IOException) {
+            return ApiResponse.Error(e)
+        }
+    }
+
+    suspend fun verify(description: String,difficulty: String,muscle: String,name: String,reps: Int,sets: Int,type: String,id:Int?): ApiResponse<String> {
+        try {
+            val response = api.solVerifictaion(PostVerifiedExerciseRequest(description,difficulty,muscle,name,reps,sets,type),id)
             return ApiResponse.Success(response.toString())
         } catch (e: HttpException) {
 

@@ -7,7 +7,10 @@ import com.jder00138218.liftapp.network.retrofit.RetrofitInstance
 import com.jder00138218.liftapp.repositories.CredentialsRepository
 import com.jder00138218.liftapp.repositories.DetailExerciseRepository
 import com.jder00138218.liftapp.repositories.ExerciseRepository
+import com.jder00138218.liftapp.repositories.LiftRepository
+import com.jder00138218.liftapp.repositories.RoutineRepository
 import com.jder00138218.liftapp.repositories.UserRepository
+import retrofit2.Retrofit
 
 class LiftAppApplication: Application() {
     private val prefs: SharedPreferences by lazy {
@@ -36,6 +39,16 @@ class LiftAppApplication: Application() {
         getUserService()
     }
 
+    private fun getLiftRepoistory()=with(RetrofitInstance){
+        setToken(getToken())
+        getLiftService()
+    }
+
+
+    private fun getRoutineService()=with(RetrofitInstance){
+        setToken(getToken())
+        getRoutineService()
+    }
 
     fun getToken(): String = prefs.getString(USER_TOKEN, "b")!!
 
@@ -56,6 +69,15 @@ class LiftAppApplication: Application() {
     val userRepository:UserRepository by lazy{
         UserRepository(getUserRepository())
     }
+
+    val liftRepository:LiftRepository by lazy{
+        LiftRepository(getLiftRepoistory())
+    }
+
+    val routineRepository:RoutineRepository by lazy{
+        RoutineRepository(getRoutineService())
+    }
+
 
     fun saveAuthToken(token: String){
         val editor = prefs.edit()

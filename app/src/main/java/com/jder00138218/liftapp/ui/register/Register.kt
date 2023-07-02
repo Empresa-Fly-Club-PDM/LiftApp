@@ -1,6 +1,7 @@
 package com.jder00138218.liftapp.ui.register
 
-import android.util.Log
+import android.app.DatePickerDialog
+import android.widget.DatePicker
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -33,6 +34,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
@@ -41,13 +43,15 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.jder00138218.liftapp.R
-import com.jder00138218.liftapp.ui.navigation.Rutas
 import com.jder00138218.liftapp.ui.register.viewmodel.RegisterViewModel
+import java.util.Calendar
+import java.util.Date
 
 
 @Composable
@@ -111,24 +115,24 @@ fun FieldsRegister(registerViewModel: RegisterViewModel, navController: NavHostC
     Spacer(modifier = Modifier.padding(2.dp))
     FieldDetaile("Genero", registerViewModel)
     Spacer(modifier = Modifier.padding(2.dp))
-    FieldDetaile("Fecha de nacimiento", registerViewModel)
+    DateInputField(registerViewModel)
     Spacer(modifier = Modifier.padding(2.dp))
     GroupPE(registerViewModel)
     Spacer(modifier = Modifier.padding(2.dp))
     ButtonsDetaile(registerViewModel, navController)
     Spacer(modifier = Modifier.padding(2.dp))
-    Text(text = "Por favor revisar los datos", color = Color.Red)
 
 }
 
+
 @Composable
 fun ButtonsDetaile(viewModel: RegisterViewModel, navController: NavHostController) {
-
+    val context = LocalContext.current
     Row(modifier = Modifier.padding(8.dp)) {
         Button(
             onClick = {
-                viewModel.onRegister()
-                handleUiStatus(viewModel, navController)
+                viewModel.onRegister(navController, context)
+
             }, modifier = Modifier
                 .height(60.dp)
                 .fillMaxWidth(), colors = ButtonDefaults.buttonColors(
@@ -157,12 +161,14 @@ fun FieldDetaile(name: String, viewModel: RegisterViewModel) {
     var validTextfield = true;
     var type = KeyboardType.Text
     var valueChange: ((String) -> Unit)? = null
+    var tint = colorResource(id = R.color.gray_text)
 
 
     if (name == "Nombre completo") {
         colorPH = Color.Red
         iconId = R.drawable.profile
         value = namelUser
+        tint = colorResource(id = R.color.buttonRed)
         valueChange = { newValue ->
             namelUser = newValue
             viewModel.name = newValue
@@ -184,16 +190,6 @@ fun FieldDetaile(name: String, viewModel: RegisterViewModel) {
         valueChange = { newValue ->
             genreUser = newValue
             viewModel.genre = newValue
-        }
-    }
-
-    if (name == "Fecha de nacimiento") {
-        iconId = R.drawable.calendar
-        value = dateUser
-        validTextfield = false
-        valueChange = { newValue ->
-            dateUser = newValue
-            viewModel.date = newValue
         }
     }
 
@@ -220,7 +216,7 @@ fun FieldDetaile(name: String, viewModel: RegisterViewModel) {
                 modifier = Modifier.size(16.dp),
                 painter = painterResource(id = iconId),
                 contentDescription = "Icon field",
-                tint = colorResource(id = R.color.gray_text)
+                tint = tint
             )
         },
         keyboardOptions = KeyboardOptions(
@@ -237,10 +233,12 @@ fun FieldDetaile(name: String, viewModel: RegisterViewModel) {
 fun Fieldpassword(name: String, viewModel: RegisterViewModel) {
 
     var passwordUser by remember { mutableStateOf(viewModel.password) }
+    var passwordUserVde by remember { mutableStateOf(viewModel.passwordVe) }
     var isVisible by remember { mutableStateOf(viewModel.isVisiblePaswd) }
     var value = ""
     var valueChange: ((String) -> Unit)? = null
     var colorId = colorResource(id = R.color.gray_text)
+    var tint = colorResource(id = R.color.buttonRed)
 
     if (name != "Contraseña") {
         colorId = Color.Red
@@ -253,12 +251,13 @@ fun Fieldpassword(name: String, viewModel: RegisterViewModel) {
 
     if (name != "Verificar contraseña") {
         colorId = Color.Red
-        value = passwordUser
+        value = passwordUserVde
         valueChange = { newValue ->
-            passwordUser = newValue
-            viewModel.password = newValue
+            passwordUserVde = newValue
+            viewModel.passwordVe = newValue
         }
     }
+
 
     val visualTransformation =
         if (isVisible) VisualTransformation.None else PasswordVisualTransformation()
@@ -285,7 +284,7 @@ fun Fieldpassword(name: String, viewModel: RegisterViewModel) {
                 modifier = Modifier.size(16.dp),
                 painter = painterResource(id = R.drawable.icon_password),
                 contentDescription = "Icon field",
-                tint = colorResource(id = R.color.gray_text)
+                tint = tint
             )
         },
         trailingIcon = {
@@ -316,7 +315,7 @@ fun GroupPE(viewModel: RegisterViewModel) {
 
 }
 
-// TODO -> FIX FIELDS WITH NUMBERS
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun FieldDetaileWB(name: String, viewModel: RegisterViewModel) {
@@ -329,8 +328,8 @@ fun FieldDetaileWB(name: String, viewModel: RegisterViewModel) {
     var valueChange: ((String) -> Unit)? = null
 
     if (name == "Peso") {
-        iconId = R.drawable.swap
-        textB = "CM"
+        iconId = R.drawable.weight
+        textB = "LB"
         value = weigthUser
         valueChange = { newValue ->
             weigthUser = newValue
@@ -345,7 +344,7 @@ fun FieldDetaileWB(name: String, viewModel: RegisterViewModel) {
         value = heigthUser
         valueChange = { newValue ->
             heigthUser = newValue
-            viewModel.heigth = newValue.toDoubleOrNull() ?: 0.0
+            viewModel.heigth = newValue.toIntOrNull() ?: 0
         }
     }
 
@@ -408,31 +407,75 @@ fun FieldDetaileWB(name: String, viewModel: RegisterViewModel) {
 }
 
 
-fun handleUiStatus(
-    viewModel: RegisterViewModel,
-    navController: NavHostController,
-) {
-    val status = viewModel.status.value
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun DateInputField(viewModel: RegisterViewModel) {
 
-    when (status) {
+    var dateUser by remember { mutableStateOf(viewModel.date) }
 
-        is RegisterUiStatus.Error -> {
-            Log.d("tag", "Error")
-            // TODO() -> Toast.makeText(requireContext(), "An error has occurred", Toast.LENGTH_SHORT).show()
+    // Fetching the Local Context
+    val mContext = LocalContext.current
+
+    // Declaring integer values
+    // for year, month and day
+    val mYear: Int
+    val mMonth: Int
+    val mDay: Int
+
+    // Initializing a Calendar
+    val mCalendar = Calendar.getInstance()
+
+    // Fetching current year, month and day
+    mYear = mCalendar.get(Calendar.YEAR)
+    mMonth = mCalendar.get(Calendar.MONTH)
+    mDay = mCalendar.get(Calendar.DAY_OF_MONTH)
+
+    mCalendar.time = Date()
+
+    // Declaring a string value to
+    // store date in string format
+    val mDate = remember { mutableStateOf("") }
+
+    // Declaring DatePickerDialog and setting
+    // initial values as current values (present year, month and day)
+    val mDatePickerDialog = DatePickerDialog(
+        mContext,
+        { _: DatePicker, mYear: Int, mMonth: Int, mDayOfMonth: Int ->
+            mDate.value = "$mDayOfMonth/${mMonth + 1}/$mYear"
+        }, mYear, mMonth, mDay
+    )
+
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(8.dp),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+
+        // Creating a button that on
+        // click displays/shows the DatePickerDialog
+
+        Button(
+            modifier = Modifier
+                .fillMaxWidth(),
+            shape = RoundedCornerShape(15.dp),
+            onClick = {
+                mDatePickerDialog.show()
+            }, colors = ButtonDefaults.buttonColors(
+                containerColor = Color.Red
+            )
+        ) {
+            Text(text = "Seleccionar Fecha de Nacimiento", color = Color.White)
         }
 
-        is RegisterUiStatus.ErrorWithMessage -> {
-            //  TODO() -> Toast.makeText(requireContext(), status.message, Toast.LENGTH_SHORT).show()
-            Log.d("tag", "Error with message")
-        }
+        // Adding a space of 100dp height
+        Spacer(modifier = Modifier.padding(2.dp))
 
-        is RegisterUiStatus.Success -> {
-            viewModel.clearStatus()
-            viewModel.clearData()
-            navController.navigate(route = Rutas.Login.ruta)
-        }
-
-        else -> {}
+        // Displaying the mDate value in the Text
+        Text(text = "Fecha de nacimiento: ${mDate.value}", textAlign = TextAlign.Center)
     }
+    viewModel.date = mDate.value;
 }
+
 

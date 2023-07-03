@@ -116,11 +116,6 @@ class RegisterViewModel(private val repository: CredentialsRepository) : ViewMod
                         is ApiResponse.Success -> RegisterUiStatus.Success
                     }
                     )
-            Toast.makeText(
-                context,
-                "Usuario registrado",
-                Toast.LENGTH_SHORT
-            ).show()
             handleUiStatus(navController, context)
         }
     }
@@ -151,12 +146,6 @@ class RegisterViewModel(private val repository: CredentialsRepository) : ViewMod
                     Toast.LENGTH_SHORT
                 ).show()
 
-                (genre != "Masculino" || genre != "Femenino") -> Toast.makeText(
-                    context,
-                    "Genero debe ser Masculino o Femenino",
-                    Toast.LENGTH_SHORT
-                ).show()
-
                 (years < 8) -> Toast.makeText(
                     context,
                     "Edad invalida",
@@ -165,7 +154,7 @@ class RegisterViewModel(private val repository: CredentialsRepository) : ViewMod
             }
 
             return
-        }else{
+        } else {
             register(name, email, password, genre, date, weigth, heigth, navController, context)
         }
 
@@ -177,8 +166,7 @@ class RegisterViewModel(private val repository: CredentialsRepository) : ViewMod
             email.isEmpty() -> return false
             password.isEmpty() -> return false
             passwordVe.isEmpty() -> return false
-            genre.isEmpty()-> return false
-            (genre != "Masculino" && genre != "Femenino") -> return false
+            genre.isEmpty() -> return false
             date.isEmpty() -> return false
             (weigth == 0) -> return false
             (heigth == 0) -> return false

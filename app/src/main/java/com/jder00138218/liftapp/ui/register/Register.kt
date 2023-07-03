@@ -21,10 +21,14 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExposedDropdownMenuBox
+import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -113,7 +117,7 @@ fun FieldsRegister(registerViewModel: RegisterViewModel, navController: NavHostC
     Spacer(modifier = Modifier.padding(2.dp))
     Fieldpassword("Verificar contraseña", registerViewModel)
     Spacer(modifier = Modifier.padding(2.dp))
-    FieldDetaile("Genero", registerViewModel)
+    GenreDropDownMenu(registerViewModel)
     Spacer(modifier = Modifier.padding(2.dp))
     DateInputField(registerViewModel)
     Spacer(modifier = Modifier.padding(2.dp))
@@ -122,6 +126,67 @@ fun FieldsRegister(registerViewModel: RegisterViewModel, navController: NavHostC
     ButtonsDetaile(registerViewModel, navController)
     Spacer(modifier = Modifier.padding(2.dp))
 
+}
+
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun GenreDropDownMenu(viewModel: RegisterViewModel) {
+
+    val genreList = arrayOf("Masculino", "Femenino")
+    var expanded by remember { mutableStateOf(false) }
+    var selectedText by remember { mutableStateOf(genreList[0]) }
+
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(8.dp)
+    ) {
+        ExposedDropdownMenuBox(
+            expanded = expanded,
+            onExpandedChange = {
+                expanded = !expanded
+            },
+
+            ) {
+            TextField(
+                value = selectedText,
+                onValueChange = {},
+                readOnly = true,
+                leadingIcon = {
+                    Icon(
+                        modifier = Modifier.size(16.dp),
+                        painter = painterResource(R.drawable.user),
+                        contentDescription = "Icon field",
+                        tint = colorResource(id = R.color.gray_text)
+                    )
+                },
+                trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .menuAnchor()
+
+            )
+
+            ExposedDropdownMenu(
+                expanded = expanded,
+                onDismissRequest = { expanded = false },
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                genreList.forEach { item ->
+                    DropdownMenuItem(
+                        modifier = Modifier.fillMaxWidth(),
+                        text = { Text(text = item) },
+                        onClick = {
+                            selectedText = item
+                            expanded = false
+                            viewModel.genre = selectedText
+                        }
+                    )
+                }
+            }
+        }
+    }
 }
 
 
@@ -151,14 +216,11 @@ fun ButtonsDetaile(viewModel: RegisterViewModel, navController: NavHostControlle
 fun FieldDetaile(name: String, viewModel: RegisterViewModel) {
 
     var namelUser by remember { mutableStateOf(viewModel.email) }
-    var genreUser by remember { mutableStateOf(viewModel.genre) }
-    var dateUser by remember { mutableStateOf(viewModel.date) }
     var emailUser by remember { mutableStateOf(viewModel.email) }
 
     var colorPH = Color(R.color.gray_text)
     var iconId = R.drawable.icon_message
     var value = ""
-    var validTextfield = true;
     var type = KeyboardType.Text
     var valueChange: ((String) -> Unit)? = null
     var tint = colorResource(id = R.color.gray_text)
@@ -184,21 +246,13 @@ fun FieldDetaile(name: String, viewModel: RegisterViewModel) {
         }
     }
 
-    if (name == "Genero") {
-        iconId = R.drawable.user
-        value = genreUser
-        valueChange = { newValue ->
-            genreUser = newValue
-            viewModel.genre = newValue
-        }
-    }
-
 
     OutlinedTextField(
         value = value,
         onValueChange = valueChange ?: {},
         modifier = Modifier
-            .width(350.dp)
+            .fillMaxWidth()
+            .padding(8.dp)// Modified
             .clip(RoundedCornerShape(4.dp))
             .border(
                 width = 1.dp,
@@ -226,7 +280,6 @@ fun FieldDetaile(name: String, viewModel: RegisterViewModel) {
     )
 
 }
-
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -266,7 +319,8 @@ fun Fieldpassword(name: String, viewModel: RegisterViewModel) {
         value = value,
         onValueChange = valueChange ?: {},
         modifier = Modifier
-            .width(350.dp)
+            .fillMaxWidth()
+            .padding(8.dp)
             .clip(RoundedCornerShape(4.dp))
             .border(
                 width = 1.dp,
@@ -315,7 +369,6 @@ fun GroupPE(viewModel: RegisterViewModel) {
 
 }
 
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun FieldDetaileWB(name: String, viewModel: RegisterViewModel) {
@@ -344,7 +397,7 @@ fun FieldDetaileWB(name: String, viewModel: RegisterViewModel) {
         value = heigthUser
         valueChange = { newValue ->
             heigthUser = newValue
-            viewModel.heigth = newValue.toIntOrNull() ?: 0
+            viewModel.heigth = newValue.toDoubleOrNull() ?: 0.0
         }
     }
 
@@ -360,7 +413,8 @@ fun FieldDetaileWB(name: String, viewModel: RegisterViewModel) {
                 value = newValue
             },
             modifier = Modifier
-                .width(280.dp)
+                .fillMaxWidth(0.8f)
+                .padding(8.dp)
                 .clip(RoundedCornerShape(4.dp))
                 .border(
                     width = 1.dp,
@@ -406,7 +460,6 @@ fun FieldDetaileWB(name: String, viewModel: RegisterViewModel) {
     }
 }
 
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DateInputField(viewModel: RegisterViewModel) {
@@ -445,20 +498,30 @@ fun DateInputField(viewModel: RegisterViewModel) {
         }, mYear, mMonth, mDay
     )
 
-    Column(
+    Row(
         modifier = Modifier
             .fillMaxWidth()
             .padding(8.dp),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.Center
     ) {
 
+
+        // Displaying the mDate value in the Text
+        Text(
+            text = "Fecha de nacimiento: ${mDate.value}",
+            textAlign = TextAlign.Center,
+            modifier = Modifier.fillMaxWidth(0.8f)
+        )
+        // Adding a space of 100dp height
+        Spacer(modifier = Modifier.padding(2.dp))
         // Creating a button that on
         // click displays/shows the DatePickerDialog
 
         Button(
             modifier = Modifier
-                .fillMaxWidth(),
+                .width(70.dp)
+                .height(30.dp),
             shape = RoundedCornerShape(15.dp),
             onClick = {
                 mDatePickerDialog.show()
@@ -466,16 +529,12 @@ fun DateInputField(viewModel: RegisterViewModel) {
                 containerColor = Color.Red
             )
         ) {
-            Text(text = "Seleccionar Fecha de Nacimiento", color = Color.White)
+            Icon(
+                painter = painterResource(id = R.drawable.calendar_days),
+                contentDescription = "Calendar"
+            )
         }
-
-        // Adding a space of 100dp height
-        Spacer(modifier = Modifier.padding(2.dp))
-
-        // Displaying the mDate value in the Text
-        Text(text = "Fecha de nacimiento: ${mDate.value}", textAlign = TextAlign.Center)
     }
     viewModel.date = mDate.value;
 }
-
 

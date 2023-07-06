@@ -28,6 +28,7 @@ class LoginViewModel(private val credentialsRepository: CredentialsRepository) :
     private var _password by mutableStateOf("")
     private var _isVisiblePaswd by mutableStateOf(false)
     val _status = MutableLiveData<LoginUiStatus>(LoginUiStatus.Resume)
+    val _loading = mutableStateOf(false)
 
 
     var email: String get() = _email
@@ -61,6 +62,7 @@ class LoginViewModel(private val credentialsRepository: CredentialsRepository) :
         if (!validateData()) {
             _status.value = LoginUiStatus.ErrorWithMessage("Wrong Imformation")
             Toast.makeText(context, "Verificar campos vacios", Toast.LENGTH_SHORT).show()
+            _loading.value=false
             return
         }
         login(email, password,navController,context)
@@ -98,6 +100,7 @@ class LoginViewModel(private val credentialsRepository: CredentialsRepository) :
                 Log.d("tag","failure")
             }
         }
+        _loading.value=false
     }
 
     private fun validateData(): Boolean {

@@ -21,6 +21,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuBox
@@ -113,14 +114,27 @@ fun FieldsDetaileCreate(viewmodel: CreateExerciseViewmodel,navController:NavHost
 @Composable
 fun ButtonsCreate(viewmodel: CreateExerciseViewmodel, navController: NavHostController) { val context = LocalContext.current
         Button(
-            onClick = {viewmodel.onCreate(navController, context)
+            onClick = {
+                viewmodel.isLoadingCreate.value = true
+                viewmodel.onCreate(navController, context)
             }, modifier = Modifier
                 .height(60.dp)
                 .fillMaxWidth(), colors = ButtonDefaults.buttonColors(
                 containerColor = colorResource(id = R.color.buttonGren)
             )
         ) {
-            Text(text = " Confirmar")
+            if (viewmodel.isLoadingCreate.value) {
+                // Show loading animation when isLoading is true
+                CircularProgressIndicator(
+                    modifier = Modifier
+                        .size(24.dp)
+                        .padding(end = 8.dp)
+                    ,color = Color.White
+
+                )
+            } else {
+                Text(text = " Confirmar")
+            }
 
         }
 

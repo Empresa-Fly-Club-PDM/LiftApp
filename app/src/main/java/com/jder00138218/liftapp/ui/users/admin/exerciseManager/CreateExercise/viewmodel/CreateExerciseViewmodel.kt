@@ -29,6 +29,7 @@ class CreateExerciseViewmodel(private val exerciseRepository: ExerciseRepository
     private var _sets by mutableStateOf("")
     private var _type by mutableStateOf("")
     val _status = MutableLiveData<CreateExerciseUIStatus>(CreateExerciseUIStatus.Resume)
+    val isLoadingCreate = mutableStateOf(false)
 
     var description: String
         get() = _description
@@ -94,6 +95,7 @@ class CreateExerciseViewmodel(private val exerciseRepository: ExerciseRepository
         if (!validateData()) {
             _status.value = CreateExerciseUIStatus.ErrorWithMessage("Verificar Imformation")
             Toast.makeText(context, "Verificar campos vacios", Toast.LENGTH_SHORT).show()
+            isLoadingCreate.value = false
             return
         }
 
@@ -118,6 +120,7 @@ class CreateExerciseViewmodel(private val exerciseRepository: ExerciseRepository
                 Log.d("tag","failure")
             }
         }
+        isLoadingCreate.value = false
     }
 
     private fun validateData(): Boolean {

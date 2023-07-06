@@ -83,8 +83,10 @@ class UpdateUserViewModel(private val userRepository: UserRepository): ViewModel
             update(id, _nombrecompleto, _email,_password,_genero,_fechanac,_weight.toInt(),_height.toInt(),navController,context)
         }else if (_password == _confirmpassowrd && _password.length>=8 && calculateAge(_fechanac)>=13){
             update(id, _nombrecompleto, _email,_password,_genero,_fechanac,_weight.toInt(),_height.toInt(),navController,context)
-        }else{
+        }else if(_password.length<8){
             Toast.makeText(context, "Contraseñas muy corta o no coincide", Toast.LENGTH_SHORT).show()
+        }else{
+            Toast.makeText(context, "Fecha invalida", Toast.LENGTH_SHORT).show()
             return
         }
     }

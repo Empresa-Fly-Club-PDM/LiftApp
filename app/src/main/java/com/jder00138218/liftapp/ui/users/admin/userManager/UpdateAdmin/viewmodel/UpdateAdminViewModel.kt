@@ -35,6 +35,7 @@ class UpdateAdminViewModel(private val userRepository: UserRepository):ViewModel
     var _confirmpassowrd by mutableStateOf("")
     var _isVisiblePaswd by mutableStateOf(false)
     val _status = MutableLiveData<UpdateAdminUIStatus>(UpdateAdminUIStatus.Resume)
+    val _loading = mutableStateOf(false)
 
     val user: user
         get() = _user.value
@@ -71,6 +72,7 @@ class UpdateAdminViewModel(private val userRepository: UserRepository):ViewModel
         if (!validateData()) {
             _status.value = UpdateAdminUIStatus.ErrorWithMessage("Verificar Imformation")
             Toast.makeText(context, "Verificar campos vacios", Toast.LENGTH_SHORT).show()
+            _loading.value=false
             return
         }
         if(_password.isEmpty()){
@@ -79,6 +81,7 @@ class UpdateAdminViewModel(private val userRepository: UserRepository):ViewModel
             update(id, _nombrecompleto, _email,_password,navController,context)
         }else{
             Toast.makeText(context, "Contraseñas muy corta o no coincide", Toast.LENGTH_SHORT).show()
+            _loading.value=false
             return
         }
     }
@@ -101,6 +104,8 @@ class UpdateAdminViewModel(private val userRepository: UserRepository):ViewModel
                 Log.d("tag","failure")
             }
         }
+
+        _loading.value=false
     }
 
     fun deleteUser(id:Int?,navController: NavHostController,context:Context) {
@@ -116,6 +121,7 @@ class UpdateAdminViewModel(private val userRepository: UserRepository):ViewModel
                     )
             Toast.makeText(context, "Usuario Eliminado", Toast.LENGTH_SHORT).show()
             navController.navigate(Rutas.AdminAdminManager.ruta)
+            _loading.value=false
 
         }
     }

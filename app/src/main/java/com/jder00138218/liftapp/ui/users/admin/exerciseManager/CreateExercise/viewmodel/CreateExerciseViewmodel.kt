@@ -30,6 +30,7 @@ class CreateExerciseViewmodel(private val exerciseRepository: ExerciseRepository
     private var _type by mutableStateOf("")
     val _status = MutableLiveData<CreateExerciseUIStatus>(CreateExerciseUIStatus.Resume)
     val isLoadingCreate = mutableStateOf(false)
+    val _loading = mutableStateOf(false)
 
     var description: String
         get() = _description

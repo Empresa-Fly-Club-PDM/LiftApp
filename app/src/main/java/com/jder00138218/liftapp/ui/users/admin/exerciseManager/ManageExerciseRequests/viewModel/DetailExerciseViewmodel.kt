@@ -22,6 +22,7 @@ import kotlinx.coroutines.launch
 class DetailExerciseViewmodel(private val detailExerciseRepository: DetailExerciseRepository): ViewModel() {
     private var _exercise = mutableStateOf<exercise>(exercise())
     val _status = MutableLiveData<DetailUIStatus>(DetailUIStatus.Resume)
+    val _loading = mutableStateOf(false)
 
     val exercise: exercise
         get() = _exercise.value
@@ -45,8 +46,10 @@ class DetailExerciseViewmodel(private val detailExerciseRepository: DetailExerci
                         is ApiResponse.Success -> DetailUIStatus.Success(
                             response.data
                         )
+
                     }
                     )
+            _loading.value=false
             Toast.makeText(context, "Ejercicio denegado y descartado", Toast.LENGTH_SHORT).show()
             navController.navigate(Rutas.DashboardAdmin.ruta)
 
@@ -63,6 +66,7 @@ class DetailExerciseViewmodel(private val detailExerciseRepository: DetailExerci
                         )
                     }
                     )
+            _loading.value=false
             Toast.makeText(context, "Ejercicio Verificado", Toast.LENGTH_SHORT).show()
             navController.navigate(Rutas.DashboardAdmin.ruta)
 

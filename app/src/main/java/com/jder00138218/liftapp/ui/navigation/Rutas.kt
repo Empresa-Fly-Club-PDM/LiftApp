@@ -39,11 +39,9 @@ sealed  class Rutas(var ruta : String) {
     object FriendProfile:Rutas("rutas_friend_profile/{id}")
     object UpdateUser:Rutas("rutas_update_user")
     object StartRoutine:Rutas("rutas_start_routine/{id}")
-
     object CurrentRoutine:Rutas("rutas_courrent_routine/{id}")
-
     object RegisterLift:Rutas("rutas_register_lift/{exerciseid}/{exercisename}")
-
-
+    object LiftHistory:Rutas("rutas_lift-history")
+    object UserHistory:Rutas("rutas_user_history")
 
 }

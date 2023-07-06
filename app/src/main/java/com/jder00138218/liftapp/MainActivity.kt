@@ -46,6 +46,7 @@ import com.jder00138218.liftapp.ui.users.user.routinesmenu.RoutinesMenu
 import com.jder00138218.liftapp.ui.users.user.updateUser.UpdateUser
 import com.jder00138218.liftapp.ui.users.user.updateuserexercise.UpdateUserExercise
 import com.jder00138218.liftapp.ui.users.user.userexercises.UserExercises
+import com.jder00138218.liftapp.ui.users.user.userhistory.UserHistory
 import com.jder00138218.liftapp.ui.users.user.userprofile.UserProfile
 
 class MainActivity : ComponentActivity() {
@@ -219,6 +220,9 @@ fun NavigationGraph(){
             RegisterExerciseStats(navController)
         }
 
+        composable(route=Rutas.UserHistory.ruta){
+            UserHistory(navController)
+        }
 
     }
 }

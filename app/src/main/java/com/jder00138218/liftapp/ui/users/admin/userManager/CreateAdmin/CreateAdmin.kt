@@ -25,6 +25,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuBox
@@ -382,15 +383,25 @@ fun DateInputField() {
 @Composable
 fun ButtonsCreateAdmin(viewmodel: CreateAdminViewModel, navController: NavHostController) { val context = LocalContext.current
     Button(
-        onClick = {viewmodel.onCreate(navController, context)
+        onClick = {viewmodel.onCreate(navController, context,)
+            viewmodel._loading.value=true
         }, modifier = Modifier
             .height(60.dp)
             .fillMaxWidth(), colors = ButtonDefaults.buttonColors(
             containerColor = colorResource(id = R.color.buttonGren)
         )
     ) {
-        Text(text = " Confirmar")
-
+        if (viewmodel._loading.value) {
+            // Show loading animation when isLoading is true
+            CircularProgressIndicator(
+                modifier = Modifier
+                    .size(36.dp)
+                    .padding(end = 8.dp),
+                color = Color.White
+            )
+        } else {
+            Text(text = "Confirmar")
+        }
     }
 
 }

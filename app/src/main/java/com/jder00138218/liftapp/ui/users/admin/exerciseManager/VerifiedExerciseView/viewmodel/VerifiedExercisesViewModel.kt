@@ -1,6 +1,7 @@
 package com.jder00138218.liftapp.ui.users.admin.exerciseManager.VerifiedExerciseView.viewmodel
 
 import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.APPLICATION_KEY
 import androidx.lifecycle.viewModelScope
@@ -13,6 +14,8 @@ import kotlinx.coroutines.launch
 
 class VerifiedExercisesViewModel(private val exerciseRepository: ExerciseRepository):ViewModel() {
     private val _exercises = mutableStateListOf<exercise>()
+
+
     val exercises: List<exercise>
         get() = _exercises
 

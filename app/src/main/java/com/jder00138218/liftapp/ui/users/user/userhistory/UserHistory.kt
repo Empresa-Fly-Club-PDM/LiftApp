@@ -41,6 +41,7 @@ import androidx.navigation.NavController
 import com.jder00138218.liftapp.LiftAppApplication
 import com.jder00138218.liftapp.R
 import com.jder00138218.liftapp.network.dto.exercise.exercise
+import com.jder00138218.liftapp.ui.navigation.Rutas
 import com.jder00138218.liftapp.network.dto.lift.lift
 import com.jder00138218.liftapp.ui.users.user.HeaderBarBackArrowCheck
 import com.jder00138218.liftapp.ui.users.user.HeaderBarBackArrowDumbell
@@ -116,6 +117,7 @@ fun CardHistoricExercise(lift: lift, navController: NavController) {
             .fillMaxWidth()
             .padding(8.dp)
             .clickable {
+                navController.navigate(Rutas.LiftDetail.ruta)
             },
         colors = CardDefaults.cardColors(
             containerColor = colorResource(id = R.color.card)

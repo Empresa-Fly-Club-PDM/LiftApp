@@ -27,7 +27,7 @@ class CreateAdminViewModel(private val userRepository: UserRepository): ViewMode
     private var _confirmpassowrd by mutableStateOf("")
     private var _isVisiblePaswd by mutableStateOf(false)
     val _status = MutableLiveData<CreateAdminUIStatus>(CreateAdminUIStatus.Resume)
-
+    val _loading = mutableStateOf(false)
 
     var nombrecompleto: String
         get() = _nombrecompleto
@@ -76,9 +76,11 @@ class CreateAdminViewModel(private val userRepository: UserRepository): ViewMode
             is CreateAdminUIStatus.Error -> {
                 Log.d("tag", "Error")
                 Toast.makeText(context, "Error en el registro", Toast.LENGTH_SHORT).show()
+                _loading.value=false
             }
             is CreateAdminUIStatus.ErrorWithMessage -> {
                 Toast.makeText(context, "Verificar datos ingresados", Toast.LENGTH_SHORT).show()
+                _loading.value=false
             }
             is CreateAdminUIStatus.Success -> {
                 Toast.makeText(context, "Administrador Creado exitosamente", Toast.LENGTH_SHORT).show()
@@ -86,6 +88,7 @@ class CreateAdminViewModel(private val userRepository: UserRepository): ViewMode
             }
             else -> {
                 Log.d("tag","failure")
+                _loading.value=false
             }
         }
     }
@@ -94,12 +97,14 @@ class CreateAdminViewModel(private val userRepository: UserRepository): ViewMode
         if (!validateData()) {
             _status.value = CreateAdminUIStatus.ErrorWithMessage("Verificar Imformation")
             Toast.makeText(context, "Verificar campos vacios", Toast.LENGTH_SHORT).show()
+            _loading.value=false
             return
         }
         if(password==confirmpassword && password.length>=8){
             create(nombrecompleto, email,password,navController,context)
         }else{
             Toast.makeText(context, "Revisar ingreso de contraseña", Toast.LENGTH_SHORT).show()
+            _loading.value=false
             return
         }
 

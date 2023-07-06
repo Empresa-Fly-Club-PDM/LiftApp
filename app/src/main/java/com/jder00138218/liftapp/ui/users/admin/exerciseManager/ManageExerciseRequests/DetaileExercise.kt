@@ -21,6 +21,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextField
@@ -131,6 +132,7 @@ fun ButtonsDetaile(id: Int? , detailExerciseViewmodel: DetailExerciseViewmodel,n
         Button(
             onClick = {
                 detailExerciseViewmodel.denyExercise(id,navController,context)
+                detailExerciseViewmodel._loading.value=true
             }, modifier = Modifier
                 .height(60.dp)
                 .width(175.dp)
@@ -138,19 +140,30 @@ fun ButtonsDetaile(id: Int? , detailExerciseViewmodel: DetailExerciseViewmodel,n
                 containerColor = colorResource(id = R.color.buttonGray)
             )
         ) {
+            if (detailExerciseViewmodel._loading.value) {
+                // Show loading animation when isLoading is true
+                CircularProgressIndicator(
+                    modifier = Modifier
+                        .size(36.dp)
+                        .padding(end = 8.dp),
+                    color = Color.White
+                )
+            } else {
 
             Text(text = " Descartar")
+            }
 
         }
 
         Button(
             onClick = {
                       detailExerciseViewmodel.verifyExercise(id,navController,context)
+                        detailExerciseViewmodel._loading.value=true
             }, modifier = Modifier
                 .height(60.dp)
                 .width(175.dp)
                 .fillMaxWidth(), colors = ButtonDefaults.buttonColors(
-                containerColor = Color.Red
+                containerColor = Color.Green
             )
         ) {
 

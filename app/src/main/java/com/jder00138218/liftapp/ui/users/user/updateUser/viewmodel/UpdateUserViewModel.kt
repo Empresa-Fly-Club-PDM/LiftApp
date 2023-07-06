@@ -6,6 +6,7 @@ import android.widget.Toast
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.core.text.isDigitsOnly
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -130,8 +131,16 @@ class UpdateUserViewModel(private val userRepository: UserRepository): ViewModel
 
     private fun validateData(): Boolean {
         when {
-            _nombrecompleto.isEmpty() -> return false
+            _nombrecompleto.isEmpty() ->return false
             _email.isEmpty() -> return false
+            _genero.isEmpty()-> return false
+            _fechanac.isEmpty() -> return false
+            _weight.isEmpty()->return false
+            _height.isEmpty()->return false
+            !_weight.isDigitsOnly()->return false
+            !_height.isDigitsOnly()->return false
+            (_weight.toInt() <= 0) -> return false
+            (_height.toInt() <= 0) -> return false
         }
         return true
     }

@@ -6,6 +6,7 @@ import android.widget.Toast
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.core.text.isDigitsOnly
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -111,10 +112,9 @@ class AddUserExercisesViewModel(private val exerciseRepository: ExerciseReposito
         val userid = app.getUserId()
         if (!validateData()) {
             _status.value = AddUserExercisesUIStatus.ErrorWithMessage("Verificar Imformation")
-            Toast.makeText(context, "Verificar campos vacios", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, "Verificar Información", Toast.LENGTH_SHORT).show()
             return
         }
-
         create(description, difficulty,muscle,name,reps.toInt(),sets.toInt(),type,userid,navController,context)
     }
     fun onVerify(navController: NavHostController, context: Context) {
@@ -122,7 +122,7 @@ class AddUserExercisesViewModel(private val exerciseRepository: ExerciseReposito
         val userid = app.getUserId()
         if (!validateData()) {
             _status.value = AddUserExercisesUIStatus.ErrorWithMessage("Verificar Imformation")
-            Toast.makeText(context, "Verificar campos vacios", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, "Verificar Información", Toast.LENGTH_SHORT).show()
             return
         }
 
@@ -158,8 +158,12 @@ class AddUserExercisesViewModel(private val exerciseRepository: ExerciseReposito
             difficulty.isEmpty() -> return false
             muscle.isEmpty() -> return false
             name.isEmpty() -> return false
-            reps.isEmpty() -> return false
+            reps.isEmpty() ->return false
             sets.isEmpty() ->return false
+            !reps.isDigitsOnly() -> return false
+            !sets.isDigitsOnly() ->return false
+            reps.toInt()<=0 -> return false
+            sets.toInt()<=0 ->return false
             type.isEmpty() -> return false
         }
         return true

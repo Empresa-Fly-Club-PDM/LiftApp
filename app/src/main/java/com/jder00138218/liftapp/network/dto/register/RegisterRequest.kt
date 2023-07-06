@@ -5,7 +5,7 @@ data class RegisterRequest(
     val email: String,
     val password: String,
     val genero: String,
-    val weigth: Int,
+    val weight: Int,
     val height: Int,
     val fechanac: String,
 )

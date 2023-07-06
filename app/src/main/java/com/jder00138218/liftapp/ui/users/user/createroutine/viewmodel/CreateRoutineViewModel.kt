@@ -6,6 +6,7 @@ import android.widget.Toast
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.core.text.isDigitsOnly
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -86,13 +87,13 @@ class CreateRoutineViewModel(private val routineRepository: RoutineRepository) :
     fun onCreate(navController: NavHostController, context: Context,id:Int?) {
         if (!validateData()) {
             _status.value = CreateRoutineUIStatus.ErrorWithMessage("Verificar Imformation")
-            Toast.makeText(context, "Verificar campos vacios", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, "Verificar Información", Toast.LENGTH_SHORT).show()
             return
         }
         if(minute.toInt()<=60 && minute.toInt()>0 && hour.toInt()>=0){
             create(difficulty, name,tag,minute,hour,id,navController,context)
         }else{
-            Toast.makeText(context, "Duracipon de entrenamiento invalida", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, "Duración de entrenamiento invalida", Toast.LENGTH_SHORT).show()
             return
         }
 
@@ -125,6 +126,10 @@ class CreateRoutineViewModel(private val routineRepository: RoutineRepository) :
             tag.isEmpty() -> return false
             minute.isEmpty() -> return false
             hour.isEmpty() -> return false
+            !minute.isDigitsOnly()->return false
+            !hour.isDigitsOnly()->return false
+            minute.toInt()<=0 ->return false
+
         }
         return true
     }

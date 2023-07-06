@@ -3,6 +3,7 @@ package com.jder00138218.liftapp.ui.recovery.viewmodel
 import android.content.Context
 import android.util.Log
 import android.widget.Toast
+import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -22,13 +23,17 @@ import com.jder00138218.liftapp.ui.recovery.RecoveryUiStatus
 import com.jder00138218.liftapp.ui.register.RegisterUiStatus
 import kotlinx.coroutines.launch
 
-class RecoveryViewModel(private val  credentialsRepository: CredentialsRepository) : ViewModel() {
+class RecoveryViewModel(private val repository: CredentialsRepository) : ViewModel() {
 
     private var _email by mutableStateOf("")
-    val _status = MutableLiveData<RecoveryUiStatus>(RecoveryUiStatus.Resume)
+    private var _status =  mutableStateOf<RecoveryUiStatus>(RecoveryUiStatus.Resume)
 
 
-    var email: String get() = _email
+    val status: State<RecoveryUiStatus>
+        get() = _status
+
+    var email: String
+        get() = _email
         set(value) {
             _email = value
         }
@@ -58,10 +63,12 @@ class RecoveryViewModel(private val  credentialsRepository: CredentialsRepositor
         recovery(email, navController, context)
     }
 
-    fun handleUiStatus(navController: NavHostController, context: Context) {
-        val status = _status.value
 
-        when (status) {
+
+    fun handleUiStatus(navController: NavHostController, context: Context) {
+        // val status = _status.value
+
+        when (_status.value) {
 
             is RecoveryUiStatus.Error -> {
 
@@ -74,7 +81,11 @@ class RecoveryViewModel(private val  credentialsRepository: CredentialsRepositor
 
             is RecoveryUiStatus.Success -> {
                 Toast.makeText(context, "Correo verificado", Toast.LENGTH_SHORT).show()
-                Toast.makeText(context, "Hemos enviado la informacion a su correo Electronico", Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    context,
+                    "Hemos enviado la informacion a su correo Electronico",
+                    Toast.LENGTH_SHORT
+                ).show()
                 clearStatus()
                 clearData()
                 navController.navigate(route = Rutas.Login.ruta)
@@ -85,15 +96,20 @@ class RecoveryViewModel(private val  credentialsRepository: CredentialsRepositor
     }
 
     private fun recovery(email: String, navController: NavHostController, context: Context) {
-        Log.d("emaeil", email)
+
         viewModelScope.launch {
             _status.value = (
-                    when (val response = credentialsRepository.recovery(email)) {
+                    when (val response =
+                        repository.recovery(email)) {
                         is ApiResponse.Error -> RecoveryUiStatus.Error(response.exception)
-                        is ApiResponse.ErrorWithMessage -> RecoveryUiStatus.ErrorWithMessage(response.message)
-                        is ApiResponse.Success -> RecoveryUiStatus.Success(response.data)
+                        is ApiResponse.ErrorWithMessage -> RecoveryUiStatus.ErrorWithMessage(
+                            response.message
+                        )
+
+                        is ApiResponse.Success -> RecoveryUiStatus.Success
                     }
                     )
+            Log.d("Status", _status.value.toString())
             handleUiStatus(navController, context)
         }
     }
@@ -101,7 +117,8 @@ class RecoveryViewModel(private val  credentialsRepository: CredentialsRepositor
     companion object {
         val Factory = viewModelFactory {
             initializer {
-                val app = this[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY] as LiftAppApplication
+                val app =
+                    this[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY] as LiftAppApplication
                 RecoveryViewModel(app.credentialsRepository)
             }
         }

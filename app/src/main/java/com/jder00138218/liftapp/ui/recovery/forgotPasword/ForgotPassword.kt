@@ -137,7 +137,8 @@ fun Confirm(modifier: Modifier, viewModel: RecoveryViewModel, navController: Nav
     val context = LocalContext.current
 
     Button(
-        onClick = { viewModel.onRecovery(navController, context)}, modifier = modifier
+        onClick = { viewModel.onRecovery(navController, context)},
+        modifier = modifier
             .height(60.dp)
             .width(300.dp)
             .fillMaxWidth(), colors = ButtonDefaults.buttonColors(

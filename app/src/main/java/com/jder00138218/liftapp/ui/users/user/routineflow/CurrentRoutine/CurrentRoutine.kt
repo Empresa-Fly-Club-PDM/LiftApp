@@ -206,7 +206,7 @@ private fun formatTime(seconds: Int): String {
 }
 @Composable
 fun Timer(vm: RoutineDetailViewModel) {
-    var isRunning by remember { mutableStateOf(false) }
+    var isRunning by remember { mutableStateOf(true) }
 
     LaunchedEffect(isRunning) {
         if (isRunning) {
@@ -228,11 +228,5 @@ fun Timer(vm: RoutineDetailViewModel) {
             modifier = Modifier.padding(bottom = 16.dp),
             fontSize = 32.sp
         )
-        Button(
-            onClick = { isRunning = !isRunning },
-            modifier = Modifier.align(Alignment.CenterHorizontally)
-        ) {
-            Text(text = if (isRunning) "Stop" else "Start")
-        }
     }
 }

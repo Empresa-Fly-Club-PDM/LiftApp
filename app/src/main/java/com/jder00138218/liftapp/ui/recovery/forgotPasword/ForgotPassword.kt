@@ -21,10 +21,15 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
@@ -33,17 +38,24 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.jder00138218.liftapp.R
+import com.jder00138218.liftapp.ui.login.viewmodel.LoginViewModel
+import com.jder00138218.liftapp.ui.recovery.viewmodel.RecoveryViewModel
 
 
 @Composable
 fun Recovery(navController: NavHostController) {
-    BlockFields()
+    val recovery: RecoveryViewModel = viewModel(
+        factory = RecoveryViewModel.Factory
+    )
+
+    BlockFields(recovery, navController)
 }
 
 @Composable
-fun BlockFields() {
+fun BlockFields(recoveryViewModel: RecoveryViewModel, navController: NavHostController) {
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -69,7 +81,7 @@ fun BlockFields() {
             Column(Modifier.align(Alignment.Center)) {
                 Text(text = "Ingrese su correo para la recuperación")
                 Spacer(modifier = Modifier.padding(8.dp))
-                FieldEmail()
+                FieldEmail(recoveryViewModel)
 
             }
 
@@ -77,7 +89,7 @@ fun BlockFields() {
                 Modifier.align(Alignment.BottomCenter),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Confirm(Modifier.align(Alignment.CenterHorizontally))
+                Confirm(Modifier.align(Alignment.CenterHorizontally), recoveryViewModel, navController)
             }
         }
     }
@@ -85,11 +97,15 @@ fun BlockFields() {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun FieldEmail() {
+fun FieldEmail(viewModel: RecoveryViewModel) {
+    var emailUser by remember { mutableStateOf(viewModel.email) }
 
     OutlinedTextField(
-        value = "",
-        onValueChange = { },
+        value = emailUser,
+        onValueChange = { newValue ->
+            emailUser = newValue
+            viewModel.email = newValue
+        },
         modifier = Modifier
             .width(350.dp)
             .clip(RoundedCornerShape(4.dp))
@@ -117,9 +133,11 @@ fun FieldEmail() {
 }
 
 @Composable
-fun Confirm(modifier: Modifier) {
+fun Confirm(modifier: Modifier, viewModel: RecoveryViewModel, navController: NavHostController) {
+    val context = LocalContext.current
+
     Button(
-        onClick = { }, modifier = modifier
+        onClick = { viewModel.onRecovery(navController, context)}, modifier = modifier
             .height(60.dp)
             .width(300.dp)
             .fillMaxWidth(), colors = ButtonDefaults.buttonColors(

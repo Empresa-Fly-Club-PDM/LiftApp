@@ -206,6 +206,7 @@ class RegisterViewModel(private val repository: CredentialsRepository) : ViewMod
             }
 
             is RegisterUiStatus.Success -> {
+                Toast.makeText(context, "Usuario Creado Exitosamente", Toast.LENGTH_SHORT).show()
                 clearStatus()
                 clearData()
                 navController.navigate(route = Rutas.Login.ruta)

@@ -8,6 +8,7 @@ sealed  class Rutas(var ruta : String) {
     object Login:Rutas("ruta_login")
     object Register:Rutas("ruta_register")
     object ForgotPss:Rutas("ruta_forgotpss")
+    object RecoveryPss:Rutas("ruta_recoverypss")
 
     //admin
     object DashboardAdmin:Rutas("ruta_dash_admin")

@@ -41,19 +41,19 @@ import androidx.navigation.NavController
 import com.jder00138218.liftapp.LiftAppApplication
 import com.jder00138218.liftapp.R
 import com.jder00138218.liftapp.network.dto.exercise.exercise
+import com.jder00138218.liftapp.network.dto.lift.lift
 import com.jder00138218.liftapp.ui.users.user.HeaderBarBackArrowCheck
 import com.jder00138218.liftapp.ui.users.user.HeaderBarBackArrowDumbell
 import com.jder00138218.liftapp.ui.users.user.UserBottomMenu
 import com.jder00138218.liftapp.ui.users.user.addexercisetoroutine.viewmodel.AddExerciseToRoutineViewModel
+import com.jder00138218.liftapp.ui.users.user.userhistory.viewmodel.UserHistoryViewModel
 import kotlinx.coroutines.delay
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun UserHistory(navController: NavController){
-    val navBackStackEntry = navController.currentBackStackEntry
-    val routineid = navBackStackEntry?.arguments?.getInt("routineid")
-    val vm: AddExerciseToRoutineViewModel = viewModel(
-        factory = AddExerciseToRoutineViewModel.Factory
+    val vm: UserHistoryViewModel = viewModel(
+        factory = UserHistoryViewModel.Factory
     )
     var text by remember { mutableStateOf("") }
     val context = LocalContext.current
@@ -63,7 +63,7 @@ fun UserHistory(navController: NavController){
         val currentText = text
         delay(500) // Add a short delay before executing the search
         if (currentText == text) { // Ensure the text hasn't changed during the delay
-            vm.searchExerciseDatabase(text,app.getUserId())
+            vm.getMyLifts(app.getUserId(),text)
         }
     }
 
@@ -83,7 +83,7 @@ fun UserHistory(navController: NavController){
             HeaderBarBackArrowDumbell(title = "Levantamientos registrados", navController = navController, backOnClick = {navController.popBackStack()})
             OutlinedTextField(value = text, onValueChange = { newText: String ->
                 text = newText
-                vm.searchExerciseDatabase(text,app.getUserId())}, modifier = Modifier
+                vm.getMyLifts(app.getUserId(),text)}, modifier = Modifier
                 .padding(horizontal = 8.dp)
                 .fillMaxWidth()
                 .clip(RoundedCornerShape(8.dp))
@@ -98,8 +98,8 @@ fun UserHistory(navController: NavController){
                     .fillMaxWidth()
                     .fillMaxHeight(0.8f)
             ) {
-                items(vm.exercises) {
-                    CardHistoricExercise(it, routineid,navController, vm)
+                items(vm.lifts) {
+                    CardHistoricExercise(it,navController)
                 }
             }
             UserBottomMenu(navController)
@@ -109,14 +109,13 @@ fun UserHistory(navController: NavController){
 }
 
 @Composable
-fun CardHistoricExercise(exercise: exercise, routineid:Int?, navController: NavController, addExerciseToRoutineViewModel: AddExerciseToRoutineViewModel) {
+fun CardHistoricExercise(lift: lift, navController: NavController) {
     val context = LocalContext.current
     Card( // this
         modifier = Modifier
             .fillMaxWidth()
             .padding(8.dp)
             .clickable {
-                addExerciseToRoutineViewModel.addExercise(routineid,exercise.id, navController ,context)
             },
         colors = CardDefaults.cardColors(
             containerColor = colorResource(id = R.color.card)
@@ -132,7 +131,7 @@ fun CardHistoricExercise(exercise: exercise, routineid:Int?, navController: NavC
 
                 Row() {
                     Text(
-                        text = exercise.name,
+                        text = lift.exercisename,
                         fontWeight = FontWeight.Bold,
                         modifier = Modifier.weight(1f)
                     )
@@ -150,8 +149,8 @@ fun CardHistoricExercise(exercise: exercise, routineid:Int?, navController: NavC
                         .fillMaxWidth(1f),
                     horizontalArrangement = Arrangement.Start
                 ) {
-                    ItemEx(exercise)
-                    ItemExRight(exercise)
+                    ItemEx(lift)
+                    ItemExRight(lift)
                 }
 
             }
@@ -163,7 +162,7 @@ fun CardHistoricExercise(exercise: exercise, routineid:Int?, navController: NavC
 
 
 @Composable
-fun ItemEx(exercise: exercise) {
+fun ItemEx(lift: lift) {
     Card(
         colors = CardDefaults.cardColors(
             containerColor = Color.White
@@ -172,15 +171,15 @@ fun ItemEx(exercise: exercise) {
             .size(width = 160.dp, height = 60.dp)
     ) {
         Column(Modifier.padding(8.dp)) {
-            Text(text = "Musculo", color = Color.Red)
-            Text(text = exercise.muscle, color = Color(R.color.gray_text))
+            Text(text = "Puntos", color = Color.Red)
+            Text(text = lift.liftpoints.toString(), color = Color(R.color.gray_text))
         }
     }
 
 }
 
 @Composable
-fun ItemExRight(exercise: exercise) {
+fun ItemExRight(lift: lift) {
     Card(
         colors = CardDefaults.cardColors(
             containerColor = Color.White
@@ -189,8 +188,8 @@ fun ItemExRight(exercise: exercise) {
             .size(width = 160.dp, height = 60.dp)
     ) {
         Column(Modifier.padding(8.dp)) {
-            Text(text = exercise.type, color = Color.Red)
-            Text(text = "${exercise.reps}x${exercise.sets}", color = Color(R.color.gray_text))
+            Text(text = "Peso "+lift.weight.toString(), color = Color.Red)
+            Text(text = "Repeticiones "+lift.reps.toString(), color = Color(R.color.gray_text))
         }
     }
 

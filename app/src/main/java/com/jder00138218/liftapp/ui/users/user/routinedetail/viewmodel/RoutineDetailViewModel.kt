@@ -63,4 +63,14 @@ class RoutineDetailViewModel(private val routineRepository: RoutineRepository):V
         }
     }
 
+    fun convertToMilliseconds(timeString: String): Long {
+        val parts = timeString.split(":")
+        val hours = parts[0].toLong()
+        val minutes = parts[1].toLong()
+        val seconds = parts[2].toLong()
+
+        val totalMilliseconds = hours * 60 * 60 * 1000 + minutes * 60 * 1000 + seconds * 1000
+        return totalMilliseconds
+    }
+
 }

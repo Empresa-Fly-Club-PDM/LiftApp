@@ -6,6 +6,7 @@ import com.jder00138218.liftapp.network.dto.exercise.exercise
 import com.jder00138218.liftapp.network.dto.lift.PostLift
 import com.jder00138218.liftapp.network.dto.lift.lift
 import com.jder00138218.liftapp.network.dto.user.PostUserRequest
+import com.jder00138218.liftapp.network.dto.user.user
 import com.jder00138218.liftapp.network.services.LiftService
 import retrofit2.HttpException
 import java.io.IOException
@@ -16,6 +17,10 @@ class LiftRepository(private val api: LiftService){
         return Lift
     }
 
+    suspend fun getMyLifts(id:Int?,query:String):List<lift>{
+        val lifts: List<lift> = api.getMyLifts(id,query)
+        return lifts
+    }
     suspend fun addRecord(weight: Int,reps: Int,excid:Int?,userid:Int?): ApiResponse<String> {
         try {
             val response = api.addRecord(PostLift(weight,reps),excid,userid)

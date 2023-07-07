@@ -50,13 +50,11 @@ class CredentialsRepository(private val api: AuthService) {
             return ApiResponse.Error(e)
         }
     }
-/*
+
     suspend fun recovery(email: String): ApiResponse<String> {
         try {
             val response = api.recovery(RecoveryRequest(email))
             return ApiResponse.Success("Done")
-            if(response){}
-
         } catch (e: HttpException) {
             if (e.code() == 406) {
                 return ApiResponse.ErrorWithMessage("Campo Invalido")
@@ -66,8 +64,9 @@ class CredentialsRepository(private val api: AuthService) {
             return ApiResponse.Error(e)
         }
 
-    } */
+    }
 
+/*
     suspend fun recovery(email: String):ApiResponse<String> {
 
         try {
@@ -87,5 +86,5 @@ class CredentialsRepository(private val api: AuthService) {
 
         return ApiResponse.ErrorWithMessage("Error Desconocido")
     }
-
+ */
 }

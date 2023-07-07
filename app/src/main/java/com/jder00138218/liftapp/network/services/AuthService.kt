@@ -23,9 +23,7 @@ interface AuthService {
     @POST("auth/register")
     suspend fun register(@Body credentials: RegisterRequest)
 
-
-    @Headers("Content-Type: text/plain")
     @POST("auth/recoverpassword")
-    suspend fun recovery(@Body request: RecoveryRequest): Response<ResponseBody>
+    suspend fun recovery(@Body request: RecoveryRequest)
 
 }

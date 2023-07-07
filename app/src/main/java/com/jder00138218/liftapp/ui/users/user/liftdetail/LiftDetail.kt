@@ -42,20 +42,24 @@ import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import com.jder00138218.liftapp.LiftAppApplication
 import com.jder00138218.liftapp.R
+import com.jder00138218.liftapp.network.dto.lift.lift
 import com.jder00138218.liftapp.ui.users.user.HeaderBarBackArrowDumbell
 import com.jder00138218.liftapp.ui.users.user.UserBottomMenu
+import com.jder00138218.liftapp.ui.users.user.liftdetail.viewmodel.LiftDetailViewModel
 import com.jder00138218.liftapp.ui.users.user.routineflow.RegisterLift.viewmodel.RegisterExerciseStatsViewModel
 
 @Composable
 fun LiftDetail(navController: NavHostController){
     val navBackStackEntry = navController.currentBackStackEntry
-    val exerciseid = navBackStackEntry?.arguments?.getInt("exerciseid")
-    val exercisename = navBackStackEntry?.arguments?.getString("exercisename")
-    val viewmodel: RegisterExerciseStatsViewModel = viewModel(
-        factory = RegisterExerciseStatsViewModel.Factory
+    val liftid = navBackStackEntry?.arguments?.getInt("id")
+    val viewmodel: LiftDetailViewModel = viewModel(
+        factory = LiftDetailViewModel.Factory
     )
+    if(liftid!=0){
+        viewmodel.getDetailLift(liftid)
+    }
+
     val context = LocalContext.current
-    val app = context.applicationContext as LiftAppApplication
 
 
     Box(modifier = Modifier
@@ -67,7 +71,7 @@ fun LiftDetail(navController: NavHostController){
             Row(modifier = Modifier
                 .fillMaxWidth()
                 .fillMaxHeight(0.1f)) {
-                HeaderBarBackArrowDumbell(title = "Detalles del ejercicio", navController, backOnClick = {navController.popBackStack()})
+                HeaderBarBackArrowDumbell(title = "Detalles del registro", navController, backOnClick = {navController.popBackStack()})
             }
             Column(modifier = Modifier
                 .fillMaxWidth()
@@ -77,17 +81,17 @@ fun LiftDetail(navController: NavHostController){
                 Column(modifier = Modifier
                     .fillMaxWidth(),
                     horizontalAlignment = Alignment.CenterHorizontally) {
-                    ExerciseNameInputField(exercisename)
+                    ExerciseNameInputField(viewmodel)
                     Spacer(modifier = Modifier.height(8.dp))
                     AchivedWeight(viewmodel)
                     Spacer(modifier = Modifier.height(8.dp))
                     AchivedReps(viewmodel)
                 }
 
-                Button(modifier = Modifier.fillMaxWidth() , onClick = {viewmodel.onCreate(exerciseid,app.getUserId(),navController,context)}, colors = ButtonDefaults.buttonColors(containerColor = colorResource(
-                    id = R.color.buttonGren
+                Button(modifier = Modifier.fillMaxWidth() , onClick = {viewmodel.deleteLift(liftid,navController,context)}, colors = ButtonDefaults.buttonColors(containerColor = colorResource(
+                    id = R.color.buttonRed
                 ), contentColor = Color.White)) {
-                    Text(text = "Registrar peso")
+                    Text(text = "Eliminar registro")
                 }
             }
 
@@ -105,10 +109,11 @@ fun LiftDetail(navController: NavHostController){
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ExerciseNameInputField(hint: String?){
+fun ExerciseNameInputField(viewModel: LiftDetailViewModel){
     OutlinedTextField(
-        value = hint.toString(),
+        value = viewModel._exercisename,
         onValueChange = { },
+        readOnly = true,
         modifier = Modifier
             .width(350.dp)
             .clip(RoundedCornerShape(4.dp))
@@ -134,13 +139,11 @@ fun ExerciseNameInputField(hint: String?){
 }
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AchivedWeight(viewmodel: RegisterExerciseStatsViewModel){
-    var weight by remember { mutableStateOf(viewmodel.weight) }
+fun AchivedWeight(viewmodel: LiftDetailViewModel){
     OutlinedTextField(
-        value = weight,
-        onValueChange = { newValue ->
-            weight = newValue
-            viewmodel.weight= newValue},
+        value = viewmodel._weight,
+        onValueChange = {},
+        readOnly = true,
         modifier = Modifier
             .width(350.dp)
             .clip(RoundedCornerShape(4.dp))
@@ -167,13 +170,11 @@ fun AchivedWeight(viewmodel: RegisterExerciseStatsViewModel){
 }
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AchivedReps(viewmodel: RegisterExerciseStatsViewModel){
-    var reps by remember { mutableStateOf(viewmodel.reps) }
+fun AchivedReps(viewmodel: LiftDetailViewModel){
     OutlinedTextField(
-        value = reps,
-        onValueChange = {  newValue ->
-            reps = newValue
-            viewmodel.reps= newValue},
+        value = viewmodel._reps,
+        onValueChange = {},
+        readOnly = true,
         modifier = Modifier
             .width(350.dp)
             .clip(RoundedCornerShape(4.dp))

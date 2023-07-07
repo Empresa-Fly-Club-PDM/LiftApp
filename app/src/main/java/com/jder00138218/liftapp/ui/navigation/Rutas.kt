@@ -43,6 +43,6 @@ sealed  class Rutas(var ruta : String) {
     object RegisterLift:Rutas("rutas_register_lift/{exerciseid}/{exercisename}")
     object LiftHistory:Rutas("rutas_lift-history")
     object UserHistory:Rutas("rutas_user_history")
-    object LiftDetail:Rutas("rutas_lift_detail")
+    object LiftDetail:Rutas("rutas_lift_detail/{id}")
 
 }

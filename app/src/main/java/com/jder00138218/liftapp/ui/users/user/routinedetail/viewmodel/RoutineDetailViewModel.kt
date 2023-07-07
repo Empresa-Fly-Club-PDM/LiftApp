@@ -18,6 +18,8 @@ import androidx.navigation.NavHostController
 import com.jder00138218.liftapp.LiftAppApplication
 import com.jder00138218.liftapp.network.ApiResponse
 import com.jder00138218.liftapp.network.dto.exercise.exercise
+import com.jder00138218.liftapp.network.dto.lift.lift
+import com.jder00138218.liftapp.network.dto.routine.routine
 import com.jder00138218.liftapp.repositories.RoutineRepository
 import com.jder00138218.liftapp.ui.users.admin.exerciseManager.VerifiedExerciseView.viewmodel.VerifiedExercisesViewModel
 import com.jder00138218.liftapp.ui.users.user.routinedetail.RoutineDetailUIStatus
@@ -26,15 +28,27 @@ import kotlinx.coroutines.launch
 
 class RoutineDetailViewModel(private val routineRepository: RoutineRepository):ViewModel() {
     private val _exercises = mutableStateListOf<exercise>()
+    private var _routine = mutableStateOf<routine>(routine())
     val _status = MutableLiveData<RoutineDetailUIStatus>(RoutineDetailUIStatus.Resume)
-    var _time by mutableStateOf(0)
+    var _time by mutableStateOf(359999)
 
     val exercises: List<exercise>
         get() = _exercises
+
+    fun addRoutine(newRoutine: routine) {
+        _routine.value = newRoutine
+    }
     fun getRoutineDetails(id:Int?) {
         viewModelScope.launch {
             _exercises.clear()
             _exercises.addAll(routineRepository.getRoutineDetail(id))
+        }
+    }
+
+    fun getRoutineTime(id: Int?) {
+        viewModelScope.launch {
+            addRoutine(routineRepository.getRoutineinfo(id))
+            _time = convertToSeconds(_routine.value.time)
         }
     }
 
@@ -63,14 +77,13 @@ class RoutineDetailViewModel(private val routineRepository: RoutineRepository):V
         }
     }
 
-    fun convertToMilliseconds(timeString: String): Long {
+    fun convertToSeconds(timeString: String): Int {
         val parts = timeString.split(":")
-        val hours = parts[0].toLong()
-        val minutes = parts[1].toLong()
-        val seconds = parts[2].toLong()
+        val hours = parts[0].toInt()
+        val minutes = parts[1].toInt()
+        val seconds = parts[2].toInt()
 
-        val totalMilliseconds = hours * 60 * 60 * 1000 + minutes * 60 * 1000 + seconds * 1000
-        return totalMilliseconds
+        val totalSeconds = hours * 3600 + minutes * 60 + seconds
+        return totalSeconds
     }
-
 }

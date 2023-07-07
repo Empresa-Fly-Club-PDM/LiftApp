@@ -35,5 +35,6 @@ interface RoutineService {
     @PUT("routine/addExercise/{routineid}/{exerciseid}")
     suspend fun addExerciseToRoutine(@Path("routineid") routineid:Int?,@Path("exerciseid")exerciseid:Int?):Response<Void>
 
-
+    @GET("routine/info/{id}")
+    suspend fun getRoutineInfo(@Path("id") id: Int?): routine
 }

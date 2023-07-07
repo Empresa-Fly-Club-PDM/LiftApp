@@ -117,7 +117,7 @@ fun CardHistoricExercise(lift: lift, navController: NavController) {
             .fillMaxWidth()
             .padding(8.dp)
             .clickable {
-                navController.navigate(Rutas.LiftDetail.ruta)
+                navController.navigate(route = "rutas_lift_detail/${lift.id}")
             },
         colors = CardDefaults.cardColors(
             containerColor = colorResource(id = R.color.card)

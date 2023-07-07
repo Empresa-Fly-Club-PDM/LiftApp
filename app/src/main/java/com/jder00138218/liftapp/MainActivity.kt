@@ -225,7 +225,11 @@ fun NavigationGraph(){
             UserHistory(navController)
         }
 
-        composable(route=Rutas.LiftDetail.ruta){
+        composable(route=Rutas.LiftDetail.ruta,
+            arguments = listOf(navArgument("id"){
+                type = NavType.IntType
+            })
+            ){
             LiftDetail(navController)
         }
     }

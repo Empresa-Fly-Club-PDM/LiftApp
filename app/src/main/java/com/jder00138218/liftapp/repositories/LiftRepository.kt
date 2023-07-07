@@ -12,6 +12,26 @@ import retrofit2.HttpException
 import java.io.IOException
 
 class LiftRepository(private val api: LiftService){
+
+    suspend fun getLift(id:Int?): lift{
+        val Lift:lift = api.getLift(id)
+        return Lift
+    }
+
+    suspend fun deleteLift(id:Int?): ApiResponse<String> {
+        try {
+            val response = api.deleteLift(id)
+            return ApiResponse.Success(response.toString())
+        } catch (e: HttpException) {
+
+            if (e.code() == 410) {
+                return ApiResponse.ErrorWithMessage("Eliminado correctamente")
+            }
+            return ApiResponse.Error(e)
+        } catch (e: IOException) {
+            return ApiResponse.Error(e)
+        }
+    }
     suspend fun getMyHighlight(id:Int?): lift? {
         val Lift: lift? = api.getMyHighligh(id)
         return Lift

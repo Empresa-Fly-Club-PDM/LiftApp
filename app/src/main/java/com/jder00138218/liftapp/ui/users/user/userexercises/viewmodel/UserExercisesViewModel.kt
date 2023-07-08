@@ -1,6 +1,7 @@
 package com.jder00138218.liftapp.ui.users.user.userexercises.viewmodel
 
 import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.APPLICATION_KEY
@@ -16,6 +17,7 @@ import kotlinx.coroutines.launch
 
 class UserExercisesViewModel(private val exerciseRepository: ExerciseRepository):ViewModel() {
     private val _exercises = mutableStateListOf<exercise>()
+    val _loading = mutableStateOf(true)
 
     val exercises: List<exercise>
         get() = _exercises
@@ -25,6 +27,7 @@ class UserExercisesViewModel(private val exerciseRepository: ExerciseRepository)
             _exercises.clear()
             _exercises.addAll(exerciseRepository.getPersonalExercises(id,query))
         }
+        _loading.value = false
     }
 
 

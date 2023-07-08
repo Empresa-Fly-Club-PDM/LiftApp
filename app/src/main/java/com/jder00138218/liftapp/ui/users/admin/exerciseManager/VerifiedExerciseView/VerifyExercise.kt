@@ -22,6 +22,7 @@ import androidx.compose.material.icons.outlined.Add
 import androidx.compose.material.icons.outlined.Search
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -75,17 +76,41 @@ fun VerifyExercises(navController: NavController) {
             .fillMaxSize(),
             verticalArrangement = Arrangement.SpaceBetween,
             horizontalAlignment = Alignment.CenterHorizontally
-        ){
-            AdminHeaderBarBackArrowAdd(title = "Ejercicios Verificados", navController = navController, addOnClick = {handleAddOnClick()}, backOnClick = {handleBackOnClick()})
-            LazyColumn(
-                Modifier
-                    .fillMaxWidth()
-                    .fillMaxHeight(0.9f)
-            ) {
-                items(vm.exercises) { index ->
-                    CardExerciseVerify(index, navController)
+        ) {
+            AdminHeaderBarBackArrowAdd(
+                title = "Ejercicios Verificados",
+                navController = navController,
+                addOnClick = { handleAddOnClick() },
+                backOnClick = { handleBackOnClick() })
+
+            if (vm._loading.value) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .fillMaxHeight(0.7f),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center
+                ) {
+                    CircularProgressIndicator(
+                        modifier = Modifier
+                            .size(36.dp)
+                            .padding(end = 8.dp),
+                        color = Color.Red
+                    )
+                }
+
+            } else {
+                LazyColumn(
+                    Modifier
+                        .fillMaxWidth()
+                        .fillMaxHeight(0.9f)
+                ) {
+                    items(vm.exercises) { index ->
+                        CardExerciseVerify(index, navController)
+                    }
                 }
             }
+
             Menu(navController)
         }
 

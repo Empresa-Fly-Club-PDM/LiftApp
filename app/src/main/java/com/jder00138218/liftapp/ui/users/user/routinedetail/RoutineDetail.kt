@@ -18,6 +18,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -97,13 +98,25 @@ fun RoutineDetail(navController:NavController){
 @Composable
 fun ButtonDeleteRoutine(id:Int?,viewmodel: RoutineDetailViewModel, navController: NavController) { val context = LocalContext.current
     Button(
-        onClick = { viewmodel.removeRouitne(id, navController, context)}, modifier = Modifier
+        onClick = { viewmodel.removeRouitne(id, navController, context)
+                  viewmodel._loading.value = true}, modifier = Modifier
             .height(60.dp)
             .fillMaxWidth(), colors = ButtonDefaults.buttonColors(
             containerColor = colorResource(id = R.color.buttonRed)
         )
     ) {
-        Text(text = " Eliminar rutina")
+        if (viewmodel._loading.value) {
+            // Show loading animation when isLoading is true
+            CircularProgressIndicator(
+                modifier = Modifier
+                    .size(36.dp)
+                    .padding(end = 8.dp),
+                color = Color.White
+            )
+        } else {
+
+            Text(text = "Remover rutina")
+        }
 
     }
 

@@ -33,8 +33,7 @@ class UpdateUserExerciseViewModel (private val exerciseRepository: ExerciseRepos
     var _sets by mutableStateOf("")
     var _type by mutableStateOf("")
     val _status = MutableLiveData<AdminUpdateExerciseUIStatus>(AdminUpdateExerciseUIStatus.Resume)
-
-
+    val _loading = mutableStateOf(false)
 
     val exercise: exercise
         get() = _exercise.value
@@ -80,7 +79,7 @@ class UpdateUserExerciseViewModel (private val exerciseRepository: ExerciseRepos
             Toast.makeText(context, "Verificar campos vacios", Toast.LENGTH_SHORT).show()
             return
         }
-
+        _loading.value=true
         update(_description, _difficulty,_muscle,_name,_reps.toInt(),_sets.toInt(),_type,exerciseid,navController,context)
     }
 
@@ -102,6 +101,7 @@ class UpdateUserExerciseViewModel (private val exerciseRepository: ExerciseRepos
                 Log.d("tag","failure")
             }
         }
+        _loading.value=false
     }
 
     fun deleteExercise(id:Int?, navController: NavHostController, context: Context) {

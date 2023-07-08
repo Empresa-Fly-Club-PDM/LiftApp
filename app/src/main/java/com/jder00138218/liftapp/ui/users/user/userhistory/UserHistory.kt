@@ -17,6 +17,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextField
@@ -94,13 +95,30 @@ fun UserHistory(navController: NavController){
                 .border(width = 0.dp, color = Color.White),
                 placeholder = { Text(text = "Buscar..", color = Color(R.color.gray_text)) },
             )
-            LazyColumn(
-                Modifier
+
+            if (vm._loading.value) {
+                Column(modifier = Modifier
                     .fillMaxWidth()
-                    .fillMaxHeight(0.8f)
-            ) {
-                items(vm.lifts) {
-                    CardHistoricExercise(it,navController)
+                    .fillMaxHeight(0.8f),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center) {
+                    CircularProgressIndicator(
+                        modifier = Modifier
+                            .size(36.dp)
+                            .padding(end = 8.dp),
+                        color = Color.Red
+                    )
+                }
+
+            } else {
+                LazyColumn(
+                    Modifier
+                        .fillMaxWidth()
+                        .fillMaxHeight(0.8f)
+                ) {
+                    items(vm.lifts) {
+                        CardHistoricExercise(it, navController)
+                    }
                 }
             }
             UserBottomMenu(navController)

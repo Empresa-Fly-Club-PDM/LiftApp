@@ -1,6 +1,7 @@
 package com.jder00138218.liftapp.ui.users.user.userhistory.viewmodel
 
 import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.APPLICATION_KEY
@@ -16,6 +17,8 @@ import kotlinx.coroutines.launch
 
 class UserHistoryViewModel(private val liftRepository: LiftRepository) : ViewModel(){
     private val _lifts = mutableStateListOf<lift>()
+    val _loading = mutableStateOf(true)
+
     val lifts: List<lift>
         get() = _lifts
 
@@ -24,6 +27,7 @@ class UserHistoryViewModel(private val liftRepository: LiftRepository) : ViewMod
             _lifts.clear()
             _lifts.addAll(liftRepository.getMyLifts(id,query))
         }
+        _loading.value = false
     }
 
 

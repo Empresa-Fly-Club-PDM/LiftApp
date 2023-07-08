@@ -33,6 +33,8 @@ class AddUserExercisesViewModel(private val exerciseRepository: ExerciseReposito
     private var _sets by mutableStateOf("")
     private var _type by mutableStateOf("")
     val _status = MutableLiveData<AddUserExercisesUIStatus>(AddUserExercisesUIStatus.Resume)
+    val _loading = mutableStateOf(false)
+    val _loadingVerification = mutableStateOf(false)
 
     var description: String
         get() = _description
@@ -115,6 +117,7 @@ class AddUserExercisesViewModel(private val exerciseRepository: ExerciseReposito
             Toast.makeText(context, "Verificar Información", Toast.LENGTH_SHORT).show()
             return
         }
+        _loading.value=true
         create(description, difficulty,muscle,name,reps.toInt(),sets.toInt(),type,userid,navController,context)
     }
     fun onVerify(navController: NavHostController, context: Context) {
@@ -125,7 +128,7 @@ class AddUserExercisesViewModel(private val exerciseRepository: ExerciseReposito
             Toast.makeText(context, "Verificar Información", Toast.LENGTH_SHORT).show()
             return
         }
-
+        _loadingVerification.value=true
         verify(description, difficulty,muscle,name,reps.toInt(),sets.toInt(),type,userid,navController,context)
     }
 
@@ -150,6 +153,7 @@ class AddUserExercisesViewModel(private val exerciseRepository: ExerciseReposito
                 Log.d("tag","failure")
             }
         }
+        _loading.value=false
     }
 
     private fun validateData(): Boolean {

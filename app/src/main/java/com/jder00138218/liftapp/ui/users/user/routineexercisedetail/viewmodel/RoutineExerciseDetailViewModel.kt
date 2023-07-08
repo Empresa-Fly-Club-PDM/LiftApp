@@ -3,6 +3,7 @@ package com.jder00138218.liftapp.ui.users.user.routineexercisedetail.viewmodel
 import android.content.Context
 import android.widget.Toast
 import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -23,6 +24,7 @@ import kotlinx.coroutines.launch
 
 class RoutineExerciseDetailViewModel(private val routineRepository: RoutineRepository): ViewModel() {
     val _status = MutableLiveData<RoutineExerciseDetailUIStatus>(RoutineExerciseDetailUIStatus.Resume)
+    val _loading = mutableStateOf(false)
 
     fun removeExercise(idexc:Int?,idrout:Int?, navController: NavHostController, context: Context) {
         viewModelScope.launch {

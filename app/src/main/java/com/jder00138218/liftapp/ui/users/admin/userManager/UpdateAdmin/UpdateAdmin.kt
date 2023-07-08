@@ -139,7 +139,6 @@ fun ButtonsUpdate(id: Int?, updateAdminViewModel: UpdateAdminViewModel, navContr
 
         Button(
             onClick = {updateAdminViewModel.deleteUser(id, navController,context)
-                updateAdminViewModel._loading.value=true
             }, modifier = Modifier
                 .height(60.dp)
                 .width(175.dp)
@@ -147,19 +146,7 @@ fun ButtonsUpdate(id: Int?, updateAdminViewModel: UpdateAdminViewModel, navContr
                 containerColor = Color.Red
             )
         ) {
-
-            if (updateAdminViewModel._loading.value) {
-                // Show loading animation when isLoading is true
-                CircularProgressIndicator(
-                    modifier = Modifier
-                        .size(36.dp)
-                        .padding(end = 8.dp),
-                    color = Color.White
-                )
-            } else {
                 Text(text = "Eliminar")
-            }
-
         }
     }
 }

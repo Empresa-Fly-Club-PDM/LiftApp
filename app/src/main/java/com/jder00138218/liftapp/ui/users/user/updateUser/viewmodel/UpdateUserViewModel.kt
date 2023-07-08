@@ -38,6 +38,7 @@ class UpdateUserViewModel(private val userRepository: UserRepository): ViewModel
     var _confirmpassowrd by mutableStateOf("")
     var _isVisiblePaswd by mutableStateOf(false)
     val _status = MutableLiveData<UpdateUserUIStatus>(UpdateUserUIStatus.Resume)
+    val _loading = mutableStateOf(false)
 
     val user: user
         get() = _user.value
@@ -68,27 +69,26 @@ class UpdateUserViewModel(private val userRepository: UserRepository): ViewModel
                         )
                     }
                     )
+            _loading.value=false
             clearData()
             handleUiStatus(navController,context)
         }
     }
 
     fun onUpdate(id:Int?, navController: NavHostController, context: Context) {
-        Log.d("Data",calculateAge(_fechanac).toString())
         if (!validateData()) {
             _status.value = UpdateUserUIStatus.ErrorWithMessage("Verificar Imformation")
-            Toast.makeText(context, "Verificar campos vacios", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, "Verificar Información", Toast.LENGTH_SHORT).show()
             return
         }
-        if(_password.isEmpty() && calculateAge(_fechanac)>=13){
+        if(_password.isEmpty() && _confirmpassowrd.isEmpty() && calculateAge(_fechanac)>=13){
+            _loading.value=true
             update(id, _nombrecompleto, _email,_password,_genero,_fechanac,_weight.toInt(),_height.toInt(),navController,context)
         }else if (_password == _confirmpassowrd && _password.length>=8 && calculateAge(_fechanac)>=13){
+            _loading.value=true
             update(id, _nombrecompleto, _email,_password,_genero,_fechanac,_weight.toInt(),_height.toInt(),navController,context)
-        }else if(_password.length<8){
-            Toast.makeText(context, "Contraseñas muy corta o no coincide", Toast.LENGTH_SHORT).show()
         }else{
-            Toast.makeText(context, "Fecha invalida", Toast.LENGTH_SHORT).show()
-            return
+            Toast.makeText(context, "Verificar Información", Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -98,18 +98,23 @@ class UpdateUserViewModel(private val userRepository: UserRepository): ViewModel
             is UpdateUserUIStatus.Error -> {
                 Log.d("tag", "Error")
                 Toast.makeText(context, "Error", Toast.LENGTH_SHORT).show()
+
             }
             is UpdateUserUIStatus.ErrorWithMessage -> {
                 Toast.makeText(context, "Verificar datos ingresados", Toast.LENGTH_SHORT).show()
+
             }
             is UpdateUserUIStatus.Success -> {
+
                 Toast.makeText(context, "Usuario Actualizado", Toast.LENGTH_SHORT).show()
                 navController.navigate(route = Rutas.DashboardUser.ruta)
             }
             else -> {
                 Log.d("tag","failure")
+
             }
         }
+        _loading.value=false
     }
 
     fun deleteUser(id:Int?, navController: NavHostController, context: Context) {

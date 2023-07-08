@@ -22,6 +22,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuBox
@@ -185,7 +186,18 @@ fun ButtonsUpdateUser(id: Int?, updateuserviewmodel: UpdateUserViewModel, navCon
             )
         ) {
 
-            Text(text = "Actualizar Informacion")
+            if (updateuserviewmodel._loading.value) {
+                // Show loading animation when isLoading is true
+                CircularProgressIndicator(
+                    modifier = Modifier
+                        .size(36.dp)
+                        .padding(end = 8.dp),
+                    color = Color.White
+                )
+            } else {
+
+                Text(text = "Actualizar informacion")
+            }
 
         }
     }

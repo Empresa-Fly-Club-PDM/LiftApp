@@ -1,6 +1,7 @@
 package com.jder00138218.liftapp.ui.users.user.ranking.viewmodel
 
 import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.APPLICATION_KEY
@@ -15,6 +16,8 @@ import kotlinx.coroutines.launch
 
 class RankinViewModel(private val userRepository: UserRepository): ViewModel() {
     private val _users = mutableStateListOf<user>()
+    val _loading = mutableStateOf(true)
+
 
     val users: List<user>
         get() = _users
@@ -24,6 +27,7 @@ class RankinViewModel(private val userRepository: UserRepository): ViewModel() {
             _users.clear()
             _users.addAll(userRepository.getRanking(query))
         }
+        _loading.value = false
     }
 
 

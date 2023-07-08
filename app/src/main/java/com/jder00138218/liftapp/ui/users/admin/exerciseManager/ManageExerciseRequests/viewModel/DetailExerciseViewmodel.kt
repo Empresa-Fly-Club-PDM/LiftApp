@@ -23,6 +23,8 @@ class DetailExerciseViewmodel(private val detailExerciseRepository: DetailExerci
     private var _exercise = mutableStateOf<exercise>(exercise())
     val _status = MutableLiveData<DetailUIStatus>(DetailUIStatus.Resume)
     val _loading = mutableStateOf(false)
+    val _loadingVerification = mutableStateOf(false)
+
 
     val exercise: exercise
         get() = _exercise.value
@@ -49,7 +51,6 @@ class DetailExerciseViewmodel(private val detailExerciseRepository: DetailExerci
 
                     }
                     )
-            _loading.value=false
             Toast.makeText(context, "Ejercicio denegado y descartado", Toast.LENGTH_SHORT).show()
             navController.navigate(Rutas.DashboardAdmin.ruta)
 

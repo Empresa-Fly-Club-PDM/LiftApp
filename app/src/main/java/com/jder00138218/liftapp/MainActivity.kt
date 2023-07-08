@@ -9,6 +9,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -18,6 +19,7 @@ import androidx.navigation.navArgument
 import com.jder00138218.liftapp.ui.users.admin.DashboardAdminScreen
 import com.jder00138218.liftapp.ui.login.LoginScreen
 import com.jder00138218.liftapp.ui.navigation.Rutas
+import com.jder00138218.liftapp.ui.recovery.confirm.RecoveryPss
 import com.jder00138218.liftapp.ui.recovery.forgotPasword.Recovery
 import com.jder00138218.liftapp.ui.register.RegisterScreen
 import com.jder00138218.liftapp.ui.theme.LiftAppTheme
@@ -80,6 +82,10 @@ fun NavigationGraph(){
         }
         composable(route = Rutas.ForgotPss.ruta){
             Recovery(navController)
+        }
+
+        composable(route = Rutas.RecoveryPss.ruta){
+            RecoveryPss(navController)
         }
         composable(route = Rutas.DashboardAdmin.ruta,){
             DashboardAdminScreen(navController)

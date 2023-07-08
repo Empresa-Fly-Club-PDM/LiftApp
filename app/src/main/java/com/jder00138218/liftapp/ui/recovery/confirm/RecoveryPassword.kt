@@ -34,16 +34,13 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.jder00138218.liftapp.R
 
-@Preview(name = "Preview", showBackground = true)
-@Composable
-fun previewRecovery() {
-    Recovery()
-}
+
 
 @Composable
-fun Recovery() {
+fun RecoveryPss(navController: NavController) {
     BlockFields()
 
 }

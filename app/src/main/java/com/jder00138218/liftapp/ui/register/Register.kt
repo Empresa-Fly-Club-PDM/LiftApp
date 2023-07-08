@@ -29,6 +29,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -48,6 +49,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -126,67 +128,6 @@ fun FieldsRegister(registerViewModel: RegisterViewModel, navController: NavHostC
     ButtonsDetaile(registerViewModel, navController)
     Spacer(modifier = Modifier.padding(2.dp))
 
-}
-
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun GenreDropDownMenu(viewModel: RegisterViewModel) {
-
-    val genreList = arrayOf("Masculino", "Femenino")
-    var expanded by remember { mutableStateOf(false) }
-    var selectedText by remember { mutableStateOf(genreList[0]) }
-
-    Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(8.dp)
-    ) {
-        ExposedDropdownMenuBox(
-            expanded = expanded,
-            onExpandedChange = {
-                expanded = !expanded
-            },
-
-            ) {
-            TextField(
-                value = selectedText,
-                onValueChange = {},
-                readOnly = true,
-                leadingIcon = {
-                    Icon(
-                        modifier = Modifier.size(16.dp),
-                        painter = painterResource(R.drawable.user),
-                        contentDescription = "Icon field",
-                        tint = colorResource(id = R.color.gray_text)
-                    )
-                },
-                trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .menuAnchor()
-
-            )
-
-            ExposedDropdownMenu(
-                expanded = expanded,
-                onDismissRequest = { expanded = false },
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                genreList.forEach { item ->
-                    DropdownMenuItem(
-                        modifier = Modifier.fillMaxWidth(),
-                        text = { Text(text = item) },
-                        onClick = {
-                            selectedText = item
-                            expanded = false
-                            viewModel.genre = selectedText
-                        }
-                    )
-                }
-            }
-        }
-    }
 }
 
 
@@ -538,3 +479,62 @@ fun DateInputField(viewModel: RegisterViewModel) {
     viewModel.date = mDate.value;
 }
 
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun GenreDropDownMenu(viewModel: RegisterViewModel) {
+    var isExpanded by remember {
+        mutableStateOf(false)
+    }
+    var type by remember {
+        mutableStateOf(viewModel.genre)
+    }
+
+    Column(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        ExposedDropdownMenuBox(expanded = isExpanded, onExpandedChange = { isExpanded = it }) {
+            TextField(value = type, onValueChange = { newValue ->
+                type = newValue
+                viewModel.genre = newValue
+            }, readOnly = true, trailingIcon = {
+                ExposedDropdownMenuDefaults.TrailingIcon(expanded = isExpanded)
+            }, modifier = Modifier
+                .width(350.dp)
+                .menuAnchor()
+                .clip(RoundedCornerShape(4.dp))
+                .border(
+                    width = 1.dp,
+                    color = colorResource(id = R.color.field)
+                )// With padding show border color
+                .background(colorResource(id = R.color.field)),
+                colors = TextFieldDefaults.textFieldColors(containerColor = colorResource(id = R.color.field)),
+                placeholder = { Text(text = "Genero", color = Color(R.color.gray_text)) },
+                leadingIcon = {
+                    Icon(
+                        modifier = Modifier.size(16.dp),
+                        painter = painterResource(id = R.drawable.user),
+                        contentDescription = "Icon field"
+                    )
+                })
+
+            ExposedDropdownMenu(expanded = isExpanded, onDismissRequest = { isExpanded = false }) {
+                DropdownMenuItem(text = { Text(text = "Masculino") },
+                    onClick = {
+                        isExpanded = false
+                        viewModel.genre = "Masculino"
+                        type = viewModel.genre
+                    })
+                DropdownMenuItem(text = { Text(text = "Femenino") },
+                    onClick = {
+                        isExpanded = false
+                        viewModel.genre = "Femenino"
+                        type = viewModel.genre
+
+                    })
+
+            }
+        }
+    }
+}

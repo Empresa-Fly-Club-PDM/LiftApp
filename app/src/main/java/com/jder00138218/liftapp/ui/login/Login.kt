@@ -72,7 +72,6 @@ fun LoginScreen(navController: NavHostController) {
     val savedPassword = sessionManager.password
 
     if (savedEmail != null && savedPassword != null) {
-        // Automatically log in the user with saved credentials
         loginViewModel.email = savedEmail
         loginViewModel.password = savedPassword
         loginViewModel.onLogin(navController, LocalContext.current)
@@ -208,7 +207,7 @@ fun OrSpacer(modifier: Modifier) {
             thickness = 1.dp
         )
         Text(
-            text = "Or",
+            text = "O",
             modifier = Modifier.padding(horizontal = 8.dp)
         )
         Divider(

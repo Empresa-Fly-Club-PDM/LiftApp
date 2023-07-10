@@ -121,7 +121,7 @@ fun FieldPassword(placeHolder: String) {
             )
         },
         keyboardOptions = KeyboardOptions(
-            keyboardType = KeyboardType.Password,
+            keyboardType = KeyboardType.Text,
             imeAction = androidx.compose.ui.text.input.ImeAction.Next // Acción IME cuando se presiona la tecla Enter
         )
     )

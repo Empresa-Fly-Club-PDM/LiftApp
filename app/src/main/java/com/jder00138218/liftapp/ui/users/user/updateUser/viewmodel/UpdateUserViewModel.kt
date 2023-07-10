@@ -2,6 +2,7 @@ package com.jder00138218.liftapp.ui.users.user.updateUser.viewmodel
 
 import android.content.Context
 import android.util.Log
+import android.util.Patterns
 import android.widget.Toast
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -86,11 +87,14 @@ class UpdateUserViewModel(private val userRepository: UserRepository): ViewModel
             update(id, _nombrecompleto, _email,_password,_genero,_fechanac,_weight.toInt(),_height.toInt(),navController,context)
         }else if (_password == _confirmpassowrd && _password.length>=8 && calculateAge(_fechanac)>=13){
             _loading.value=true
+            val app = context.applicationContext as LiftAppApplication
+            app.sessionManager.clearSession()
             update(id, _nombrecompleto, _email,_password,_genero,_fechanac,_weight.toInt(),_height.toInt(),navController,context)
         }else{
             Toast.makeText(context, "Verificar Información", Toast.LENGTH_SHORT).show()
         }
     }
+
 
     fun handleUiStatus(navController: NavHostController, context: Context) {
         val status = _status.value
@@ -138,6 +142,7 @@ class UpdateUserViewModel(private val userRepository: UserRepository): ViewModel
         when {
             _nombrecompleto.isEmpty() ->return false
             _email.isEmpty() -> return false
+            !isValidEmail(_email) -> return false
             _genero.isEmpty()-> return false
             _fechanac.isEmpty() -> return false
             _weight.isEmpty()->return false
@@ -166,6 +171,10 @@ class UpdateUserViewModel(private val userRepository: UserRepository): ViewModel
             userrage = age
         }
         return userrage
+    }
+    private fun isValidEmail(email: String): Boolean {
+        val pattern = Patterns.EMAIL_ADDRESS
+        return pattern.matcher(email).matches()
     }
 
 

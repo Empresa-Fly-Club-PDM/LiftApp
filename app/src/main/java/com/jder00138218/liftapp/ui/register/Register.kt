@@ -168,10 +168,10 @@ fun FieldDetaile(name: String, viewModel: RegisterViewModel) {
 
 
     if (name == "Nombre completo") {
-        colorPH = Color.Red
+        colorPH = Color.Gray
         iconId = R.drawable.profile
         value = namelUser
-        tint = colorResource(id = R.color.buttonRed)
+        tint = colorResource(id = R.color.buttonGray)
         valueChange = { newValue ->
             namelUser = newValue
             viewModel.name = newValue
@@ -232,10 +232,10 @@ fun Fieldpassword(name: String, viewModel: RegisterViewModel) {
     var value = ""
     var valueChange: ((String) -> Unit)? = null
     var colorId = colorResource(id = R.color.gray_text)
-    var tint = colorResource(id = R.color.buttonRed)
+    var tint = colorResource(id = R.color.buttonGray)
 
     if (name != "Contraseña") {
-        colorId = Color.Red
+        colorId = Color.Gray
         value = passwordUser
         valueChange = { newValue ->
             passwordUser = newValue
@@ -244,7 +244,7 @@ fun Fieldpassword(name: String, viewModel: RegisterViewModel) {
     }
 
     if (name != "Verificar contraseña") {
-        colorId = Color.Red
+        colorId = Color.Gray
         value = passwordUserVde
         valueChange = { newValue ->
             passwordUserVde = newValue

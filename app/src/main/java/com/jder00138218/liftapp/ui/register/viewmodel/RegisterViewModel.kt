@@ -2,6 +2,7 @@ package com.jder00138218.liftapp.ui.register.viewmodel
 
 import android.content.Context
 import android.util.Log
+import android.util.Patterns
 import android.widget.Toast
 import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
@@ -132,7 +133,7 @@ class RegisterViewModel(private val repository: CredentialsRepository) : ViewMod
 
         if (!validateData()) {
             _status.value = RegisterUiStatus.ErrorWithMessage("Wrong Information")
-            Toast.makeText(context, "Campos vacios", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, "Campos Invalidos", Toast.LENGTH_SHORT).show()
             when {
                 (password != passwordVe) -> Toast.makeText(
                     context,
@@ -147,9 +148,15 @@ class RegisterViewModel(private val repository: CredentialsRepository) : ViewMod
                     Toast.LENGTH_SHORT
                 ).show()
 
-                (years < 8) -> Toast.makeText(
+                (years < 13) -> Toast.makeText(
                     context,
                     "Edad invalida",
+                    Toast.LENGTH_SHORT
+                ).show()
+
+                (!isValidEmail(email))->Toast.makeText(
+                    context,
+                    "Formato de correo incorrecto",
                     Toast.LENGTH_SHORT
                 ).show()
             }
@@ -163,6 +170,7 @@ class RegisterViewModel(private val repository: CredentialsRepository) : ViewMod
 
     private fun validateData(): Boolean {
         when {
+            !isValidEmail(email) -> return false
             email.isEmpty() -> return false
             password.isEmpty() -> return false
             passwordVe.isEmpty() -> return false
@@ -250,6 +258,10 @@ class RegisterViewModel(private val repository: CredentialsRepository) : ViewMod
         }
     }
 
+    private fun isValidEmail(email: String): Boolean {
+        val pattern = Patterns.EMAIL_ADDRESS
+        return pattern.matcher(email).matches()
+    }
 }
 
 

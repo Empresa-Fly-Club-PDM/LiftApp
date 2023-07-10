@@ -16,6 +16,9 @@ class SessionManager(context: Context) {
         private const val KEY_PASSWORD = "password"
         private const val KEY_AUTH_TOKEN = "auth_token"
     }
+    fun isLoggedIn(): Boolean {
+        return sharedPreferences.contains(KEY_AUTH_TOKEN)
+    }
 
     var email: String?
         get() = sharedPreferences.getString(KEY_EMAIL, null)

@@ -63,6 +63,10 @@ class UpdateAdminViewModel(private val userRepository: UserRepository):ViewModel
                         )
                     }
                     )
+            val app = context.applicationContext as LiftAppApplication
+            if(app.getUserId() == id){
+                app.sessionManager.clearSession()
+            }
             clearData()
             handleUiStatus(navController,context)
         }

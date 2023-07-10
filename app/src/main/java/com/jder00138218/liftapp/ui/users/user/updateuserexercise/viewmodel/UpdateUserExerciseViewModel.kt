@@ -6,6 +6,7 @@ import android.widget.Toast
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.core.text.isDigitsOnly
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -76,7 +77,7 @@ class UpdateUserExerciseViewModel (private val exerciseRepository: ExerciseRepos
     fun onUpdate(navController: NavHostController, context: Context, exerciseid:Int?) {
         if (!validateData()) {
             _status.value = AdminUpdateExerciseUIStatus.ErrorWithMessage("Verificar Imformation")
-            Toast.makeText(context, "Verificar campos vacios", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, "Verificar datos ingresados", Toast.LENGTH_SHORT).show()
             return
         }
         _loading.value=true
@@ -126,8 +127,12 @@ class UpdateUserExerciseViewModel (private val exerciseRepository: ExerciseRepos
             _difficulty.isEmpty() -> return false
             _muscle.isEmpty() -> return false
             _name.isEmpty() -> return false
-            _reps.isEmpty() -> return false
+            _reps.isEmpty() ->return false
             _sets.isEmpty() ->return false
+            !_reps.isDigitsOnly() -> return false
+            !_sets.isDigitsOnly() ->return false
+            _reps.toInt()<=0 -> return false
+            _sets.toInt()<=0 ->return false
             _type.isEmpty() -> return false
         }
         return true

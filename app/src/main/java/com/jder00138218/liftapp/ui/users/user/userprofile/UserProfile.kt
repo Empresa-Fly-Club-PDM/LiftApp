@@ -9,6 +9,8 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowForward
 import androidx.compose.material3.Button
@@ -61,20 +63,19 @@ fun UserProfile(navController: NavController){
             verticalArrangement = Arrangement.SpaceBetween,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            HeaderBarBackArrowDumbell(title = "Perfil", navController, backOnClick = {navController.navigate(Rutas.DashboardUser.ruta)})
             Column(modifier = Modifier
                 .fillMaxWidth()
-                .fillMaxHeight(0.7f),
-                verticalArrangement = Arrangement.SpaceBetween,
-                horizontalAlignment = Alignment.CenterHorizontally) {
+                .fillMaxHeight(0.90f)
+                .verticalScroll(rememberScrollState()),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.SpaceBetween){
 
-                UserAccountCard(navController, detailUser)
-                UserLogoutCard(navController, app)
-            }
-
+                    HeaderBarBackArrowDumbell(title = "Perfil", navController, backOnClick = {navController.navigate(Rutas.DashboardUser.ruta)})
+                    UserAccountCard(navController, detailUser)
+                    UserLogoutCard(navController, app)
+                }
             UserBottomMenu(navController)
         }
-
     }
 }
 

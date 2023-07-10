@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -87,9 +88,17 @@ fun UpdateUser(navController: NavHostController) {
             verticalArrangement = Arrangement.SpaceBetween,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            HeaderBarBackArrowDumbell(title = "Informacion de usuario", navController = navController, backOnClick = {navController.popBackStack()})
-            UpdateUserFields(updateUserViewModel,navController)
-            ButtonsUpdateUser(app.getUserId(),updateUserViewModel,navController)
+            Column(modifier = Modifier
+                .fillMaxWidth()
+                .fillMaxHeight(0.8f)
+                .verticalScroll(rememberScrollState()),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.SpaceBetween){
+                HeaderBarBackArrowDumbell(title = "Informacion de usuario", navController = navController, backOnClick = {navController.popBackStack()})
+                UpdateUserFields(updateUserViewModel,navController)
+                ButtonsUpdateUser(app.getUserId(),updateUserViewModel,navController)
+            }
+
 
             UserBottomMenu(navController)
         }
@@ -103,8 +112,7 @@ fun UpdateUser(navController: NavHostController) {
 @Composable
     fun UpdateUserFields(viewmodel: UpdateUserViewModel, navController: NavHostController) {
     Column(modifier = Modifier
-        .fillMaxWidth()
-        .verticalScroll(rememberScrollState()),
+        .fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally) {
         FieldName(viewmodel)
         Spacer(modifier = Modifier.padding(2.dp))

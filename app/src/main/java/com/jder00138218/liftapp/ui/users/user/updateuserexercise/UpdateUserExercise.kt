@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -53,6 +54,7 @@ import androidx.navigation.NavHostController
 import com.jder00138218.liftapp.R
 import com.jder00138218.liftapp.ui.users.admin.Menu
 import com.jder00138218.liftapp.ui.users.admin.exerciseManager.updateexercise.viewmodel.AdminUpdateExerciseViewModel
+import com.jder00138218.liftapp.ui.users.user.HeaderBarBackArrowDumbell
 import com.jder00138218.liftapp.ui.users.user.UserBottomMenu
 import com.jder00138218.liftapp.ui.users.user.updateuserexercise.viewmodel.UpdateUserExerciseViewModel
 
@@ -76,16 +78,17 @@ fun UpdateUserExercise(navController: NavHostController) {
             verticalArrangement = Arrangement.SpaceBetween,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Text(
-                text = "Detalle de ejercicio",
-                color = Color.Black,
-                style = TextStyle(
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 24.sp
-                )
-            )
-            FieldsDetaileCreate(navController,updateUserExerciseViewModel)
-            ButtonsUpdate(exerciseid,updateUserExerciseViewModel,navController)
+            Column(modifier = Modifier
+                .fillMaxWidth()
+                .fillMaxHeight(0.90f)
+                .verticalScroll(rememberScrollState()),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.SpaceBetween){
+                HeaderBarBackArrowDumbell(title = "Detalle de ejercicio", navController = navController, backOnClick = {navController.popBackStack()})
+                FieldsDetaileCreate(navController,updateUserExerciseViewModel)
+                ButtonsUpdate(exerciseid,updateUserExerciseViewModel,navController)
+            }
+
             UserBottomMenu(navController = navController)
         }
 
@@ -98,7 +101,8 @@ fun UpdateUserExercise(navController: NavHostController) {
 @Composable
 fun FieldsDetaileCreate(navController: NavHostController, updateUserExerciseViewModel: UpdateUserExerciseViewModel) {
     Column(modifier = Modifier
-        .verticalScroll(rememberScrollState())) {
+        .fillMaxWidth(),
+    horizontalAlignment = Alignment.CenterHorizontally) {
         FieldName(updateUserExerciseViewModel)
         Spacer(modifier = Modifier.padding(2.dp))
         FieldMuscle(updateUserExerciseViewModel)

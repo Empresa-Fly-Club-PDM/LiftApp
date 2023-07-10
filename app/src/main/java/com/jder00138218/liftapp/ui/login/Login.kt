@@ -1,6 +1,7 @@
 package com.jder00138218.liftapp.ui.login
 
 
+import SessionManager
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -63,6 +64,19 @@ fun LoginScreen(navController: NavHostController) {
     val loginViewModel: LoginViewModel = viewModel(
         factory = LoginViewModel.Factory
     )
+
+    val context = LocalContext.current
+
+    val sessionManager = remember { SessionManager(context) }
+    val savedEmail = sessionManager.email
+    val savedPassword = sessionManager.password
+
+    if (savedEmail != null && savedPassword != null) {
+        // Automatically log in the user with saved credentials
+        loginViewModel.email = savedEmail
+        loginViewModel.password = savedPassword
+        loginViewModel.onLogin(navController, LocalContext.current)
+    }
 
     Box(
         modifier = Modifier

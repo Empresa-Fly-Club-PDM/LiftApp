@@ -1,6 +1,5 @@
-package com.jder00138218.liftapp.ui.users.admin.userManager.AdminManagement.viewmodel
+package com.jder00138218.liftapp.ui.users.user.userprofile.viewmodel
 
-import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.APPLICATION_KEY
@@ -12,27 +11,27 @@ import com.jder00138218.liftapp.network.dto.user.user
 import com.jder00138218.liftapp.repositories.UserRepository
 import kotlinx.coroutines.launch
 
-class AdminManagementViewModel(private val userRepository: UserRepository):ViewModel() {
-    private val _users = mutableStateListOf<user>()
-    val _loading = mutableStateOf(true)
+class UserProfileViewModel(private val userRepository: UserRepository): ViewModel() {
+    private var _user = mutableStateOf<user>(user())
 
-    val users: List<user>
-        get() = _users
+    val user: user
+        get() = _user.value
 
-    fun getAllAdmins(query:String) {
-        viewModelScope.launch {
-            _users.clear()
-            _users.addAll(userRepository.getAllAdmins(query))
-        }
-        _loading.value = false
+    fun addExercise(newUser: user) {
+        _user.value = newUser
     }
 
+    fun getUserDetails(id: Int?) {
+        viewModelScope.launch {
+            addExercise(userRepository.getUserDetails(id))
+        }
+    }
 
     companion object {
         val Factory = viewModelFactory {
             initializer {
                 val app = this[APPLICATION_KEY] as LiftAppApplication
-                AdminManagementViewModel(app.userRepository)
+                UserProfileViewModel(app.userRepository)
             }
         }
     }

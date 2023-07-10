@@ -7,6 +7,7 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.core.text.isDigitsOnly
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.APPLICATION_KEY
 import androidx.lifecycle.viewModelScope
@@ -161,7 +162,6 @@ class RegisterViewModel(private val repository: CredentialsRepository) : ViewMod
     }
 
     private fun validateData(): Boolean {
-        Log.d("genr", genre)
         when {
             email.isEmpty() -> return false
             password.isEmpty() -> return false

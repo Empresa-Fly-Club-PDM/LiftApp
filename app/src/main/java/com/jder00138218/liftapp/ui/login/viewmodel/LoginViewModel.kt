@@ -1,5 +1,6 @@
 package com.jder00138218.liftapp.ui.login.viewmodel
 
+import SessionManager
 import android.content.Context
 import android.util.Log
 import android.widget.Toast
@@ -23,11 +24,14 @@ import com.jder00138218.liftapp.ui.login.getRoleFromTokenPayload
 import com.jder00138218.liftapp.ui.navigation.Rutas
 import kotlinx.coroutines.launch
 
-class LoginViewModel(private val credentialsRepository: CredentialsRepository) : ViewModel() {
+class LoginViewModel(private val credentialsRepository: CredentialsRepository,
+                     private val sessionManager: SessionManager
+) : ViewModel() {
     private var _email by mutableStateOf("")
     private var _password by mutableStateOf("")
     private var _isVisiblePaswd by mutableStateOf(false)
     val _status = MutableLiveData<LoginUiStatus>(LoginUiStatus.Resume)
+    val _loading = mutableStateOf(false)
 
 
     var email: String get() = _email
@@ -50,7 +54,12 @@ class LoginViewModel(private val credentialsRepository: CredentialsRepository) :
                 when (val response = credentialsRepository.login(email, password)) {
                     is ApiResponse.Error -> LoginUiStatus.Error(response.exception)
                     is ApiResponse.ErrorWithMessage -> LoginUiStatus.ErrorWithMessage(response.message)
-                    is ApiResponse.Success -> LoginUiStatus.Success(response.data)
+                    is ApiResponse.Success -> {
+                        sessionManager.email = email
+                        sessionManager.password = password
+                        sessionManager.authToken = response.data
+                        LoginUiStatus.Success(response.data)
+                    }
                 }
             )
             handleUiStatus(navController, context)
@@ -61,6 +70,7 @@ class LoginViewModel(private val credentialsRepository: CredentialsRepository) :
         if (!validateData()) {
             _status.value = LoginUiStatus.ErrorWithMessage("Wrong Imformation")
             Toast.makeText(context, "Verificar campos vacios", Toast.LENGTH_SHORT).show()
+            _loading.value=false
             return
         }
         login(email, password,navController,context)
@@ -98,6 +108,7 @@ class LoginViewModel(private val credentialsRepository: CredentialsRepository) :
                 Log.d("tag","failure")
             }
         }
+        _loading.value=false
     }
 
     private fun validateData(): Boolean {
@@ -122,7 +133,7 @@ class LoginViewModel(private val credentialsRepository: CredentialsRepository) :
         val Factory = viewModelFactory {
             initializer {
                 val app = this[APPLICATION_KEY] as LiftAppApplication
-                LoginViewModel(app.credentialsRepository)
+                LoginViewModel(app.credentialsRepository, app.sessionManager)
             }
         }
     }

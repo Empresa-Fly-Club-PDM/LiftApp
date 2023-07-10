@@ -28,6 +28,7 @@ import androidx.compose.material.icons.filled.ArrowForward
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuBox
@@ -111,10 +112,22 @@ fun CreateRoutine(navController: NavHostController){
 
             Button(modifier = Modifier
                 .fillMaxWidth()
-                .height(60.dp), onClick = {createRoutineViewModel.onCreate(navController, context,app.getUserId())}, colors = ButtonDefaults.buttonColors(containerColor = colorResource(
+                .height(60.dp), onClick = {createRoutineViewModel.onCreate(navController, context,app.getUserId()) }, colors = ButtonDefaults.buttonColors(containerColor = colorResource(
                 id = R.color.buttonGren
             ), contentColor = Color.White)) {
-                Text(text = "Confirmar")
+
+                if (createRoutineViewModel._loading.value) {
+                    // Show loading animation when isLoading is true
+                    CircularProgressIndicator(
+                        modifier = Modifier
+                            .size(36.dp)
+                            .padding(end = 8.dp),
+                        color = Color.White
+                    )
+                } else {
+
+                    Text(text = "Confirmar")
+                }
             }
 
             UserBottomMenu(navController)

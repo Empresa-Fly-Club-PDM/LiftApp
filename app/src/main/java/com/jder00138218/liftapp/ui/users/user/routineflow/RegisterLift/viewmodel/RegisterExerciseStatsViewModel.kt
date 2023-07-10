@@ -6,6 +6,7 @@ import android.widget.Toast
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.core.text.isDigitsOnly
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.APPLICATION_KEY
@@ -74,7 +75,7 @@ class RegisterExerciseStatsViewModel(private val liftRepository: LiftRepository)
     fun onCreate(exerciseid:Int?,userid:Int?,navController: NavHostController, context: Context) {
         if (!validateData()) {
             _status.value = RegisteRexerciseUIStatus.ErrorWithMessage("Verificar Imformation")
-            Toast.makeText(context, "Verificar campos vacios", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, "Verificar Informacion", Toast.LENGTH_SHORT).show()
             return
         }else{
             create(weight.toInt(), reps.toInt(),exerciseid,userid, navController, context)
@@ -86,6 +87,8 @@ class RegisterExerciseStatsViewModel(private val liftRepository: LiftRepository)
         when {
             reps.isEmpty() -> return false
             weight.isEmpty() -> return false
+            !reps.isDigitsOnly()->return false
+            !weight.isDigitsOnly()->return false
         }
         return true
     }

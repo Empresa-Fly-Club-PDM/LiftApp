@@ -31,6 +31,9 @@ class AdminUpdateExerciseViewModel(private val exerciseRepository: ExerciseRepos
     var _sets by mutableStateOf("")
     var _type by mutableStateOf("")
     val _status = MutableLiveData<AdminUpdateExerciseUIStatus>(AdminUpdateExerciseUIStatus.Resume)
+    val isLoadingUpdate = mutableStateOf(false)
+    val isLoadingDelete = mutableStateOf(false)
+
 
 
 
@@ -52,7 +55,6 @@ class AdminUpdateExerciseViewModel(private val exerciseRepository: ExerciseRepos
             _sets = _exercise.value.sets.toString()
             _type = _exercise.value.type
         }
-        Log.d("checkexercise",_exercise.toString())
     }
 
     private fun update(description: String,difficulty: String,muscle: String,name: String,reps: Int,sets: Int,type: String,id:Int?,navController: NavHostController,context:Context) {
@@ -76,6 +78,7 @@ class AdminUpdateExerciseViewModel(private val exerciseRepository: ExerciseRepos
         if (!validateData()) {
             _status.value = AdminUpdateExerciseUIStatus.ErrorWithMessage("Verificar Imformation")
             Toast.makeText(context, "Verificar campos vacios", Toast.LENGTH_SHORT).show()
+            isLoadingUpdate.value = false
             return
         }
 
@@ -100,6 +103,7 @@ class AdminUpdateExerciseViewModel(private val exerciseRepository: ExerciseRepos
                 Log.d("tag","failure")
             }
         }
+        isLoadingUpdate.value = true
     }
 
     fun deleteExercise(id:Int?,navController: NavHostController,context:Context) {
@@ -114,6 +118,7 @@ class AdminUpdateExerciseViewModel(private val exerciseRepository: ExerciseRepos
                     }
                     )
             Toast.makeText(context, "Ejercicio Eliminado", Toast.LENGTH_SHORT).show()
+            isLoadingDelete.value = true
             navController.navigate(Rutas.AdminVerifyExercise.ruta)
 
         }

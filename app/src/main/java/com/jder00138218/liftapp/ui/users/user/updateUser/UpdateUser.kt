@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -22,6 +23,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuBox
@@ -86,9 +88,17 @@ fun UpdateUser(navController: NavHostController) {
             verticalArrangement = Arrangement.SpaceBetween,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            HeaderBarBackArrowDumbell(title = "Informacion de usuario", navController = navController, backOnClick = {navController.popBackStack()})
-            UpdateUserFields(updateUserViewModel,navController)
-            ButtonsUpdateUser(app.getUserId(),updateUserViewModel,navController)
+            Column(modifier = Modifier
+                .fillMaxWidth()
+                .fillMaxHeight(0.8f)
+                .verticalScroll(rememberScrollState()),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.SpaceBetween){
+                HeaderBarBackArrowDumbell(title = "Informacion de usuario", navController = navController, backOnClick = {navController.popBackStack()})
+                UpdateUserFields(updateUserViewModel,navController)
+                ButtonsUpdateUser(app.getUserId(),updateUserViewModel,navController)
+            }
+
 
             UserBottomMenu(navController)
         }
@@ -102,8 +112,7 @@ fun UpdateUser(navController: NavHostController) {
 @Composable
     fun UpdateUserFields(viewmodel: UpdateUserViewModel, navController: NavHostController) {
     Column(modifier = Modifier
-        .fillMaxWidth()
-        .verticalScroll(rememberScrollState()),
+        .fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally) {
         FieldName(viewmodel)
         Spacer(modifier = Modifier.padding(2.dp))
@@ -185,7 +194,18 @@ fun ButtonsUpdateUser(id: Int?, updateuserviewmodel: UpdateUserViewModel, navCon
             )
         ) {
 
-            Text(text = "Actualizar Informacion")
+            if (updateuserviewmodel._loading.value) {
+                // Show loading animation when isLoading is true
+                CircularProgressIndicator(
+                    modifier = Modifier
+                        .size(36.dp)
+                        .padding(end = 8.dp),
+                    color = Color.White
+                )
+            } else {
+
+                Text(text = "Actualizar informacion")
+            }
 
         }
     }

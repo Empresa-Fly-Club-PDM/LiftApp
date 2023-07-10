@@ -9,11 +9,13 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Info
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
@@ -62,9 +64,26 @@ fun FriendsMenu(navController: NavController){
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.SpaceBetween) {
             HeaderBarBackArrowAdd("Amigos", navController, addOnClick = handleAddOnClick, backOnClick = { navController.popBackStack() })
-            LazyColumn(modifier = Modifier.fillMaxHeight(0.7f)){
-                items(vm.users) {
-                    FriendInfoRow(it.nombrecompleto, getRank(it.points), it.id, navController)
+
+            if (vm._loading.value) {
+                Column(modifier = Modifier
+                    .fillMaxWidth()
+                    .fillMaxHeight(0.7f),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center) {
+                    CircularProgressIndicator(
+                        modifier = Modifier
+                            .size(36.dp)
+                            .padding(end = 8.dp),
+                        color = Color.Red
+                    )
+                }
+
+            } else {
+                LazyColumn(modifier = Modifier.fillMaxHeight(0.7f)) {
+                    items(vm.users) {
+                        FriendInfoRow(it.nombrecompleto, getRank(it.points), it.id, navController)
+                    }
                 }
             }
             UserBottomMenu(navController = navController)

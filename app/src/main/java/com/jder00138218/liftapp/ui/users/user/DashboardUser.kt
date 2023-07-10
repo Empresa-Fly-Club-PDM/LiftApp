@@ -14,7 +14,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowForward
 import androidx.compose.material3.Button
@@ -55,10 +57,10 @@ import java.time.format.DateTimeFormatter
 
 @Composable
 fun DashboardUserScreen(navController: NavController) {
-    val dashboardUserViewModel:DashboardUserViewModel= viewModel(
+    val dashboardUserViewModel: DashboardUserViewModel = viewModel(
         factory = DashboardUserViewModel.Factory
     )
-    val dashboardUserLiftViewModel:DashboardUserLiftViewModel = viewModel(
+    val dashboardUserLiftViewModel: DashboardUserLiftViewModel = viewModel(
         factory = DashboardUserLiftViewModel.Factory
     )
     val context = LocalContext.current
@@ -66,29 +68,70 @@ fun DashboardUserScreen(navController: NavController) {
     dashboardUserViewModel.getUserDetails(app.getUserId())
     dashboardUserLiftViewModel.getUserBestLift(app.getUserId())
     val detailUser = dashboardUserViewModel.user
-    val detailHighligt:lift? = dashboardUserLiftViewModel.lift
+    val detailHighligt: lift? = dashboardUserLiftViewModel.lift
     Box(
         modifier = Modifier
             .fillMaxSize()
             .background(color = Color.White)
     ) {
 
-        Column(modifier = Modifier
-            .fillMaxSize()
-            .padding(8.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.SpaceBetween) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(8.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.SpaceBetween
+        ) {
 
-            Text(text = "Bienvenido,", color = colorResource(id = R.color.gray_text))
-            Text(
-                text = detailUser.nombrecompleto,
-                color = Color.Black,
-                style = TextStyle(
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 24.sp
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .fillMaxHeight(0.85f)
+                    .verticalScroll(rememberScrollState()),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.SpaceBetween
+            ) {
+
+                Text(text = "Bienvenido,", color = colorResource(id = R.color.gray_text))
+                Text(
+                    text = detailUser.nombrecompleto,
+                    color = Color.Black,
+                    style = TextStyle(
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 24.sp
+                    )
                 )
-            )
-            MainInfoUser(detailUser, detailHighligt, navController)
+
+                BestInfoUser(detailLift = detailHighligt)
+                Row(modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween) {
+                    Image(
+                        painter = painterResource(id = gentRankDrawable(detailUser.points)),
+                        contentDescription = "Image Level",
+                        modifier = Modifier
+                            .width(250.dp)
+                            .height(180.dp)
+                    )
+                    Column(modifier = Modifier.fillMaxWidth(0.5f),
+                    horizontalAlignment = Alignment.CenterHorizontally) {
+                        dataItem("Altura", detailUser.height.toString() + " Cm", Modifier.weight(1f))
+                        dataItem("Peso", detailUser.weight.toString() + " Lb", Modifier.weight(1f))
+                        dataItem(
+                            "Edad",
+                            calculateAge(detailUser.fechanac).toString() + " Años",
+                            Modifier.weight(1f)
+                        )
+                        dataItem("Puntaje", detailUser.points.toString(), Modifier.weight(1f))
+                        dataItem("Nivel", getRank(detailUser.points), Modifier.weight(1f))
+                    }
+
+                }
+
+
+                RankingFriends(navController)
+                RoutineMenuCard("Rutinas", navController)
+            }
+
             UserBottomMenu(navController)
         }
 
@@ -98,37 +141,51 @@ fun DashboardUserScreen(navController: NavController) {
 }
 
 @Composable
-fun RoutineMenuCard(muscleGroup: String, navController: NavController){
-    Card(modifier = Modifier
-        .fillMaxWidth()
-        .padding(8.dp)
-        .height(72.dp))
-    { Box(modifier = Modifier.background(colorResource(id = R.color.card))) {
-        Row(modifier = Modifier
-            .fillMaxSize()
-            .padding(horizontal = 8.dp), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically
-        ) {
-            Text(text = muscleGroup, style = TextStyle(fontSize = 20.sp, color = Color.Black))
-            Button(modifier = Modifier , onClick = {navController.navigate(route = Rutas.UserRoutineMenu.ruta)}, colors = ButtonDefaults.buttonColors(containerColor = colorResource(
-                id = R.color.buttonRed
-            ), contentColor = Color.White)) {
-                Icon(
-                    Icons.Default.ArrowForward,
-                    contentDescription = "to $muscleGroup routines"
-                )
+fun RoutineMenuCard(muscleGroup: String, navController: NavController) {
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(8.dp)
+            .height(72.dp)
+    )
+    {
+        Box(modifier = Modifier.background(colorResource(id = R.color.card))) {
+            Row(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(horizontal = 8.dp),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(text = muscleGroup, style = TextStyle(fontSize = 20.sp, color = Color.Black))
+                Button(
+                    modifier = Modifier,
+                    onClick = { navController.navigate(route = Rutas.UserRoutineMenu.ruta) },
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = colorResource(
+                            id = R.color.buttonRed
+                        ), contentColor = Color.White
+                    )
+                ) {
+                    Icon(
+                        Icons.Default.ArrowForward,
+                        contentDescription = "to $muscleGroup routines"
+                    )
+                }
             }
         }
-    }
 
     }
 }
+
 @Composable
 fun MainInfoUser(detailUser: user, detailLift: lift?, navController: NavController) {
-    Column() {
+    Column(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
         BestInfoUser(detailLift)
         InfoUser(detailUser)
-        RankingFriends(navController)
-        RoutineMenuCard("Rutinas", navController)
     }
 }
 
@@ -143,25 +200,26 @@ fun RankingFriends(navController: NavController) {
             containerColor = colorResource(id = R.color.bcCard),
         )
     ) {
-            Row(modifier = Modifier
+        Row(
+            modifier = Modifier
                 .fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            Text(text = "Rankings", color = Color.White)
+            Button(
+                onClick = { navController.navigate(route = Rutas.UserRanking.ruta) },
+                shape = RoundedCornerShape(8.dp),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color.White
+                ),
+                modifier = Modifier.padding(8.dp)
             ) {
-                Text(text = "Rankings", color = Color.White)
-                Button(
-                    onClick = {navController.navigate(route = Rutas.UserRanking.ruta)},
-                    shape = RoundedCornerShape(8.dp),
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = Color.White
-                    ),
-                    modifier = Modifier.padding(8.dp)
-                ) {
-                    Text(text = "Rankings", color = Color.Red)
-                }
+                Text(text = "Rankings", color = Color.Red)
             }
         }
     }
+}
 
 @Composable
 fun ItemFriend(name: String) {
@@ -176,14 +234,15 @@ fun ItemFriend(name: String) {
 
 @Composable
 fun InfoUser(detailUser: user) {
-    Column() {
-        Row() {
-            dataItem("Altura", detailUser.height.toString()+" Cm")
-            dataItem("Peso", detailUser.weight.toString()+" Lb")
-            dataItem("Edad", calculateAge(detailUser.fechanac).toString() +" Años")
+    Column(modifier = Modifier.fillMaxWidth()) {
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+
         }
         Spacer(modifier = Modifier.padding(4.dp))
-        Row() {
+        Row(modifier = Modifier.padding(8.dp)) {
             Image(
                 painter = painterResource(id = gentRankDrawable(detailUser.points)),
                 contentDescription = "Image Level",
@@ -191,10 +250,8 @@ fun InfoUser(detailUser: user) {
                     .width(250.dp)
                     .height(180.dp)
             )
-            Column() {
-                dataItem("Puntaje", detailUser.points.toString())
-                Spacer(modifier = Modifier.padding(2.dp))
-                dataItem("Nivel", getRank(detailUser.points))
+            Column(verticalArrangement = Arrangement.SpaceBetween, modifier = Modifier.weight(1f)) {
+
             }
 
         }
@@ -204,11 +261,9 @@ fun InfoUser(detailUser: user) {
 }
 
 @Composable
-fun dataItem(type: String, data: String) {
+fun dataItem(type: String, data: String, modifier: Modifier = Modifier) {
     Card(
-        modifier = Modifier
-            .width(120.dp)
-            .height(80.dp),
+        modifier = modifier,
         shape = MaterialTheme.shapes.medium,
         colors = CardDefaults.cardColors(
             containerColor = Color.White,
@@ -265,7 +320,10 @@ fun BestInfoUser(detailLift: lift?) {
                 )
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
                     Text(text = "${detailLift?.weight} LB", color = Color.Red)
-                    Text(text = handleHighlightName(detailLift?.exercisename), color = Color.DarkGray)
+                    Text(
+                        text = handleHighlightName(detailLift?.exercisename),
+                        color = Color.DarkGray
+                    )
                 }
 
             }
@@ -273,62 +331,62 @@ fun BestInfoUser(detailLift: lift?) {
     }
 }
 
-fun getRank(user_points:Int):String{
-    var rank:String =""
-    if(user_points<4000){
+fun getRank(user_points: Int): String {
+    var rank: String = ""
+    if (user_points < 4000) {
         rank = "Principiante"
-    }else if(user_points>=4000 && user_points<10000){
+    } else if (user_points >= 4000 && user_points < 10000) {
         rank = "Novato 1"
-    }else if(user_points>=10000 && user_points<18000){
+    } else if (user_points >= 10000 && user_points < 18000) {
         rank = "Novato 2"
-    }else if(user_points>=18000 && user_points<26000){
+    } else if (user_points >= 18000 && user_points < 26000) {
         rank = "Novato 3"
-    }else if(user_points>=26000 && user_points<36000){
+    } else if (user_points >= 26000 && user_points < 36000) {
         rank = "Intermedio 1"
-    }else if(user_points>=36000 && user_points<48000){
+    } else if (user_points >= 36000 && user_points < 48000) {
         rank = "Intermedio 2"
-    }else if(user_points>=48000 && user_points<64000){
+    } else if (user_points >= 48000 && user_points < 64000) {
         rank = "Intermedio 3"
-    }else if(user_points>=64000 && user_points<88000){
+    } else if (user_points >= 64000 && user_points < 88000) {
         rank = "Élite 1"
-    }else if(user_points>=88000 && user_points<120000){
+    } else if (user_points >= 88000 && user_points < 120000) {
         rank = "Élite 2"
-    }else if(user_points>=120000){
+    } else if (user_points >= 120000) {
         rank = "Élite 3"
     }
     return rank
 }
 
-fun gentRankDrawable(user_points:Int):Int{
+fun gentRankDrawable(user_points: Int): Int {
     var logo = 0
-    if(user_points<4000){
+    if (user_points < 4000) {
         logo = R.drawable.novato
-    }else if(user_points>=4000 && user_points<10000){
+    } else if (user_points >= 4000 && user_points < 10000) {
         logo = R.drawable.basico1
-    }else if(user_points>=10000 && user_points<18000){
+    } else if (user_points >= 10000 && user_points < 18000) {
         logo = R.drawable.basico2
-    }else if(user_points>=18000 && user_points<26000){
+    } else if (user_points >= 18000 && user_points < 26000) {
         logo = R.drawable.basico3
-    }else if(user_points>=26000 && user_points<36000){
+    } else if (user_points >= 26000 && user_points < 36000) {
         logo = R.drawable.intermedio1
-    }else if(user_points>=36000 && user_points<48000){
+    } else if (user_points >= 36000 && user_points < 48000) {
         logo = R.drawable.intermedio2
-    }else if(user_points>=48000 && user_points<64000){
+    } else if (user_points >= 48000 && user_points < 64000) {
         logo = R.drawable.intermedio3
-    }else if(user_points>=64000 && user_points<88000){
+    } else if (user_points >= 64000 && user_points < 88000) {
         logo = R.drawable.elite1
-    }else if(user_points>=88000 && user_points<120000){
+    } else if (user_points >= 88000 && user_points < 120000) {
         logo = R.drawable.elite2
-    }else if(user_points>=120000){
+    } else if (user_points >= 120000) {
         logo = R.drawable.elite3
     }
     return logo
 }
 
-fun handleHighlightName(name:String?):String{
+fun handleHighlightName(name: String?): String {
     var auxname = name
-    if(auxname == null){
-        auxname =""
+    if (auxname == null) {
+        auxname = ""
     }
     return auxname
 }

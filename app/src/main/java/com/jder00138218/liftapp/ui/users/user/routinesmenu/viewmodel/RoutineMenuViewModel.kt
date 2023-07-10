@@ -1,6 +1,7 @@
 package com.jder00138218.liftapp.ui.users.user.routinesmenu.viewmodel
 
 import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.APPLICATION_KEY
@@ -16,6 +17,8 @@ import kotlinx.coroutines.launch
 
 class RoutineMenuViewModel(private val routineRepository: RoutineRepository):ViewModel() {
     private val _routines = mutableStateListOf<routine>()
+    val _loading = mutableStateOf(true)
+
 
     val routines: List<routine>
         get() = _routines
@@ -25,6 +28,7 @@ class RoutineMenuViewModel(private val routineRepository: RoutineRepository):Vie
             _routines.clear()
             _routines.addAll(routineRepository.getMyRoutines(query,id))
         }
+        _loading.value = false
     }
 
 

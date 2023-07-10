@@ -38,6 +38,7 @@ import com.jder00138218.liftapp.ui.users.user.createroutine.CreateRoutine
 import com.jder00138218.liftapp.ui.users.user.findfriends.FindFriends
 import com.jder00138218.liftapp.ui.users.user.friendprofile.FriendProfile
 import com.jder00138218.liftapp.ui.users.user.friends.FriendsMenu
+import com.jder00138218.liftapp.ui.users.user.liftdetail.LiftDetail
 import com.jder00138218.liftapp.ui.users.user.ranking.RankingUsers
 import com.jder00138218.liftapp.ui.users.user.routinedetail.RoutineDetail
 import com.jder00138218.liftapp.ui.users.user.routineexercisedetail.RoutineExerciseDetail
@@ -48,6 +49,7 @@ import com.jder00138218.liftapp.ui.users.user.routinesmenu.RoutinesMenu
 import com.jder00138218.liftapp.ui.users.user.updateUser.UpdateUser
 import com.jder00138218.liftapp.ui.users.user.updateuserexercise.UpdateUserExercise
 import com.jder00138218.liftapp.ui.users.user.userexercises.UserExercises
+import com.jder00138218.liftapp.ui.users.user.userhistory.UserHistory
 import com.jder00138218.liftapp.ui.users.user.userprofile.UserProfile
 
 class MainActivity : ComponentActivity() {
@@ -225,6 +227,16 @@ fun NavigationGraph(){
             RegisterExerciseStats(navController)
         }
 
+        composable(route=Rutas.UserHistory.ruta){
+            UserHistory(navController)
+        }
 
+        composable(route=Rutas.LiftDetail.ruta,
+            arguments = listOf(navArgument("id"){
+                type = NavType.IntType
+            })
+            ){
+            LiftDetail(navController)
+        }
     }
 }

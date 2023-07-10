@@ -9,6 +9,8 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowForward
 import androidx.compose.material3.Button
@@ -40,16 +42,17 @@ import com.jder00138218.liftapp.ui.users.admin.adminProfile.viewmodel.AdminProfi
 import com.jder00138218.liftapp.ui.users.user.HeaderBarBackArrowDumbell
 import com.jder00138218.liftapp.ui.users.user.UserBottomMenu
 import com.jder00138218.liftapp.ui.users.user.UserProfileInfoRow
+import com.jder00138218.liftapp.ui.users.user.userprofile.viewmodel.UserProfileViewModel
 
 @Composable
 fun UserProfile(navController: NavController){
-    val adminProfileViewModel: AdminProfileViewModel = viewModel(
-        factory = AdminProfileViewModel.Factory
+    val userProfileViewModel: UserProfileViewModel = viewModel(
+        factory = UserProfileViewModel.Factory
     )
     val context = LocalContext.current
     val app = context.applicationContext as LiftAppApplication
-    adminProfileViewModel.getUserDetails(app.getUserId())
-    val detailUser = adminProfileViewModel.user
+    userProfileViewModel.getUserDetails(app.getUserId())
+    val detailUser = userProfileViewModel.user
     Box(modifier = Modifier
         .fillMaxSize()
         .padding(8.dp)
@@ -61,20 +64,19 @@ fun UserProfile(navController: NavController){
             verticalArrangement = Arrangement.SpaceBetween,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            HeaderBarBackArrowDumbell(title = "Perfil", navController, backOnClick = {navController.navigate(Rutas.DashboardUser.ruta)})
             Column(modifier = Modifier
                 .fillMaxWidth()
-                .fillMaxHeight(0.7f),
-                verticalArrangement = Arrangement.SpaceBetween,
-                horizontalAlignment = Alignment.CenterHorizontally) {
+                .fillMaxHeight(0.90f)
+                .verticalScroll(rememberScrollState()),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.SpaceBetween){
 
-                UserAccountCard(navController, detailUser)
-                UserLogoutCard(navController, app)
-            }
-
+                    HeaderBarBackArrowDumbell(title = "Perfil", navController, backOnClick = {navController.navigate(Rutas.DashboardUser.ruta)})
+                    UserAccountCard(navController, detailUser)
+                    UserLogoutCard(navController, app)
+                }
             UserBottomMenu(navController)
         }
-
     }
 }
 
@@ -104,7 +106,7 @@ fun UserAccountCard(navController: NavController, detailUser: user) {
                 modifier = Modifier.padding(bottom = 16.dp)
             )
 
-            UserProfileInfoRow(text = "username")
+            UserProfileInfoRow(text = detailUser.nombrecompleto)
             Button(
                 onClick = {navController.navigate(Rutas.UpdateUser.ruta)},
                 modifier = Modifier
@@ -126,7 +128,7 @@ fun UserAccountCard(navController: NavController, detailUser: user) {
             }
 
             Button(
-                onClick = {},
+                onClick = {navController.navigate(Rutas.UserHistory.ruta)},
                 modifier = Modifier
                     .fillMaxWidth()
                     .background(Color.White)
@@ -194,7 +196,8 @@ fun UserLogoutCard(navController: NavController, app:LiftAppApplication) {
 
             Button(
                 onClick = { app.saveAuthToken("user_token")
-                          navController.navigate(Rutas.Login.ruta)
+                    app.sessionManager.clearSession()
+                    navController.navigate(Rutas.Login.ruta)
                           },
                 modifier = Modifier,
                 colors = ButtonDefaults.buttonColors(containerColor = colorResource(

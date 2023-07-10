@@ -76,7 +76,7 @@ fun CurrentRoutine(navController: NavController){
             }
             HeaderBarBackArrowDumbell("Rutina", navController, backOnClick = { navController.popBackStack() })
 
-            Timer(vm)
+            Timer(routineid,vm)
             LazyColumn(
                 Modifier
                     .fillMaxWidth()
@@ -200,19 +200,25 @@ fun ItemExRight(exercise: exercise) {
 }
 
 private fun formatTime(seconds: Int): String {
-    val minutes = seconds / 60
+    val hours = seconds / 3600
+    val minutes = (seconds % 3600) / 60
     val remainingSeconds = seconds % 60
-    return "%02d:%02d".format(minutes, remainingSeconds)
+    return "%02d:%02d:%02d".format(hours, minutes, remainingSeconds)
 }
 @Composable
-fun Timer(vm: RoutineDetailViewModel) {
-    var isRunning by remember { mutableStateOf(false) }
+fun Timer(routineid:Int?, vm: RoutineDetailViewModel) {
+    var isRunning by remember { mutableStateOf(true) }
+    if(vm._time == 359999){
+        vm.getRoutineTime(routineid)
+    }else if(vm._time==0){
+        isRunning=false
+    }
 
     LaunchedEffect(isRunning) {
         if (isRunning) {
             while (true) {
                 delay(1000)
-                vm._time += 1
+                vm._time -= 1
             }
         }
     }
@@ -224,15 +230,10 @@ fun Timer(vm: RoutineDetailViewModel) {
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
-            text = formatTime(vm._time),
+            text = if(isRunning){formatTime(vm._time)}else{"Tiempo agotado"},
             modifier = Modifier.padding(bottom = 16.dp),
-            fontSize = 32.sp
+            fontSize = 32.sp,
+            color = if(isRunning){Color.Black}else{Color.Red},
         )
-        Button(
-            onClick = { isRunning = !isRunning },
-            modifier = Modifier.align(Alignment.CenterHorizontally)
-        ) {
-            Text(text = if (isRunning) "Stop" else "Start")
-        }
     }
 }

@@ -1,6 +1,7 @@
 package com.jder00138218.liftapp.ui.login
 
 
+import SessionManager
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -19,6 +20,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -63,6 +65,19 @@ fun LoginScreen(navController: NavHostController) {
         factory = LoginViewModel.Factory
     )
 
+    val context = LocalContext.current
+
+    val sessionManager = remember { SessionManager(context) }
+    val savedEmail = sessionManager.email
+    val savedPassword = sessionManager.password
+
+    if (savedEmail != null && savedPassword != null) {
+        // Automatically log in the user with saved credentials
+        loginViewModel.email = savedEmail
+        loginViewModel.password = savedPassword
+        loginViewModel.onLogin(navController, LocalContext.current)
+    }
+
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -104,23 +119,35 @@ fun Login(modifier: Modifier, viewModel: LoginViewModel, navController: NavHostC
 
 @Composable
 fun SingIn(viewModel: LoginViewModel, modifier: Modifier, navController: NavHostController) {
-    // TODO -> FIX VALIDATION STATUS
     val context = LocalContext.current
+
     Button(
         onClick = {
+            viewModel._loading.value=true
             viewModel.onLogin(navController, context)
         }, modifier = modifier
             .height(60.dp)
             .width(300.dp)
             .fillMaxWidth(), colors = ButtonDefaults.buttonColors(containerColor = Color.Red))
     {
-        Row() {
-            Icon(
-                modifier = Modifier.size(24.dp),
-                painter = painterResource(id = R.drawable.icon_login),
-                contentDescription = "Icon login"
-            )
-            Text(text = " Ingresar")
+        Row {
+            if (viewModel._loading.value) {
+                // Show loading animation when isLoading is true
+                CircularProgressIndicator(
+                    modifier = Modifier
+                        .size(36.dp)
+                        .padding(end = 8.dp),
+                    color = Color.White
+                )
+            } else {
+                Icon(
+                    modifier = Modifier.size(24.dp),
+                    painter = painterResource(id = R.drawable.icon_login),
+                    contentDescription = "Icon login"
+                )
+
+                Text(text = "Ingresar")
+            }
         }
 
     }

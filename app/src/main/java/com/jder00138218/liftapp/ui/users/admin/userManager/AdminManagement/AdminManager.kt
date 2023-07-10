@@ -10,11 +10,13 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
@@ -88,13 +90,29 @@ fun AdminManager(navController: NavController){
                 .border(width = 0.dp, color = Color.White),
                 placeholder = { Text(text = "Buscar..", color = Color(R.color.gray_text)) },
                 )
-            LazyColumn(
-                Modifier
+            if (vm._loading.value) {
+                Column(modifier = Modifier
                     .fillMaxWidth()
-                    .fillMaxHeight(0.9f)
-            ) {
-                items(vm.users) {
-                    AdminInfoRow(name = it.nombrecompleto,it.id, navController = navController)
+                    .fillMaxHeight(0.7f),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center) {
+                    CircularProgressIndicator(
+                        modifier = Modifier
+                            .size(36.dp)
+                            .padding(end = 8.dp),
+                        color = Color.Red
+                    )
+                }
+
+            } else {
+                LazyColumn(
+                    Modifier
+                        .fillMaxWidth()
+                        .fillMaxHeight(0.9f)
+                ) {
+                    items(vm.users) {
+                        AdminInfoRow(name = it.nombrecompleto, it.id, navController = navController)
+                    }
                 }
             }
             Menu(navController)

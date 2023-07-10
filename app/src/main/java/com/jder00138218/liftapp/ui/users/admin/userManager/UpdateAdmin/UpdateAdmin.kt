@@ -22,6 +22,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextField
@@ -114,6 +115,7 @@ fun ButtonsUpdate(id: Int?, updateAdminViewModel: UpdateAdminViewModel, navContr
     Row() {
         Button(
             onClick = {updateAdminViewModel.onUpdate(id,navController,context)
+                updateAdminViewModel._loading.value=true
             }, modifier = Modifier
                 .height(60.dp)
                 .width(175.dp)
@@ -122,8 +124,17 @@ fun ButtonsUpdate(id: Int?, updateAdminViewModel: UpdateAdminViewModel, navContr
             )
         ) {
 
-            Text(text = " Editar")
-
+            if (updateAdminViewModel._loading.value) {
+                // Show loading animation when isLoading is true
+                CircularProgressIndicator(
+                    modifier = Modifier
+                        .size(36.dp)
+                        .padding(end = 8.dp),
+                    color = Color.White
+                )
+            } else {
+                Text(text = " Editar")
+            }
         }
 
         Button(
@@ -135,9 +146,7 @@ fun ButtonsUpdate(id: Int?, updateAdminViewModel: UpdateAdminViewModel, navContr
                 containerColor = Color.Red
             )
         ) {
-
-            Text(text = "Eliminar")
-
+                Text(text = "Eliminar")
         }
     }
 }

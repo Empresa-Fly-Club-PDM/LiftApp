@@ -6,6 +6,7 @@ import android.widget.Toast
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.core.text.isDigitsOnly
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -33,6 +34,7 @@ class CreateRoutineViewModel(private val routineRepository: RoutineRepository) :
     private var _hour by mutableStateOf("00")
     private var _time by mutableStateOf("")
     val _status = MutableLiveData<CreateRoutineUIStatus>(CreateRoutineUIStatus.Resume)
+    val _loading = mutableStateOf(false)
 
     var difficulty: String
         get() = _difficulty
@@ -71,7 +73,7 @@ class CreateRoutineViewModel(private val routineRepository: RoutineRepository) :
         val time = time
         viewModelScope.launch {
             _status.value = (
-                    when (val response = routineRepository.createRoutine(difficulty,name,tag,time,userid)) {
+                    when(val response = routineRepository.createRoutine(difficulty,name,tag,time,userid)) {
                         is ApiResponse.Error -> CreateRoutineUIStatus.Error(response.exception)
                         is ApiResponse.ErrorWithMessage -> CreateRoutineUIStatus.ErrorWithMessage(response.message)
                         is ApiResponse.Success -> CreateRoutineUIStatus.Success(
@@ -79,6 +81,7 @@ class CreateRoutineViewModel(private val routineRepository: RoutineRepository) :
                         )
                     }
                     )
+            _loading.value=false
             handleUiStatus(navController,context)
         }
     }
@@ -86,13 +89,16 @@ class CreateRoutineViewModel(private val routineRepository: RoutineRepository) :
     fun onCreate(navController: NavHostController, context: Context,id:Int?) {
         if (!validateData()) {
             _status.value = CreateRoutineUIStatus.ErrorWithMessage("Verificar Imformation")
-            Toast.makeText(context, "Verificar campos vacios", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, "Verificar Información", Toast.LENGTH_SHORT).show()
+            _loading.value=false
             return
         }
         if(minute.toInt()<=60 && minute.toInt()>0 && hour.toInt()>=0){
             create(difficulty, name,tag,minute,hour,id,navController,context)
+            _loading.value = true
         }else{
-            Toast.makeText(context, "Duracipon de entrenamiento invalida", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, "Duración de entrenamiento invalida", Toast.LENGTH_SHORT).show()
+            _loading.value=false
             return
         }
 
@@ -104,18 +110,26 @@ class CreateRoutineViewModel(private val routineRepository: RoutineRepository) :
             is CreateRoutineUIStatus.Error -> {
                 Log.d("tag", "Error")
                 Toast.makeText(context, "Error en el registro", Toast.LENGTH_SHORT).show()
+
+
             }
             is CreateRoutineUIStatus.ErrorWithMessage -> {
                 Toast.makeText(context, "Verificar datos ingresados", Toast.LENGTH_SHORT).show()
+
+
             }
             is CreateRoutineUIStatus.Success -> {
                 Toast.makeText(context, "Rutina Creada exitosamente", Toast.LENGTH_SHORT).show()
                 navController.navigate(route = Rutas.UserRoutineMenu.ruta)
+
             }
             else -> {
                 Log.d("tag","failure")
+
+
             }
         }
+        _loading.value=false
     }
 
     private fun validateData(): Boolean {
@@ -125,6 +139,10 @@ class CreateRoutineViewModel(private val routineRepository: RoutineRepository) :
             tag.isEmpty() -> return false
             minute.isEmpty() -> return false
             hour.isEmpty() -> return false
+            !minute.isDigitsOnly()->return false
+            !hour.isDigitsOnly()->return false
+            minute.toInt()<=0 ->return false
+
         }
         return true
     }

@@ -31,6 +31,8 @@ class RoutineDetailViewModel(private val routineRepository: RoutineRepository):V
     private var _routine = mutableStateOf<routine>(routine())
     val _status = MutableLiveData<RoutineDetailUIStatus>(RoutineDetailUIStatus.Resume)
     var _time by mutableStateOf(359999)
+    val _loading = mutableStateOf(false)
+
 
     val exercises: List<exercise>
         get() = _exercises

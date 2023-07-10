@@ -68,7 +68,6 @@ fun FriendProfile(navController: NavController) {
             verticalArrangement = Arrangement.SpaceBetween) {
 
             HeaderBarBackArrowDumbell(title = "Perfil Amigo", navController = navController, backOnClick = {navController.popBackStack()})
-            Text(text = "Bienvenido,", color = colorResource(id = R.color.gray_text))
             Text(
                 text = detailUser.nombrecompleto,
                 color = Color.Black,

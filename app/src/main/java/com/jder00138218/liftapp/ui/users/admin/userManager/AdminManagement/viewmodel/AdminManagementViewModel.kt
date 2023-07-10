@@ -1,6 +1,7 @@
 package com.jder00138218.liftapp.ui.users.admin.userManager.AdminManagement.viewmodel
 
 import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.APPLICATION_KEY
 import androidx.lifecycle.viewModelScope
@@ -13,6 +14,7 @@ import kotlinx.coroutines.launch
 
 class AdminManagementViewModel(private val userRepository: UserRepository):ViewModel() {
     private val _users = mutableStateListOf<user>()
+    val _loading = mutableStateOf(true)
 
     val users: List<user>
         get() = _users
@@ -22,6 +24,7 @@ class AdminManagementViewModel(private val userRepository: UserRepository):ViewM
             _users.clear()
             _users.addAll(userRepository.getAllAdmins(query))
         }
+        _loading.value = false
     }
 
 

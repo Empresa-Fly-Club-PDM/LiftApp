@@ -158,7 +158,7 @@ fun ButtonsDetaile(id: Int? , detailExerciseViewmodel: DetailExerciseViewmodel,n
         Button(
             onClick = {
                       detailExerciseViewmodel.verifyExercise(id,navController,context)
-                        detailExerciseViewmodel._loading.value=true
+                        detailExerciseViewmodel._loadingVerification.value=true
             }, modifier = Modifier
                 .height(60.dp)
                 .width(175.dp)
@@ -167,7 +167,18 @@ fun ButtonsDetaile(id: Int? , detailExerciseViewmodel: DetailExerciseViewmodel,n
             )
         ) {
 
-            Text(text = "Verificar")
+            if (detailExerciseViewmodel._loadingVerification.value) {
+                // Show loading animation when isLoading is true
+                CircularProgressIndicator(
+                    modifier = Modifier
+                        .size(36.dp)
+                        .padding(end = 8.dp),
+                    color = Color.White
+                )
+            } else {
+
+                Text(text = "Solicitar verificacion")
+            }
 
         }
     }

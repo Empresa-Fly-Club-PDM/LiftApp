@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -24,6 +25,7 @@ import androidx.compose.material.icons.outlined.Add
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -113,13 +115,30 @@ fun RoutinesMenu(navController: NavController){
                 placeholder = { Text(text = "Buscar..", color = Color(R.color.gray_text)) },
 
                 )
-            LazyColumn(
-                Modifier
+
+            if (vm._loading.value) {
+                Column(modifier = Modifier
+                    .fillMaxWidth()
+                    .fillMaxHeight(0.7f),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center) {
+                    CircularProgressIndicator(
+                        modifier = Modifier
+                            .size(36.dp)
+                            .padding(end = 8.dp),
+                        color = Color.Red
+                    )
+                }
+
+            } else {
+            LazyColumn(modifier = Modifier
                     .fillMaxWidth()
                     .fillMaxHeight(0.7f)
             ) {
-                items(vm.routines) {
-                    RoutineMenuItem(routine = it,navController)
+
+                    items(vm.routines) {
+                        RoutineMenuItem(routine = it,navController)
+                    }
                 }
             }
             UserBottomMenu(navController)
@@ -134,7 +153,7 @@ fun RoutineMenuItem(routine:routine,navController: NavController){
         .fillMaxWidth()
         .padding(8.dp)
         .height(72.dp)
-        .clickable(onClick = {navController.navigate("rutas_start_routine/${routine.id}")})
+        .clickable(onClick = { navController.navigate("rutas_start_routine/${routine.id}") })
     )
 
     { Box(modifier = Modifier.background(colorResource(id = R.color.card))) {

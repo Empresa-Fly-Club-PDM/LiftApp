@@ -27,6 +27,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.jder00138218.liftapp.R
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.jder00138218.liftapp.network.dto.exercise.exercise
@@ -59,13 +60,29 @@ fun DashboardAdminScreen(navController: NavController) {
                     fontSize = 24.sp
                 )
             )
-            LazyColumn(
-                Modifier
-                    .fillMaxHeight(0.9f)
+            if (vm._loading.value) {
+                Column(modifier = Modifier
                     .fillMaxWidth()
-            ) {
-                items(vm.exercises) { index ->
-                    CardExercise(index, navController)
+                    .fillMaxHeight(0.7f),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center) {
+                    CircularProgressIndicator(
+                        modifier = Modifier
+                            .size(36.dp)
+                            .padding(end = 8.dp),
+                        color = Color.Red
+                    )
+                }
+
+            } else {
+                LazyColumn(
+                    Modifier
+                        .fillMaxHeight(0.9f)
+                        .fillMaxWidth()
+                ) {
+                    items(vm.exercises) { index ->
+                        CardExercise(index, navController)
+                    }
                 }
             }
 

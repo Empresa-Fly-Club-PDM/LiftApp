@@ -18,6 +18,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuBox
@@ -82,7 +83,18 @@ fun AddUserExercise(navController: NavHostController) {
                     containerColor = colorResource(id = R.color.buttonGray)
                 )
             ) {
-                Text(text = "Solicitar verificación")
+                if (addUserExercisesViewModel._loadingVerification.value) {
+                    // Show loading animation when isLoading is true
+                    CircularProgressIndicator(
+                        modifier = Modifier
+                            .size(36.dp)
+                            .padding(end = 8.dp),
+                        color = Color.White
+                    )
+                } else {
+
+                    Text(text = "Solicitar verificacion")
+                }
 
             }
             UserBottomMenu(navController = navController)
@@ -127,8 +139,18 @@ fun ButtonsCreate(addUserExercisesViewModel: AddUserExercisesViewModel, navContr
             containerColor = colorResource(id = R.color.buttonGren)
         )
     ) {
-        Text(text = " Confirmar")
+        if (addUserExercisesViewModel._loading.value) {
+            // Show loading animation when isLoading is true
+            CircularProgressIndicator(
+                modifier = Modifier
+                    .size(36.dp)
+                    .padding(end = 8.dp),
+                color = Color.White
+            )
+        } else {
 
+            Text(text = "Confirmar")
+        }
     }
 
 }

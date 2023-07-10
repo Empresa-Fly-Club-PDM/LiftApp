@@ -21,6 +21,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextField
@@ -125,15 +126,26 @@ fun ButtonsRoutineExerciseDetaile(idexc: Int?,idrut:Int? , routineExerciseDetail
     Row(modifier = Modifier.fillMaxWidth()) {
         Button(
             onClick = {routineExerciseDetailViewModel.removeExercise(idexc,idrut,navController,context)
-            }, modifier = Modifier
+            routineExerciseDetailViewModel._loading.value = true}, modifier = Modifier
                 .height(60.dp)
-                .width(175.dp)
+                .width(350.dp)
                 .fillMaxWidth(), colors = ButtonDefaults.buttonColors(
                 containerColor = colorResource(id = R.color.buttonRed)
             )
         ) {
 
-            Text(text = " Remover de la rutina")
+            if (routineExerciseDetailViewModel._loading.value) {
+                // Show loading animation when isLoading is true
+                CircularProgressIndicator(
+                    modifier = Modifier
+                        .size(36.dp)
+                        .padding(end = 8.dp),
+                    color = Color.White
+                )
+            } else {
+
+                Text(text = "Remover de la rutina")
+            }
 
         }
     }

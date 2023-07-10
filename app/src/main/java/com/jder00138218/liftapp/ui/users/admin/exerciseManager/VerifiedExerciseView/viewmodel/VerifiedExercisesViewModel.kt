@@ -14,7 +14,7 @@ import kotlinx.coroutines.launch
 
 class VerifiedExercisesViewModel(private val exerciseRepository: ExerciseRepository):ViewModel() {
     private val _exercises = mutableStateListOf<exercise>()
-
+    val _loading = mutableStateOf(true)
 
     val exercises: List<exercise>
         get() = _exercises
@@ -24,6 +24,7 @@ class VerifiedExercisesViewModel(private val exerciseRepository: ExerciseReposit
             _exercises.clear()
             _exercises.addAll(exerciseRepository.getVerified(query))
         }
+        _loading.value = false
     }
 
     companion object {

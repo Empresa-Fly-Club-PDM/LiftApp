@@ -56,6 +56,7 @@ fun GlobalRankingUsers(navController: NavController) {
 
             SearchBar()
             LazyColumn(modifier = Modifier){
+
                 items(5) {
                     FriendInfoRow(name = "friend name", getRank(1000),id = 1, navController = navController)
                 }

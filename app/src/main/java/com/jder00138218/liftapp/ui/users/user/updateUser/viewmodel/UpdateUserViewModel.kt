@@ -74,21 +74,17 @@ class UpdateUserViewModel(private val userRepository: UserRepository): ViewModel
     }
 
     fun onUpdate(id:Int?, navController: NavHostController, context: Context) {
-        Log.d("Data",calculateAge(_fechanac).toString())
         if (!validateData()) {
             _status.value = UpdateUserUIStatus.ErrorWithMessage("Verificar Imformation")
-            Toast.makeText(context, "Verificar campos vacios", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, "Verificar Información", Toast.LENGTH_SHORT).show()
             return
         }
-        if(_password.isEmpty() && calculateAge(_fechanac)>=13){
+        if(_password.isEmpty() && _confirmpassowrd.isEmpty() && calculateAge(_fechanac)>=13){
             update(id, _nombrecompleto, _email,_password,_genero,_fechanac,_weight.toInt(),_height.toInt(),navController,context)
         }else if (_password == _confirmpassowrd && _password.length>=8 && calculateAge(_fechanac)>=13){
             update(id, _nombrecompleto, _email,_password,_genero,_fechanac,_weight.toInt(),_height.toInt(),navController,context)
-        }else if(_password.length<8){
-            Toast.makeText(context, "Contraseñas muy corta o no coincide", Toast.LENGTH_SHORT).show()
         }else{
-            Toast.makeText(context, "Fecha invalida", Toast.LENGTH_SHORT).show()
-            return
+            Toast.makeText(context, "Verificar Información", Toast.LENGTH_SHORT).show()
         }
     }
 

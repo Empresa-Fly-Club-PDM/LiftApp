@@ -174,6 +174,7 @@ fun LogoutCard(navController: NavController,app:LiftAppApplication) {
             Button(
                 onClick = {
                     app.saveAuthToken("user_token")
+                    app.sessionManager.clearSession()
                     navController.navigate(Rutas.Login.ruta) },
                 modifier = Modifier,
                 colors = ButtonDefaults.buttonColors(containerColor = colorResource(

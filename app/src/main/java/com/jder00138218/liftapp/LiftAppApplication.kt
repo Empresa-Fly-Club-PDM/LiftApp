@@ -1,5 +1,6 @@
 package com.jder00138218.liftapp
 
+import SessionManager
 import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
@@ -83,6 +84,9 @@ class LiftAppApplication: Application() {
         val editor = prefs.edit()
         editor.putString(USER_TOKEN, token)
         editor.apply()
+    }
+    val sessionManager: SessionManager by lazy {
+        SessionManager(applicationContext)
     }
 
     fun saveUserID(id:Int?){

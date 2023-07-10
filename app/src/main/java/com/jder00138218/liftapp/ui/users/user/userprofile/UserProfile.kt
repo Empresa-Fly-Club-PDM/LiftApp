@@ -40,16 +40,17 @@ import com.jder00138218.liftapp.ui.users.admin.adminProfile.viewmodel.AdminProfi
 import com.jder00138218.liftapp.ui.users.user.HeaderBarBackArrowDumbell
 import com.jder00138218.liftapp.ui.users.user.UserBottomMenu
 import com.jder00138218.liftapp.ui.users.user.UserProfileInfoRow
+import com.jder00138218.liftapp.ui.users.user.userprofile.viewmodel.UserProfileViewModel
 
 @Composable
 fun UserProfile(navController: NavController){
-    val adminProfileViewModel: AdminProfileViewModel = viewModel(
-        factory = AdminProfileViewModel.Factory
+    val userProfileViewModel: UserProfileViewModel = viewModel(
+        factory = UserProfileViewModel.Factory
     )
     val context = LocalContext.current
     val app = context.applicationContext as LiftAppApplication
-    adminProfileViewModel.getUserDetails(app.getUserId())
-    val detailUser = adminProfileViewModel.user
+    userProfileViewModel.getUserDetails(app.getUserId())
+    val detailUser = userProfileViewModel.user
     Box(modifier = Modifier
         .fillMaxSize()
         .padding(8.dp)
@@ -104,7 +105,7 @@ fun UserAccountCard(navController: NavController, detailUser: user) {
                 modifier = Modifier.padding(bottom = 16.dp)
             )
 
-            UserProfileInfoRow(text = "username")
+            UserProfileInfoRow(text = detailUser.nombrecompleto)
             Button(
                 onClick = {navController.navigate(Rutas.UpdateUser.ruta)},
                 modifier = Modifier

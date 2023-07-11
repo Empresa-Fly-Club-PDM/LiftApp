@@ -147,7 +147,7 @@ fun UpdateUserSelectField(viewmodel:UpdateUserViewModel){
                 ExposedDropdownMenuDefaults.TrailingIcon(expanded = isExpanded)
             }, modifier = Modifier
                 .menuAnchor()
-                .width(350.dp)
+                .fillMaxWidth()
                 .clip(RoundedCornerShape(4.dp))
                 .border(
                     width = 1.dp,
@@ -164,7 +164,7 @@ fun UpdateUserSelectField(viewmodel:UpdateUserViewModel){
                     )
                 })
 
-            ExposedDropdownMenu(expanded = isExpanded, onDismissRequest = { isExpanded = false }) {
+            ExposedDropdownMenu(expanded = isExpanded, onDismissRequest = { isExpanded = false }, modifier = Modifier.fillMaxWidth()) {
                 DropdownMenuItem(text = { Text(text = "Masculino") },
                     onClick = {
                         isExpanded = false
@@ -220,7 +220,7 @@ fun FieldWeight(viewmodel: UpdateUserViewModel) {
             viewmodel._weight= newValue
         },
         modifier = Modifier
-            .width(350.dp)
+            .fillMaxWidth()
             .clip(RoundedCornerShape(4.dp))
             .border(
                 width = 1.dp,
@@ -252,7 +252,7 @@ fun FieldHeight(viewmodel: UpdateUserViewModel) {
             viewmodel._height= newValue
         },
         modifier = Modifier
-            .width(350.dp)
+            .fillMaxWidth()
             .clip(RoundedCornerShape(4.dp))
             .border(
                 width = 1.dp,
@@ -285,7 +285,7 @@ fun FieldName(viewmodel: UpdateUserViewModel) {
             viewmodel._nombrecompleto= newValue
         },
         modifier = Modifier
-            .width(350.dp)
+            .fillMaxWidth()
             .clip(RoundedCornerShape(4.dp))
             .border(
                 width = 1.dp,
@@ -317,7 +317,7 @@ fun FieldEmail(viewmodel: UpdateUserViewModel) {
             viewmodel._email= newValue
         },
         modifier = Modifier
-            .width(350.dp)
+            .fillMaxWidth()
             .clip(RoundedCornerShape(4.dp))
             .border(
                 width = 1.dp,
@@ -354,7 +354,7 @@ fun FieldPassword(viewModel: UpdateUserViewModel) {
             viewModel._password = newValue
         },
         modifier = Modifier
-            .width(350.dp)
+            .fillMaxWidth()
             .clip(RoundedCornerShape(4.dp))
             .background(colorResource(id = R.color.field))
             .border(
@@ -404,7 +404,7 @@ fun FieldConfirmPassword(viewModel: UpdateUserViewModel) {
             viewModel._confirmpassowrd = newValue
         },
         modifier = Modifier
-            .width(350.dp)
+            .fillMaxWidth()
             .clip(RoundedCornerShape(4.dp))
             .background(colorResource(id = R.color.field))
             .border(

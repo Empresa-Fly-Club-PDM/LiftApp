@@ -76,6 +76,7 @@ fun LoginScreen(navController: NavHostController) {
         loginViewModel.email = savedEmail
         loginViewModel.password = savedPassword
         loginViewModel.onLogin(navController, LocalContext.current)
+        sessionManager.clearSession()
     }
 
     Box(

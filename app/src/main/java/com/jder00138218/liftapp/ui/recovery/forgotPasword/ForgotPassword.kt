@@ -126,7 +126,7 @@ fun FieldEmail(viewModel: RecoveryViewModel) {
             )
         },
         keyboardOptions = KeyboardOptions(
-            keyboardType = KeyboardType.Email,
+            keyboardType = KeyboardType.Text,
             imeAction = androidx.compose.ui.text.input.ImeAction.Next // Acción IME cuando se presiona la tecla Enter
         ),
     )

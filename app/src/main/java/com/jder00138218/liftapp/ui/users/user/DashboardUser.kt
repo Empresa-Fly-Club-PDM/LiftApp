@@ -1,5 +1,4 @@
 package com.jder00138218.liftapp.ui.users.user
-
 import android.graphics.drawable.Drawable
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -104,7 +103,10 @@ fun DashboardUserScreen(navController: NavController) {
 
                 BestInfoUser(detailLift = detailHighligt)
                 Row(modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween) {
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically) {
+                    Column(modifier = Modifier.fillMaxWidth(0.5f),
+                        horizontalAlignment = Alignment.CenterHorizontally) {
                     Image(
                         painter = painterResource(id = gentRankDrawable(detailUser.points)),
                         contentDescription = "Image Level",
@@ -112,17 +114,17 @@ fun DashboardUserScreen(navController: NavController) {
                             .width(250.dp)
                             .height(180.dp)
                     )
+                }
                     Column(modifier = Modifier.fillMaxWidth(0.5f),
                     horizontalAlignment = Alignment.CenterHorizontally) {
-                        dataItem("Altura", detailUser.height.toString() + " Cm", Modifier.weight(1f))
-                        dataItem("Peso", detailUser.weight.toString() + " Lb", Modifier.weight(1f))
+                        dataItem("Altura", detailUser.height.toString() + " Cm")
+                        dataItem("Peso", detailUser.weight.toString() + " Lb")
                         dataItem(
                             "Edad",
-                            calculateAge(detailUser.fechanac).toString() + " Años",
-                            Modifier.weight(1f)
+                            calculateAge(detailUser.fechanac).toString() + " Años"
                         )
-                        dataItem("Puntaje", detailUser.points.toString(), Modifier.weight(1f))
-                        dataItem("Nivel", getRank(detailUser.points), Modifier.weight(1f))
+                        dataItem("Puntaje", detailUser.points.toString())
+                        dataItem("Nivel", getRank(detailUser.points))
                     }
 
                 }
@@ -288,7 +290,6 @@ fun dataItem(type: String, data: String, modifier: Modifier = Modifier) {
             )
         }
     }
-    Spacer(modifier = Modifier.padding(2.dp))
 }
 
 

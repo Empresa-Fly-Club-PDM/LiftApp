@@ -34,6 +34,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -78,7 +79,7 @@ fun VerifyExercises(navController: NavController) {
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             AdminHeaderBarBackArrowAdd(
-                title = "Ejercicios Verificados",
+                title = stringResource(R.string.ejercicios_verificados),
                 navController = navController,
                 addOnClick = { handleAddOnClick() },
                 backOnClick = { handleBackOnClick() })
@@ -147,7 +148,7 @@ fun CardExerciseVerify(exercise: exercise, navController: NavController) {
                     )
                     Icon(
                         painter = painterResource(id = R.drawable.shield_done),
-                        contentDescription = "Verify Icon",
+                        contentDescription = stringResource(R.string.verify_icon),
                         modifier = Modifier.size(20.dp)
                     )
                 }
@@ -181,7 +182,7 @@ fun ItemExVerify(exercise: exercise) {
             .size(width = 160.dp, height = 60.dp)
     ) {
         Column(Modifier.padding(8.dp)) {
-            Text(text = "Musculo", color = Color.Red)
+            Text(text = stringResource(R.string.musculo), color = Color.Red)
             Text(text = exercise.muscle, color = Color(R.color.gray_text))
         }
     }

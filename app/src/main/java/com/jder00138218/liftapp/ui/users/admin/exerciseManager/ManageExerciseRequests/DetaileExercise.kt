@@ -39,6 +39,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
@@ -58,7 +59,7 @@ import com.jder00138218.liftapp.ui.users.admin.exerciseManager.ManageExerciseReq
 @Composable
 fun DetaileExercise(navController: NavHostController) {
     val navBackStackEntry = navController.currentBackStackEntry
-    val exerciseid = navBackStackEntry?.arguments?.getInt("id")
+    val exerciseid = navBackStackEntry?.arguments?.getInt(stringResource(R.string.id))
     val detailExerciseViewmodel:DetailExerciseViewmodel = viewModel(
         factory = DetailExerciseViewmodel.Factory
     )
@@ -77,7 +78,7 @@ fun DetaileExercise(navController: NavHostController) {
                 horizontalAlignment = Alignment.CenterHorizontally
                 ) {
 
-                AdminHeaderBarBackArrowDumbell(title = "Descripcion de la solicitud", navController = navController, backOnClick = {navController.popBackStack()})
+                AdminHeaderBarBackArrowDumbell(title = stringResource(R.string.descripcion_de_la_solicitud), navController = navController, backOnClick = {navController.popBackStack()})
 
                 UserInfoSection(name = detailExercise.user.nombrecompleto, detailExercise.user.points)
                 FieldsDetaile(detailExercise,detailExerciseViewmodel,navController)
@@ -120,8 +121,8 @@ fun UserInfoSection(name: String, score: Int){
         .fillMaxWidth()
         .padding(8.dp)
     ) {
-        Text(text = "Usuario: " + name, fontWeight = FontWeight.Bold)
-        Text(text = "Puntuacion: " +score, fontWeight = FontWeight.Light)
+        Text(text = stringResource(R.string.usuario) + name, fontWeight = FontWeight.Bold)
+        Text(text = stringResource(R.string.puntuacion) +score, fontWeight = FontWeight.Light)
     }
 }
 
@@ -150,7 +151,7 @@ fun ButtonsDetaile(id: Int? , detailExerciseViewmodel: DetailExerciseViewmodel,n
                 )
             } else {
 
-            Text(text = " Descartar")
+            Text(text = stringResource(R.string.descartar))
             }
 
         }
@@ -177,7 +178,7 @@ fun ButtonsDetaile(id: Int? , detailExerciseViewmodel: DetailExerciseViewmodel,n
                 )
             } else {
 
-                Text(text = "Solicitar verificacion")
+                Text(text = stringResource(R.string.solicitar_verificacion))
             }
 
         }
@@ -206,7 +207,7 @@ fun FieldDetaile(name: String) {
             Icon(
                 modifier = Modifier.size(16.dp),
                 painter = painterResource(id = R.drawable.pesa),
-                contentDescription = "Icon field"
+                contentDescription = stringResource(R.string.icon_field)
             )
         },
         keyboardOptions = KeyboardOptions(

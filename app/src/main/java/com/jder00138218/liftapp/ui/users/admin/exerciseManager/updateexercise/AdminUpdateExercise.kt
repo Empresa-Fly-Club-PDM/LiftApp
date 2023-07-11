@@ -42,6 +42,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
@@ -63,7 +64,7 @@ import com.jder00138218.liftapp.ui.users.admin.exerciseManager.updateexercise.vi
 @Composable
 fun AdminUpdateExercise(navController: NavHostController) {
     val navBackStackEntry = navController.currentBackStackEntry
-    val exerciseid = navBackStackEntry?.arguments?.getInt("id")
+    val exerciseid = navBackStackEntry?.arguments?.getInt(stringResource(R.string.id))
     val adminUpdateExerciseViewModel: AdminUpdateExerciseViewModel = viewModel(
         factory = AdminUpdateExerciseViewModel.Factory
     )
@@ -80,7 +81,7 @@ fun AdminUpdateExercise(navController: NavHostController) {
             verticalArrangement = Arrangement.SpaceBetween,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            AdminHeaderBarBackArrowDumbell(title = "Detalle de ejercicio", navController = navController, backOnClick = {navController.popBackStack()})
+            AdminHeaderBarBackArrowDumbell(title = stringResource(R.string.detalle_de_ejercicio), navController = navController, backOnClick = {navController.popBackStack()})
             FieldsDetaileCreate(navController,adminUpdateExerciseViewModel)
             ButtonsUpdate(exerciseid,adminUpdateExerciseViewModel,navController)
             Menu(navController)
@@ -131,7 +132,6 @@ fun ButtonsUpdate(id: Int?, adminUpdateExerciseViewModel: AdminUpdateExerciseVie
             )
         ) {
             if (adminUpdateExerciseViewModel.isLoadingUpdate.value) {
-                // Show loading animation when isLoading is true
                 CircularProgressIndicator(
                     modifier = Modifier
                         .size(24.dp)
@@ -140,7 +140,7 @@ fun ButtonsUpdate(id: Int?, adminUpdateExerciseViewModel: AdminUpdateExerciseVie
 
                 )
             } else {
-                Text(text = " Editar")
+                Text(text = stringResource(R.string.editar))
             }
         }
 
@@ -186,14 +186,14 @@ fun FieldName(adminUpdateExerciseViewModel: AdminUpdateExerciseViewModel) {
                 color = colorResource(id = R.color.field)
             )// With padding show border color
             .background(colorResource(id = R.color.field)),
-        placeholder = { Text(text = "Nombre del Ejercicio", color = Color(R.color.gray_text)) },
+        placeholder = { Text(text = stringResource(R.string.nombre_del_ejercicio), color = Color(R.color.gray_text)) },
         singleLine = true,
         maxLines = 1,
         leadingIcon = {
             Icon(
                 modifier = Modifier.size(16.dp),
                 painter = painterResource(id = R.drawable.pesa),
-                contentDescription = "Icon field"
+                contentDescription = stringResource(R.string.icon_field)
             )
         },
         keyboardOptions = KeyboardOptions(
@@ -218,14 +218,14 @@ fun FieldMuscle(adminUpdateExerciseViewModel: AdminUpdateExerciseViewModel) {
                 color = colorResource(id = R.color.field)
             )// With padding show border color
             .background(colorResource(id = R.color.field)),
-        placeholder = { Text(text = "Músculo trabajado", color = Color(R.color.gray_text)) },
+        placeholder = { Text(text = stringResource(R.string.m_sculo_trabajado), color = Color(R.color.gray_text)) },
         singleLine = true,
         maxLines = 1,
         leadingIcon = {
             Icon(
                 modifier = Modifier.size(16.dp),
                 painter = painterResource(id = R.drawable.pesa),
-                contentDescription = "Icon field"
+                contentDescription = stringResource(R.string.icon_field)
             )
         },
         keyboardOptions = KeyboardOptions(
@@ -238,8 +238,6 @@ fun FieldMuscle(adminUpdateExerciseViewModel: AdminUpdateExerciseViewModel) {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun FieldType(adminUpdateExerciseViewModel: AdminUpdateExerciseViewModel){
-    Log.d("recievedData",adminUpdateExerciseViewModel._type)
-
     var isExpanded by remember {
         mutableStateOf(false)
     }
@@ -261,27 +259,27 @@ fun FieldType(adminUpdateExerciseViewModel: AdminUpdateExerciseViewModel){
                 )// With padding show border color
                 .background(colorResource(id = R.color.field)),
                 colors = TextFieldDefaults.textFieldColors(containerColor = colorResource(id = R.color.field)) ,
-                placeholder = { Text(text ="Tipo de estimulo", color = Color(R.color.gray_text)) },
+                placeholder = { Text(text =stringResource(R.string.tipo_de_estimulo), color = Color(R.color.gray_text)) },
                 leadingIcon = {
                     Icon(
                         modifier = Modifier.size(16.dp),
                         painter = painterResource(id = R.drawable.pesa),
-                        contentDescription = "Icon field"
+                        contentDescription = stringResource(R.string.icon_field)
                     )
                 })
 
             ExposedDropdownMenu(expanded = isExpanded, onDismissRequest = { isExpanded = false }) {
-                DropdownMenuItem(text = { Text(text = "Hipertrofia") },
+                DropdownMenuItem(text = { Text(text = stringResource(R.string.hipertrofia)) },
                     onClick = {
                         isExpanded = false
                         adminUpdateExerciseViewModel._type= "Hipertrofia"
                     })
-                DropdownMenuItem(text = { Text(text = "Estres") },
+                DropdownMenuItem(text = { Text(text = stringResource(R.string.estres)) },
                     onClick = {
                         isExpanded = false
                         adminUpdateExerciseViewModel._type= "Estres"
                     })
-                DropdownMenuItem(text = { Text(text = "Fuerza") },
+                DropdownMenuItem(text = { Text(text = stringResource(R.string.fuerza)) },
                     onClick = {
                         isExpanded = false
                         adminUpdateExerciseViewModel._type= "Fuerza"
@@ -317,27 +315,27 @@ fun FieldDifficulty(adminUpdateExerciseViewModel: AdminUpdateExerciseViewModel){
                 )// With padding show border color
                 .background(colorResource(id = R.color.field)),
                 colors = TextFieldDefaults.textFieldColors(containerColor = colorResource(id = R.color.field)) ,
-                placeholder = { Text(text = "Dificultad", color = Color(R.color.gray_text)) },
+                placeholder = { Text(text = stringResource(R.string.dificultad), color = Color(R.color.gray_text)) },
                 leadingIcon = {
                     Icon(
                         modifier = Modifier.size(16.dp),
                         painter = painterResource(id = R.drawable.pesa),
-                        contentDescription = "Icon field"
+                        contentDescription = stringResource(R.string.icon_field)
                     )
                 })
 
             ExposedDropdownMenu(expanded = isExpanded, onDismissRequest = { isExpanded = false }) {
-                DropdownMenuItem(text = { Text(text = "Bajo") },
+                DropdownMenuItem(text = { Text(text = stringResource(R.string.bajo)) },
                     onClick = {
                         isExpanded = false
                         adminUpdateExerciseViewModel._difficulty = "Bajo"
                     })
-                DropdownMenuItem(text = { Text(text = "Medio") },
+                DropdownMenuItem(text = { Text(text = stringResource(R.string.medio)) },
                     onClick = {
                         isExpanded = false
                         adminUpdateExerciseViewModel._difficulty = "Medio"
                     })
-                DropdownMenuItem(text = { Text(text = "Alto") },
+                DropdownMenuItem(text = { Text(text = stringResource(R.string.alto)) },
                     onClick = {
                         isExpanded = false
                         adminUpdateExerciseViewModel._difficulty = "Alto"
@@ -364,19 +362,19 @@ fun FieldDescription(adminUpdateExerciseViewModel: AdminUpdateExerciseViewModel)
                 color = colorResource(id = R.color.field)
             )// With padding show border color
             .background(colorResource(id = R.color.field)),
-        placeholder = { Text(text = "Descripción", color = Color(R.color.gray_text)) },
+        placeholder = { Text(text = stringResource(R.string.descripci_n), color = Color(R.color.gray_text)) },
         singleLine = true,
         maxLines = 1,
         leadingIcon = {
             Icon(
                 modifier = Modifier.size(16.dp),
                 painter = painterResource(id = R.drawable.pesa),
-                contentDescription = "Icon field"
+                contentDescription = stringResource(R.string.icon_field)
             )
         },
         keyboardOptions = KeyboardOptions(
             keyboardType = KeyboardType.Text,
-            imeAction = ImeAction.Next // Acción IME cuando se presiona la tecla Enter
+            imeAction = ImeAction.Next
         )
     )
 }
@@ -397,19 +395,19 @@ fun FieldSets(adminUpdateExerciseViewModel: AdminUpdateExerciseViewModel) {
                 color = colorResource(id = R.color.field)
             )// With padding show border color
             .background(colorResource(id = R.color.field)),
-        placeholder = { Text(text = "Sets", color = Color(R.color.gray_text)) },
+        placeholder = { Text(text = stringResource(R.string.sets), color = Color(R.color.gray_text)) },
         singleLine = true,
         maxLines = 1,
         leadingIcon = {
             Icon(
                 modifier = Modifier.size(16.dp),
                 painter = painterResource(id = R.drawable.pesa),
-                contentDescription = "Icon field"
+                contentDescription =stringResource(R.string.icon_field)
             )
         },
         keyboardOptions = KeyboardOptions(
             keyboardType = KeyboardType.Number,
-            imeAction = ImeAction.Next // Acción IME cuando se presiona la tecla Enter
+            imeAction = ImeAction.Next
         )
     )
 }
@@ -429,14 +427,14 @@ fun FieldReps(adminUpdateExerciseViewModel: AdminUpdateExerciseViewModel) {
                 color = colorResource(id = R.color.field)
             )// With padding show border color
             .background(colorResource(id = R.color.field)),
-        placeholder = { Text(text = "Repeticiones", color = Color(R.color.gray_text)) },
+        placeholder = { Text(text = stringResource(R.string.repeticiones), color = Color(R.color.gray_text)) },
         singleLine = true,
         maxLines = 1,
         leadingIcon = {
             Icon(
                 modifier = Modifier.size(16.dp),
                 painter = painterResource(id = R.drawable.pesa),
-                contentDescription = "Icon field"
+                contentDescription = stringResource(R.string.icon_field)
             )
         },
         keyboardOptions = KeyboardOptions(

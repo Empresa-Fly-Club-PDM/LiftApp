@@ -15,6 +15,7 @@ import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import androidx.navigation.NavHostController
 import com.jder00138218.liftapp.LiftAppApplication
+import com.jder00138218.liftapp.R
 import com.jder00138218.liftapp.network.ApiResponse
 import com.jder00138218.liftapp.repositories.CredentialsRepository
 import com.jder00138218.liftapp.ui.login.LoginUiStatus
@@ -68,8 +69,8 @@ class LoginViewModel(private val credentialsRepository: CredentialsRepository,
 
     fun onLogin(navController: NavHostController,context:Context) {
         if (!validateData()) {
-            _status.value = LoginUiStatus.ErrorWithMessage("Wrong Imformation")
-            Toast.makeText(context, "Verificar campos vacios", Toast.LENGTH_SHORT).show()
+            _status.value = LoginUiStatus.ErrorWithMessage(context.getString(R.string.wrong_imformation))
+            Toast.makeText(context, context.getString(R.string.verificar_campos_vacios), Toast.LENGTH_SHORT).show()
             _loading.value=false
             return
         }
@@ -79,15 +80,12 @@ class LoginViewModel(private val credentialsRepository: CredentialsRepository,
     fun handleUiStatus(navController: NavHostController, context: Context) {
         val status = _status.value
         val app = context.applicationContext as LiftAppApplication
-        Log.d("tag", "HandleUIState...")
-        Log.d("Tag status on function", status.toString())
         when (status) {
             is LoginUiStatus.Error -> {
-                Log.d("tag", "Error")
-                Toast.makeText(context, "Error en inicio de sesión", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, context.getString(R.string.error_en_inicio_de_sesi_n), Toast.LENGTH_SHORT).show()
             }
             is LoginUiStatus.ErrorWithMessage -> {
-                Toast.makeText(context, "Correo o contraseña incorrectos", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, context.getString(R.string.correo_o_contrase_a_incorrectos), Toast.LENGTH_SHORT).show()
             }
             is LoginUiStatus.Success -> {
                 clearStatus()
@@ -97,15 +95,14 @@ class LoginViewModel(private val credentialsRepository: CredentialsRepository,
                 val rolUser = getRoleFromTokenPayload(responInfo)
                 val userId = getIdFromTokenPayload(responInfo)
                 app.saveUserID(userId)
-                if (rolUser == "USER") {
+                if (rolUser == context.getString(R.string.user)) {
                     navController.navigate(route = Rutas.DashboardUser.ruta)
                 }
-                if (rolUser == "ADMIN") {
+                if (rolUser == context.getString(R.string.admin)) {
                     navController.navigate(route = Rutas.DashboardAdmin.ruta)
                 }
             }
             else -> {
-                Log.d("tag","failure")
             }
         }
         _loading.value=false

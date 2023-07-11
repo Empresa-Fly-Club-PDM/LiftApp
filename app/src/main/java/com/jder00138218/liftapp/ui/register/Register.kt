@@ -42,6 +42,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
@@ -83,7 +84,7 @@ fun RegisterScreen(navController: NavHostController) {
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Text(
-                    text = "Crear Cuenta",
+                    text = stringResource(R.string.crear_cuenta),
                     color = Color.Black,
                     style = TextStyle(
                         fontWeight = FontWeight.Bold,
@@ -111,13 +112,13 @@ fun RegisterScreen(navController: NavHostController) {
 
 @Composable
 fun FieldsRegister(registerViewModel: RegisterViewModel, navController: NavHostController) {
-    FieldDetaile("Nombre completo", registerViewModel)
+    FieldDetaile(stringResource(R.string.nombre_completo), registerViewModel)
     Spacer(modifier = Modifier.padding(2.dp))
-    FieldDetaile("Correo", registerViewModel)
+    FieldDetaile(stringResource(R.string.correo), registerViewModel)
     Spacer(modifier = Modifier.padding(2.dp))
-    Fieldpassword("Contraseña", registerViewModel)
+    Fieldpassword(stringResource(R.string.contrase_a), registerViewModel)
     Spacer(modifier = Modifier.padding(2.dp))
-    Fieldpassword("Verificar contraseña", registerViewModel)
+    Fieldpassword(stringResource(R.string.verificar_contrase_a), registerViewModel)
     Spacer(modifier = Modifier.padding(2.dp))
     GenreDropDownMenu(registerViewModel)
     Spacer(modifier = Modifier.padding(2.dp))
@@ -146,7 +147,7 @@ fun ButtonsDetaile(viewModel: RegisterViewModel, navController: NavHostControlle
             )
         ) {
 
-            Text(text = "Registrar")
+            Text(text = stringResource(R.string.registrar))
 
         }
     }
@@ -167,7 +168,7 @@ fun FieldDetaile(name: String, viewModel: RegisterViewModel) {
     var tint = colorResource(id = R.color.gray_text)
 
 
-    if (name == "Nombre completo") {
+    if (name == stringResource(R.string.nombre_completo)) {
         colorPH = Color.Gray
         iconId = R.drawable.profile
         value = namelUser
@@ -178,7 +179,7 @@ fun FieldDetaile(name: String, viewModel: RegisterViewModel) {
         }
     }
 
-    if (name == "Correo") {
+    if (name == stringResource(R.string.correo)) {
         value = emailUser
         type = KeyboardType.Text
         valueChange = { newValue ->
@@ -210,7 +211,7 @@ fun FieldDetaile(name: String, viewModel: RegisterViewModel) {
             Icon(
                 modifier = Modifier.size(16.dp),
                 painter = painterResource(id = iconId),
-                contentDescription = "Icon field",
+                contentDescription = stringResource(R.string.icon_field),
                 tint = tint
             )
         },
@@ -234,7 +235,7 @@ fun Fieldpassword(name: String, viewModel: RegisterViewModel) {
     var colorId = colorResource(id = R.color.gray_text)
     var tint = colorResource(id = R.color.buttonGray)
 
-    if (name != "Contraseña") {
+    if (name != stringResource(R.string.contrase_a)) {
         colorId = Color.Gray
         value = passwordUser
         valueChange = { newValue ->
@@ -243,7 +244,7 @@ fun Fieldpassword(name: String, viewModel: RegisterViewModel) {
         }
     }
 
-    if (name != "Verificar contraseña") {
+    if (name != stringResource(R.string.verificar_contrase_a)) {
         colorId = Color.Gray
         value = passwordUserVde
         valueChange = { newValue ->
@@ -278,7 +279,7 @@ fun Fieldpassword(name: String, viewModel: RegisterViewModel) {
             Icon(
                 modifier = Modifier.size(16.dp),
                 painter = painterResource(id = R.drawable.icon_password),
-                contentDescription = "Icon field",
+                contentDescription = stringResource(R.string.icon_field),
                 tint = tint
             )
         },
@@ -289,7 +290,7 @@ fun Fieldpassword(name: String, viewModel: RegisterViewModel) {
                     .size(16.dp)
                     .clickable { isVisible = !isVisible },
                 painter = painterResource(id = R.drawable.icon_hide),
-                contentDescription = "Hide Icon",
+                contentDescription = stringResource(R.string.hide_icon),
                 tint = colorResource(id = R.color.gray_text)
             )
         },
@@ -304,9 +305,9 @@ fun Fieldpassword(name: String, viewModel: RegisterViewModel) {
 @Composable
 fun GroupPE(viewModel: RegisterViewModel) {
 
-    FieldDetaileWB(name = "Peso", viewModel)
+    FieldDetaileWB(name = stringResource(R.string.peso), viewModel)
     Spacer(modifier = Modifier.padding(2.dp))
-    FieldDetaileWB(name = "Estatura", viewModel)
+    FieldDetaileWB(name = stringResource(R.string.estatura), viewModel)
 
 }
 
@@ -321,9 +322,9 @@ fun FieldDetaileWB(name: String, viewModel: RegisterViewModel) {
     var type = KeyboardType.Number
     var valueChange: ((String) -> Unit)? = null
 
-    if (name == "Peso") {
+    if (name == stringResource(R.string.peso)) {
         iconId = R.drawable.weight
-        textB = "LB"
+        textB = stringResource(R.string.lb)
         value = weigthUser
         valueChange = { newValue ->
             weigthUser = newValue
@@ -331,9 +332,9 @@ fun FieldDetaileWB(name: String, viewModel: RegisterViewModel) {
         }
     }
 
-    if (name == "Estatura") {
+    if (name == stringResource(R.string.estatura)) {
         iconId = R.drawable.swap
-        textB = "CM"
+        textB = stringResource(R.string.cm)
         type = KeyboardType.Number
         value = heigthUser
         valueChange = { newValue ->
@@ -371,7 +372,7 @@ fun FieldDetaileWB(name: String, viewModel: RegisterViewModel) {
                 Icon(
                     modifier = Modifier.size(16.dp),
                     painter = painterResource(id = iconId),
-                    contentDescription = "Icon field",
+                    contentDescription = stringResource(R.string.icon_field),
                     tint = colorResource(id = R.color.gray_text)
                 )
             },
@@ -448,16 +449,12 @@ fun DateInputField(viewModel: RegisterViewModel) {
     ) {
 
 
-        // Displaying the mDate value in the Text
         Text(
-            text = "Fecha de nacimiento: ${mDate.value}",
+            text = stringResource(R.string.fecha_de_nacimiento) +mDate.value,
             textAlign = TextAlign.Center,
             modifier = Modifier.fillMaxWidth(0.8f)
         )
-        // Adding a space of 100dp height
         Spacer(modifier = Modifier.padding(2.dp))
-        // Creating a button that on
-        // click displays/shows the DatePickerDialog
 
         Button(
             modifier = Modifier
@@ -472,7 +469,7 @@ fun DateInputField(viewModel: RegisterViewModel) {
         ) {
             Icon(
                 painter = painterResource(id = R.drawable.calendar_days),
-                contentDescription = "Calendar"
+                contentDescription = stringResource(R.string.calendar)
             )
         }
     }
@@ -510,23 +507,23 @@ fun GenreDropDownMenu(viewModel: RegisterViewModel) {
                 )// With padding show border color
                 .background(colorResource(id = R.color.field)),
                 colors = TextFieldDefaults.textFieldColors(containerColor = colorResource(id = R.color.field)),
-                placeholder = { Text(text = "Genero", color = Color(R.color.gray_text)) },
+                placeholder = { Text(text = stringResource(R.string.genero), color = Color(R.color.gray_text)) },
                 leadingIcon = {
                     Icon(
                         modifier = Modifier.size(16.dp),
                         painter = painterResource(id = R.drawable.user),
-                        contentDescription = "Icon field"
+                        contentDescription = stringResource(R.string.icon_field)
                     )
                 })
 
             ExposedDropdownMenu(expanded = isExpanded, onDismissRequest = { isExpanded = false }) {
-                DropdownMenuItem(text = { Text(text = "Masculino") },
+                DropdownMenuItem(text = { Text(text = stringResource(R.string.masculino)) },
                     onClick = {
                         isExpanded = false
                         viewModel.genre = "Masculino"
                         type = viewModel.genre
                     })
-                DropdownMenuItem(text = { Text(text = "Femenino") },
+                DropdownMenuItem(text = { Text(text = stringResource(R.string.femenino)) },
                     onClick = {
                         isExpanded = false
                         viewModel.genre = "Femenino"

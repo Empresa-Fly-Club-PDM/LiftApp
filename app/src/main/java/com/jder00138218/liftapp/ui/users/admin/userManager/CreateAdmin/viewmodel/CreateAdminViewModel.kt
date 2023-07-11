@@ -14,6 +14,7 @@ import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import androidx.navigation.NavHostController
 import com.jder00138218.liftapp.LiftAppApplication
+import com.jder00138218.liftapp.R
 import com.jder00138218.liftapp.network.ApiResponse
 import com.jder00138218.liftapp.repositories.UserRepository
 import com.jder00138218.liftapp.ui.navigation.Rutas
@@ -74,20 +75,18 @@ class CreateAdminViewModel(private val userRepository: UserRepository): ViewMode
         val status = _status.value
         when (status) {
             is CreateAdminUIStatus.Error -> {
-                Log.d("tag", "Error")
-                Toast.makeText(context, "Error en el registro", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, context.getString(R.string.error_en_el_registro), Toast.LENGTH_SHORT).show()
                 _loading.value=false
             }
             is CreateAdminUIStatus.ErrorWithMessage -> {
-                Toast.makeText(context, "Verificar datos ingresados", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, context.getString(R.string.verificar_datos_ingresados), Toast.LENGTH_SHORT).show()
                 _loading.value=false
             }
             is CreateAdminUIStatus.Success -> {
-                Toast.makeText(context, "Administrador Creado exitosamente", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, context.getString(R.string.administrador_creado_exitosamente), Toast.LENGTH_SHORT).show()
                 navController.navigate(route = Rutas.AdminAdminManager.ruta)
             }
             else -> {
-                Log.d("tag","failure")
                 _loading.value=false
             }
         }
@@ -95,15 +94,15 @@ class CreateAdminViewModel(private val userRepository: UserRepository): ViewMode
 
     fun onCreate(navController: NavHostController, context: Context) {
         if (!validateData()) {
-            _status.value = CreateAdminUIStatus.ErrorWithMessage("Verificar Imformation")
-            Toast.makeText(context, "Verificar campos vacios", Toast.LENGTH_SHORT).show()
+            _status.value = CreateAdminUIStatus.ErrorWithMessage(context.getString(R.string.verificar_information))
+            Toast.makeText(context, context.getString(R.string.verificar_campos_vacios), Toast.LENGTH_SHORT).show()
             _loading.value=false
             return
         }
         if(password==confirmpassword && password.length>=8){
             create(nombrecompleto, email,password,navController,context)
         }else{
-            Toast.makeText(context, "Revisar ingreso de contraseña", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, context.getString(R.string.revisar_ingreso_de_contrase_a), Toast.LENGTH_SHORT).show()
             _loading.value=false
             return
         }

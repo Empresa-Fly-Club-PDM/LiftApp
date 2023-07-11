@@ -28,6 +28,7 @@ import androidx.compose.ui.unit.sp
 import com.jder00138218.liftapp.R
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.jder00138218.liftapp.network.dto.exercise.exercise
@@ -53,7 +54,7 @@ fun DashboardAdminScreen(navController: NavController) {
         horizontalAlignment = Alignment.CenterHorizontally) {
 
             Text(
-                text = "Solicitudes de verificacion",
+                text = stringResource(R.string.solicitudes_de_verificacion),
                 color = Color.Black,
                 style = TextStyle(
                     fontWeight = FontWeight.Bold,

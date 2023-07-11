@@ -12,6 +12,7 @@ import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import androidx.navigation.NavHostController
 import com.jder00138218.liftapp.LiftAppApplication
+import com.jder00138218.liftapp.R
 import com.jder00138218.liftapp.network.ApiResponse
 import com.jder00138218.liftapp.network.dto.exercise.exercise
 import com.jder00138218.liftapp.repositories.DetailExerciseRepository
@@ -51,7 +52,7 @@ class DetailExerciseViewmodel(private val detailExerciseRepository: DetailExerci
 
                     }
                     )
-            Toast.makeText(context, "Ejercicio denegado y descartado", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, context.getString(R.string.ejercicio_denegado_y_descartado), Toast.LENGTH_SHORT).show()
             navController.navigate(Rutas.DashboardAdmin.ruta)
 
         }
@@ -68,7 +69,7 @@ class DetailExerciseViewmodel(private val detailExerciseRepository: DetailExerci
                     }
                     )
             _loading.value=false
-            Toast.makeText(context, "Ejercicio Verificado", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, context.getString(R.string.ejercicio_verificado), Toast.LENGTH_SHORT).show()
             navController.navigate(Rutas.DashboardAdmin.ruta)
 
         }

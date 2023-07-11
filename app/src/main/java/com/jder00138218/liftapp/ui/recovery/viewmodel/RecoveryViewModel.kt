@@ -15,6 +15,7 @@ import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import androidx.navigation.NavHostController
 import com.jder00138218.liftapp.LiftAppApplication
+import com.jder00138218.liftapp.R
 import com.jder00138218.liftapp.network.ApiResponse
 import com.jder00138218.liftapp.repositories.CredentialsRepository
 import com.jder00138218.liftapp.ui.login.LoginUiStatus
@@ -55,8 +56,8 @@ class RecoveryViewModel(private val repository: CredentialsRepository) : ViewMod
 
     fun onRecovery(navController: NavHostController, context: Context) {
         if (!validateData()) {
-            _status.value = RecoveryUiStatus.ErrorWithMessage("Wrong Imformation")
-            Toast.makeText(context, "Verificar campos", Toast.LENGTH_SHORT).show()
+            _status.value = RecoveryUiStatus.ErrorWithMessage(context.getString(R.string.wrong_imformation))
+            Toast.makeText(context, context.getString(R.string.verificar_campos), Toast.LENGTH_SHORT).show()
             return
         }
 
@@ -72,18 +73,18 @@ class RecoveryViewModel(private val repository: CredentialsRepository) : ViewMod
 
             is RecoveryUiStatus.Error -> {
 
-                Toast.makeText(context, "Error en recuperar", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, context.getString(R.string.error_en_recuperar), Toast.LENGTH_SHORT).show()
             }
 
             is RecoveryUiStatus.ErrorWithMessage -> {
-                Toast.makeText(context, "Datos no validos", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, context.getString(R.string.datos_no_validos), Toast.LENGTH_SHORT).show()
             }
 
             is RecoveryUiStatus.Success -> {
-                Toast.makeText(context, "Correo verificado", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, context.getString(R.string.correo_verificado), Toast.LENGTH_SHORT).show()
                 Toast.makeText(
                     context,
-                    "Hemos enviado la informacion a su correo Electronico",
+                    context.getString(R.string.hemos_enviado_la_informacion_a_su_correo_electronico),
                     Toast.LENGTH_SHORT
                 ).show()
                 clearStatus()
@@ -109,7 +110,6 @@ class RecoveryViewModel(private val repository: CredentialsRepository) : ViewMod
                         is ApiResponse.Success -> RecoveryUiStatus.Success
                     }
                     )
-            Log.d("Status", _status.value.toString())
             handleUiStatus(navController, context)
         }
     }

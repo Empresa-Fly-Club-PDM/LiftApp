@@ -1,7 +1,5 @@
 package com.jder00138218.liftapp.ui.navigation
 
-import com.jder00138218.liftapp.network.dto.exercise.exercise
-
 sealed  class Rutas(var ruta : String) {
 
     //auth

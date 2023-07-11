@@ -32,6 +32,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
@@ -69,7 +70,7 @@ fun BlockFields(recoveryViewModel: RecoveryViewModel, navController: NavHostCont
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Text(
-                    text = "¿Olvido su Contraseña?",
+                    text = stringResource(R.string.olvido_su_contrase_a),
                     color = Color.Black,
                     style = TextStyle(
                         fontWeight = FontWeight.Bold,
@@ -79,7 +80,7 @@ fun BlockFields(recoveryViewModel: RecoveryViewModel, navController: NavHostCont
             }
 
             Column(Modifier.align(Alignment.Center)) {
-                Text(text = "Ingrese su correo para la recuperación")
+                Text(text = stringResource(R.string.ingrese_su_correo_para_la_recuperaci_n))
                 Spacer(modifier = Modifier.padding(8.dp))
                 FieldEmail(recoveryViewModel)
 
@@ -115,14 +116,14 @@ fun FieldEmail(viewModel: RecoveryViewModel) {
                 color = colorResource(id = R.color.field)
             )
             .background(colorResource(id = R.color.field)),
-        placeholder = { Text(text = "Correo", color = Color(R.color.gray_text)) },
+        placeholder = { Text(text = stringResource(R.string.correo), color = Color(R.color.gray_text)) },
         singleLine = true,
         maxLines = 1,
         leadingIcon = {
             Icon(
                 modifier = Modifier.size(16.dp),
                 painter = painterResource(id = R.drawable.icon_message),
-                contentDescription = "Icon Email"
+                contentDescription = stringResource(R.string.icon_email)
             )
         },
         keyboardOptions = KeyboardOptions(
@@ -146,7 +147,7 @@ fun Confirm(modifier: Modifier, viewModel: RecoveryViewModel, navController: Nav
         )
     ) {
         Row() {
-            Text(text = "Recuperar Contraseña")
+            Text(text = stringResource(R.string.recuperar_contrase_a))
         }
     }
 }

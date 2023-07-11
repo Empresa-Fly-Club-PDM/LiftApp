@@ -24,6 +24,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -163,7 +164,7 @@ fun LogoutCard(navController: NavController,app:LiftAppApplication) {
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
-                text = "Cerrar sesión",
+                text = stringResource(R.string.cerrar_sesi_n),
                 color = Color.Black,
                 style = androidx.compose.ui.text.TextStyle(
                     fontSize = 16.sp,
@@ -182,7 +183,7 @@ fun LogoutCard(navController: NavController,app:LiftAppApplication) {
             ) {
                 Icon(
                     imageVector = Icons.Default.ArrowForward,
-                    contentDescription = "Logout",
+                    contentDescription = stringResource(R.string.logout),
                     tint = Color.White
                 )
             }

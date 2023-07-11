@@ -16,6 +16,7 @@ import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import androidx.navigation.NavHostController
 import com.jder00138218.liftapp.LiftAppApplication
+import com.jder00138218.liftapp.R
 import com.jder00138218.liftapp.network.ApiResponse
 import com.jder00138218.liftapp.network.dto.exercise.exercise
 import com.jder00138218.liftapp.network.dto.user.user
@@ -50,7 +51,6 @@ class UpdateAdminViewModel(private val userRepository: UserRepository):ViewModel
             _nombrecompleto= _user.value.nombrecompleto
             _email= _user.value.email
         }
-        Log.d("checkexercise",_user.toString())
     }
     private fun update(id:Int?, nombrecompleto: String,email: String,password: String,navController: NavHostController,context:Context) {
         viewModelScope.launch {
@@ -74,8 +74,8 @@ class UpdateAdminViewModel(private val userRepository: UserRepository):ViewModel
 
     fun onUpdate(id:Int?, navController: NavHostController, context: Context) {
         if (!validateData()) {
-            _status.value = UpdateAdminUIStatus.ErrorWithMessage("Verificar Imformation")
-            Toast.makeText(context, "Verificar campos vacios", Toast.LENGTH_SHORT).show()
+            _status.value = UpdateAdminUIStatus.ErrorWithMessage(context.getString(R.string.verificar_imformation))
+            Toast.makeText(context, context.getString(R.string.verificar_campos_vacios), Toast.LENGTH_SHORT).show()
             _loading.value=false
             return
         }
@@ -84,7 +84,7 @@ class UpdateAdminViewModel(private val userRepository: UserRepository):ViewModel
         }else if (_password == _confirmpassowrd && _password.length>=8){
             update(id, _nombrecompleto, _email,_password,navController,context)
         }else{
-            Toast.makeText(context, "Contraseñas muy corta o no coincide", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, context.getString(R.string.contrase_as_muy_corta_o_no_coincide), Toast.LENGTH_SHORT).show()
             _loading.value=false
             return
         }
@@ -94,18 +94,16 @@ class UpdateAdminViewModel(private val userRepository: UserRepository):ViewModel
         val status = _status.value
         when (status) {
             is UpdateAdminUIStatus.Error -> {
-                Log.d("tag", "Error")
-                Toast.makeText(context, "Error", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, context.getString(R.string.error), Toast.LENGTH_SHORT).show()
             }
             is UpdateAdminUIStatus.ErrorWithMessage -> {
-                Toast.makeText(context, "Verificar datos ingresados", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, context.getString(R.string.verificar_datos_ingresados), Toast.LENGTH_SHORT).show()
             }
             is UpdateAdminUIStatus.Success -> {
-                Toast.makeText(context, "Usuario Actualizado", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, context.getString(R.string.usuario_actualizado), Toast.LENGTH_SHORT).show()
                 navController.navigate(route = Rutas.AdminAdminManager.ruta)
             }
             else -> {
-                Log.d("tag","failure")
             }
         }
 
@@ -123,7 +121,7 @@ class UpdateAdminViewModel(private val userRepository: UserRepository):ViewModel
                         )
                     }
                     )
-            Toast.makeText(context, "Usuario Eliminado", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, context.getString(R.string.usuario_eliminado), Toast.LENGTH_SHORT).show()
             navController.navigate(Rutas.AdminAdminManager.ruta)
             _loading.value=false
 

@@ -39,6 +39,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
@@ -62,7 +63,7 @@ import java.util.Date
 @Composable
 fun UpdateAdmin(navController: NavHostController) {
     val navBackStackEntry = navController.currentBackStackEntry
-    val userid = navBackStackEntry?.arguments?.getInt("id")
+    val userid = navBackStackEntry?.arguments?.getInt(stringResource(R.string.id))
     val updateAdminViewModel: UpdateAdminViewModel = viewModel(
         factory = UpdateAdminViewModel.Factory
     )
@@ -80,7 +81,7 @@ fun UpdateAdmin(navController: NavHostController) {
             verticalArrangement = Arrangement.SpaceBetween,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            AdminHeaderBarBackArrowDumbell(title = "Informacion personal", navController = navController, backOnClick = {navController.popBackStack()})
+            AdminHeaderBarBackArrowDumbell(title = stringResource(R.string.informacion_personal), navController = navController, backOnClick = {navController.popBackStack()})
             CreateAdminFields(updateAdminViewModel,navController)
             ButtonsUpdate(userid,updateAdminViewModel,navController)
             Menu(navController)
@@ -133,7 +134,7 @@ fun ButtonsUpdate(id: Int?, updateAdminViewModel: UpdateAdminViewModel, navContr
                     color = Color.White
                 )
             } else {
-                Text(text = " Editar")
+                Text(text = stringResource(R.string.editar))
             }
         }
 
@@ -146,7 +147,7 @@ fun ButtonsUpdate(id: Int?, updateAdminViewModel: UpdateAdminViewModel, navContr
                 containerColor = Color.Red
             )
         ) {
-                Text(text = "Eliminar")
+                Text(text = stringResource(R.string.eliminar))
         }
     }
 }
@@ -167,14 +168,14 @@ fun FieldName(viewmodel: UpdateAdminViewModel) {
                 color = colorResource(id = R.color.field)
             )// With padding show border color
             .background(colorResource(id = R.color.field)),
-        placeholder = { Text(text = "Nombre Completo", color = Color(R.color.gray_text)) },
+        placeholder = { Text(text = stringResource(R.string.nombre_completo), color = Color(R.color.gray_text)) },
         singleLine = true,
         maxLines = 1,
         leadingIcon = {
             Icon(
                 modifier = Modifier.size(16.dp),
                 painter = painterResource(id = R.drawable.pesa),
-                contentDescription = "Icon field"
+                contentDescription = stringResource(R.string.icon_field)
             )
         },
         keyboardOptions = KeyboardOptions(
@@ -199,14 +200,14 @@ fun FieldEmail(viewmodel: UpdateAdminViewModel) {
                 color = colorResource(id = R.color.field)
             )// With padding show border color
             .background(colorResource(id = R.color.field)),
-        placeholder = { Text(text = "Email", color = Color(R.color.gray_text)) },
+        placeholder = { Text(text = stringResource(R.string.email), color = Color(R.color.gray_text)) },
         singleLine = true,
         maxLines = 1,
         leadingIcon = {
             Icon(
                 modifier = Modifier.size(16.dp),
                 painter = painterResource(id = R.drawable.pesa),
-                contentDescription = "Icon field"
+                contentDescription = stringResource(R.string.icon_field)
             )
         },
         keyboardOptions = KeyboardOptions(
@@ -236,7 +237,7 @@ fun FieldPassword(viewModel: UpdateAdminViewModel) {
                 width = 1.dp,
                 color = colorResource(id = R.color.field)
             ),
-        placeholder = { Text(text = "Password", color = Color(R.color.gray_text)) },
+        placeholder = { Text(text = stringResource(R.string.password), color = Color(R.color.gray_text)) },
         singleLine = true,
         maxLines = 1,
         leadingIcon = {
@@ -244,7 +245,7 @@ fun FieldPassword(viewModel: UpdateAdminViewModel) {
                 modifier = Modifier
                     .size(16.dp),
                 painter = painterResource(id = R.drawable.icon_password),
-                contentDescription = "Icon Password",
+                contentDescription = stringResource(R.string.icon_password),
             )
         },
         trailingIcon = {
@@ -254,7 +255,7 @@ fun FieldPassword(viewModel: UpdateAdminViewModel) {
                     .size(16.dp)
                     .clickable { isVisible = !isVisible },
                 painter = painterResource(id = R.drawable.icon_hide),
-                contentDescription = "Hide Icon"
+                contentDescription = stringResource(R.string.hide_icon)
             )
         },
         keyboardOptions = KeyboardOptions(
@@ -286,7 +287,7 @@ fun FieldConfirmPassword(viewModel: UpdateAdminViewModel) {
                 width = 1.dp,
                 color = colorResource(id = R.color.field)
             ),
-        placeholder = { Text(text = "Password", color = Color(R.color.gray_text)) },
+        placeholder = { Text(text = stringResource(R.string.password), color = Color(R.color.gray_text)) },
         singleLine = true,
         maxLines = 1,
         leadingIcon = {
@@ -294,7 +295,7 @@ fun FieldConfirmPassword(viewModel: UpdateAdminViewModel) {
                 modifier = Modifier
                     .size(16.dp),
                 painter = painterResource(id = R.drawable.icon_password),
-                contentDescription = "Icon Password",
+                contentDescription = stringResource(R.string.icon_password),
             )
         },
         trailingIcon = {
@@ -304,7 +305,7 @@ fun FieldConfirmPassword(viewModel: UpdateAdminViewModel) {
                     .size(16.dp)
                     .clickable { isVisible = !isVisible },
                 painter = painterResource(id = R.drawable.icon_hide),
-                contentDescription = "Hide Icon"
+                contentDescription = stringResource(R.string.hide_icon)
             )
         },
         keyboardOptions = KeyboardOptions(
@@ -313,62 +314,4 @@ fun FieldConfirmPassword(viewModel: UpdateAdminViewModel) {
         ),
         visualTransformation = visualTransformation
     )
-}
-
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun DateInputField() {
-    // Fetching the Local Context
-    val mContext = LocalContext.current
-
-    // Declaring integer values
-    // for year, month and day
-    val mYear: Int
-    val mMonth: Int
-    val mDay: Int
-
-    // Initializing a Calendar
-    val mCalendar = Calendar.getInstance()
-
-    // Fetching current year, month and day
-    mYear = mCalendar.get(Calendar.YEAR)
-    mMonth = mCalendar.get(Calendar.MONTH)
-    mDay = mCalendar.get(Calendar.DAY_OF_MONTH)
-
-    mCalendar.time = Date()
-
-    // Declaring a string value to
-    // store date in string format
-    val mDate = remember { mutableStateOf("") }
-
-    // Declaring DatePickerDialog and setting
-    // initial values as current values (present year, month and day)
-    val mDatePickerDialog = DatePickerDialog(
-        mContext,
-        { _: DatePicker, mYear: Int, mMonth: Int, mDayOfMonth: Int ->
-            mDate.value = "$mDayOfMonth/${mMonth+1}/$mYear"
-        }, mYear, mMonth, mDay
-    )
-
-    Column(modifier = Modifier.fillMaxSize(), verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally) {
-
-        // Creating a button that on
-        // click displays/shows the DatePickerDialog
-
-        Button(
-            modifier = Modifier
-                .fillMaxWidth(),
-            onClick = {
-                mDatePickerDialog.show()
-            }, colors = ButtonDefaults.buttonColors(contentColor = colorResource(id = R.color.field)) ) {
-            Text(text = "Seleccionar Fecha de Nacimiento", color = Color.LightGray)
-        }
-
-        // Adding a space of 100dp height
-        Spacer(modifier = Modifier.padding(2.dp))
-
-        // Displaying the mDate value in the Text
-        Text(text = "Fecha de nacimiento: ${mDate.value}", textAlign = TextAlign.Center)
-    }
 }

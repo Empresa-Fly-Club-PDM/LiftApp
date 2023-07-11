@@ -31,6 +31,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
@@ -76,7 +77,7 @@ fun AdminManager(navController: NavController){
             verticalArrangement = Arrangement.SpaceBetween,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            AdminHeaderBarBackArrowAdd(title = "Administradores", navController, addOnClick = {handleAddOnClick()}, backOnClick = {handleBackOnClick})
+            AdminHeaderBarBackArrowAdd(title = stringResource(R.string.administradores), navController, addOnClick = {handleAddOnClick()}, backOnClick = {handleBackOnClick})
             OutlinedTextField(value = text, onValueChange = { newText: String ->
                 text = newText
                 vm.getAllAdmins(text)
@@ -88,7 +89,7 @@ fun AdminManager(navController: NavController){
                     colorResource(id = R.color.field)
                 )
                 .border(width = 0.dp, color = Color.White),
-                placeholder = { Text(text = "Buscar..", color = Color(R.color.gray_text)) },
+                placeholder = { Text(text = stringResource(R.string.buscar), color = Color(R.color.gray_text)) },
                 )
             if (vm._loading.value) {
                 Column(modifier = Modifier
@@ -137,7 +138,7 @@ fun AdminInfoRow(name: String, id:Int?, navController: NavController){
                 id = R.color.buttonGray)
             )
         ) {
-            Text(text = "Detalle", color = Color.Black)
+            Text(text = stringResource(R.string.detalle), color = Color.Black)
         }
     }
 }

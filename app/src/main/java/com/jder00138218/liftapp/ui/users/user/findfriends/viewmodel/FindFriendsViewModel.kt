@@ -12,6 +12,7 @@ import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import androidx.navigation.NavController
 import com.jder00138218.liftapp.LiftAppApplication
+import com.jder00138218.liftapp.R
 import com.jder00138218.liftapp.network.ApiResponse
 import com.jder00138218.liftapp.network.dto.user.user
 import com.jder00138218.liftapp.repositories.UserRepository
@@ -46,7 +47,7 @@ class FindFriendsViewModel(private val userRepository: UserRepository):ViewModel
                         )
                     }
                     )
-            Toast.makeText(context, "Amigo Añadido", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, context.getString(R.string.amigo_a_adido), Toast.LENGTH_SHORT).show()
             navController.navigate(route= Rutas.FriendsMenu.ruta)
         }
     }

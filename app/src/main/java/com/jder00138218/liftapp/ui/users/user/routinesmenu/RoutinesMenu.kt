@@ -43,6 +43,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -101,7 +102,7 @@ fun RoutinesMenu(navController: NavController){
             verticalArrangement = Arrangement.SpaceBetween
         ) {
 
-            HeaderBarBackArrowAdd(title = "Mis Rutinas", navController = navController, addOnClick = {handleAddOnClick()}, backOnClick = {handleBackOnClick()})
+            HeaderBarBackArrowAdd(title = stringResource(R.string.mis_rutinas), navController = navController, addOnClick = {handleAddOnClick()}, backOnClick = {handleBackOnClick()})
             OutlinedTextField(value = text, onValueChange = { newText: String ->
                 text = newText
                 vm.getMyRoutines(text,app.getUserId()) }, modifier = Modifier
@@ -112,7 +113,7 @@ fun RoutinesMenu(navController: NavController){
                     colorResource(id = R.color.field)
                 )
                 .border(width = 0.dp, color = Color.White),
-                placeholder = { Text(text = "Buscar..", color = Color(R.color.gray_text)) },
+                placeholder = { Text(text = stringResource(R.string.buscar), color = Color(R.color.gray_text)) },
 
                 )
 
@@ -163,14 +164,13 @@ fun RoutineMenuItem(routine:routine,navController: NavController){
         ) {
             Text(text = routine.name, style = TextStyle(fontSize = 20.sp, color = Color.Black))
             Button(modifier = Modifier , onClick = {
-                Log.d("SentData",routine.id.toString())
                 navController.navigate(route = "ruta_user_routine_detail/${routine.id}")},
                 colors = ButtonDefaults.buttonColors(containerColor = colorResource(
                 id = R.color.buttonRed
             ), contentColor = Color.White)) {
                 Icon(
                     Icons.Default.Edit,
-                    contentDescription = "to $routine.na routines"
+                    contentDescription = stringResource(R.string.to_routinana_routines)
                 )
             }
         }

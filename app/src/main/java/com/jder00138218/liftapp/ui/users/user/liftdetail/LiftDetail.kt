@@ -35,6 +35,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
@@ -52,7 +53,7 @@ import com.jder00138218.liftapp.ui.users.user.routineflow.RegisterLift.viewmodel
 @Composable
 fun LiftDetail(navController: NavHostController){
     val navBackStackEntry = navController.currentBackStackEntry
-    val liftid = navBackStackEntry?.arguments?.getInt("id")
+    val liftid = navBackStackEntry?.arguments?.getInt(stringResource(R.string.id))
     val viewmodel: LiftDetailViewModel = viewModel(
         factory = LiftDetailViewModel.Factory
     )
@@ -72,7 +73,7 @@ fun LiftDetail(navController: NavHostController){
             Row(modifier = Modifier
                 .fillMaxWidth()
                 .fillMaxHeight(0.1f)) {
-                HeaderBarBackArrowDumbell(title = "Detalles del registro", navController, backOnClick = {navController.popBackStack()})
+                HeaderBarBackArrowDumbell(title = stringResource(R.string.detalles_del_registro), navController, backOnClick = {navController.popBackStack()})
             }
             Column(modifier = Modifier
                 .fillMaxWidth()
@@ -92,7 +93,7 @@ fun LiftDetail(navController: NavHostController){
                 Button(modifier = Modifier.fillMaxWidth() , onClick = {viewmodel.deleteLift(liftid,navController,context)}, colors = ButtonDefaults.buttonColors(containerColor = colorResource(
                     id = R.color.buttonRed
                 ), contentColor = Color.White)) {
-                        Text(text = "Eliminar registro")
+                        Text(text = stringResource(R.string.eliminar_registro))
                 }
             }
 
@@ -129,7 +130,7 @@ fun ExerciseNameInputField(viewModel: LiftDetailViewModel){
             Icon(
                 modifier = Modifier.size(16.dp),
                 painter = painterResource(id = R.drawable.pesa),
-                contentDescription = "Icon field"
+                contentDescription = stringResource(R.string.icon_field)
             )
         },
         keyboardOptions = KeyboardOptions(
@@ -153,14 +154,14 @@ fun AchivedWeight(viewmodel: LiftDetailViewModel){
                 color = colorResource(id = R.color.field)
             )// With padding show border color
             .background(colorResource(id = R.color.field)),
-        placeholder = { Text(text = "Peso logrado", color = Color(R.color.gray_text)) },
+        placeholder = { Text(text = stringResource(R.string.peso_logrado), color = Color(R.color.gray_text)) },
         singleLine = true,
         maxLines = 1,
         leadingIcon = {
             Icon(
                 modifier = Modifier.size(16.dp),
                 painter = painterResource(id = R.drawable.pesa),
-                contentDescription = "Icon field"
+                contentDescription = stringResource(R.string.icon_field)
             )
         },
         keyboardOptions = KeyboardOptions(
@@ -184,14 +185,14 @@ fun AchivedReps(viewmodel: LiftDetailViewModel){
                 color = colorResource(id = R.color.field)
             )// With padding show border color
             .background(colorResource(id = R.color.field)),
-        placeholder = { Text(text = "Repeticiones logradas", color = Color(R.color.gray_text)) },
+        placeholder = { Text(text = stringResource(R.string.repeticiones_logradas), color = Color(R.color.gray_text)) },
         singleLine = true,
         maxLines = 1,
         leadingIcon = {
             Icon(
                 modifier = Modifier.size(16.dp),
                 painter = painterResource(id = R.drawable.pesa),
-                contentDescription = "Icon field"
+                contentDescription = stringResource(R.string.icon_field)
             )
         },
         keyboardOptions = KeyboardOptions(

@@ -32,6 +32,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -48,7 +49,7 @@ import kotlinx.coroutines.delay
 @Composable
 fun CurrentRoutine(navController: NavController){
     val navBackStackEntry = navController.currentBackStackEntry
-    val routineid = navBackStackEntry?.arguments?.getInt("id")
+    val routineid = navBackStackEntry?.arguments?.getInt(stringResource(R.string.id))
     val vm: RoutineDetailViewModel = viewModel(
         factory = RoutineDetailViewModel.Factory
     )
@@ -74,7 +75,7 @@ fun CurrentRoutine(navController: NavController){
             Column(modifier = Modifier.fillMaxWidth(),
             ) {
             }
-            HeaderBarBackArrowDumbell("Rutina", navController, backOnClick = { navController.popBackStack() })
+            HeaderBarBackArrowDumbell(stringResource(R.string.rutina), navController, backOnClick = { navController.popBackStack() })
 
             Timer(routineid,vm)
             LazyColumn(
@@ -105,7 +106,7 @@ fun ButtonEndRoutine(id:Int?, viewmodel: RoutineDetailViewModel, navController: 
             containerColor = colorResource(id = R.color.buttonRed)
         )
     ) {
-        Text(text = "Finalizar rutina")
+        Text(text = stringResource(R.string.finalizar_rutina))
 
     }
 
@@ -141,7 +142,7 @@ fun CardExercise(exercise: exercise, navController: NavController) {
                     )
                     Icon(
                         painter = painterResource(id = R.drawable.pesa),
-                        contentDescription = "Verify Icon",
+                        contentDescription = stringResource(R.string.verify_icon),
                         modifier = Modifier.size(20.dp)
                     )
                 }
@@ -175,7 +176,7 @@ fun ItemEx(exercise: exercise) {
             .size(width = 160.dp, height = 60.dp)
     ) {
         Column(Modifier.padding(8.dp)) {
-            Text(text = "Musculo", color = Color.Red)
+            Text(text = stringResource(R.string.musculo), color = Color.Red)
             Text(text = exercise.muscle, color = Color(R.color.gray_text))
         }
     }
@@ -230,7 +231,9 @@ fun Timer(routineid:Int?, vm: RoutineDetailViewModel) {
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
-            text = if(isRunning){formatTime(vm._time)}else{"Tiempo agotado"},
+            text = if(isRunning){formatTime(vm._time)}else{
+                            stringResource(R.string.tiempo_agotado)
+                        },
             modifier = Modifier.padding(bottom = 16.dp),
             fontSize = 32.sp,
             color = if(isRunning){Color.Black}else{Color.Red},

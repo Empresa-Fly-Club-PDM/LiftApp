@@ -1,4 +1,5 @@
 package com.jder00138218.liftapp.ui.users.user
+import android.content.Context
 import android.graphics.drawable.Drawable
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -32,6 +33,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -91,7 +93,7 @@ fun DashboardUserScreen(navController: NavController) {
                 verticalArrangement = Arrangement.SpaceBetween
             ) {
 
-                Text(text = "Bienvenido,", color = colorResource(id = R.color.gray_text))
+                Text(text = stringResource(R.string.bienvenido), color = colorResource(id = R.color.gray_text))
                 Text(
                     text = detailUser.nombrecompleto,
                     color = Color.Black,
@@ -109,7 +111,7 @@ fun DashboardUserScreen(navController: NavController) {
                         horizontalAlignment = Alignment.CenterHorizontally) {
                     Image(
                         painter = painterResource(id = gentRankDrawable(detailUser.points)),
-                        contentDescription = "Image Level",
+                        contentDescription = stringResource(R.string.image_level),
                         modifier = Modifier
                             .width(250.dp)
                             .height(180.dp)
@@ -117,21 +119,21 @@ fun DashboardUserScreen(navController: NavController) {
                 }
                     Column(modifier = Modifier.fillMaxWidth(0.5f),
                     horizontalAlignment = Alignment.CenterHorizontally) {
-                        dataItem("Altura", detailUser.height.toString() + " Cm")
-                        dataItem("Peso", detailUser.weight.toString() + " Lb")
+                        dataItem(stringResource(R.string.altura), detailUser.height.toString() + stringResource(R.string.cm_spaced))
+                        dataItem(stringResource(R.string.peso), detailUser.weight.toString() + stringResource(R.string.lb_spaced))
                         dataItem(
-                            "Edad",
-                            calculateAge(detailUser.fechanac).toString() + " Años"
+                            stringResource(R.string.edad),
+                            calculateAge(detailUser.fechanac).toString() + stringResource(R.string.a_os)
                         )
-                        dataItem("Puntaje", detailUser.points.toString())
-                        dataItem("Nivel", getRank(detailUser.points))
+                        dataItem(stringResource(R.string.puntaje), detailUser.points.toString())
+                        dataItem(stringResource(R.string.nivel), getRank(detailUser.points, context))
                     }
 
                 }
 
 
                 RankingFriends(navController)
-                RoutineMenuCard("Rutinas", navController)
+                RoutineMenuCard(stringResource(R.string.rutinas), navController)
             }
 
             UserBottomMenu(navController)
@@ -217,7 +219,7 @@ fun RankingFriends(navController: NavController) {
                 ),
                 modifier = Modifier.padding(8.dp)
             ) {
-                Text(text = "Rankings", color = Color.Red)
+                Text(text = stringResource(R.string.rankings), color = Color.Red)
             }
         }
     }
@@ -247,7 +249,7 @@ fun InfoUser(detailUser: user) {
         Row(modifier = Modifier.padding(8.dp)) {
             Image(
                 painter = painterResource(id = gentRankDrawable(detailUser.points)),
-                contentDescription = "Image Level",
+                contentDescription = stringResource(R.string.image_level),
                 modifier = Modifier
                     .width(250.dp)
                     .height(180.dp)
@@ -312,7 +314,7 @@ fun BestInfoUser(detailLift: lift?) {
 
                 ) {
                 Text(
-                    text = "Mejor Levantantamiento",
+                    text = stringResource(R.string.mejor_levantantamiento),
                     style = TextStyle(
                         fontWeight = FontWeight.Bold,
                         fontSize = 16.sp,
@@ -332,28 +334,28 @@ fun BestInfoUser(detailLift: lift?) {
     }
 }
 
-fun getRank(user_points: Int): String {
-    var rank: String = ""
-    if (user_points < 4000) {
-        rank = "Principiante"
-    } else if (user_points >= 4000 && user_points < 10000) {
-        rank = "Novato 1"
-    } else if (user_points >= 10000 && user_points < 18000) {
-        rank = "Novato 2"
-    } else if (user_points >= 18000 && user_points < 26000) {
-        rank = "Novato 3"
-    } else if (user_points >= 26000 && user_points < 36000) {
-        rank = "Intermedio 1"
-    } else if (user_points >= 36000 && user_points < 48000) {
-        rank = "Intermedio 2"
-    } else if (user_points >= 48000 && user_points < 64000) {
-        rank = "Intermedio 3"
-    } else if (user_points >= 64000 && user_points < 88000) {
-        rank = "Élite 1"
-    } else if (user_points >= 88000 && user_points < 120000) {
-        rank = "Élite 2"
-    } else if (user_points >= 120000) {
-        rank = "Élite 3"
+fun getRank(user_points:Int, context: Context):String{
+    var rank:String =""
+    if(user_points<4000){
+        rank = context.getString(R.string.principiante)
+    }else if(user_points>=4000 && user_points<10000){
+        rank = context.getString(R.string.novato_1)
+    }else if(user_points>=10000 && user_points<18000){
+        rank = context.getString(R.string.novato_2)
+    }else if(user_points>=18000 && user_points<26000){
+        rank = context.getString(R.string.novato_3)
+    }else if(user_points>=26000 && user_points<36000){
+        rank = context.getString(R.string.intermedio_1)
+    }else if(user_points>=36000 && user_points<48000){
+        rank = context.getString(R.string.intermedio_2)
+    }else if(user_points>=48000 && user_points<64000){
+        rank = context.getString(R.string.intermedio_3)
+    }else if(user_points>=64000 && user_points<88000){
+        rank = context.getString(R.string.lite_1)
+    }else if(user_points>=88000 && user_points<120000){
+        rank = context.getString(R.string.lite_2)
+    }else if(user_points>=120000){
+        rank = context.getString(R.string.lite_3)
     }
     return rank
 }

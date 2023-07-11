@@ -35,6 +35,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -82,7 +83,7 @@ fun UserHistory(navController: NavController){
             verticalArrangement = Arrangement.SpaceBetween
         ) {
 
-            HeaderBarBackArrowDumbell(title = "Levantamientos registrados", navController = navController, backOnClick = {navController.popBackStack()})
+            HeaderBarBackArrowDumbell(title = stringResource(R.string.levantamientos_registrados), navController = navController, backOnClick = {navController.popBackStack()})
             OutlinedTextField(value = text, onValueChange = { newText: String ->
                 text = newText
                 vm.getMyLifts(app.getUserId(),text)}, modifier = Modifier
@@ -93,7 +94,7 @@ fun UserHistory(navController: NavController){
                     colorResource(id = R.color.field)
                 )
                 .border(width = 0.dp, color = Color.White),
-                placeholder = { Text(text = "Buscar..", color = Color(R.color.gray_text)) },
+                placeholder = { Text(text = stringResource(R.string.buscar), color = Color(R.color.gray_text)) },
             )
 
             if (vm._loading.value) {
@@ -157,7 +158,7 @@ fun CardHistoricExercise(lift: lift, navController: NavController) {
                     )
                     Icon(
                         painter = painterResource(id = R.drawable.pesa),
-                        contentDescription = "Verify Icon",
+                        contentDescription = stringResource(R.string.verify_icon),
                         modifier = Modifier.size(20.dp)
                     )
                 }
@@ -191,7 +192,7 @@ fun ItemEx(lift: lift) {
             .size(width = 160.dp, height = 60.dp)
     ) {
         Column(Modifier.padding(8.dp)) {
-            Text(text = "Puntos", color = Color.Red)
+            Text(text = stringResource(R.string.puntos), color = Color.Red)
             Text(text = lift.liftpoints.toString(), color = Color(R.color.gray_text))
         }
     }
@@ -208,8 +209,8 @@ fun ItemExRight(lift: lift) {
             .size(width = 160.dp, height = 60.dp)
     ) {
         Column(Modifier.padding(8.dp)) {
-            Text(text = "Peso "+lift.weight.toString(), color = Color.Red)
-            Text(text = "Repeticiones "+lift.reps.toString(), color = Color(R.color.gray_text))
+            Text(text = stringResource(R.string.peso_spaced) +lift.weight.toString(), color = Color.Red)
+            Text(text = stringResource(R.string.repeticiones_spaced) +lift.reps.toString(), color = Color(R.color.gray_text))
         }
     }
 

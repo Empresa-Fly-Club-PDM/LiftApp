@@ -40,6 +40,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -53,7 +54,6 @@ import com.jder00138218.liftapp.R
 import com.jder00138218.liftapp.network.dto.exercise.exercise
 import com.jder00138218.liftapp.network.dto.routine.routine
 import com.jder00138218.liftapp.ui.navigation.Rutas
-import com.jder00138218.liftapp.ui.users.user.CardExercise
 import com.jder00138218.liftapp.ui.users.user.HeaderBarBackArrowAdd
 import com.jder00138218.liftapp.ui.users.user.HeaderBarBackArrowCheck
 import com.jder00138218.liftapp.ui.users.user.HeaderBarBackArrowDumbell
@@ -68,7 +68,7 @@ import kotlinx.coroutines.delay
 @Composable
 fun AddExerciseToRoutine(navController: NavController){
     val navBackStackEntry = navController.currentBackStackEntry
-    val routineid = navBackStackEntry?.arguments?.getInt("routineid")
+    val routineid = navBackStackEntry?.arguments?.getInt(stringResource(R.string.routineid))
     val vm: AddExerciseToRoutineViewModel = viewModel(
         factory = AddExerciseToRoutineViewModel.Factory
     )
@@ -103,7 +103,7 @@ fun AddExerciseToRoutine(navController: NavController){
             verticalArrangement = Arrangement.SpaceBetween
         ) {
 
-            HeaderBarBackArrowCheck(title = "Seleccionar ejercicios", navController = navController, checkOnClick = {navController.popBackStack()}, backOnClick = {navController.popBackStack()})
+            HeaderBarBackArrowCheck(title = stringResource(R.string.seleccionar_ejercicios), navController = navController, checkOnClick = {navController.popBackStack()}, backOnClick = {navController.popBackStack()})
             OutlinedTextField(value = text, onValueChange = { newText: String ->
                 text = newText
                 vm.searchExerciseDatabase(text,app.getUserId())}, modifier = Modifier
@@ -114,7 +114,7 @@ fun AddExerciseToRoutine(navController: NavController){
                     colorResource(id = R.color.field)
                 )
                 .border(width = 0.dp, color = Color.White),
-                placeholder = { Text(text = "Buscar..", color = Color(R.color.gray_text)) },
+                placeholder = { Text(text = stringResource(R.string.buscar), color = Color(R.color.gray_text)) },
             )
             LazyColumn(
                 Modifier
@@ -161,7 +161,7 @@ fun CardExercise(exercise: exercise, routineid:Int?, navController: NavControlle
                     )
                     Icon(
                         painter = painterResource(id = R.drawable.pesa),
-                        contentDescription = "Verify Icon",
+                        contentDescription = stringResource(R.string.verify_icon),
                         modifier = Modifier.size(20.dp)
                     )
                 }
@@ -195,7 +195,7 @@ fun ItemEx(exercise: exercise) {
             .size(width = 160.dp, height = 60.dp)
     ) {
         Column(Modifier.padding(8.dp)) {
-            Text(text = "Musculo", color = Color.Red)
+            Text(text = stringResource(R.string.musculo), color = Color.Red)
             Text(text = exercise.muscle, color = Color(R.color.gray_text))
         }
     }

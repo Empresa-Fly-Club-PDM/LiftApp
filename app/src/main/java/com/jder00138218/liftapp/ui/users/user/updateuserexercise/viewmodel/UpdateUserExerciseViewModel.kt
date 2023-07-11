@@ -16,6 +16,7 @@ import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import androidx.navigation.NavHostController
 import com.jder00138218.liftapp.LiftAppApplication
+import com.jder00138218.liftapp.R
 import com.jder00138218.liftapp.network.ApiResponse
 import com.jder00138218.liftapp.network.dto.exercise.exercise
 import com.jder00138218.liftapp.repositories.ExerciseRepository
@@ -54,7 +55,6 @@ class UpdateUserExerciseViewModel (private val exerciseRepository: ExerciseRepos
             _sets = _exercise.value.sets.toString()
             _type = _exercise.value.type
         }
-        Log.d("checkexercise",_exercise.toString())
     }
 
     private fun update(description: String, difficulty: String, muscle: String, name: String, reps: Int, sets: Int, type: String, id:Int?, navController: NavHostController, context: Context) {
@@ -76,8 +76,8 @@ class UpdateUserExerciseViewModel (private val exerciseRepository: ExerciseRepos
 
     fun onUpdate(navController: NavHostController, context: Context, exerciseid:Int?) {
         if (!validateData()) {
-            _status.value = AdminUpdateExerciseUIStatus.ErrorWithMessage("Verificar Imformation")
-            Toast.makeText(context, "Verificar datos ingresados", Toast.LENGTH_SHORT).show()
+            _status.value = AdminUpdateExerciseUIStatus.ErrorWithMessage(context.getString(R.string.verificar_information))
+            Toast.makeText(context, context.getString(R.string.verificar_datos_ingresados), Toast.LENGTH_SHORT).show()
             return
         }
         _loading.value=true
@@ -88,18 +88,16 @@ class UpdateUserExerciseViewModel (private val exerciseRepository: ExerciseRepos
         val status = _status.value
         when (status) {
             is AdminUpdateExerciseUIStatus.Error -> {
-                Log.d("tag", "Error")
-                Toast.makeText(context, "Error", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, context.getString(R.string.error), Toast.LENGTH_SHORT).show()
             }
             is AdminUpdateExerciseUIStatus.ErrorWithMessage -> {
-                Toast.makeText(context, "Verificar datos ingresados", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, context.getString(R.string.verificar_datos_ingresados), Toast.LENGTH_SHORT).show()
             }
             is AdminUpdateExerciseUIStatus.Success -> {
-                Toast.makeText(context, "Ejercicio actualizado exitosamente", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, context.getString(R.string.ejercicio_actualizado_exitosamente), Toast.LENGTH_SHORT).show()
                 navController.navigate(route = Rutas.UserExercises.ruta)
             }
             else -> {
-                Log.d("tag","failure")
             }
         }
         _loading.value=false
@@ -116,7 +114,7 @@ class UpdateUserExerciseViewModel (private val exerciseRepository: ExerciseRepos
                         )
                     }
                     )
-            Toast.makeText(context, "Ejercicio Eliminado", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, context.getString(R.string.ejercicio_eliminado), Toast.LENGTH_SHORT).show()
             navController.navigate(Rutas.UserExercises.ruta)
 
         }

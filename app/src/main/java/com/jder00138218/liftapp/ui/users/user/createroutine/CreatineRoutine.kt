@@ -51,6 +51,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
@@ -94,7 +95,7 @@ fun CreateRoutine(navController: NavHostController){
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.SpaceBetween) {
 
-            HeaderBarBackArrowDumbell(title = "Crear rutina", navController, backOnClick = {handleBackOnClick()})
+            HeaderBarBackArrowDumbell(title = stringResource(R.string.crear_rutina), navController, backOnClick = {handleBackOnClick()})
 
             Column(modifier = Modifier
                 .fillMaxWidth()
@@ -126,7 +127,7 @@ fun CreateRoutine(navController: NavHostController){
                     )
                 } else {
 
-                    Text(text = "Confirmar")
+                    Text(text = stringResource(id = R.string.confirmar))
                 }
             }
 
@@ -161,7 +162,7 @@ fun CustomHourInputField(viewmodel: CreateRoutineViewModel){
                 color = colorResource(id = R.color.field)
             )// With padding show border color
             .background(colorResource(id = R.color.field)),
-        placeholder = { Text(text = "Horas", color = Color(R.color.gray_text)) },
+        placeholder = { Text(text = stringResource(R.string.horas), color = Color(R.color.gray_text)) },
         singleLine = true,
         maxLines = 1,
         keyboardOptions = KeyboardOptions(
@@ -187,7 +188,7 @@ fun CustomMinuteInputField(viewmodel: CreateRoutineViewModel){
                 color = colorResource(id = R.color.field)
             )// With padding show border color
             .background(colorResource(id = R.color.field)),
-        placeholder = { Text(text = "Minutos", color = Color(R.color.gray_text)) },
+        placeholder = { Text(text = stringResource(R.string.minutos), color = Color(R.color.gray_text)) },
         singleLine = true,
         maxLines = 1,
         keyboardOptions = KeyboardOptions(
@@ -215,14 +216,14 @@ fun NameInputField(viewmodel:CreateRoutineViewModel){
                 color = colorResource(id = R.color.field)
             )// With padding show border color
             .background(colorResource(id = R.color.field)),
-        placeholder = { Text(text = "Nombre de la rutina", color = Color(R.color.gray_text)) },
+        placeholder = { Text(text = stringResource(R.string.nombre_de_la_rutina), color = Color(R.color.gray_text)) },
         singleLine = true,
         maxLines = 1,
         leadingIcon = {
             Icon(
                 modifier = Modifier.size(16.dp),
                 painter = painterResource(id = R.drawable.pesa),
-                contentDescription = "Icon field"
+                contentDescription = stringResource(id = R.string.icon_field)
             )
         },
         keyboardOptions = KeyboardOptions(
@@ -261,29 +262,29 @@ fun DifficultyInputField(viewmodel: CreateRoutineViewModel){
                 )// With padding show border color
                 .background(colorResource(id = R.color.field)),
                 colors = TextFieldDefaults.textFieldColors(containerColor = colorResource(id = R.color.field)) ,
-                placeholder = { Text(text = "Dificultad", color = Color(R.color.gray_text)) },
+                placeholder = { Text(text = stringResource(id = R.string.dificultad), color = Color(R.color.gray_text)) },
                 leadingIcon = {
                     Icon(
                         modifier = Modifier.size(16.dp),
                         painter = painterResource(id = R.drawable.pesa),
-                        contentDescription = "Icon field"
+                        contentDescription = stringResource(id = R.string.icon_field)
                     )
                 })
 
             ExposedDropdownMenu(expanded = isExpanded, onDismissRequest = { isExpanded = false }) {
-                DropdownMenuItem(text = { Text(text = "Bajo") },
+                DropdownMenuItem(text = { Text(text = stringResource(id = R.string.bajo)) },
                     onClick = {
                         isExpanded = false
                         viewmodel.difficulty = "Bajo"
                         difficulty = viewmodel.difficulty
                     })
-                DropdownMenuItem(text = { Text(text = "Medio") },
+                DropdownMenuItem(text = { Text(text = stringResource(id = R.string.medio)) },
                     onClick = {
                         isExpanded = false
                         viewmodel.difficulty = "Medio"
                         difficulty = viewmodel.difficulty
                     })
-                DropdownMenuItem(text = { Text(text = "Alto") },
+                DropdownMenuItem(text = { Text(text = stringResource(id = R.string.alto)) },
                     onClick = {
                         isExpanded = false
                         viewmodel.difficulty = "Alto"
@@ -315,14 +316,14 @@ fun TagInputField(viewmodel:CreateRoutineViewModel){
                 color = colorResource(id = R.color.field)
             )// With padding show border color
             .background(colorResource(id = R.color.field)),
-        placeholder = { Text(text = "Tag", color = Color(R.color.gray_text)) },
+        placeholder = { Text(text = stringResource(R.string.tag), color = Color(R.color.gray_text)) },
         singleLine = true,
         maxLines = 1,
         leadingIcon = {
             Icon(
                 modifier = Modifier.size(16.dp),
                 painter = painterResource(id = R.drawable.pesa),
-                contentDescription = "Icon field"
+                contentDescription = stringResource(id = R.string.icon_field)
             )
         },
         keyboardOptions = KeyboardOptions(

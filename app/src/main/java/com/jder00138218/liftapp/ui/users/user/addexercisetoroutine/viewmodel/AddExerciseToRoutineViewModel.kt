@@ -13,6 +13,7 @@ import androidx.lifecycle.viewmodel.viewModelFactory
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import com.jder00138218.liftapp.LiftAppApplication
+import com.jder00138218.liftapp.R
 import com.jder00138218.liftapp.network.ApiResponse
 import com.jder00138218.liftapp.network.dto.exercise.exercise
 import com.jder00138218.liftapp.repositories.RoutineRepository
@@ -49,7 +50,7 @@ class AddExerciseToRoutineViewModel(private val routineRepository: RoutineReposi
                         )
                     }
                     )
-            Toast.makeText(context, "Ejercicio Añadido", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, context.getString(R.string.ejercicio_a_adido), Toast.LENGTH_SHORT).show()
         }
     }
     companion object {

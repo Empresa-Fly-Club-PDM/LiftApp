@@ -2,6 +2,7 @@ package com.jder00138218.liftapp.ui.login
 
 
 import SessionManager
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -77,6 +78,10 @@ fun LoginScreen(navController: NavHostController) {
         loginViewModel.onLogin(navController, LocalContext.current)
         sessionManager.clearSession()
     }
+    BackHandler(enabled = true) {
+        navController.navigate(Rutas.Login.ruta)
+    }
+
 
     Box(
         modifier = Modifier

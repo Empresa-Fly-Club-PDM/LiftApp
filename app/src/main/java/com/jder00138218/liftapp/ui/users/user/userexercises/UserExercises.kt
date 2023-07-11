@@ -35,6 +35,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -85,7 +86,7 @@ fun UserExercises(navController: NavController){
             .fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.SpaceBetween) {
-            HeaderBarBackArrowAdd(title = "Mis Ejercicios", navController = navController, addOnClick = {navController.navigate(route = Rutas.UserAddExercises.ruta)}, backOnClick = {navController.popBackStack()})
+            HeaderBarBackArrowAdd(title = stringResource(R.string.mis_ejercicios), navController = navController, addOnClick = {navController.navigate(route = Rutas.UserAddExercises.ruta)}, backOnClick = {navController.popBackStack()})
             OutlinedTextField(value = text, onValueChange = { newText: String ->
                 text = newText
                 vm.getPersonalExercises(text,app.getUserId())}, modifier = Modifier
@@ -96,7 +97,7 @@ fun UserExercises(navController: NavController){
                     colorResource(id = R.color.field)
                 )
                 .border(width = 0.dp, color = Color.White),
-                placeholder = { Text(text = "Buscar..", color = Color(R.color.gray_text)) },
+                placeholder = { Text(text = stringResource(R.string.buscar), color = Color(R.color.gray_text)) },
             )
             if (vm._loading.value) {
                 Column(modifier = Modifier
@@ -157,7 +158,7 @@ fun CardUserExercise(exercise: exercise, navController: NavController, addExerci
                     )
                     Icon(
                         painter = painterResource(id = R.drawable.pesa),
-                        contentDescription = "Verify Icon",
+                        contentDescription = stringResource(R.string.verify_icon),
                         modifier = Modifier.size(20.dp)
                     )
                 }

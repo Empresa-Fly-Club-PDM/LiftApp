@@ -1,5 +1,6 @@
 package com.jder00138218.liftapp.ui.users.user.ranking
 
+import android.content.Context
 import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -40,7 +41,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -64,7 +67,7 @@ fun RankingUsers(navController: NavController ) {
         factory = RankinViewModel.Factory
     )
     var text by remember { mutableStateOf("") }
-
+    val context = LocalContext.current
     LaunchedEffect(text) {
         val currentText = text
         delay(500) // Add a short delay before executing the search
@@ -90,7 +93,7 @@ fun RankingUsers(navController: NavController ) {
         Column(modifier = Modifier.fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.SpaceBetween) {
-            HeaderBarBackArrowAdd("Ranking", navController, addOnClick = handleAddOnClick, backOnClick = handleBackOnClick)
+            HeaderBarBackArrowAdd(stringResource(R.string.ranking), navController, addOnClick = handleAddOnClick, backOnClick = handleBackOnClick)
 
             OutlinedTextField(value = text, onValueChange = { newText: String ->
                 text = newText
@@ -103,7 +106,7 @@ fun RankingUsers(navController: NavController ) {
                     colorResource(id = R.color.field)
                 )
                 .border(width = 0.dp, color = Color.White),
-                placeholder = { Text(text = "Buscar..", color = Color(R.color.gray_text)) },
+                placeholder = { Text(text = stringResource(R.string.buscar), color = Color(R.color.gray_text)) },
             )
 
             if(rankinViewModel._loading.value){
@@ -122,7 +125,7 @@ fun RankingUsers(navController: NavController ) {
             }else{
                 LazyColumn(modifier = Modifier.fillMaxHeight(0.7f)){
                     items(rankinViewModel.users) {
-                        RankingInfoRow(it, navController = navController)
+                        RankingInfoRow(it, navController = navController, context)
                     }
             }
             }
@@ -132,7 +135,7 @@ fun RankingUsers(navController: NavController ) {
 }
 
 @Composable
-fun RankingInfoRow(user: user, navController: NavController){
+fun RankingInfoRow(user: user, navController: NavController, context:Context){
 
     Row(modifier = Modifier
         .fillMaxWidth()
@@ -143,40 +146,40 @@ fun RankingInfoRow(user: user, navController: NavController){
         horizontalAlignment = Alignment.Start,
         verticalArrangement = Arrangement.Center) {
             Text(text = user.nombrecompleto)
-            Text(text = getRank(user.points))
+            Text(text = getRank(user.points,context))
         }
         IconButton(onClick = {navController.navigate("rutas_friend_profile/${user.id}")}) {
             Icon(
                 imageVector = Icons.Default.Info,
-                contentDescription = "AddFriend"
+                contentDescription = stringResource(R.string.addfriend)
             )
         }
     }
 
 }
 
-fun getRank(user_points:Int):String{
+fun getRank(user_points:Int, context: Context):String{
     var rank:String =""
     if(user_points<4000){
-        rank = "Principiante"
+        rank = context.getString(R.string.principiante)
     }else if(user_points>=4000 && user_points<10000){
-        rank = "Novato 1"
+        rank = context.getString(R.string.novato_1)
     }else if(user_points>=10000 && user_points<18000){
-        rank = "Novato 2"
+        rank = context.getString(R.string.novato_2)
     }else if(user_points>=18000 && user_points<26000){
-        rank = "Novato 3"
+        rank = context.getString(R.string.novato_3)
     }else if(user_points>=26000 && user_points<36000){
-        rank = "Intermedio 1"
+        rank = context.getString(R.string.intermedio_1)
     }else if(user_points>=36000 && user_points<48000){
-        rank = "Intermedio 2"
+        rank = context.getString(R.string.intermedio_2)
     }else if(user_points>=48000 && user_points<64000){
-        rank = "Intermedio 3"
+        rank = context.getString(R.string.intermedio_3)
     }else if(user_points>=64000 && user_points<88000){
-        rank = "Élite 1"
+        rank = context.getString(R.string.lite_1)
     }else if(user_points>=88000 && user_points<120000){
-        rank = "Élite 2"
+        rank = context.getString(R.string.lite_2)
     }else if(user_points>=120000){
-        rank = "Élite 3"
+        rank = context.getString(R.string.lite_3)
     }
     return rank
 }

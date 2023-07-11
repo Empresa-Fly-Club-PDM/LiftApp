@@ -16,6 +16,7 @@ import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import androidx.navigation.NavHostController
 import com.jder00138218.liftapp.LiftAppApplication
+import com.jder00138218.liftapp.R
 import com.jder00138218.liftapp.network.ApiResponse
 import com.jder00138218.liftapp.repositories.ExerciseRepository
 import com.jder00138218.liftapp.ui.navigation.Rutas
@@ -113,8 +114,8 @@ class AddUserExercisesViewModel(private val exerciseRepository: ExerciseReposito
         val app = context.applicationContext as LiftAppApplication
         val userid = app.getUserId()
         if (!validateData()) {
-            _status.value = AddUserExercisesUIStatus.ErrorWithMessage("Verificar Imformation")
-            Toast.makeText(context, "Verificar Información", Toast.LENGTH_SHORT).show()
+            _status.value = AddUserExercisesUIStatus.ErrorWithMessage(context.getString(R.string.verificar_information))
+            Toast.makeText(context, context.getString(R.string.verificar_information), Toast.LENGTH_SHORT).show()
             return
         }
         _loading.value=true
@@ -124,8 +125,8 @@ class AddUserExercisesViewModel(private val exerciseRepository: ExerciseReposito
         val app = context.applicationContext as LiftAppApplication
         val userid = app.getUserId()
         if (!validateData()) {
-            _status.value = AddUserExercisesUIStatus.ErrorWithMessage("Verificar Imformation")
-            Toast.makeText(context, "Verificar Información", Toast.LENGTH_SHORT).show()
+            _status.value = AddUserExercisesUIStatus.ErrorWithMessage(context.getString(R.string.verificar_information))
+            Toast.makeText(context, context.getString(R.string.verificar_information), Toast.LENGTH_SHORT).show()
             return
         }
         _loadingVerification.value=true
@@ -139,18 +140,16 @@ class AddUserExercisesViewModel(private val exerciseRepository: ExerciseReposito
         val status = _status.value
         when (status) {
             is AddUserExercisesUIStatus.Error -> {
-                Log.d("tag", "Error")
-                Toast.makeText(context, "Error en inicio de sesión", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, context.getString(R.string.error_en_inicio_de_sesi_n), Toast.LENGTH_SHORT).show()
             }
             is AddUserExercisesUIStatus.ErrorWithMessage -> {
-                Toast.makeText(context, "Verificar datos ingresados", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, context.getString(R.string.verificar_datos_ingresados), Toast.LENGTH_SHORT).show()
             }
             is AddUserExercisesUIStatus.Success -> {
-                Toast.makeText(context, "Ejercicio creado exitosamente", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, context.getString(R.string.ejercicio_creado_exitosamente), Toast.LENGTH_SHORT).show()
                 navController.navigate(route = Rutas.UserExercises.ruta)
             }
             else -> {
-                Log.d("tag","failure")
             }
         }
         _loading.value=false

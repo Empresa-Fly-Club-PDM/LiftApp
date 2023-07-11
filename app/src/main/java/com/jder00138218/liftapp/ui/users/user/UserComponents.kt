@@ -54,6 +54,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.VerticalAlignmentLine
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
@@ -91,7 +92,7 @@ fun UserProfileInfoRow(text: String) {
 @Composable
 fun SearchBar(){
 
-    var text by remember { mutableStateOf("search...") }
+    var text by remember { mutableStateOf("Buscar..") }
     OutlinedTextField(value = text, onValueChange = { newText: String ->
         text = newText }, modifier = Modifier
         .padding(horizontal = 8.dp)
@@ -123,8 +124,8 @@ fun UserBottomMenu(navController: NavController) {
         ) {
             Icon(
                 painter = painterResource(R.drawable.inbox),
-                contentDescription = "Inbox icon",
-                tint = Color.Red,
+                contentDescription = stringResource(R.string.inbox_icon),
+                tint = Color.Gray,
                 modifier = Modifier.size(20.dp)
             )
         }
@@ -139,7 +140,7 @@ fun UserBottomMenu(navController: NavController) {
         ) {
             Icon(
                 painter = painterResource(R.drawable.profile),
-                contentDescription = "Profile icon",
+                contentDescription = stringResource(R.string.profile_icon),
                 tint = colorResource(id = R.color.gray_text),
                 modifier = Modifier.size(20.dp)
             )
@@ -154,7 +155,7 @@ fun UserBottomMenu(navController: NavController) {
         ) {
             Icon(
                 painter = painterResource(R.drawable.pesa),
-                contentDescription = "Pesa icon",
+                contentDescription = stringResource(R.string.pesa_icon),
                 tint = colorResource(id = R.color.gray_text),
                 modifier = Modifier.size(30.dp)
             )
@@ -166,7 +167,7 @@ fun UserBottomMenu(navController: NavController) {
 fun HeaderBarBackArrowAdd(title: String, navController: NavController, addOnClick: () ->Unit, backOnClick: () -> Unit) {
     var iconHeader = Icons.Outlined.Add
 
-    if(title == "Ranking"){
+    if(title == stringResource(R.string.ranking)){
         iconHeader = Icons.Outlined.Search
     }
 
@@ -182,7 +183,7 @@ fun HeaderBarBackArrowAdd(title: String, navController: NavController, addOnClic
         ) {
             Icon(
                 Icons.Default.ArrowBack,
-                contentDescription = "Back"
+                contentDescription = stringResource(R.string.back)
             )
         }
 
@@ -198,7 +199,7 @@ fun HeaderBarBackArrowAdd(title: String, navController: NavController, addOnClic
         ) {
             Icon(
                 imageVector = iconHeader,
-                contentDescription = "Add"
+                contentDescription = stringResource(R.string.add)
             )
         }
     }
@@ -217,7 +218,7 @@ fun HeaderBarBackArrowCheck(title: String, navController: NavController, backOnC
         ) {
             Icon(
                 Icons.Default.ArrowBack,
-                contentDescription = "Back"
+                contentDescription = stringResource(R.string.back)
             )
         }
 
@@ -234,7 +235,7 @@ fun HeaderBarBackArrowCheck(title: String, navController: NavController, backOnC
         ) {
             Icon(
                 Icons.Default.Check,
-                contentDescription = "Back"
+                contentDescription = stringResource(R.string.back)
             )
         }
     }
@@ -254,7 +255,7 @@ fun HeaderBarBackArrowDumbell(title: String, navController: NavController, backO
         ) {
             Icon(
                 Icons.Default.ArrowBack,
-                contentDescription = "Back"
+                contentDescription = stringResource(R.string.back)
             )
         }
 
@@ -271,7 +272,7 @@ fun HeaderBarBackArrowDumbell(title: String, navController: NavController, backO
             ) {
             Icon(
                 painter = painterResource(R.drawable.pesa),
-                contentDescription = "Pesa icon",
+                contentDescription = stringResource(R.string.pesa_icon),
                 tint = colorResource(id = R.color.gray_text),
                 modifier = Modifier.size(30.dp)
             )
@@ -300,7 +301,7 @@ fun CustomInputField(hint: String){
             Icon(
                 modifier = Modifier.size(16.dp),
                 painter = painterResource(id = R.drawable.pesa),
-                contentDescription = "Icon field"
+                contentDescription = stringResource(R.string.pesa_icon)
             )
         },
         keyboardOptions = KeyboardOptions(
@@ -338,27 +339,27 @@ fun CustomSelectField(){
                 )// With padding show border color
                 .background(colorResource(id = R.color.field)),
                 colors = TextFieldDefaults.textFieldColors(containerColor = colorResource(id = R.color.field)) ,
-                placeholder = { Text(text = "Dificultad", color = Color(R.color.gray_text)) },
+                placeholder = { Text(text = stringResource(R.string.dificultad), color = Color(R.color.gray_text)) },
                 leadingIcon = {
                     Icon(
                         modifier = Modifier.size(16.dp),
                         painter = painterResource(id = R.drawable.pesa),
-                        contentDescription = "Icon field"
+                        contentDescription = stringResource(R.string.icon_field)
                     )
                 })
 
             ExposedDropdownMenu(expanded = isExpanded, onDismissRequest = { isExpanded = false }) {
-                DropdownMenuItem(text = { Text(text = "Bajo") },
+                DropdownMenuItem(text = { Text(text = stringResource(R.string.back)) },
                     onClick = {
                         isExpanded = false
                         option = "Alto"
                     })
-                DropdownMenuItem(text = { Text(text = "Medio") },
+                DropdownMenuItem(text = { Text(text = stringResource(R.string.medio)) },
                     onClick = {
                         isExpanded = false
                         option = "Medio"
                     })
-                DropdownMenuItem(text = { Text(text = "Alto") },
+                DropdownMenuItem(text = { Text(text = stringResource(R.string.alto)) },
                     onClick = {
                         isExpanded = false
                         option = "Alto"
@@ -396,42 +397,42 @@ fun CustomTypeSelectField(){
                 )// With padding show border color
                 .background(colorResource(id = R.color.field)),
                 colors = TextFieldDefaults.textFieldColors(containerColor = colorResource(id = R.color.field)) ,
-                placeholder = { Text(text = "Tipo", color = Color(R.color.gray_text)) },
+                placeholder = { Text(text = stringResource(R.string.tipo), color = Color(R.color.gray_text)) },
                 leadingIcon = {
                     Icon(
                         modifier = Modifier.size(16.dp),
                         painter = painterResource(id = R.drawable.pesa),
-                        contentDescription = "Icon field"
+                        contentDescription = stringResource(R.string.pesa_icon)
                     )
                 })
 
             ExposedDropdownMenu(expanded = isExpanded, onDismissRequest = { isExpanded = false }) {
-                DropdownMenuItem(text = { Text(text = "Pecho") },
+                DropdownMenuItem(text = { Text(text = stringResource(R.string.pecho)) },
                     onClick = {
                         isExpanded = false
                         option = "Alto"
                     })
-                DropdownMenuItem(text = { Text(text = "Piernas") },
+                DropdownMenuItem(text = { Text(text = stringResource(R.string.piernas)) },
                     onClick = {
                         isExpanded = false
                         option = "Medio"
                     })
-                DropdownMenuItem(text = { Text(text = "Espalda") },
+                DropdownMenuItem(text = { Text(text = stringResource(R.string.espalda)) },
                     onClick = {
                         isExpanded = false
                         option = "Alto"
                     })
-                DropdownMenuItem(text = { Text(text = "Hombros") },
+                DropdownMenuItem(text = { Text(text = stringResource(R.string.hombros)) },
                     onClick = {
                         isExpanded = false
                         option = "Hombros"
                     })
-                DropdownMenuItem(text = { Text(text = "Cardio") },
+                DropdownMenuItem(text = { Text(text = stringResource(R.string.cardio)) },
                     onClick = {
                         isExpanded = false
                         option = "Alto"
                     })
-                DropdownMenuItem(text = { Text(text = "Abdomen") },
+                DropdownMenuItem(text = { Text(text = stringResource(R.string.abdomen)) },
                     onClick = {
                         isExpanded = false
                         option = "Alto"
@@ -442,46 +443,6 @@ fun CustomTypeSelectField(){
 
 }
 
-@Composable
-fun CardExercise() {
-    Card( // this
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(8.dp),
-        colors = CardDefaults.cardColors(
-            containerColor = colorResource(id = R.color.card)
-        )
-    ) {
-
-        Box(
-            modifier = Modifier
-                .padding(16.dp),
-            contentAlignment = Alignment.Center
-        ) {
-            Column(modifier = Modifier.fillMaxWidth(1f)) {
-
-                Row() {
-                    Text(text = "Juan Daniel Escobar Rivera", fontWeight = FontWeight.Bold)
-                    // Icon
-                }
-
-
-                Row(
-                    modifier = Modifier
-                        .padding(8.dp)
-                        .fillMaxWidth(1f),
-                    horizontalArrangement = Arrangement.Start
-                ) {
-                    ItemEx()
-                    ItemEx()
-                }
-
-            }
-        }
-
-
-    }
-}
 
 @Composable
 fun ItemEx() {
@@ -493,8 +454,8 @@ fun ItemEx() {
             .size(width = 160.dp, height = 60.dp)
     ) {
         Column(Modifier.padding(8.dp)) {
-            Text(text = "Press de banca", color = Color.Red)
-            Text(text = "Pecho", color = Color(R.color.gray_text))
+            Text(text = stringResource(R.string.press_de_banca), color = Color.Red)
+            Text(text = stringResource(R.string.pecho), color = Color(R.color.gray_text))
         }
     }
 

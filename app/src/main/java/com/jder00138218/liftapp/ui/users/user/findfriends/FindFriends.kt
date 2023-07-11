@@ -35,6 +35,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
@@ -54,7 +55,7 @@ import kotlinx.coroutines.delay
 @Composable
 fun FindFriends(navController: NavController){
     val navBackStackEntry = navController.currentBackStackEntry
-    val userid = navBackStackEntry?.arguments?.getInt("id")
+    val userid = navBackStackEntry?.arguments?.getInt(stringResource(id = R.string.id))
     val context = LocalContext.current
     val app = context.applicationContext as LiftAppApplication
     val vm: FindFriendsViewModel = viewModel(
@@ -81,7 +82,7 @@ fun FindFriends(navController: NavController){
         Column(modifier = Modifier.fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.SpaceBetween) {
-            HeaderBarBackArrowDumbell("Buscar Amigos", navController, backOnClick = {navController.popBackStack()})
+            HeaderBarBackArrowDumbell(stringResource(R.string.buscar_amigos), navController, backOnClick = {navController.popBackStack()})
             OutlinedTextField(value = text, onValueChange = { newText: String ->
                 text = newText
                 vm.searchForFriends(app.getUserId(),text)
@@ -93,7 +94,7 @@ fun FindFriends(navController: NavController){
                     colorResource(id = R.color.field)
                 )
                 .border(width = 0.dp, color = Color.White),
-                placeholder = { Text(text = "Buscar..", color = Color(R.color.gray_text)) },
+                placeholder = { Text(text = stringResource(id = R.string.buscar), color = Color(R.color.gray_text)) },
             )
             LazyColumn(modifier = Modifier.fillMaxHeight(0.7f)){
                 items(vm.users) {
@@ -131,7 +132,7 @@ fun FindFriendInfoRow(name: String, id:Int,rank:String, navController: NavContro
             findFriendsViewModel.adFriend(app.getUserId(),id, navController,context)}) {
             Icon(
                 imageVector = Icons.Default.Add,
-                contentDescription = "AddFriend"
+                contentDescription = stringResource(R.string.addfriend)
             )
         }
 

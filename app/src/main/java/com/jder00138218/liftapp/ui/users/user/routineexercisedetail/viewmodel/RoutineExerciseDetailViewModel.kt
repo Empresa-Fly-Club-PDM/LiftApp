@@ -13,6 +13,7 @@ import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import androidx.navigation.NavHostController
 import com.jder00138218.liftapp.LiftAppApplication
+import com.jder00138218.liftapp.R
 import com.jder00138218.liftapp.network.ApiResponse
 import com.jder00138218.liftapp.network.dto.routine.routine
 import com.jder00138218.liftapp.repositories.RoutineRepository
@@ -37,7 +38,7 @@ class RoutineExerciseDetailViewModel(private val routineRepository: RoutineRepos
                         )
                     }
                     )
-            Toast.makeText(context, "Ejercicio Removido", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, context.getString(R.string.ejercicio_removido), Toast.LENGTH_SHORT).show()
             navController.navigate(route = "ruta_user_routine_detail/${idrout}")
 
         }

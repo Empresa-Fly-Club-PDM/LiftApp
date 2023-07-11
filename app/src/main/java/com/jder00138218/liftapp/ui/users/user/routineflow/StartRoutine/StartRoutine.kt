@@ -28,6 +28,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -42,7 +43,7 @@ import com.jder00138218.liftapp.ui.users.user.routinedetail.viewmodel.RoutineDet
 @Composable
 fun StartRoutine(navController:NavController){
     val navBackStackEntry = navController.currentBackStackEntry
-    val routineid = navBackStackEntry?.arguments?.getInt("id")
+    val routineid = navBackStackEntry?.arguments?.getInt(stringResource(R.string.id))
     val vm: RoutineDetailViewModel = viewModel(
         factory = RoutineDetailViewModel.Factory
     )
@@ -64,7 +65,7 @@ fun StartRoutine(navController:NavController){
         )
         {
 
-            HeaderBarBackArrowDumbell("Empezar rutina", navController, backOnClick = { navController.popBackStack() })
+            HeaderBarBackArrowDumbell(stringResource(R.string.empezar_rutina), navController, backOnClick = { navController.popBackStack() })
 
 
             LazyColumn(
@@ -93,7 +94,7 @@ fun ButtonDeleteRoutine(id:Int?, viewmodel: RoutineDetailViewModel, navControlle
             containerColor = colorResource(id = R.color.buttonGren)
         )
     ) {
-        Text(text = " Iniciar rutina")
+        Text(text = stringResource(R.string.iniciar_rutina))
 
     }
 
@@ -128,7 +129,7 @@ fun CardExercise(exercise: exercise) {
                     )
                     Icon(
                         painter = painterResource(id = R.drawable.pesa),
-                        contentDescription = "Verify Icon",
+                        contentDescription = stringResource(R.string.verify_icon),
                         modifier = Modifier.size(20.dp)
                     )
                 }
@@ -162,7 +163,7 @@ fun ItemEx(exercise: exercise) {
             .size(width = 160.dp, height = 60.dp)
     ) {
         Column(Modifier.padding(8.dp)) {
-            Text(text = "Musculo", color = Color.Red)
+            Text(text = stringResource(R.string.musculo), color = Color.Red)
             Text(text = exercise.muscle, color = Color(R.color.gray_text))
         }
     }

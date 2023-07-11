@@ -17,6 +17,7 @@ import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import androidx.navigation.NavHostController
 import com.jder00138218.liftapp.LiftAppApplication
+import com.jder00138218.liftapp.R
 import com.jder00138218.liftapp.network.ApiResponse
 import com.jder00138218.liftapp.network.dto.user.user
 import com.jder00138218.liftapp.repositories.UserRepository
@@ -78,8 +79,8 @@ class UpdateUserViewModel(private val userRepository: UserRepository): ViewModel
 
     fun onUpdate(id:Int?, navController: NavHostController, context: Context) {
         if (!validateData()) {
-            _status.value = UpdateUserUIStatus.ErrorWithMessage("Verificar Imformation")
-            Toast.makeText(context, "Verificar Información", Toast.LENGTH_SHORT).show()
+            _status.value = UpdateUserUIStatus.ErrorWithMessage(context.getString(R.string.verificar_information))
+            Toast.makeText(context, context.getString(R.string.verificar_information), Toast.LENGTH_SHORT).show()
             return
         }
         if(_password.isEmpty() && _confirmpassowrd.isEmpty() && calculateAge(_fechanac)>=13){
@@ -91,7 +92,7 @@ class UpdateUserViewModel(private val userRepository: UserRepository): ViewModel
             app.sessionManager.clearSession()
             update(id, _nombrecompleto, _email,_password,_genero,_fechanac,_weight.toInt(),_height.toInt(),navController,context)
         }else{
-            Toast.makeText(context, "Verificar Información", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, context.getString(R.string.verificar_information), Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -100,42 +101,23 @@ class UpdateUserViewModel(private val userRepository: UserRepository): ViewModel
         val status = _status.value
         when (status) {
             is UpdateUserUIStatus.Error -> {
-                Log.d("tag", "Error")
-                Toast.makeText(context, "Error", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, context.getString(R.string.error), Toast.LENGTH_SHORT).show()
 
             }
             is UpdateUserUIStatus.ErrorWithMessage -> {
-                Toast.makeText(context, "Verificar datos ingresados", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, context.getString(R.string.verificar_datos_ingresados), Toast.LENGTH_SHORT).show()
 
             }
             is UpdateUserUIStatus.Success -> {
 
-                Toast.makeText(context, "Usuario Actualizado", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, context.getString(R.string.usuario_actualizado), Toast.LENGTH_SHORT).show()
                 navController.navigate(route = Rutas.DashboardUser.ruta)
             }
             else -> {
-                Log.d("tag","failure")
 
             }
         }
         _loading.value=false
-    }
-
-    fun deleteUser(id:Int?, navController: NavHostController, context: Context) {
-        viewModelScope.launch {
-            _status.value = (
-                    when (val response = userRepository.deleteUser(id)) {
-                        is ApiResponse.Error -> UpdateUserUIStatus.Error(response.exception)
-                        is ApiResponse.ErrorWithMessage -> UpdateUserUIStatus.ErrorWithMessage(response.message)
-                        is ApiResponse.Success -> UpdateUserUIStatus.Success(
-                            response.data
-                        )
-                    }
-                    )
-            Toast.makeText(context, "Usuario Eliminado", Toast.LENGTH_SHORT).show()
-            navController.navigate(Rutas.AdminAdminManager.ruta)
-
-        }
     }
 
     private fun validateData(): Boolean {

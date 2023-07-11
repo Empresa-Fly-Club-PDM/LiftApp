@@ -17,6 +17,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.jder00138218.liftapp.R
@@ -37,7 +38,7 @@ fun UserPersonalExerciseDetails(navController: NavController){
             Row(modifier = Modifier
                 .fillMaxWidth()
                 .fillMaxHeight(0.1f)) {
-                HeaderBarBackArrowDumbell(title = "Detalles del ejercicio", navController, backOnClick = {navController.popBackStack()})
+                HeaderBarBackArrowDumbell(title = stringResource(R.string.detalle_de_ejercicio), navController, backOnClick = {navController.popBackStack()})
             }
             Column(modifier = Modifier
                 .fillMaxWidth()
@@ -47,23 +48,23 @@ fun UserPersonalExerciseDetails(navController: NavController){
                 Column(modifier = Modifier
                     .fillMaxWidth(),
                     horizontalAlignment = Alignment.CenterHorizontally) {
-                    CustomInputField(hint = "Nombre del ejercicio")
+                    CustomInputField(hint = stringResource(R.string.nombre_del_ejercicio))
                     Spacer(modifier = Modifier.height(8.dp))
                     CustomTypeSelectField()
                     Spacer(modifier = Modifier.height(8.dp))
                     CustomSelectField()
                     Spacer(modifier = Modifier.height(8.dp))
-                    CustomInputField(hint = "Descripción")
+                    CustomInputField(hint = stringResource(R.string.descripci_n))
                     Spacer(modifier = Modifier.height(8.dp))
                     CustomInputField(hint = "Sets")
                     Spacer(modifier = Modifier.height(8.dp))
-                    CustomInputField(hint = "Repeticiones")
+                    CustomInputField(hint = stringResource(R.string.repeticiones))
                 }
 
                 Button(modifier = Modifier.fillMaxWidth() , onClick = {}, colors = ButtonDefaults.buttonColors(containerColor = colorResource(
                     id = R.color.buttonRed
                 ), contentColor = Color.White)) {
-                    Text(text = "Remover de la rutina")
+                    Text(text = stringResource(R.string.remover_de_la_rutina))
                 }
             }
 

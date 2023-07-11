@@ -62,9 +62,7 @@ fun AdminManager(navController: NavController){
     val handleAddOnClick = {
         navController.navigate(route = Rutas.AdminCreateAdmin.ruta)
     }
-    val handleBackOnClick = {
-        navController.navigate(route = Rutas.AdminProfile.ruta)
-    }
+
 
     Box(modifier = Modifier
         .fillMaxSize()
@@ -77,7 +75,7 @@ fun AdminManager(navController: NavController){
             verticalArrangement = Arrangement.SpaceBetween,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            AdminHeaderBarBackArrowAdd(title = stringResource(R.string.administradores), navController, addOnClick = {handleAddOnClick()}, backOnClick = {handleBackOnClick})
+            AdminHeaderBarBackArrowAdd(title = stringResource(R.string.administradores), navController, addOnClick = {handleAddOnClick()}, backOnClick = {navController.popBackStack()})
             OutlinedTextField(value = text, onValueChange = { newText: String ->
                 text = newText
                 vm.getAllAdmins(text)

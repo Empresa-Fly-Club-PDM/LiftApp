@@ -178,7 +178,7 @@ fun ButtonsDetaile(id: Int? , detailExerciseViewmodel: DetailExerciseViewmodel,n
                 )
             } else {
 
-                Text(text = stringResource(R.string.solicitar_verificacion))
+                Text(text = stringResource(R.string.verificar))
             }
 
         }

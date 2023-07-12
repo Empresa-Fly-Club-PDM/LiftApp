@@ -7,9 +7,11 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
@@ -45,6 +47,8 @@ import com.jder00138218.liftapp.R
 import com.jder00138218.liftapp.network.dto.exercise.exercise
 import com.jder00138218.liftapp.ui.navigation.Rutas
 import com.jder00138218.liftapp.network.dto.lift.lift
+import com.jder00138218.liftapp.ui.users.admin.ExerciseCardAdmin
+import com.jder00138218.liftapp.ui.users.admin.LiftCard
 import com.jder00138218.liftapp.ui.users.user.HeaderBarBackArrowCheck
 import com.jder00138218.liftapp.ui.users.user.HeaderBarBackArrowDumbell
 import com.jder00138218.liftapp.ui.users.user.UserBottomMenu
@@ -118,7 +122,9 @@ fun UserHistory(navController: NavController){
                         .fillMaxHeight(0.8f)
                 ) {
                     items(vm.lifts) {
-                        CardHistoricExercise(it, navController)
+                        var url = "rutas_lift_detail/${it.id}"
+                        LiftCard(it, url, navController)
+                        Spacer(modifier = Modifier.height(8.dp))
                     }
                 }
             }

@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -40,8 +41,10 @@ import com.jder00138218.liftapp.R
 import com.jder00138218.liftapp.network.dto.exercise.exercise
 import com.jder00138218.liftapp.network.dto.routine.routine
 import com.jder00138218.liftapp.ui.navigation.Rutas
+import com.jder00138218.liftapp.ui.users.admin.ExerciseCardAdmin
 import com.jder00138218.liftapp.ui.users.admin.userManager.CreateAdmin.viewmodel.CreateAdminViewModel
 import com.jder00138218.liftapp.ui.users.admin.viewmodel.DashboardAdminViewmodel
+import com.jder00138218.liftapp.ui.users.user.ExerciseCardUser
 import com.jder00138218.liftapp.ui.users.user.HeaderBarBackArrowAdd
 import com.jder00138218.liftapp.ui.users.user.UserBottomMenu
 import com.jder00138218.liftapp.ui.users.user.routinedetail.viewmodel.RoutineDetailViewModel
@@ -86,7 +89,9 @@ fun RoutineDetail(navController:NavController){
                     .fillMaxHeight(0.6f)
             ) {
                 items(vm.exercises) { index ->
-                    CardExercise(index, routineid,navController)
+                    var url = "routine_exercise_detail/${index.id}/${routineid}"
+                    ExerciseCardUser(index, url, navController)
+                    Spacer(modifier = Modifier.height(8.dp))
                 }
             }
             ButtonDeleteRoutine(routineid,viewmodel = vm, navController = navController )
@@ -119,94 +124,6 @@ fun ButtonDeleteRoutine(id:Int?,viewmodel: RoutineDetailViewModel, navController
             Text(text = stringResource(R.string.remover_rutina))
         }
 
-    }
-
-}
-
-
-@Composable
-fun CardExercise(exercise: exercise,routineid:Int?, navController: NavController) {
-    Card( // this
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(8.dp)
-            .clickable {
-                navController.navigate(route = "routine_exercise_detail/${exercise.id}/${routineid}")
-            },
-        colors = CardDefaults.cardColors(
-            containerColor = colorResource(id = R.color.card)
-        )
-    ) {
-
-        Box(
-            modifier = Modifier
-                .padding(16.dp),
-            contentAlignment = Alignment.Center
-        ) {
-            Column(modifier = Modifier.fillMaxWidth(1f)) {
-
-                Row() {
-                    Text(
-                        text = exercise.name,
-                        fontWeight = FontWeight.Bold,
-                        modifier = Modifier.weight(1f)
-                    )
-                    Icon(
-                        painter = painterResource(id = R.drawable.pesa),
-                        contentDescription = stringResource(R.string.verify_icon),
-                        modifier = Modifier.size(20.dp)
-                    )
-                }
-
-
-                Row(
-                    modifier = Modifier
-                        .padding(8.dp)
-                        .fillMaxWidth(1f),
-                    horizontalArrangement = Arrangement.Start
-                ) {
-                    ItemEx(exercise)
-                    ItemExRight(exercise)
-                }
-
-            }
-        }
-
-
-    }
-}
-
-
-@Composable
-fun ItemEx(exercise: exercise) {
-    Card(
-        colors = CardDefaults.cardColors(
-            containerColor = Color.White
-        ), modifier = Modifier
-            .padding(4.dp)
-            .size(width = 160.dp, height = 60.dp)
-    ) {
-        Column(Modifier.padding(8.dp)) {
-            Text(text = stringResource(R.string.musculo), color = Color.Red)
-            Text(text = exercise.muscle, color = Color(R.color.gray_text))
-        }
-    }
-
-}
-
-@Composable
-fun ItemExRight(exercise: exercise) {
-    Card(
-        colors = CardDefaults.cardColors(
-            containerColor = Color.White
-        ), modifier = Modifier
-            .padding(4.dp)
-            .size(width = 160.dp, height = 60.dp)
-    ) {
-        Column(Modifier.padding(8.dp)) {
-            Text(text = exercise.type, color = Color.Red)
-            Text(text = "${exercise.reps}x${exercise.sets}", color = Color(R.color.gray_text))
-        }
     }
 
 }

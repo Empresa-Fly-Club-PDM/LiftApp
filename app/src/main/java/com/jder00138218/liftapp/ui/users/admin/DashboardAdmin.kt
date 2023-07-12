@@ -6,9 +6,11 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
@@ -84,6 +86,7 @@ fun DashboardAdminScreen(navController: NavController) {
                     items(vm.exercises) { index ->
                         var url = "ruta_admin_exercise_details/" + index.id
                         ExerciseCardAdmin(index, url, navController)
+                        Spacer(modifier = Modifier.height(8.dp))
                     }
                 }
             }
@@ -91,85 +94,6 @@ fun DashboardAdminScreen(navController: NavController) {
             Menu(navController)
         }
 
-    }
-
-}
-// This view is for dashboard
-@Composable
-fun CardExercise(currentexc:exercise, navController: NavController) {
-    Card( // this
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(8.dp)
-            .clickable {
-                navController.navigate(route = "ruta_admin_exercise_details/" + currentexc.id)
-            },
-            colors = CardDefaults.cardColors(
-            containerColor = colorResource(id = R.color.card)
-        )
-    ) {
-
-        Box(
-            modifier = Modifier
-                .padding(16.dp),
-            contentAlignment = Alignment.Center
-        ) {
-            Column(modifier = Modifier.fillMaxWidth(1f)) {
-
-                Row() {
-                    Text(text = currentexc.user.nombrecompleto, fontWeight = FontWeight.Bold)
-                    // Icon
-                }
-
-
-                Row(
-                    modifier = Modifier
-                        .padding(8.dp)
-                        .fillMaxWidth(1f),
-                    horizontalArrangement = Arrangement.Start
-                ) {
-                    ItemEx(currentexc.muscle,currentexc.name)
-                    ItemExRight(currentexc.type,currentexc.reps,currentexc.sets)
-                }
-
-            }
-        }
-
-
-    }
-}
-
-
-@Composable
-fun ItemEx(muscle:String,name:String) {
-    Card(
-        colors = CardDefaults.cardColors(
-            containerColor = Color.White
-        ), modifier = Modifier
-            .padding(4.dp)
-            .size(width = 160.dp, height = 60.dp)
-    ) {
-        Column(Modifier.padding(8.dp)) {
-            Text(text = name, color = Color.Red)
-            Text(text = muscle, color = Color(R.color.gray_text))
-        }
-    }
-
-}
-
-@Composable
-fun ItemExRight(type:String,reps:Int,sets:Int) {
-    Card(
-        colors = CardDefaults.cardColors(
-            containerColor = Color.White
-        ), modifier = Modifier
-            .padding(4.dp)
-            .size(width = 160.dp, height = 60.dp)
-    ) {
-        Column(Modifier.padding(8.dp)) {
-            Text(text = type, color = Color.Red)
-            Text(text = "${reps}x${sets}", color = Color(R.color.gray_text))
-        }
     }
 
 }

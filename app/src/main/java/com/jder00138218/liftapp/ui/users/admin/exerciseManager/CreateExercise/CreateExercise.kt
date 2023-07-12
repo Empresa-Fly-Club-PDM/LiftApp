@@ -59,6 +59,7 @@ import com.jder00138218.liftapp.ui.login.viewmodel.LoginViewModel
 import com.jder00138218.liftapp.ui.users.admin.AdminHeaderBarBackArrowDumbell
 import com.jder00138218.liftapp.ui.users.admin.Menu
 import com.jder00138218.liftapp.ui.users.admin.exerciseManager.CreateExercise.viewmodel.CreateExerciseViewmodel
+import com.jder00138218.liftapp.ui.users.admin.exerciseManager.updateexercise.ButtonsUpdate
 
 
 @Composable
@@ -78,8 +79,14 @@ fun CreateExercise(navController: NavHostController) {
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             AdminHeaderBarBackArrowDumbell(title = stringResource(R.string.crear_ejercicio), navController = navController, backOnClick = {navController.popBackStack()})
-            FieldsDetaileCreate(createExerciseViewmodel,navController)
-            ButtonsCreate(createExerciseViewmodel,navController)
+            Column(modifier = Modifier
+                .fillMaxHeight(0.85f)
+                .fillMaxWidth()
+                .verticalScroll(rememberScrollState())) {
+                FieldsDetaileCreate(createExerciseViewmodel,navController)
+                ButtonsCreate(createExerciseViewmodel,navController)
+            }
+
             Menu(navController)
         }
 
@@ -91,8 +98,7 @@ fun CreateExercise(navController: NavHostController) {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun FieldsDetaileCreate(viewmodel: CreateExerciseViewmodel,navController:NavHostController) {
-    Column(modifier = Modifier
-        .verticalScroll(rememberScrollState()),
+    Column(modifier = Modifier,
     horizontalAlignment = Alignment.CenterHorizontally) {
         FieldName(viewmodel)
         Spacer(modifier = Modifier.padding(2.dp))
@@ -152,7 +158,7 @@ fun FieldName(viewmodel: CreateExerciseViewmodel) {
             viewmodel.name= newValue
         },
         modifier = Modifier
-            .width(350.dp)
+            .fillMaxWidth()
             .clip(RoundedCornerShape(4.dp))
             .border(
                 width = 1.dp,
@@ -186,7 +192,7 @@ fun FieldMuscle(viewmodel: CreateExerciseViewmodel) {
             viewmodel.muscle= newValue
         },
         modifier = Modifier
-            .width(350.dp)
+            .fillMaxWidth()
             .clip(RoundedCornerShape(4.dp))
             .border(
                 width = 1.dp,
@@ -231,7 +237,7 @@ fun FieldType(viewmodel: CreateExerciseViewmodel){
             }, readOnly = true, trailingIcon = {
                 ExposedDropdownMenuDefaults.TrailingIcon(expanded = isExpanded)
             }, modifier = Modifier
-                .width(350.dp)
+                .fillMaxWidth()
                 .menuAnchor()
                 .clip(RoundedCornerShape(4.dp))
                 .border(
@@ -299,7 +305,7 @@ fun FieldDifficulty(viewmodel: CreateExerciseViewmodel){
                 ExposedDropdownMenuDefaults.TrailingIcon(expanded = isExpanded)
             }, modifier = Modifier
                 .menuAnchor()
-                .width(350.dp)
+                .fillMaxWidth()
                 .clip(RoundedCornerShape(4.dp))
                 .border(
                     width = 1.dp,
@@ -353,7 +359,7 @@ fun FieldDescription(viewmodel: CreateExerciseViewmodel) {
             viewmodel.description= newValue
         },
         modifier = Modifier
-            .width(350.dp)
+            .fillMaxWidth()
             .clip(RoundedCornerShape(4.dp))
             .border(
                 width = 1.dp,
@@ -388,7 +394,7 @@ fun FieldSets(viewmodel: CreateExerciseViewmodel) {
             viewmodel.sets= newValue
         },
         modifier = Modifier
-            .width(350.dp)
+            .fillMaxWidth()
             .clip(RoundedCornerShape(4.dp))
             .border(
                 width = 1.dp,
@@ -422,7 +428,7 @@ fun FieldReps(viewmodel: CreateExerciseViewmodel) {
             viewmodel.reps= newValue
         },
         modifier = Modifier
-            .width(350.dp)
+            .fillMaxWidth()
             .clip(RoundedCornerShape(4.dp))
             .border(
                 width = 1.dp,

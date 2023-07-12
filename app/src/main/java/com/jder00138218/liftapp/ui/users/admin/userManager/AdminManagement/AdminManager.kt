@@ -13,7 +13,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
@@ -94,7 +96,7 @@ fun AdminManager(navController: NavController){
             if (vm._loading.value) {
                 Column(modifier = Modifier
                     .fillMaxWidth()
-                    .fillMaxHeight(0.7f),
+                    .fillMaxHeight(0.8f),
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.Center) {
                     CircularProgressIndicator(
@@ -109,7 +111,7 @@ fun AdminManager(navController: NavController){
                 LazyColumn(
                     Modifier
                         .fillMaxWidth()
-                        .fillMaxHeight(0.9f)
+                        .fillMaxHeight(0.8f)
                 ) {
                     items(vm.users) {
                         AdminInfoRow(name = it.nombrecompleto, it.id, navController = navController)

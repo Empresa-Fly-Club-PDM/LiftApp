@@ -10,6 +10,8 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowForward
 import androidx.compose.material3.Button
@@ -62,16 +64,15 @@ fun AdminProfile(navController: NavController){
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             AdminHeaderBarBackArrowDumbell(title = "Perfil", navController = navController, backOnClick = {navController.popBackStack()})
-            Column(modifier = Modifier
-                .fillMaxWidth()
-                .fillMaxHeight(0.7f),
-                verticalArrangement = Arrangement.SpaceBetween,
-                horizontalAlignment = Alignment.CenterHorizontally) {
 
+                Column(modifier = Modifier
+                    .fillMaxHeight(0.85f)
+                    .fillMaxWidth()
+                    .verticalScroll(rememberScrollState()),
+                verticalArrangement = Arrangement.SpaceEvenly) {
                 AccountCard(navController, detailUser)
                 LogoutCard(navController,app)
-            }
-
+                }
             Menu(navController)
         }
 

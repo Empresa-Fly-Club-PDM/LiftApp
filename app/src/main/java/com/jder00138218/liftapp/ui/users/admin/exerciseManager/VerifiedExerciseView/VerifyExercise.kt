@@ -48,6 +48,7 @@ import com.jder00138218.liftapp.R
 import com.jder00138218.liftapp.network.dto.exercise.exercise
 import com.jder00138218.liftapp.ui.navigation.Rutas
 import com.jder00138218.liftapp.ui.users.admin.AdminHeaderBarBackArrowAdd
+import com.jder00138218.liftapp.ui.users.admin.ExerciseCardAdmin
 import com.jder00138218.liftapp.ui.users.admin.Menu
 import com.jder00138218.liftapp.ui.users.admin.exerciseManager.VerifiedExerciseView.viewmodel.VerifiedExercisesViewModel
 import com.jder00138218.liftapp.ui.users.admin.viewmodel.DashboardAdminViewmodel
@@ -107,8 +108,8 @@ fun VerifyExercises(navController: NavController) {
                         .fillMaxHeight(0.9f)
                 ) {
                     items(vm.exercises) { index ->
-                        CardExerciseVerify(index, navController)
-                    }
+                        var url = "ruta_admin_update_exercise/" + index.id
+                        ExerciseCardAdmin(index, url, navController)                    }
                 }
             }
 

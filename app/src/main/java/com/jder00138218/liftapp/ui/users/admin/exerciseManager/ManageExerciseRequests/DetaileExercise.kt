@@ -164,7 +164,7 @@ fun ButtonsDetaile(id: Int? , detailExerciseViewmodel: DetailExerciseViewmodel,n
                 .height(60.dp)
                 .width(175.dp)
                 .fillMaxWidth(), colors = ButtonDefaults.buttonColors(
-                containerColor = Color.Green
+                containerColor = colorResource(id = R.color.buttonGren)
             )
         ) {
 

@@ -10,8 +10,10 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -117,7 +119,7 @@ fun UserExercises(navController: NavController){
                 LazyColumn(
                     Modifier
                         .fillMaxWidth()
-                        .fillMaxHeight(0.7f)
+                        .fillMaxHeight(0.9f)
                 ) {
                     items(vm.exercises) {
                         CardUserExercise(it, navController, vm)
@@ -167,10 +169,10 @@ fun CardUserExercise(exercise: exercise, navController: NavController, addExerci
                 Row(
                     modifier = Modifier
                         .padding(8.dp)
-                        .fillMaxWidth(1f),
-                    horizontalArrangement = Arrangement.Start
+                        .fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceEvenly
                 ) {
-                    ItemUserEx(exercise)
+                    ItemUserEx(exercise, modifier = Modifier)
                     ItemUserExRight(exercise)
                 }
 
@@ -183,13 +185,14 @@ fun CardUserExercise(exercise: exercise, navController: NavController, addExerci
 
 
 @Composable
-fun ItemUserEx(exercise: exercise) {
+fun ItemUserEx(exercise: exercise, modifier: Modifier) {
     Card(
         colors = CardDefaults.cardColors(
             containerColor = Color.White
         ), modifier = Modifier
             .padding(4.dp)
-            .size(width = 160.dp, height = 60.dp)
+            .height(70.dp)
+            .width(175.dp)
     ) {
         Column(Modifier.padding(8.dp)) {
             Text(text = "Musculo", color = Color.Red)
@@ -206,7 +209,8 @@ fun ItemUserExRight(exercise: exercise) {
             containerColor = Color.White
         ), modifier = Modifier
             .padding(4.dp)
-            .size(width = 160.dp, height = 60.dp)
+            .height(70.dp)
+            .width(175.dp)
     ) {
         Column(Modifier.padding(8.dp)) {
             Text(text = exercise.type, color = Color.Red)

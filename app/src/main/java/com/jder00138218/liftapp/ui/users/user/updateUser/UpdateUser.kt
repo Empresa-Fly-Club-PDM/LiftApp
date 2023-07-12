@@ -122,13 +122,13 @@ fun UpdateUser(navController: NavHostController) {
         FieldPassword(viewmodel)
         Spacer(modifier = Modifier.padding(2.dp))
         FieldConfirmPassword(viewmodel)
-        Spacer(modifier = Modifier.padding(8.dp))
+        Spacer(modifier = Modifier.padding(2.dp))
         UpdateUserSelectField(viewmodel)
-        Spacer(modifier = Modifier.padding(8.dp))
+        Spacer(modifier = Modifier.padding(2.dp))
         FieldHeight(viewmodel = viewmodel)
-        Spacer(modifier = Modifier.padding(8.dp))
+        Spacer(modifier = Modifier.padding(2.dp))
         FieldWeight(viewmodel = viewmodel)
-        Spacer(modifier = Modifier.padding(8.dp))
+        Spacer(modifier = Modifier.padding(2.dp))
         DateInputField(viewmodel)
     }
 

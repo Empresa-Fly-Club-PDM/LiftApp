@@ -76,28 +76,32 @@ fun AddUserExercise(navController: NavHostController) {
         ) {
             HeaderBarBackArrowDumbell(title = stringResource(R.string.crear_ejercicio), navController = navController, backOnClick = {navController.popBackStack()})
             FieldsDetaileCreate(addUserExercisesViewModel,navController)
-            ButtonsCreate(addUserExercisesViewModel,navController)
-            Button(
-                onClick = {addUserExercisesViewModel.onVerify(navController, context)}, modifier = Modifier
-                    .height(60.dp)
-                    .fillMaxWidth(), colors = ButtonDefaults.buttonColors(
-                    containerColor = colorResource(id = R.color.buttonGray)
-                )
-            ) {
-                if (addUserExercisesViewModel._loadingVerification.value) {
-                    // Show loading animation when isLoading is true
-                    CircularProgressIndicator(
-                        modifier = Modifier
-                            .size(36.dp)
-                            .padding(end = 8.dp),
-                        color = Color.White
+
+            Column(modifier = Modifier.fillMaxWidth()) {
+                ButtonsCreate(addUserExercisesViewModel,navController)
+                Button(
+                    onClick = {addUserExercisesViewModel.onVerify(navController, context)}, modifier = Modifier
+                        .height(60.dp)
+                        .fillMaxWidth(), colors = ButtonDefaults.buttonColors(
+                        containerColor = colorResource(id = R.color.buttonGray)
                     )
-                } else {
+                ) {
+                    if (addUserExercisesViewModel._loadingVerification.value) {
+                        // Show loading animation when isLoading is true
+                        CircularProgressIndicator(
+                            modifier = Modifier
+                                .size(36.dp)
+                                .padding(end = 8.dp),
+                            color = Color.White
+                        )
+                    } else {
 
-                    Text(text = stringResource(R.string.solicitar_verificacion))
+                        Text(text = stringResource(R.string.solicitar_verificacion))
+                    }
+
                 }
-
             }
+
             UserBottomMenu(navController = navController)
         }
 
@@ -125,7 +129,7 @@ fun FieldsDetaileCreate(viewmodel:AddUserExercisesViewModel, navController: NavH
         FieldSets(viewmodel)
         Spacer(modifier = Modifier.padding(2.dp))
         FieldReps(viewmodel)
-        Spacer(modifier = Modifier.padding(8.dp))
+        Spacer(modifier = Modifier.padding(2.dp))
     }
 
 }
@@ -167,7 +171,7 @@ fun FieldName(viewmodel: AddUserExercisesViewModel) {
             viewmodel.name= newValue
         },
         modifier = Modifier
-            .width(350.dp)
+            .fillMaxWidth()
             .clip(RoundedCornerShape(4.dp))
             .border(
                 width = 1.dp,
@@ -201,7 +205,7 @@ fun FieldMuscle(viewmodel: AddUserExercisesViewModel) {
             viewmodel.muscle= newValue
         },
         modifier = Modifier
-            .width(350.dp)
+            .fillMaxWidth()
             .clip(RoundedCornerShape(4.dp))
             .border(
                 width = 1.dp,
@@ -246,7 +250,7 @@ fun FieldType(viewmodel: AddUserExercisesViewModel){
             }, readOnly = true, trailingIcon = {
                 ExposedDropdownMenuDefaults.TrailingIcon(expanded = isExpanded)
             }, modifier = Modifier
-                .width(350.dp)
+                .fillMaxWidth()
                 .menuAnchor()
                 .clip(RoundedCornerShape(4.dp))
                 .border(
@@ -314,7 +318,7 @@ fun FieldDifficulty(viewmodel: AddUserExercisesViewModel){
                 ExposedDropdownMenuDefaults.TrailingIcon(expanded = isExpanded)
             }, modifier = Modifier
                 .menuAnchor()
-                .width(350.dp)
+                .fillMaxWidth()
                 .clip(RoundedCornerShape(4.dp))
                 .border(
                     width = 1.dp,
@@ -368,7 +372,7 @@ fun FieldDescription(viewmodel: AddUserExercisesViewModel) {
             viewmodel.description= newValue
         },
         modifier = Modifier
-            .width(350.dp)
+            .fillMaxWidth()
             .clip(RoundedCornerShape(4.dp))
             .border(
                 width = 1.dp,
@@ -403,7 +407,7 @@ fun FieldSets(viewmodel: AddUserExercisesViewModel) {
             viewmodel.sets= newValue
         },
         modifier = Modifier
-            .width(350.dp)
+            .fillMaxWidth()
             .clip(RoundedCornerShape(4.dp))
             .border(
                 width = 1.dp,
@@ -437,7 +441,7 @@ fun FieldReps(viewmodel: AddUserExercisesViewModel) {
             viewmodel.reps= newValue
         },
         modifier = Modifier
-            .width(350.dp)
+            .fillMaxWidth()
             .clip(RoundedCornerShape(4.dp))
             .border(
                 width = 1.dp,

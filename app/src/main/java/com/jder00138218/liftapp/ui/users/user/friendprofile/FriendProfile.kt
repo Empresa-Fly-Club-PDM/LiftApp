@@ -1,5 +1,6 @@
 package com.jder00138218.liftapp.ui.users.user.friendprofile
 
+import android.content.Context
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -23,8 +24,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -45,7 +48,7 @@ import java.time.LocalDate
 @Composable
 fun FriendProfile(navController: NavController) {
     val navBackStackEntry = navController.currentBackStackEntry
-    val friendid = navBackStackEntry?.arguments?.getInt("id")
+    val friendid = navBackStackEntry?.arguments?.getInt(stringResource(id = R.string.id))
     val friendProfileViewModel: FriendProfileViewModel = viewModel(
         factory = FriendProfileViewModel.Factory
     )
@@ -56,6 +59,7 @@ fun FriendProfile(navController: NavController) {
         friendProfileViewModel.getUserDetails(friendid)
         friendProfileLiftViewModel.getUserBestLift(friendid)
     }
+    val context = LocalContext.current
     val detailUser = friendProfileViewModel.user
     val detailHighligt: lift? = friendProfileLiftViewModel.lift
     Box(
@@ -77,7 +81,7 @@ fun FriendProfile(navController: NavController) {
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.SpaceBetween){
 
-                HeaderBarBackArrowDumbell(title = "Perfil Amigo", navController = navController, backOnClick = {navController.popBackStack()})
+                HeaderBarBackArrowDumbell(title = stringResource(R.string.perfil_amigo), navController = navController, backOnClick = {navController.popBackStack()})
                 Text(
                     text = detailUser.nombrecompleto,
                     color = Color.Black,
@@ -86,7 +90,7 @@ fun FriendProfile(navController: NavController) {
                         fontSize = 24.sp
                     )
                 )
-                MainInfoUser(detailUser, detailHighligt, navController)
+                MainInfoUser(detailUser, detailHighligt, navController, context)
             }
 
             UserBottomMenu(navController)
@@ -98,35 +102,37 @@ fun FriendProfile(navController: NavController) {
 }
 
 @Composable
-fun MainInfoUser(detailUser: user, detailLift: lift?, navController: NavController) {
+fun MainInfoUser(detailUser: user, detailLift: lift?, navController: NavController, context:Context) {
     Column() {
         BestInfoUser(detailLift)
-        InfoUser(detailUser)
+        InfoUser(detailUser,context)
     }
 }
 
 
 @Composable
-fun InfoUser(detailUser: user) {
+fun InfoUser(detailUser: user, context: Context) {
     Column() {
         Row() {
-            dataItem("Altura", detailUser.height.toString()+" Cm")
-            dataItem("Peso", detailUser.weight.toString()+" Lb")
-            dataItem("Edad", calculateAge(detailUser.fechanac).toString() +" Años")
+            dataItem(stringResource(R.string.altura), detailUser.height.toString()+ stringResource(R.string.cm_spaced))
+            dataItem(stringResource(R.string.peso), detailUser.weight.toString()+ stringResource(R.string.lb_spaced))
+            dataItem(stringResource(R.string.edad), calculateAge(detailUser.fechanac).toString() + stringResource(
+                            R.string.a_os)
+                        )
         }
         Spacer(modifier = Modifier.padding(4.dp))
         Row() {
             Image(
                 painter = painterResource(id = gentRankDrawable(detailUser.points)),
-                contentDescription = "Image Level",
+                contentDescription = stringResource(R.string.image_level),
                 modifier = Modifier
                     .width(250.dp)
                     .height(180.dp)
             )
             Column() {
-                dataItem("Puntaje", detailUser.points.toString())
+                dataItem(stringResource(R.string.puntaje), detailUser.points.toString())
                 Spacer(modifier = Modifier.padding(2.dp))
-                dataItem("Nivel", getRank(detailUser.points))
+                dataItem(stringResource(R.string.nivel), getRank(detailUser.points,context))
             }
 
         }
@@ -188,7 +194,7 @@ fun BestInfoUser(detailLift: lift?) {
 
                 ) {
                 Text(
-                    text = "Mejor Levantantamiento",
+                    text = stringResource(R.string.mejor_levantantamiento),
                     style = TextStyle(
                         fontWeight = FontWeight.Bold,
                         fontSize = 16.sp,
@@ -205,28 +211,28 @@ fun BestInfoUser(detailLift: lift?) {
     }
 }
 
-fun getRank(user_points:Int):String{
+fun getRank(user_points:Int, context: Context):String{
     var rank:String =""
     if(user_points<4000){
-        rank = "Principiante"
+        rank = context.getString(R.string.principiante)
     }else if(user_points>=4000 && user_points<10000){
-        rank = "Novato 1"
+        rank = context.getString(R.string.novato_1)
     }else if(user_points>=10000 && user_points<18000){
-        rank = "Novato 2"
+        rank = context.getString(R.string.novato_2)
     }else if(user_points>=18000 && user_points<26000){
-        rank = "Novato 3"
+        rank = context.getString(R.string.novato_3)
     }else if(user_points>=26000 && user_points<36000){
-        rank = "Intermedio 1"
+        rank = context.getString(R.string.intermedio_1)
     }else if(user_points>=36000 && user_points<48000){
-        rank = "Intermedio 2"
+        rank = context.getString(R.string.intermedio_2)
     }else if(user_points>=48000 && user_points<64000){
-        rank = "Intermedio 3"
+        rank = context.getString(R.string.intermedio_3)
     }else if(user_points>=64000 && user_points<88000){
-        rank = "Élite 1"
+        rank = context.getString(R.string.lite_1)
     }else if(user_points>=88000 && user_points<120000){
-        rank = "Élite 2"
+        rank = context.getString(R.string.lite_2)
     }else if(user_points>=120000){
-        rank = "Élite 3"
+        rank = context.getString(R.string.lite_3)
     }
     return rank
 }

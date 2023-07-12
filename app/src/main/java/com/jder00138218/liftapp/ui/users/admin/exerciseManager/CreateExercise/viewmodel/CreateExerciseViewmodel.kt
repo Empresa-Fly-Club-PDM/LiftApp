@@ -14,6 +14,7 @@ import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import androidx.navigation.NavHostController
 import com.jder00138218.liftapp.LiftAppApplication
+import com.jder00138218.liftapp.R
 import com.jder00138218.liftapp.network.ApiResponse
 import com.jder00138218.liftapp.repositories.ExerciseRepository
 import com.jder00138218.liftapp.ui.navigation.Rutas
@@ -94,8 +95,8 @@ class CreateExerciseViewmodel(private val exerciseRepository: ExerciseRepository
         val app = context.applicationContext as LiftAppApplication
         val userid = app.getUserId()
         if (!validateData()) {
-            _status.value = CreateExerciseUIStatus.ErrorWithMessage("Verificar Imformation")
-            Toast.makeText(context, "Verificar campos vacios", Toast.LENGTH_SHORT).show()
+            _status.value = CreateExerciseUIStatus.ErrorWithMessage(context.getString(R.string.verificar_imformation))
+            Toast.makeText(context, context.getString(R.string.verificar_campos_vacios), Toast.LENGTH_SHORT).show()
             isLoadingCreate.value = false
             return
         }
@@ -107,18 +108,16 @@ class CreateExerciseViewmodel(private val exerciseRepository: ExerciseRepository
         val status = _status.value
         when (status) {
             is CreateExerciseUIStatus.Error -> {
-                Log.d("tag", "Error")
-                Toast.makeText(context, "Error en inicio de sesión", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, context.getString(R.string.error_en_inicio_de_sesi_n), Toast.LENGTH_SHORT).show()
             }
             is CreateExerciseUIStatus.ErrorWithMessage -> {
-                Toast.makeText(context, "Verificar datos ingresados", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, context.getString(R.string.verificar_datos_ingresados), Toast.LENGTH_SHORT).show()
             }
             is CreateExerciseUIStatus.Success -> {
-                Toast.makeText(context, "Ejercicio creado exitosamente", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, context.getString(R.string.ejercicio_creado_exitosamente), Toast.LENGTH_SHORT).show()
                 navController.navigate(route = Rutas.AdminVerifyExercise.ruta)
             }
             else -> {
-                Log.d("tag","failure")
             }
         }
         isLoadingCreate.value = false

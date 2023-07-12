@@ -13,7 +13,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
@@ -31,6 +33,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
@@ -61,9 +64,7 @@ fun AdminManager(navController: NavController){
     val handleAddOnClick = {
         navController.navigate(route = Rutas.AdminCreateAdmin.ruta)
     }
-    val handleBackOnClick = {
-        navController.navigate(route = Rutas.AdminProfile.ruta)
-    }
+
 
     Box(modifier = Modifier
         .fillMaxSize()
@@ -76,7 +77,7 @@ fun AdminManager(navController: NavController){
             verticalArrangement = Arrangement.SpaceBetween,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            AdminHeaderBarBackArrowAdd(title = "Administradores", navController, addOnClick = {handleAddOnClick()}, backOnClick = {handleBackOnClick})
+            AdminHeaderBarBackArrowAdd(title = stringResource(R.string.administradores), navController, addOnClick = {handleAddOnClick()}, backOnClick = {navController.popBackStack()})
             OutlinedTextField(value = text, onValueChange = { newText: String ->
                 text = newText
                 vm.getAllAdmins(text)
@@ -88,12 +89,12 @@ fun AdminManager(navController: NavController){
                     colorResource(id = R.color.field)
                 )
                 .border(width = 0.dp, color = Color.White),
-                placeholder = { Text(text = "Buscar..", color = Color(R.color.gray_text)) },
+                placeholder = { Text(text = stringResource(R.string.buscar), color = Color(R.color.gray_text)) },
                 )
             if (vm._loading.value) {
                 Column(modifier = Modifier
                     .fillMaxWidth()
-                    .fillMaxHeight(0.7f),
+                    .fillMaxHeight(0.8f),
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.Center) {
                     CircularProgressIndicator(
@@ -108,7 +109,7 @@ fun AdminManager(navController: NavController){
                 LazyColumn(
                     Modifier
                         .fillMaxWidth()
-                        .fillMaxHeight(0.9f)
+                        .fillMaxHeight(0.8f)
                 ) {
                     items(vm.users) {
                         AdminInfoRow(name = it.nombrecompleto, it.id, navController = navController)
@@ -137,7 +138,7 @@ fun AdminInfoRow(name: String, id:Int?, navController: NavController){
                 id = R.color.buttonGray)
             )
         ) {
-            Text(text = "Detalle", color = Color.Black)
+            Text(text = stringResource(R.string.detalle), color = Color.Black)
         }
     }
 }

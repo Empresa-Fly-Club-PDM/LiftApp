@@ -45,6 +45,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
@@ -94,7 +95,7 @@ fun UpdateUser(navController: NavHostController) {
                 .verticalScroll(rememberScrollState()),
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.SpaceBetween){
-                HeaderBarBackArrowDumbell(title = "Informacion de usuario", navController = navController, backOnClick = {navController.popBackStack()})
+                HeaderBarBackArrowDumbell(title = stringResource(R.string.informacion_de_usuario), navController = navController, backOnClick = {navController.popBackStack()})
                 UpdateUserFields(updateUserViewModel,navController)
                 ButtonsUpdateUser(app.getUserId(),updateUserViewModel,navController)
             }
@@ -121,13 +122,13 @@ fun UpdateUser(navController: NavHostController) {
         FieldPassword(viewmodel)
         Spacer(modifier = Modifier.padding(2.dp))
         FieldConfirmPassword(viewmodel)
-        Spacer(modifier = Modifier.padding(8.dp))
+        Spacer(modifier = Modifier.padding(2.dp))
         UpdateUserSelectField(viewmodel)
-        Spacer(modifier = Modifier.padding(8.dp))
+        Spacer(modifier = Modifier.padding(2.dp))
         FieldHeight(viewmodel = viewmodel)
-        Spacer(modifier = Modifier.padding(8.dp))
+        Spacer(modifier = Modifier.padding(2.dp))
         FieldWeight(viewmodel = viewmodel)
-        Spacer(modifier = Modifier.padding(8.dp))
+        Spacer(modifier = Modifier.padding(2.dp))
         DateInputField(viewmodel)
     }
 
@@ -155,22 +156,22 @@ fun UpdateUserSelectField(viewmodel:UpdateUserViewModel){
                 )// With padding show border color
                 .background(colorResource(id = R.color.field)),
                 colors = TextFieldDefaults.textFieldColors(containerColor = colorResource(id = R.color.field)) ,
-                placeholder = { Text(text = "Sexo", color = Color(R.color.gray_text)) },
+                placeholder = { Text(text = stringResource(R.string.genero), color = Color(R.color.gray_text)) },
                 leadingIcon = {
                     Icon(
                         modifier = Modifier.size(16.dp),
                         painter = painterResource(id = R.drawable.pesa),
-                        contentDescription = "Icon field"
+                        contentDescription = stringResource(R.string.icon_field)
                     )
                 })
 
             ExposedDropdownMenu(expanded = isExpanded, onDismissRequest = { isExpanded = false }, modifier = Modifier.fillMaxWidth()) {
-                DropdownMenuItem(text = { Text(text = "Masculino") },
+                DropdownMenuItem(text = { Text(text = stringResource(R.string.masculino)) },
                     onClick = {
                         isExpanded = false
                         viewmodel._genero = "Masculino"
                     })
-                DropdownMenuItem(text = { Text(text = "Femenino") },
+                DropdownMenuItem(text = { Text(text = stringResource(R.string.femenino)) },
                     onClick = {
                         isExpanded = false
                         viewmodel._genero = "Femenino"
@@ -204,7 +205,8 @@ fun ButtonsUpdateUser(id: Int?, updateuserviewmodel: UpdateUserViewModel, navCon
                 )
             } else {
 
-                Text(text = "Actualizar informacion")
+                Text(text = stringResource(R.string.actualizar_informacion)
+                )
             }
 
         }
@@ -227,14 +229,14 @@ fun FieldWeight(viewmodel: UpdateUserViewModel) {
                 color = colorResource(id = R.color.field)
             )// With padding show border color
             .background(colorResource(id = R.color.field)),
-        placeholder = { Text(text = "Peso en lb", color = Color(R.color.gray_text)) },
+        placeholder = { Text(text = stringResource(R.string.peso_en_lb), color = Color(R.color.gray_text)) },
         singleLine = true,
         maxLines = 1,
         leadingIcon = {
             Icon(
                 modifier = Modifier.size(16.dp),
                 painter = painterResource(id = R.drawable.pesa),
-                contentDescription = "Icon field"
+                contentDescription = stringResource(R.string.icon_field)
             )
         },
         keyboardOptions = KeyboardOptions(
@@ -259,14 +261,14 @@ fun FieldHeight(viewmodel: UpdateUserViewModel) {
                 color = colorResource(id = R.color.field)
             )// With padding show border color
             .background(colorResource(id = R.color.field)),
-        placeholder = { Text(text = "Estatura en cm", color = Color(R.color.gray_text)) },
+        placeholder = { Text(text = stringResource(R.string.estatura_en_cm), color = Color(R.color.gray_text)) },
         singleLine = true,
         maxLines = 1,
         leadingIcon = {
             Icon(
                 modifier = Modifier.size(16.dp),
                 painter = painterResource(id = R.drawable.pesa),
-                contentDescription = "Icon field"
+                contentDescription = stringResource(R.string.icon_field)
             )
         },
         keyboardOptions = KeyboardOptions(
@@ -292,14 +294,14 @@ fun FieldName(viewmodel: UpdateUserViewModel) {
                 color = colorResource(id = R.color.field)
             )// With padding show border color
             .background(colorResource(id = R.color.field)),
-        placeholder = { Text(text = "Nombre Completo", color = Color(R.color.gray_text)) },
+        placeholder = { Text(text = stringResource(R.string.nombre_completo), color = Color(R.color.gray_text)) },
         singleLine = true,
         maxLines = 1,
         leadingIcon = {
             Icon(
                 modifier = Modifier.size(16.dp),
                 painter = painterResource(id = R.drawable.pesa),
-                contentDescription = "Icon field"
+                contentDescription = stringResource(R.string.icon_field)
             )
         },
         keyboardOptions = KeyboardOptions(
@@ -324,14 +326,14 @@ fun FieldEmail(viewmodel: UpdateUserViewModel) {
                 color = colorResource(id = R.color.field)
             )// With padding show border color
             .background(colorResource(id = R.color.field)),
-        placeholder = { Text(text = "Email", color = Color(R.color.gray_text)) },
+        placeholder = { Text(text = stringResource(R.string.email), color = Color(R.color.gray_text)) },
         singleLine = true,
         maxLines = 1,
         leadingIcon = {
             Icon(
                 modifier = Modifier.size(16.dp),
                 painter = painterResource(id = R.drawable.pesa),
-                contentDescription = "Icon field"
+                contentDescription = stringResource(R.string.icon_field)
             )
         },
         keyboardOptions = KeyboardOptions(
@@ -361,7 +363,7 @@ fun FieldPassword(viewModel: UpdateUserViewModel) {
                 width = 1.dp,
                 color = colorResource(id = R.color.field)
             ),
-        placeholder = { Text(text = "Password", color = Color(R.color.gray_text)) },
+        placeholder = { Text(text = stringResource(R.string.password), color = Color(R.color.gray_text)) },
         singleLine = true,
         maxLines = 1,
         leadingIcon = {
@@ -369,7 +371,7 @@ fun FieldPassword(viewModel: UpdateUserViewModel) {
                 modifier = Modifier
                     .size(16.dp),
                 painter = painterResource(id = R.drawable.icon_password),
-                contentDescription = "Icon Password",
+                contentDescription = stringResource(R.string.icon_password),
             )
         },
         trailingIcon = {
@@ -379,7 +381,7 @@ fun FieldPassword(viewModel: UpdateUserViewModel) {
                     .size(16.dp)
                     .clickable { isVisible = !isVisible },
                 painter = painterResource(id = R.drawable.icon_hide),
-                contentDescription = "Hide Icon"
+                contentDescription = stringResource(R.string.hide_icon)
             )
         },
         keyboardOptions = KeyboardOptions(
@@ -411,7 +413,7 @@ fun FieldConfirmPassword(viewModel: UpdateUserViewModel) {
                 width = 1.dp,
                 color = colorResource(id = R.color.field)
             ),
-        placeholder = { Text(text = "Password", color = Color(R.color.gray_text)) },
+        placeholder = { Text(text = stringResource(R.string.password), color = Color(R.color.gray_text)) },
         singleLine = true,
         maxLines = 1,
         leadingIcon = {
@@ -419,7 +421,7 @@ fun FieldConfirmPassword(viewModel: UpdateUserViewModel) {
                 modifier = Modifier
                     .size(16.dp),
                 painter = painterResource(id = R.drawable.icon_password),
-                contentDescription = "Icon Password",
+                contentDescription = stringResource(R.string.icon_password),
             )
         },
         trailingIcon = {
@@ -429,7 +431,7 @@ fun FieldConfirmPassword(viewModel: UpdateUserViewModel) {
                     .size(16.dp)
                     .clickable { isVisible = !isVisible },
                 painter = painterResource(id = R.drawable.icon_hide),
-                contentDescription = "Hide Icon"
+                contentDescription = stringResource(R.string.hide_icon)
             )
         },
         keyboardOptions = KeyboardOptions(
@@ -485,7 +487,7 @@ fun DateInputField(viewModel: UpdateUserViewModel) {
             onClick = {
                 mDatePickerDialog.show()
             }, colors = ButtonDefaults.buttonColors(contentColor = colorResource(id = R.color.field)) ) {
-            Text(text = "Seleccionar Fecha de Nacimiento", color = Color.LightGray)
+            Text(text = stringResource(R.string.seleccionar_fecha_de_nacimiento), color = Color.LightGray)
         }
 
         // Adding a space of 100dp height

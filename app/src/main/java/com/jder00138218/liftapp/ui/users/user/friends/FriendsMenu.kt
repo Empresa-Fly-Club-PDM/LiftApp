@@ -1,5 +1,6 @@
 package com.jder00138218.liftapp.ui.users.user.friends
 
+import android.content.Context
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -25,10 +26,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.jder00138218.liftapp.LiftAppApplication
+import com.jder00138218.liftapp.R
 import com.jder00138218.liftapp.ui.navigation.Rutas
 import com.jder00138218.liftapp.ui.users.admin.userManager.AdminManagement.viewmodel.AdminManagementViewModel
 import com.jder00138218.liftapp.ui.users.user.HeaderBarBackArrowAdd
@@ -63,7 +66,7 @@ fun FriendsMenu(navController: NavController){
         Column(modifier = Modifier.fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.SpaceBetween) {
-            HeaderBarBackArrowAdd("Amigos", navController, addOnClick = handleAddOnClick, backOnClick = { navController.popBackStack() })
+            HeaderBarBackArrowAdd(stringResource(R.string.amigos), navController, addOnClick = handleAddOnClick, backOnClick = { navController.popBackStack() })
 
             if (vm._loading.value) {
                 Column(modifier = Modifier
@@ -82,7 +85,7 @@ fun FriendsMenu(navController: NavController){
             } else {
                 LazyColumn(modifier = Modifier.fillMaxHeight(0.7f)) {
                     items(vm.users) {
-                        FriendInfoRow(it.nombrecompleto, getRank(it.points), it.id, navController)
+                        FriendInfoRow(it.nombrecompleto, getRank(it.points,context), it.id, navController)
                     }
                 }
             }
@@ -112,35 +115,35 @@ fun FriendInfoRow(name: String, rank:String, id:Int?, navController: NavControll
         }) {
             Icon(
                 imageVector = Icons.Default.Info,
-                contentDescription = "ViewUser"
+                contentDescription = stringResource(R.string.viewuser)
             )
         }
 
     }
 }
 
-fun getRank(user_points:Int):String{
+fun getRank(user_points:Int, context: Context):String{
     var rank:String =""
     if(user_points<4000){
-        rank = "Principiante"
+        rank = context.getString(R.string.principiante)
     }else if(user_points>=4000 && user_points<10000){
-        rank = "Novato 1"
+        rank = context.getString(R.string.novato_1)
     }else if(user_points>=10000 && user_points<18000){
-        rank = "Novato 2"
+        rank = context.getString(R.string.novato_2)
     }else if(user_points>=18000 && user_points<26000){
-        rank = "Novato 3"
+        rank = context.getString(R.string.novato_3)
     }else if(user_points>=26000 && user_points<36000){
-        rank = "Intermedio 1"
+        rank = context.getString(R.string.intermedio_1)
     }else if(user_points>=36000 && user_points<48000){
-        rank = "Intermedio 2"
+        rank = context.getString(R.string.intermedio_2)
     }else if(user_points>=48000 && user_points<64000){
-        rank = "Intermedio 3"
+        rank = context.getString(R.string.intermedio_3)
     }else if(user_points>=64000 && user_points<88000){
-        rank = "Élite 1"
+        rank = context.getString(R.string.lite_1)
     }else if(user_points>=88000 && user_points<120000){
-        rank = "Élite 2"
+        rank = context.getString(R.string.lite_2)
     }else if(user_points>=120000){
-        rank = "Élite 3"
+        rank = context.getString(R.string.lite_3)
     }
     return rank
 }

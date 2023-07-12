@@ -16,6 +16,7 @@ import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import androidx.navigation.NavHostController
 import com.jder00138218.liftapp.LiftAppApplication
+import com.jder00138218.liftapp.R
 import com.jder00138218.liftapp.network.ApiResponse
 import com.jder00138218.liftapp.network.dto.routine.routine
 import com.jder00138218.liftapp.repositories.RoutineRepository
@@ -88,8 +89,8 @@ class CreateRoutineViewModel(private val routineRepository: RoutineRepository) :
 
     fun onCreate(navController: NavHostController, context: Context,id:Int?) {
         if (!validateData()) {
-            _status.value = CreateRoutineUIStatus.ErrorWithMessage("Verificar Imformation")
-            Toast.makeText(context, "Verificar Información", Toast.LENGTH_SHORT).show()
+            _status.value = CreateRoutineUIStatus.ErrorWithMessage(context.getString(R.string.verificar_information))
+            Toast.makeText(context, context.getString(R.string.verificar_information), Toast.LENGTH_SHORT).show()
             _loading.value=false
             return
         }
@@ -97,7 +98,7 @@ class CreateRoutineViewModel(private val routineRepository: RoutineRepository) :
             create(difficulty, name,tag,minute,hour,id,navController,context)
             _loading.value = true
         }else{
-            Toast.makeText(context, "Duración de entrenamiento invalida", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, context.getString(R.string.duraci_n_de_entrenamiento_invalida), Toast.LENGTH_SHORT).show()
             _loading.value=false
             return
         }
@@ -108,25 +109,21 @@ class CreateRoutineViewModel(private val routineRepository: RoutineRepository) :
         val status = _status.value
         when (status) {
             is CreateRoutineUIStatus.Error -> {
-                Log.d("tag", "Error")
-                Toast.makeText(context, "Error en el registro", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, context.getString(R.string.error_en_registro), Toast.LENGTH_SHORT).show()
 
 
             }
             is CreateRoutineUIStatus.ErrorWithMessage -> {
-                Toast.makeText(context, "Verificar datos ingresados", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, context.getString(R.string.verificar_datos_ingresados), Toast.LENGTH_SHORT).show()
 
 
             }
             is CreateRoutineUIStatus.Success -> {
-                Toast.makeText(context, "Rutina Creada exitosamente", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, context.getString(R.string.rutina_creada_exitosamente), Toast.LENGTH_SHORT).show()
                 navController.navigate(route = Rutas.UserRoutineMenu.ruta)
 
             }
             else -> {
-                Log.d("tag","failure")
-
-
             }
         }
         _loading.value=false

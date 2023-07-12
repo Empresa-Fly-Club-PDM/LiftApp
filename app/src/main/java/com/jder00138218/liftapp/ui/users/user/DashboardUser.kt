@@ -1,7 +1,9 @@
 package com.jder00138218.liftapp.ui.users.user
+import android.content.Context
 import android.graphics.drawable.Drawable
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -12,6 +14,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -22,6 +25,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -32,6 +36,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -52,7 +57,6 @@ import com.jder00138218.liftapp.ui.users.user.viewmodel.DashboardUserViewModel
 import java.time.LocalDate
 import java.time.Period
 import java.time.format.DateTimeFormatter
-
 
 @Composable
 fun DashboardUserScreen(navController: NavController) {
@@ -81,57 +85,70 @@ fun DashboardUserScreen(navController: NavController) {
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.SpaceBetween
         ) {
-
-            Column(
-                modifier = Modifier
+            if(dashboardUserViewModel._loading.value){
+                Column(modifier = Modifier
                     .fillMaxWidth()
-                    .fillMaxHeight(0.85f)
-                    .verticalScroll(rememberScrollState()),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.SpaceBetween
-            ) {
-
-                Text(text = "Bienvenido,", color = colorResource(id = R.color.gray_text))
-                Text(
-                    text = detailUser.nombrecompleto,
-                    color = Color.Black,
-                    style = TextStyle(
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 24.sp
+                    .fillMaxHeight(0.9f),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center) {
+                    CircularProgressIndicator(
+                        modifier = Modifier
+                            .size(36.dp)
+                            .padding(end = 8.dp),
+                        color = Color.Red
                     )
-                )
+                }
+            }else{
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .fillMaxHeight(0.9f)
+                        .verticalScroll(rememberScrollState()),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Spacer(modifier = Modifier.padding(8.dp))
+                    GreetingCard(userName = detailUser.nombrecompleto)
+                    Spacer(modifier = Modifier.padding(8.dp))
 
-                BestInfoUser(detailLift = detailHighligt)
-                Row(modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically) {
-                    Column(modifier = Modifier.fillMaxWidth(0.5f),
-                        horizontalAlignment = Alignment.CenterHorizontally) {
                     Image(
                         painter = painterResource(id = gentRankDrawable(detailUser.points)),
-                        contentDescription = "Image Level",
+                        contentDescription = stringResource(R.string.image_level),
                         modifier = Modifier
                             .width(250.dp)
                             .height(180.dp)
                     )
-                }
-                    Column(modifier = Modifier.fillMaxWidth(0.5f),
-                    horizontalAlignment = Alignment.CenterHorizontally) {
-                        dataItem("Altura", detailUser.height.toString() + " Cm")
-                        dataItem("Peso", detailUser.weight.toString() + " Lb")
-                        dataItem(
-                            "Edad",
-                            calculateAge(detailUser.fechanac).toString() + " Años"
+                    Spacer(modifier = Modifier.padding(8.dp))
+                    DataRow3Elements(detailUser = detailUser)
+                    DataRow2Elements(detailUser = detailUser, context = context)
+                    Spacer(modifier = Modifier.padding(8.dp))
+                    BestLiftCard(bestLift = detailHighligt, navController)
+                    Spacer(modifier = Modifier.padding(8.dp))
+                    Button(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(48.dp),
+                        shape = RoundedCornerShape(8.dp),
+                        onClick = { navController.navigate(route = Rutas.UserRoutineMenu.ruta) },
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = colorResource(
+                                id = R.color.buttonRed
+                            ), contentColor = Color.White
                         )
-                        dataItem("Puntaje", detailUser.points.toString())
-                        dataItem("Nivel", getRank(detailUser.points))
+                    ) {
+                        Row(modifier = Modifier
+                            .fillMaxWidth()
+                            .fillMaxHeight(), horizontalArrangement = Arrangement.Center, verticalAlignment = Alignment.CenterVertically) {
+                            Text(text = stringResource(R.string.rutinas))
+                            Spacer(modifier = Modifier.padding(8.dp))
+                            Icon(
+                                Icons.Default.ArrowForward,
+                                contentDescription = "to routines"
+                            )
+                        }
+
                     }
-
                 }
-
-
-                RankingFriends(navController)
-                RoutineMenuCard("Rutinas", navController)
             }
 
             UserBottomMenu(navController)
@@ -143,37 +160,114 @@ fun DashboardUserScreen(navController: NavController) {
 }
 
 @Composable
-fun RoutineMenuCard(muscleGroup: String, navController: NavController) {
-    Card(
-        modifier = Modifier
+fun GreetingCard(userName: String){
+    Card(modifier = Modifier
+        .fillMaxWidth()
+        .height(56.dp)
+        , colors = CardDefaults.cardColors(
+        containerColor = Color.White
+    ), elevation = CardDefaults.cardElevation(
+            defaultElevation = 10.dp
+        )) {
+        Row(modifier = Modifier
             .fillMaxWidth()
-            .padding(8.dp)
-            .height(72.dp)
-    )
-    {
-        Box(modifier = Modifier.background(colorResource(id = R.color.card))) {
-            Row(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(horizontal = 8.dp),
+            .fillMaxHeight()
+            .padding(8.dp)) {
+            Column(modifier = Modifier
+                .fillMaxHeight()
+                .fillMaxWidth(),
+            horizontalAlignment = Alignment.CenterHorizontally) {
+                Text(text = stringResource(R.string.bienvenido), color = Color.Gray)
+                Text(text = userName, style = TextStyle(
+                    fontWeight = FontWeight.Bold
+                ), color = Color.Black)
+            }
+        }
+    }
+}
+
+@Composable
+fun BestLiftCard(bestLift: lift?, navController: NavController){
+    Card(modifier = Modifier
+        .fillMaxWidth()
+        .height(120.dp)
+        , colors = CardDefaults.cardColors(
+            containerColor = colorResource(id = R.color.bcCard)
+        ), elevation = CardDefaults.cardElevation(
+            defaultElevation = 10.dp
+        )) {
+        Column(modifier = Modifier
+            .fillMaxHeight()
+            .fillMaxWidth(),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
+        ) {
+            Row(modifier = Modifier
+                .fillMaxWidth()
+                .padding(8.dp),
                 horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
+                verticalAlignment = Alignment.CenterVertically) {
+                Text(text = "Mejor levantamiento", color = Color.Black,style = TextStyle(
+                    fontWeight = FontWeight.Bold))
+                Text(text = "${bestLift?.weight} lb", color = Color.Black,style = TextStyle(
+                    fontWeight = FontWeight.Bold, fontSize = 24.sp))
+            }
+            Button(
+                onClick = { navController.navigate(route = Rutas.UserRanking.ruta) },
+                shape = RoundedCornerShape(8.dp),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color.White
+                ),
+                modifier = Modifier
+                    .padding(8.dp)
+                    .fillMaxWidth()
+                    .height(48.dp)
             ) {
-                Text(text = muscleGroup, style = TextStyle(fontSize = 20.sp, color = Color.Black))
-                Button(
-                    modifier = Modifier,
-                    onClick = { navController.navigate(route = Rutas.UserRoutineMenu.ruta) },
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = colorResource(
-                            id = R.color.buttonRed
-                        ), contentColor = Color.White
-                    )
-                ) {
-                    Icon(
-                        Icons.Default.ArrowForward,
-                        contentDescription = "to $muscleGroup routines"
-                    )
-                }
+                Text(text = stringResource(R.string.rankings), color = Color.Red)
+            }
+        }
+    }
+}
+@Composable
+fun DataRow2Elements(detailUser: user, context: Context){
+    Row(modifier = Modifier
+        .fillMaxWidth()
+        .height(64.dp), horizontalArrangement = Arrangement.SpaceEvenly, verticalAlignment = Alignment.CenterVertically) {
+        Card(modifier = Modifier
+            .weight(1f)
+            .height(56.dp)
+            , colors = CardDefaults.cardColors(
+                containerColor = Color.White
+            ), elevation = CardDefaults.cardElevation(
+                defaultElevation = 10.dp
+            )) {
+            Column(modifier = Modifier
+                .fillMaxWidth()
+                .fillMaxHeight(),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
+            ) {
+                Text(text = "Puntaje", color = Color.Gray)
+                Text(text = detailUser.points.toString(), color = Color.Red)
+            }
+        }
+        Spacer(modifier = Modifier.padding(8.dp))
+        Card(modifier = Modifier
+            .weight(1f)
+            .height(56.dp)
+            , colors = CardDefaults.cardColors(
+                containerColor = Color.White
+            ), elevation = CardDefaults.cardElevation(
+                defaultElevation = 10.dp
+            )) {
+            Column(modifier = Modifier
+                .fillMaxWidth()
+                .fillMaxHeight(),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
+            ) {
+                Text(text = "Nivel", color = Color.Gray)
+                Text(text = getRank(detailUser.points, context), color = Color.Red)
             }
         }
 
@@ -181,43 +275,64 @@ fun RoutineMenuCard(muscleGroup: String, navController: NavController) {
 }
 
 @Composable
-fun MainInfoUser(detailUser: user, detailLift: lift?, navController: NavController) {
-    Column(
-        modifier = Modifier.fillMaxWidth(),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        BestInfoUser(detailLift)
-        InfoUser(detailUser)
-    }
-}
-
-@Composable
-fun RankingFriends(navController: NavController) {
-    Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(8.dp),
-        shape = RoundedCornerShape(8.dp),
-        colors = CardDefaults.cardColors(
-            containerColor = colorResource(id = R.color.bcCard),
-        )
-    ) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceBetween
-        ) {
-            Text(text = "Rankings", color = Color.White)
-            Button(
-                onClick = { navController.navigate(route = Rutas.UserRanking.ruta) },
-                shape = RoundedCornerShape(8.dp),
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = Color.White
-                ),
-                modifier = Modifier.padding(8.dp)
+fun DataRow3Elements(detailUser: user){
+    Row(modifier = Modifier
+        .fillMaxWidth()
+        .height(64.dp), horizontalArrangement = Arrangement.SpaceEvenly, verticalAlignment = Alignment.CenterVertically) {
+        Card(modifier = Modifier
+            .weight(1f)
+            .height(56.dp)
+            , colors = CardDefaults.cardColors(
+                containerColor = Color.White
+            ), elevation = CardDefaults.cardElevation(
+                defaultElevation = 10.dp
+            )) {
+            Column(modifier = Modifier
+                .fillMaxWidth()
+                .fillMaxHeight(),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
             ) {
-                Text(text = "Rankings", color = Color.Red)
+                Text(text = "Altura", color = Color.Gray)
+                Text(text = detailUser.height.toString(), color = Color.Red)
+            }
+        }
+        Spacer(modifier = Modifier.padding(8.dp))
+        Card(modifier = Modifier
+            .weight(1f)
+            .height(56.dp)
+            , colors = CardDefaults.cardColors(
+                containerColor = Color.White
+            ), elevation = CardDefaults.cardElevation(
+                defaultElevation = 10.dp
+            )) {
+            Column(modifier = Modifier
+                .fillMaxWidth()
+                .fillMaxHeight(),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
+            ) {
+                Text(text = "Peso", color = Color.Gray)
+                Text(text = detailUser.weight.toString(), color = Color.Red)
+            }
+        }
+        Spacer(modifier = Modifier.padding(8.dp))
+        Card(modifier = Modifier
+            .weight(1f)
+            .height(56.dp)
+            , colors = CardDefaults.cardColors(
+                containerColor = Color.White
+            ), elevation = CardDefaults.cardElevation(
+                defaultElevation = 10.dp
+            )) {
+            Column(modifier = Modifier
+                .fillMaxWidth()
+                .fillMaxHeight(),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
+            ) {
+                Text(text = "Edad", color = Color.Gray)
+                Text(text = calculateAge(detailUser.fechanac).toString() + stringResource(R.string.a_os), color = Color.Red)
             }
         }
     }
@@ -233,127 +348,28 @@ fun ItemFriend(name: String) {
     )
 }
 
-
-@Composable
-fun InfoUser(detailUser: user) {
-    Column(modifier = Modifier.fillMaxWidth()) {
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween
-        ) {
-
-        }
-        Spacer(modifier = Modifier.padding(4.dp))
-        Row(modifier = Modifier.padding(8.dp)) {
-            Image(
-                painter = painterResource(id = gentRankDrawable(detailUser.points)),
-                contentDescription = "Image Level",
-                modifier = Modifier
-                    .width(250.dp)
-                    .height(180.dp)
-            )
-            Column(verticalArrangement = Arrangement.SpaceBetween, modifier = Modifier.weight(1f)) {
-
-            }
-
-        }
-    }
-
-
-}
-
-@Composable
-fun dataItem(type: String, data: String, modifier: Modifier = Modifier) {
-    Card(
-        modifier = modifier,
-        shape = MaterialTheme.shapes.medium,
-        colors = CardDefaults.cardColors(
-            containerColor = Color.White,
-        )
-    ) {
-        Column(
-            modifier = Modifier
-                .padding(8.dp)
-                .fillMaxSize()
-        ) {
-            Text(
-                text = data,
-                textAlign = TextAlign.Center,
-                modifier = Modifier.fillMaxWidth(),
-                color = Color.Red
-            )
-            Text(
-                text = type,
-                textAlign = TextAlign.Center,
-                modifier = Modifier.fillMaxWidth(),
-                color = colorResource(id = R.color.gray_text)
-            )
-        }
-    }
-}
-
-
-@Composable
-fun BestInfoUser(detailLift: lift?) {
-    Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(8.dp)
-            .height(72.dp)
-    )
-    {
-        Box(modifier = Modifier.background(colorResource(id = R.color.card))) {
-            Row(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(horizontal = 8.dp),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically,
-
-                ) {
-                Text(
-                    text = "Mejor Levantantamiento",
-                    style = TextStyle(
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 16.sp,
-                        color = Color.Black
-                    )
-                )
-                Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                    Text(text = "${detailLift?.weight} LB", color = Color.Red)
-                    Text(
-                        text = handleHighlightName(detailLift?.exercisename),
-                        color = Color.DarkGray
-                    )
-                }
-
-            }
-        }
-    }
-}
-
-fun getRank(user_points: Int): String {
-    var rank: String = ""
-    if (user_points < 4000) {
-        rank = "Principiante"
-    } else if (user_points >= 4000 && user_points < 10000) {
-        rank = "Novato 1"
-    } else if (user_points >= 10000 && user_points < 18000) {
-        rank = "Novato 2"
-    } else if (user_points >= 18000 && user_points < 26000) {
-        rank = "Novato 3"
-    } else if (user_points >= 26000 && user_points < 36000) {
-        rank = "Intermedio 1"
-    } else if (user_points >= 36000 && user_points < 48000) {
-        rank = "Intermedio 2"
-    } else if (user_points >= 48000 && user_points < 64000) {
-        rank = "Intermedio 3"
-    } else if (user_points >= 64000 && user_points < 88000) {
-        rank = "Élite 1"
-    } else if (user_points >= 88000 && user_points < 120000) {
-        rank = "Élite 2"
-    } else if (user_points >= 120000) {
-        rank = "Élite 3"
+fun getRank(user_points:Int, context: Context):String{
+    var rank:String =""
+    if(user_points<4000){
+        rank = context.getString(R.string.principiante)
+    }else if(user_points>=4000 && user_points<10000){
+        rank = context.getString(R.string.novato_1)
+    }else if(user_points>=10000 && user_points<18000){
+        rank = context.getString(R.string.novato_2)
+    }else if(user_points>=18000 && user_points<26000){
+        rank = context.getString(R.string.novato_3)
+    }else if(user_points>=26000 && user_points<36000){
+        rank = context.getString(R.string.intermedio_1)
+    }else if(user_points>=36000 && user_points<48000){
+        rank = context.getString(R.string.intermedio_2)
+    }else if(user_points>=48000 && user_points<64000){
+        rank = context.getString(R.string.intermedio_3)
+    }else if(user_points>=64000 && user_points<88000){
+        rank = context.getString(R.string.lite_1)
+    }else if(user_points>=88000 && user_points<120000){
+        rank = context.getString(R.string.lite_2)
+    }else if(user_points>=120000){
+        rank = context.getString(R.string.lite_3)
     }
     return rank
 }

@@ -7,11 +7,14 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -35,6 +38,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -43,10 +47,11 @@ import com.jder00138218.liftapp.LiftAppApplication
 import com.jder00138218.liftapp.R
 import com.jder00138218.liftapp.network.dto.exercise.exercise
 import com.jder00138218.liftapp.ui.navigation.Rutas
+import com.jder00138218.liftapp.ui.users.admin.ExerciseCardAdmin
+import com.jder00138218.liftapp.ui.users.user.ExerciseCardUser
 import com.jder00138218.liftapp.ui.users.user.HeaderBarBackArrowAdd
 import com.jder00138218.liftapp.ui.users.user.HeaderBarBackArrowCheck
 import com.jder00138218.liftapp.ui.users.user.UserBottomMenu
-import com.jder00138218.liftapp.ui.users.user.addexercisetoroutine.CardExercise
 import com.jder00138218.liftapp.ui.users.user.addexercisetoroutine.viewmodel.AddExerciseToRoutineViewModel
 import com.jder00138218.liftapp.ui.users.user.userexercises.viewmodel.UserExercisesViewModel
 import kotlinx.coroutines.delay
@@ -85,7 +90,7 @@ fun UserExercises(navController: NavController){
             .fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.SpaceBetween) {
-            HeaderBarBackArrowAdd(title = "Mis Ejercicios", navController = navController, addOnClick = {navController.navigate(route = Rutas.UserAddExercises.ruta)}, backOnClick = {navController.popBackStack()})
+            HeaderBarBackArrowAdd(title = stringResource(R.string.mis_ejercicios), navController = navController, addOnClick = {navController.navigate(route = Rutas.UserAddExercises.ruta)}, backOnClick = {navController.popBackStack()})
             OutlinedTextField(value = text, onValueChange = { newText: String ->
                 text = newText
                 vm.getPersonalExercises(text,app.getUserId())}, modifier = Modifier
@@ -96,7 +101,7 @@ fun UserExercises(navController: NavController){
                     colorResource(id = R.color.field)
                 )
                 .border(width = 0.dp, color = Color.White),
-                placeholder = { Text(text = "Buscar..", color = Color(R.color.gray_text)) },
+                placeholder = { Text(text = stringResource(R.string.buscar), color = Color(R.color.gray_text)) },
             )
             if (vm._loading.value) {
                 Column(modifier = Modifier
@@ -116,101 +121,16 @@ fun UserExercises(navController: NavController){
                 LazyColumn(
                     Modifier
                         .fillMaxWidth()
-                        .fillMaxHeight(0.7f)
+                        .fillMaxHeight(0.9f)
                 ) {
                     items(vm.exercises) {
-                        CardUserExercise(it, navController, vm)
+                        var url ="rutas_user_update_exercise/${it.id}"
+                        ExerciseCardUser(it, url, navController)
+                        Spacer(modifier = Modifier.height(8.dp))
                     }
                 }
             }
             UserBottomMenu(navController)
         }
     }
-}
-
-@Composable
-fun CardUserExercise(exercise: exercise, navController: NavController, addExerciseToRoutineViewModel: UserExercisesViewModel) {
-    val context = LocalContext.current
-    Card( // this
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(8.dp)
-            .clickable {navController.navigate(route = "rutas_user_update_exercise/${exercise.id}")
-            },
-        colors = CardDefaults.cardColors(
-            containerColor = colorResource(id = R.color.card)
-        )
-    ) {
-
-        Box(
-            modifier = Modifier
-                .padding(16.dp),
-            contentAlignment = Alignment.Center
-        ) {
-            Column(modifier = Modifier.fillMaxWidth(1f)) {
-
-                Row() {
-                    Text(
-                        text = exercise.name,
-                        fontWeight = FontWeight.Bold,
-                        modifier = Modifier.weight(1f)
-                    )
-                    Icon(
-                        painter = painterResource(id = R.drawable.pesa),
-                        contentDescription = "Verify Icon",
-                        modifier = Modifier.size(20.dp)
-                    )
-                }
-
-
-                Row(
-                    modifier = Modifier
-                        .padding(8.dp)
-                        .fillMaxWidth(1f),
-                    horizontalArrangement = Arrangement.Start
-                ) {
-                    ItemUserEx(exercise)
-                    ItemUserExRight(exercise)
-                }
-
-            }
-        }
-
-
-    }
-}
-
-
-@Composable
-fun ItemUserEx(exercise: exercise) {
-    Card(
-        colors = CardDefaults.cardColors(
-            containerColor = Color.White
-        ), modifier = Modifier
-            .padding(4.dp)
-            .size(width = 160.dp, height = 60.dp)
-    ) {
-        Column(Modifier.padding(8.dp)) {
-            Text(text = "Musculo", color = Color.Red)
-            Text(text = exercise.muscle, color = Color(R.color.gray_text))
-        }
-    }
-
-}
-
-@Composable
-fun ItemUserExRight(exercise: exercise) {
-    Card(
-        colors = CardDefaults.cardColors(
-            containerColor = Color.White
-        ), modifier = Modifier
-            .padding(4.dp)
-            .size(width = 160.dp, height = 60.dp)
-    ) {
-        Column(Modifier.padding(8.dp)) {
-            Text(text = exercise.type, color = Color.Red)
-            Text(text = "${exercise.reps}x${exercise.sets}", color = Color(R.color.gray_text))
-        }
-    }
-
 }

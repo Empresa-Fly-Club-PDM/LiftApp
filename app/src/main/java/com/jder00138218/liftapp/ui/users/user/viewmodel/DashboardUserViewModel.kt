@@ -15,6 +15,7 @@ import kotlinx.coroutines.launch
 
 class DashboardUserViewModel(private val userRepository: UserRepository): ViewModel() {
     private var _user = mutableStateOf<user>(user())
+    val _loading = mutableStateOf(true)
 
     val user: user
         get() = _user.value
@@ -27,6 +28,7 @@ class DashboardUserViewModel(private val userRepository: UserRepository): ViewMo
         viewModelScope.launch {
             addExercise(userRepository.getUserDetails(id))
         }
+        _loading.value = false
     }
 
     companion object {

@@ -15,6 +15,7 @@ import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import androidx.navigation.NavHostController
 import com.jder00138218.liftapp.LiftAppApplication
+import com.jder00138218.liftapp.R
 import com.jder00138218.liftapp.network.ApiResponse
 import com.jder00138218.liftapp.repositories.LiftRepository
 import com.jder00138218.liftapp.ui.users.user.routineflow.RegisterLift.RegisteRexerciseUIStatus
@@ -41,18 +42,16 @@ class RegisterExerciseStatsViewModel(private val liftRepository: LiftRepository)
         val status = _status.value
         when (status) {
             is RegisteRexerciseUIStatus.Error -> {
-                Log.d("tag", "Error")
-                Toast.makeText(context, "Error en el registro", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, context.getString(R.string.error_en_registro), Toast.LENGTH_SHORT).show()
             }
             is RegisteRexerciseUIStatus.ErrorWithMessage -> {
-                Toast.makeText(context, "Verificar datos ingresados", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, context.getString(R.string.verificar_datos_ingresados), Toast.LENGTH_SHORT).show()
             }
             is RegisteRexerciseUIStatus.Success -> {
-                Toast.makeText(context, "Registro exitoso", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, context.getString(R.string.registro_exitoso), Toast.LENGTH_SHORT).show()
                 navController.popBackStack()
             }
             else -> {
-                Log.d("tag","failure")
             }
         }
     }
@@ -74,8 +73,8 @@ class RegisterExerciseStatsViewModel(private val liftRepository: LiftRepository)
 
     fun onCreate(exerciseid:Int?,userid:Int?,navController: NavHostController, context: Context) {
         if (!validateData()) {
-            _status.value = RegisteRexerciseUIStatus.ErrorWithMessage("Verificar Imformation")
-            Toast.makeText(context, "Verificar Informacion", Toast.LENGTH_SHORT).show()
+            _status.value = RegisteRexerciseUIStatus.ErrorWithMessage(context.getString(R.string.verificar_information))
+            Toast.makeText(context, context.getString(R.string.verificar_information), Toast.LENGTH_SHORT).show()
             return
         }else{
             create(weight.toInt(), reps.toInt(),exerciseid,userid, navController, context)

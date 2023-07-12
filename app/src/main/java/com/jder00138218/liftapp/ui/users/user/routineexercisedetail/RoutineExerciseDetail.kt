@@ -39,6 +39,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
@@ -61,8 +62,8 @@ import com.jder00138218.liftapp.ui.users.user.routineexercisedetail.viewmodel.Ro
 @Composable
 fun RoutineExerciseDetail(navController: NavHostController, alternativenavcontroller: NavController) {
     val navBackStackEntry = navController.currentBackStackEntry
-    val exerciseid = navBackStackEntry?.arguments?.getInt("id")
-    val routineid = navBackStackEntry?.arguments?.getInt("routineid")
+    val exerciseid = navBackStackEntry?.arguments?.getInt(stringResource(R.string.id))
+    val routineid = navBackStackEntry?.arguments?.getInt(stringResource(R.string.routineid))
     val detailExerciseViewmodel:DetailExerciseViewmodel = viewModel(
         factory = DetailExerciseViewmodel.Factory
     )
@@ -85,7 +86,7 @@ fun RoutineExerciseDetail(navController: NavHostController, alternativenavcontro
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
 
-            HeaderBarBackArrowDumbell(title = "Detalle del ejercicio", navController = alternativenavcontroller, backOnClick = {navController.popBackStack()})
+            HeaderBarBackArrowDumbell(title = stringResource(R.string.detalle_del_ejercicio), navController = alternativenavcontroller, backOnClick = {navController.popBackStack()})
             FieldsDetaile(detailExercise,detailExerciseViewmodel,navController)
             ButtonsRoutineExerciseDetaile(detailExercise.id,routineid,routineExerciseDetailViewModel, navController)
             UserBottomMenu(navController)
@@ -144,7 +145,7 @@ fun ButtonsRoutineExerciseDetaile(idexc: Int?,idrut:Int? , routineExerciseDetail
                 )
             } else {
 
-                Text(text = "Remover de la rutina")
+                Text(text = stringResource(R.string.remover_de_la_rutina))
             }
 
         }
@@ -173,7 +174,7 @@ fun FieldDetaile(name: String) {
             Icon(
                 modifier = Modifier.size(16.dp),
                 painter = painterResource(id = R.drawable.pesa),
-                contentDescription = "Icon field"
+                contentDescription = stringResource(R.string.icon_field)
             )
         },
         keyboardOptions = KeyboardOptions(

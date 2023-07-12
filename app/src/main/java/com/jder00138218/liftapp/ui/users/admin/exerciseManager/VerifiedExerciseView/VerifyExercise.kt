@@ -7,9 +7,11 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -34,6 +36,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -47,6 +50,7 @@ import com.jder00138218.liftapp.R
 import com.jder00138218.liftapp.network.dto.exercise.exercise
 import com.jder00138218.liftapp.ui.navigation.Rutas
 import com.jder00138218.liftapp.ui.users.admin.AdminHeaderBarBackArrowAdd
+import com.jder00138218.liftapp.ui.users.admin.ExerciseCardAdmin
 import com.jder00138218.liftapp.ui.users.admin.Menu
 import com.jder00138218.liftapp.ui.users.admin.exerciseManager.VerifiedExerciseView.viewmodel.VerifiedExercisesViewModel
 import com.jder00138218.liftapp.ui.users.admin.viewmodel.DashboardAdminViewmodel
@@ -78,7 +82,7 @@ fun VerifyExercises(navController: NavController) {
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             AdminHeaderBarBackArrowAdd(
-                title = "Ejercicios Verificados",
+                title = stringResource(R.string.ejercicios_verificados),
                 navController = navController,
                 addOnClick = { handleAddOnClick() },
                 backOnClick = { handleBackOnClick() })
@@ -106,7 +110,9 @@ fun VerifyExercises(navController: NavController) {
                         .fillMaxHeight(0.9f)
                 ) {
                     items(vm.exercises) { index ->
-                        CardExerciseVerify(index, navController)
+                        var url = "ruta_admin_update_exercise/" + index.id
+                        ExerciseCardAdmin(index, url, navController)
+                    Spacer(modifier = Modifier.height(8.dp))
                     }
                 }
             }
@@ -114,93 +120,6 @@ fun VerifyExercises(navController: NavController) {
             Menu(navController)
         }
 
-    }
-
-}
-
-// This is for Verify exercise
-@Composable
-fun CardExerciseVerify(exercise: exercise, navController: NavController) {
-    Card( // this
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(8.dp)
-            .clickable{navController.navigate(route = "ruta_admin_update_exercise/" + exercise.id)
-            },
-        colors = CardDefaults.cardColors(
-            containerColor = colorResource(id = R.color.card)
-        )
-    ) {
-
-        Box(
-            modifier = Modifier
-                .padding(16.dp),
-            contentAlignment = Alignment.Center
-        ) {
-            Column(modifier = Modifier.fillMaxWidth(1f)) {
-
-                Row() {
-                    Text(
-                        text = exercise.name,
-                        fontWeight = FontWeight.Bold,
-                        modifier = Modifier.weight(1f)
-                    )
-                    Icon(
-                        painter = painterResource(id = R.drawable.shield_done),
-                        contentDescription = "Verify Icon",
-                        modifier = Modifier.size(20.dp)
-                    )
-                }
-
-
-                Row(
-                    modifier = Modifier
-                        .padding(8.dp)
-                        .fillMaxWidth(1f),
-                    horizontalArrangement = Arrangement.Start
-                ) {
-                    ItemExVerify(exercise)
-                    ItemExVerifyRight(exercise)
-                }
-
-            }
-        }
-
-
-    }
-}
-
-
-@Composable
-fun ItemExVerify(exercise: exercise) {
-    Card(
-        colors = CardDefaults.cardColors(
-            containerColor = Color.White
-        ), modifier = Modifier
-            .padding(4.dp)
-            .size(width = 160.dp, height = 60.dp)
-    ) {
-        Column(Modifier.padding(8.dp)) {
-            Text(text = "Musculo", color = Color.Red)
-            Text(text = exercise.muscle, color = Color(R.color.gray_text))
-        }
-    }
-
-}
-
-@Composable
-fun ItemExVerifyRight(exercise: exercise) {
-    Card(
-        colors = CardDefaults.cardColors(
-            containerColor = Color.White
-        ), modifier = Modifier
-            .padding(4.dp)
-            .size(width = 160.dp, height = 60.dp)
-    ) {
-        Column(Modifier.padding(8.dp)) {
-            Text(text = exercise.type, color = Color.Red)
-            Text(text = "${exercise.reps}x${exercise.sets}", color = Color(R.color.gray_text))
-        }
     }
 
 }

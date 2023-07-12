@@ -16,6 +16,7 @@ import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import androidx.navigation.NavHostController
 import com.jder00138218.liftapp.LiftAppApplication
+import com.jder00138218.liftapp.R
 import com.jder00138218.liftapp.network.ApiResponse
 import com.jder00138218.liftapp.repositories.CredentialsRepository
 
@@ -128,35 +129,35 @@ class RegisterViewModel(private val repository: CredentialsRepository) : ViewMod
         if (date.isEmpty()) {
             years = 0
         } else {
-            years = calcularEdad(date)
+            years = calcularEdad(date, context)
         }
 
         if (!validateData()) {
-            _status.value = RegisterUiStatus.ErrorWithMessage("Wrong Information")
-            Toast.makeText(context, "Campos Invalidos", Toast.LENGTH_SHORT).show()
+            _status.value = RegisterUiStatus.ErrorWithMessage(context.getString(R.string.wrong_imformation))
+            Toast.makeText(context, context.getString(R.string.campos_invalidos), Toast.LENGTH_SHORT).show()
             when {
                 (password != passwordVe) -> Toast.makeText(
                     context,
-                    "Error contraseñas no coinciden",
+                    context.getString(R.string.error_contrase_as_no_coinciden),
                     Toast.LENGTH_SHORT
                 ).show()
 
 
                 (password.length < 8) -> Toast.makeText(
                     context,
-                    "La contraseña debe ser de al menos 8 caracteres",
+                    context.getString(R.string.la_contrase_a_debe_ser_de_al_menos_8_caracteres),
                     Toast.LENGTH_SHORT
                 ).show()
 
                 (years < 13) -> Toast.makeText(
                     context,
-                    "Edad invalida",
+                    context.getString(R.string.edad_invalida),
                     Toast.LENGTH_SHORT
                 ).show()
 
                 (!isValidEmail(email))->Toast.makeText(
                     context,
-                    "Formato de correo incorrecto",
+                    context.getString(R.string.formato_de_correo_incorrecto),
                     Toast.LENGTH_SHORT
                 ).show()
             }
@@ -206,15 +207,15 @@ class RegisterViewModel(private val repository: CredentialsRepository) : ViewMod
 
             is RegisterUiStatus.Error -> {
 
-                Toast.makeText(context, "Error en registro", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, context.getString(R.string.error_en_registro), Toast.LENGTH_SHORT).show()
             }
 
             is RegisterUiStatus.ErrorWithMessage -> {
-                Toast.makeText(context, "Datos no validos", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, context.getString(R.string.datos_no_validos), Toast.LENGTH_SHORT).show()
             }
 
             is RegisterUiStatus.Success -> {
-                Toast.makeText(context, "Usuario Creado Exitosamente", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, context.getString(R.string.usuario_creado_exitosamente), Toast.LENGTH_SHORT).show()
                 clearStatus()
                 clearData()
                 navController.navigate(route = Rutas.Login.ruta)
@@ -225,8 +226,8 @@ class RegisterViewModel(private val repository: CredentialsRepository) : ViewMod
     }
 
 
-    fun calcularEdad(fechaNacimiento: String): Int {
-        val formatoFecha = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+    fun calcularEdad(fechaNacimiento: String,context: Context): Int {
+        val formatoFecha = SimpleDateFormat(context.getString(R.string.dd_mm_yyyy), Locale.getDefault())
         val fechaNac = formatoFecha.parse(fechaNacimiento)
         val fechaActual = Date()
 

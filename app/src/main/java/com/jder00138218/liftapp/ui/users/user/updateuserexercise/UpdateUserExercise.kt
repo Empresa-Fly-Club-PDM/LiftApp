@@ -43,6 +43,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
@@ -61,7 +62,7 @@ import com.jder00138218.liftapp.ui.users.user.updateuserexercise.viewmodel.Updat
 @Composable
 fun UpdateUserExercise(navController: NavHostController) {
     val navBackStackEntry = navController.currentBackStackEntry
-    val exerciseid = navBackStackEntry?.arguments?.getInt("id")
+    val exerciseid = navBackStackEntry?.arguments?.getInt(stringResource(R.string.id))
     val updateUserExerciseViewModel:UpdateUserExerciseViewModel = viewModel(
         factory = UpdateUserExerciseViewModel.Factory
     )
@@ -84,7 +85,7 @@ fun UpdateUserExercise(navController: NavHostController) {
                 .verticalScroll(rememberScrollState()),
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.SpaceBetween){
-                HeaderBarBackArrowDumbell(title = "Detalle de ejercicio", navController = navController, backOnClick = {navController.popBackStack()})
+                HeaderBarBackArrowDumbell(title = stringResource(R.string.detalle_de_ejercicio), navController = navController, backOnClick = {navController.popBackStack()})
                 FieldsDetaileCreate(navController,updateUserExerciseViewModel)
                 ButtonsUpdate(exerciseid,updateUserExerciseViewModel,navController)
             }
@@ -124,13 +125,12 @@ fun FieldsDetaileCreate(navController: NavHostController, updateUserExerciseView
 @Composable
 fun ButtonsUpdate(id: Int?, viewmodel: UpdateUserExerciseViewModel, navController: NavHostController) {
     val context = LocalContext.current
-    Row() {
+    Column(modifier = Modifier.fillMaxWidth()) {
         Button(
             onClick = {
                 viewmodel.onUpdate(navController,context,id)
             }, modifier = Modifier
                 .height(60.dp)
-                .width(175.dp)
                 .fillMaxWidth(), colors = ButtonDefaults.buttonColors(
                 containerColor = colorResource(id = R.color.buttonGray)
             )
@@ -146,7 +146,7 @@ fun ButtonsUpdate(id: Int?, viewmodel: UpdateUserExerciseViewModel, navControlle
                 )
             } else {
 
-                Text(text = "Editar")
+                Text(text = stringResource(R.string.editar))
             }
 
         }
@@ -156,13 +156,12 @@ fun ButtonsUpdate(id: Int?, viewmodel: UpdateUserExerciseViewModel, navControlle
                 viewmodel.deleteExercise(id, navController,context)
             }, modifier = Modifier
                 .height(60.dp)
-                .width(175.dp)
                 .fillMaxWidth(), colors = ButtonDefaults.buttonColors(
                 containerColor = Color.Red
             )
         ) {
 
-            Text(text = "Eliminar")
+            Text(text = stringResource(R.string.eliminar))
 
         }
     }
@@ -177,21 +176,21 @@ fun FieldName(viewmodel: UpdateUserExerciseViewModel) {
             viewmodel._name= newValue
         },
         modifier = Modifier
-            .width(350.dp)
+            .fillMaxWidth()
             .clip(RoundedCornerShape(4.dp))
             .border(
                 width = 1.dp,
                 color = colorResource(id = R.color.field)
             )// With padding show border color
             .background(colorResource(id = R.color.field)),
-        placeholder = { Text(text = "Nombre del Ejercicio", color = Color(R.color.gray_text)) },
+        placeholder = { Text(text = stringResource(R.string.nombre_del_ejercicio), color = Color(R.color.gray_text)) },
         singleLine = true,
         maxLines = 1,
         leadingIcon = {
             Icon(
                 modifier = Modifier.size(16.dp),
                 painter = painterResource(id = R.drawable.pesa),
-                contentDescription = "Icon field"
+                contentDescription = stringResource(R.string.icon_field)
             )
         },
         keyboardOptions = KeyboardOptions(
@@ -209,21 +208,21 @@ fun FieldMuscle(viewmodel: UpdateUserExerciseViewModel) {
             viewmodel._muscle= newValue
         },
         modifier = Modifier
-            .width(350.dp)
+            .fillMaxWidth()
             .clip(RoundedCornerShape(4.dp))
             .border(
                 width = 1.dp,
                 color = colorResource(id = R.color.field)
             )// With padding show border color
             .background(colorResource(id = R.color.field)),
-        placeholder = { Text(text = "Músculo trabajado", color = Color(R.color.gray_text)) },
+        placeholder = { Text(text = stringResource(R.string.m_sculo_trabajado), color = Color(R.color.gray_text)) },
         singleLine = true,
         maxLines = 1,
         leadingIcon = {
             Icon(
                 modifier = Modifier.size(16.dp),
                 painter = painterResource(id = R.drawable.pesa),
-                contentDescription = "Icon field"
+                contentDescription = stringResource(R.string.icon_field)
             )
         },
         keyboardOptions = KeyboardOptions(
@@ -236,8 +235,6 @@ fun FieldMuscle(viewmodel: UpdateUserExerciseViewModel) {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun FieldType(viewmodel: UpdateUserExerciseViewModel){
-    Log.d("recievedData",viewmodel._type)
-
     var isExpanded by remember {
         mutableStateOf(false)
     }
@@ -251,7 +248,7 @@ fun FieldType(viewmodel: UpdateUserExerciseViewModel){
                 ExposedDropdownMenuDefaults.TrailingIcon(expanded = isExpanded)
             }, modifier = Modifier
                 .menuAnchor()
-                .width(350.dp)
+                .fillMaxWidth()
                 .clip(RoundedCornerShape(4.dp))
                 .border(
                     width = 1.dp,
@@ -259,27 +256,27 @@ fun FieldType(viewmodel: UpdateUserExerciseViewModel){
                 )// With padding show border color
                 .background(colorResource(id = R.color.field)),
                 colors = TextFieldDefaults.textFieldColors(containerColor = colorResource(id = R.color.field)) ,
-                placeholder = { Text(text ="Tipo de estimulo", color = Color(R.color.gray_text)) },
+                placeholder = { Text(text =stringResource(R.string.tipo_de_estimulo), color = Color(R.color.gray_text)) },
                 leadingIcon = {
                     Icon(
                         modifier = Modifier.size(16.dp),
                         painter = painterResource(id = R.drawable.pesa),
-                        contentDescription = "Icon field"
+                        contentDescription = stringResource(R.string.icon_field)
                     )
                 })
 
             ExposedDropdownMenu(expanded = isExpanded, onDismissRequest = { isExpanded = false }) {
-                DropdownMenuItem(text = { Text(text = "Hipertrofia") },
+                DropdownMenuItem(text = { Text(text = stringResource(R.string.hipertrofia)) },
                     onClick = {
                         isExpanded = false
                         viewmodel._type= "Hipertrofia"
                     })
-                DropdownMenuItem(text = { Text(text = "Estres") },
+                DropdownMenuItem(text = { Text(text = stringResource(R.string.estres)) },
                     onClick = {
                         isExpanded = false
                         viewmodel._type= "Estres"
                     })
-                DropdownMenuItem(text = { Text(text = "Fuerza") },
+                DropdownMenuItem(text = { Text(text = stringResource(R.string.fuerza)) },
                     onClick = {
                         isExpanded = false
                         viewmodel._type= "Fuerza"
@@ -307,7 +304,7 @@ fun FieldDifficulty(viewmodel: UpdateUserExerciseViewModel){
                 ExposedDropdownMenuDefaults.TrailingIcon(expanded = isExpanded)
             }, modifier = Modifier
                 .menuAnchor()
-                .width(350.dp)
+                .fillMaxWidth()
                 .clip(RoundedCornerShape(4.dp))
                 .border(
                     width = 1.dp,
@@ -315,27 +312,27 @@ fun FieldDifficulty(viewmodel: UpdateUserExerciseViewModel){
                 )// With padding show border color
                 .background(colorResource(id = R.color.field)),
                 colors = TextFieldDefaults.textFieldColors(containerColor = colorResource(id = R.color.field)) ,
-                placeholder = { Text(text = "Dificultad", color = Color(R.color.gray_text)) },
+                placeholder = { Text(text = stringResource(R.string.dificultad), color = Color(R.color.gray_text)) },
                 leadingIcon = {
                     Icon(
                         modifier = Modifier.size(16.dp),
                         painter = painterResource(id = R.drawable.pesa),
-                        contentDescription = "Icon field"
+                        contentDescription = stringResource(R.string.icon_field)
                     )
                 })
 
             ExposedDropdownMenu(expanded = isExpanded, onDismissRequest = { isExpanded = false }) {
-                DropdownMenuItem(text = { Text(text = "Bajo") },
+                DropdownMenuItem(text = { Text(text = stringResource(R.string.bajo)) },
                     onClick = {
                         isExpanded = false
                         viewmodel._difficulty = "Bajo"
                     })
-                DropdownMenuItem(text = { Text(text = "Medio") },
+                DropdownMenuItem(text = { Text(text = stringResource(R.string.medio)) },
                     onClick = {
                         isExpanded = false
                         viewmodel._difficulty = "Medio"
                     })
-                DropdownMenuItem(text = { Text(text = "Alto") },
+                DropdownMenuItem(text = { Text(text = stringResource(R.string.alto)) },
                     onClick = {
                         isExpanded = false
                         viewmodel._difficulty = "Alto"
@@ -355,21 +352,21 @@ fun FieldDescription(viewmodel: UpdateUserExerciseViewModel) {
             viewmodel._description=newValue
         },
         modifier = Modifier
-            .width(350.dp)
+            .fillMaxWidth()
             .clip(RoundedCornerShape(4.dp))
             .border(
                 width = 1.dp,
                 color = colorResource(id = R.color.field)
             )// With padding show border color
             .background(colorResource(id = R.color.field)),
-        placeholder = { Text(text = "Descripción", color = Color(R.color.gray_text)) },
+        placeholder = { Text(text = stringResource(R.string.descripci_n), color = Color(R.color.gray_text)) },
         singleLine = true,
         maxLines = 1,
         leadingIcon = {
             Icon(
                 modifier = Modifier.size(16.dp),
                 painter = painterResource(id = R.drawable.pesa),
-                contentDescription = "Icon field"
+                contentDescription = stringResource(R.string.icon_field)
             )
         },
         keyboardOptions = KeyboardOptions(
@@ -388,21 +385,21 @@ fun FieldSets(viewmodel: UpdateUserExerciseViewModel) {
             viewmodel._sets=newValue
         },
         modifier = Modifier
-            .width(350.dp)
+            .fillMaxWidth()
             .clip(RoundedCornerShape(4.dp))
             .border(
                 width = 1.dp,
                 color = colorResource(id = R.color.field)
             )// With padding show border color
             .background(colorResource(id = R.color.field)),
-        placeholder = { Text(text = "Sets", color = Color(R.color.gray_text)) },
+        placeholder = { Text(text = stringResource(R.string.sets), color = Color(R.color.gray_text)) },
         singleLine = true,
         maxLines = 1,
         leadingIcon = {
             Icon(
                 modifier = Modifier.size(16.dp),
                 painter = painterResource(id = R.drawable.pesa),
-                contentDescription = "Icon field"
+                contentDescription = stringResource(R.string.icon_field)
             )
         },
         keyboardOptions = KeyboardOptions(
@@ -420,21 +417,21 @@ fun FieldReps(viewmodel: UpdateUserExerciseViewModel) {
             viewmodel._reps=newValue
         },
         modifier = Modifier
-            .width(350.dp)
+            .fillMaxWidth()
             .clip(RoundedCornerShape(4.dp))
             .border(
                 width = 1.dp,
                 color = colorResource(id = R.color.field)
             )// With padding show border color
             .background(colorResource(id = R.color.field)),
-        placeholder = { Text(text = "Repeticiones", color = Color(R.color.gray_text)) },
+        placeholder = { Text(text = stringResource(R.string.repeticiones), color = Color(R.color.gray_text)) },
         singleLine = true,
         maxLines = 1,
         leadingIcon = {
             Icon(
                 modifier = Modifier.size(16.dp),
                 painter = painterResource(id = R.drawable.pesa),
-                contentDescription = "Icon field"
+                contentDescription = stringResource(R.string.icon_field)
             )
         },
         keyboardOptions = KeyboardOptions(

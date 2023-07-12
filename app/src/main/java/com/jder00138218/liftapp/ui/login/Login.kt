@@ -2,6 +2,7 @@ package com.jder00138218.liftapp.ui.login
 
 
 import SessionManager
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -77,6 +78,10 @@ fun LoginScreen(navController: NavHostController) {
         loginViewModel.onLogin(navController, LocalContext.current)
         sessionManager.clearSession()
     }
+    BackHandler(enabled = true) {
+        navController.navigate(Rutas.Login.ruta)
+    }
+
 
     Box(
         modifier = Modifier
@@ -146,7 +151,7 @@ fun SingIn(viewModel: LoginViewModel, modifier: Modifier, navController: NavHost
                     contentDescription = "Icon login"
                 )
 
-                Text(text = "Ingresar")
+                Text(text = stringResource(R.string.ingresar_txg))
             }
         }
 
@@ -185,9 +190,9 @@ fun decodeHS512TokenWithoutVerification(token: String): String {
 @Composable
 fun Register(modifier: Modifier, navController: NavHostController) {
     Row(modifier = modifier) {
-        Text(text = "¿Aun no tienes cuenta?")
+        Text(text = stringResource(R.string.aun_no_tienes_cuenta))
         Text(
-            text = " Registrate",
+            text = stringResource(R.string.registrate),
             color = Color.Red,
             modifier = Modifier.clickable { navController.navigate(route = Rutas.Register.ruta) })
         Spacer(modifier = Modifier.padding(8.dp))
@@ -208,7 +213,7 @@ fun OrSpacer(modifier: Modifier) {
             thickness = 1.dp
         )
         Text(
-            text = "O",
+            text = stringResource(R.string.o),
             modifier = Modifier.padding(horizontal = 8.dp)
         )
         Divider(
@@ -224,7 +229,7 @@ fun OrSpacer(modifier: Modifier) {
 fun HeaderImage(modifier: Modifier) {
     Image(
         painter = painterResource(id = R.drawable.logoliftapp),
-        contentDescription = "Image of lift app",
+        contentDescription = stringResource(R.string.image_of_lift_app),
         modifier = modifier
     )
 }
@@ -249,14 +254,14 @@ fun FieldEmail(viewModel: LoginViewModel) {
                 color = colorResource(id = R.color.field)
             )
             .background(colorResource(id = R.color.field)),
-        placeholder = { Text(text = "Email", color = Color(R.color.gray_text)) },
+        placeholder = { Text(text = stringResource(R.string.email), color = Color(R.color.gray_text)) },
         singleLine = true,
         maxLines = 1,
         leadingIcon = {
             Icon(
                 modifier = Modifier.size(16.dp),
                 painter = painterResource(id = R.drawable.icon_message),
-                contentDescription = "Icon Email"
+                contentDescription = stringResource(R.string.icon_email)
             )
         },
         keyboardOptions = KeyboardOptions(
@@ -290,7 +295,7 @@ fun FieldPassword(viewModel: LoginViewModel) {
                 width = 1.dp,
                 color = colorResource(id = R.color.field)
             ),
-        placeholder = { Text(text = "Password", color = Color(R.color.gray_text)) },
+        placeholder = { Text(text = stringResource(R.string.password), color = Color(R.color.gray_text)) },
         singleLine = true,
         maxLines = 1,
         leadingIcon = {
@@ -298,7 +303,7 @@ fun FieldPassword(viewModel: LoginViewModel) {
                 modifier = Modifier
                     .size(16.dp),
                 painter = painterResource(id = R.drawable.icon_password),
-                contentDescription = "Icon Password",
+                contentDescription = stringResource(R.string.icon_password),
             )
         },
         trailingIcon = {
@@ -308,7 +313,7 @@ fun FieldPassword(viewModel: LoginViewModel) {
                     .size(16.dp)
                     .clickable { isVisible = !isVisible },
                 painter = painterResource(id = R.drawable.icon_hide),
-                contentDescription = "Hide Icon"
+                contentDescription = stringResource(R.string.hide_icon)
             )
         },
         keyboardOptions = KeyboardOptions(

@@ -7,9 +7,11 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
@@ -35,6 +37,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -44,6 +47,8 @@ import com.jder00138218.liftapp.R
 import com.jder00138218.liftapp.network.dto.exercise.exercise
 import com.jder00138218.liftapp.ui.navigation.Rutas
 import com.jder00138218.liftapp.network.dto.lift.lift
+import com.jder00138218.liftapp.ui.users.admin.ExerciseCardAdmin
+import com.jder00138218.liftapp.ui.users.admin.LiftCard
 import com.jder00138218.liftapp.ui.users.user.HeaderBarBackArrowCheck
 import com.jder00138218.liftapp.ui.users.user.HeaderBarBackArrowDumbell
 import com.jder00138218.liftapp.ui.users.user.UserBottomMenu
@@ -82,7 +87,7 @@ fun UserHistory(navController: NavController){
             verticalArrangement = Arrangement.SpaceBetween
         ) {
 
-            HeaderBarBackArrowDumbell(title = "Levantamientos registrados", navController = navController, backOnClick = {navController.popBackStack()})
+            HeaderBarBackArrowDumbell(title = stringResource(R.string.levantamientos_registrados), navController = navController, backOnClick = {navController.popBackStack()})
             OutlinedTextField(value = text, onValueChange = { newText: String ->
                 text = newText
                 vm.getMyLifts(app.getUserId(),text)}, modifier = Modifier
@@ -93,7 +98,7 @@ fun UserHistory(navController: NavController){
                     colorResource(id = R.color.field)
                 )
                 .border(width = 0.dp, color = Color.White),
-                placeholder = { Text(text = "Buscar..", color = Color(R.color.gray_text)) },
+                placeholder = { Text(text = stringResource(R.string.buscar), color = Color(R.color.gray_text)) },
             )
 
             if (vm._loading.value) {
@@ -117,7 +122,9 @@ fun UserHistory(navController: NavController){
                         .fillMaxHeight(0.8f)
                 ) {
                     items(vm.lifts) {
-                        CardHistoricExercise(it, navController)
+                        var url = "rutas_lift_detail/${it.id}"
+                        LiftCard(it, url, navController)
+                        Spacer(modifier = Modifier.height(8.dp))
                     }
                 }
             }
@@ -157,7 +164,7 @@ fun CardHistoricExercise(lift: lift, navController: NavController) {
                     )
                     Icon(
                         painter = painterResource(id = R.drawable.pesa),
-                        contentDescription = "Verify Icon",
+                        contentDescription = stringResource(R.string.verify_icon),
                         modifier = Modifier.size(20.dp)
                     )
                 }
@@ -191,7 +198,7 @@ fun ItemEx(lift: lift) {
             .size(width = 160.dp, height = 60.dp)
     ) {
         Column(Modifier.padding(8.dp)) {
-            Text(text = "Puntos", color = Color.Red)
+            Text(text = stringResource(R.string.puntos), color = Color.Red)
             Text(text = lift.liftpoints.toString(), color = Color(R.color.gray_text))
         }
     }
@@ -208,8 +215,8 @@ fun ItemExRight(lift: lift) {
             .size(width = 160.dp, height = 60.dp)
     ) {
         Column(Modifier.padding(8.dp)) {
-            Text(text = "Peso "+lift.weight.toString(), color = Color.Red)
-            Text(text = "Repeticiones "+lift.reps.toString(), color = Color(R.color.gray_text))
+            Text(text = stringResource(R.string.peso_spaced) +lift.weight.toString(), color = Color.Red)
+            Text(text = stringResource(R.string.repeticiones_spaced) +lift.reps.toString(), color = Color(R.color.gray_text))
         }
     }
 

@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -39,6 +40,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
@@ -62,7 +64,7 @@ import java.util.Date
 @Composable
 fun UpdateAdmin(navController: NavHostController) {
     val navBackStackEntry = navController.currentBackStackEntry
-    val userid = navBackStackEntry?.arguments?.getInt("id")
+    val userid = navBackStackEntry?.arguments?.getInt(stringResource(R.string.id))
     val updateAdminViewModel: UpdateAdminViewModel = viewModel(
         factory = UpdateAdminViewModel.Factory
     )
@@ -80,9 +82,15 @@ fun UpdateAdmin(navController: NavHostController) {
             verticalArrangement = Arrangement.SpaceBetween,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            AdminHeaderBarBackArrowDumbell(title = "Informacion personal", navController = navController, backOnClick = {navController.popBackStack()})
+            AdminHeaderBarBackArrowDumbell(title = stringResource(R.string.informacion_personal), navController = navController, backOnClick = {navController.popBackStack()})
+            Column(modifier = Modifier
+                .fillMaxHeight(0.85f)
+                .fillMaxWidth()
+                .verticalScroll(rememberScrollState()),
+            verticalArrangement = Arrangement.SpaceEvenly) {
             CreateAdminFields(updateAdminViewModel,navController)
             ButtonsUpdate(userid,updateAdminViewModel,navController)
+            }
             Menu(navController)
         }
 
@@ -94,8 +102,7 @@ fun UpdateAdmin(navController: NavHostController) {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CreateAdminFields(viewmodel: UpdateAdminViewModel, navController: NavHostController) {
-    Column(modifier = Modifier
-        .verticalScroll(rememberScrollState()),
+    Column(modifier = Modifier,
         horizontalAlignment = Alignment.CenterHorizontally) {
         FieldName(viewmodel)
         Spacer(modifier = Modifier.padding(2.dp))
@@ -112,13 +119,12 @@ fun CreateAdminFields(viewmodel: UpdateAdminViewModel, navController: NavHostCon
 @Composable
 fun ButtonsUpdate(id: Int?, updateAdminViewModel: UpdateAdminViewModel, navController: NavHostController) {
     val context = LocalContext.current
-    Row() {
+    Column() {
         Button(
             onClick = {updateAdminViewModel.onUpdate(id,navController,context)
                 updateAdminViewModel._loading.value=true
             }, modifier = Modifier
                 .height(60.dp)
-                .width(175.dp)
                 .fillMaxWidth(), colors = ButtonDefaults.buttonColors(
                 containerColor = colorResource(id = R.color.buttonGray)
             )
@@ -133,20 +139,21 @@ fun ButtonsUpdate(id: Int?, updateAdminViewModel: UpdateAdminViewModel, navContr
                     color = Color.White
                 )
             } else {
-                Text(text = " Editar")
+                Text(text = stringResource(R.string.editar))
             }
         }
+
+        Spacer(modifier = Modifier.padding(8.dp))
 
         Button(
             onClick = {updateAdminViewModel.deleteUser(id, navController,context)
             }, modifier = Modifier
                 .height(60.dp)
-                .width(175.dp)
                 .fillMaxWidth(), colors = ButtonDefaults.buttonColors(
                 containerColor = Color.Red
             )
         ) {
-                Text(text = "Eliminar")
+                Text(text = stringResource(R.string.eliminar))
         }
     }
 }
@@ -160,21 +167,21 @@ fun FieldName(viewmodel: UpdateAdminViewModel) {
             viewmodel._nombrecompleto= newValue
         },
         modifier = Modifier
-            .width(350.dp)
+            .fillMaxWidth()
             .clip(RoundedCornerShape(4.dp))
             .border(
                 width = 1.dp,
                 color = colorResource(id = R.color.field)
             )// With padding show border color
             .background(colorResource(id = R.color.field)),
-        placeholder = { Text(text = "Nombre Completo", color = Color(R.color.gray_text)) },
+        placeholder = { Text(text = stringResource(R.string.nombre_completo), color = Color(R.color.gray_text)) },
         singleLine = true,
         maxLines = 1,
         leadingIcon = {
             Icon(
                 modifier = Modifier.size(16.dp),
                 painter = painterResource(id = R.drawable.pesa),
-                contentDescription = "Icon field"
+                contentDescription = stringResource(R.string.icon_field)
             )
         },
         keyboardOptions = KeyboardOptions(
@@ -192,21 +199,21 @@ fun FieldEmail(viewmodel: UpdateAdminViewModel) {
             viewmodel._email= newValue
         },
         modifier = Modifier
-            .width(350.dp)
+            .fillMaxWidth()
             .clip(RoundedCornerShape(4.dp))
             .border(
                 width = 1.dp,
                 color = colorResource(id = R.color.field)
             )// With padding show border color
             .background(colorResource(id = R.color.field)),
-        placeholder = { Text(text = "Email", color = Color(R.color.gray_text)) },
+        placeholder = { Text(text = stringResource(R.string.email), color = Color(R.color.gray_text)) },
         singleLine = true,
         maxLines = 1,
         leadingIcon = {
             Icon(
                 modifier = Modifier.size(16.dp),
                 painter = painterResource(id = R.drawable.pesa),
-                contentDescription = "Icon field"
+                contentDescription = stringResource(R.string.icon_field)
             )
         },
         keyboardOptions = KeyboardOptions(
@@ -229,14 +236,14 @@ fun FieldPassword(viewModel: UpdateAdminViewModel) {
             viewModel._password = newValue
         },
         modifier = Modifier
-            .width(350.dp)
+            .fillMaxWidth()
             .clip(RoundedCornerShape(4.dp))
             .background(colorResource(id = R.color.field))
             .border(
                 width = 1.dp,
                 color = colorResource(id = R.color.field)
             ),
-        placeholder = { Text(text = "Password", color = Color(R.color.gray_text)) },
+        placeholder = { Text(text = stringResource(R.string.password), color = Color(R.color.gray_text)) },
         singleLine = true,
         maxLines = 1,
         leadingIcon = {
@@ -244,7 +251,7 @@ fun FieldPassword(viewModel: UpdateAdminViewModel) {
                 modifier = Modifier
                     .size(16.dp),
                 painter = painterResource(id = R.drawable.icon_password),
-                contentDescription = "Icon Password",
+                contentDescription = stringResource(R.string.icon_password),
             )
         },
         trailingIcon = {
@@ -254,7 +261,7 @@ fun FieldPassword(viewModel: UpdateAdminViewModel) {
                     .size(16.dp)
                     .clickable { isVisible = !isVisible },
                 painter = painterResource(id = R.drawable.icon_hide),
-                contentDescription = "Hide Icon"
+                contentDescription = stringResource(R.string.hide_icon)
             )
         },
         keyboardOptions = KeyboardOptions(
@@ -279,14 +286,14 @@ fun FieldConfirmPassword(viewModel: UpdateAdminViewModel) {
             viewModel._confirmpassowrd = newValue
         },
         modifier = Modifier
-            .width(350.dp)
+            .fillMaxWidth()
             .clip(RoundedCornerShape(4.dp))
             .background(colorResource(id = R.color.field))
             .border(
                 width = 1.dp,
                 color = colorResource(id = R.color.field)
             ),
-        placeholder = { Text(text = "Password", color = Color(R.color.gray_text)) },
+        placeholder = { Text(text = stringResource(R.string.password), color = Color(R.color.gray_text)) },
         singleLine = true,
         maxLines = 1,
         leadingIcon = {
@@ -294,7 +301,7 @@ fun FieldConfirmPassword(viewModel: UpdateAdminViewModel) {
                 modifier = Modifier
                     .size(16.dp),
                 painter = painterResource(id = R.drawable.icon_password),
-                contentDescription = "Icon Password",
+                contentDescription = stringResource(R.string.icon_password),
             )
         },
         trailingIcon = {
@@ -304,7 +311,7 @@ fun FieldConfirmPassword(viewModel: UpdateAdminViewModel) {
                     .size(16.dp)
                     .clickable { isVisible = !isVisible },
                 painter = painterResource(id = R.drawable.icon_hide),
-                contentDescription = "Hide Icon"
+                contentDescription = stringResource(R.string.hide_icon)
             )
         },
         keyboardOptions = KeyboardOptions(
@@ -313,62 +320,4 @@ fun FieldConfirmPassword(viewModel: UpdateAdminViewModel) {
         ),
         visualTransformation = visualTransformation
     )
-}
-
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun DateInputField() {
-    // Fetching the Local Context
-    val mContext = LocalContext.current
-
-    // Declaring integer values
-    // for year, month and day
-    val mYear: Int
-    val mMonth: Int
-    val mDay: Int
-
-    // Initializing a Calendar
-    val mCalendar = Calendar.getInstance()
-
-    // Fetching current year, month and day
-    mYear = mCalendar.get(Calendar.YEAR)
-    mMonth = mCalendar.get(Calendar.MONTH)
-    mDay = mCalendar.get(Calendar.DAY_OF_MONTH)
-
-    mCalendar.time = Date()
-
-    // Declaring a string value to
-    // store date in string format
-    val mDate = remember { mutableStateOf("") }
-
-    // Declaring DatePickerDialog and setting
-    // initial values as current values (present year, month and day)
-    val mDatePickerDialog = DatePickerDialog(
-        mContext,
-        { _: DatePicker, mYear: Int, mMonth: Int, mDayOfMonth: Int ->
-            mDate.value = "$mDayOfMonth/${mMonth+1}/$mYear"
-        }, mYear, mMonth, mDay
-    )
-
-    Column(modifier = Modifier.fillMaxSize(), verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally) {
-
-        // Creating a button that on
-        // click displays/shows the DatePickerDialog
-
-        Button(
-            modifier = Modifier
-                .fillMaxWidth(),
-            onClick = {
-                mDatePickerDialog.show()
-            }, colors = ButtonDefaults.buttonColors(contentColor = colorResource(id = R.color.field)) ) {
-            Text(text = "Seleccionar Fecha de Nacimiento", color = Color.LightGray)
-        }
-
-        // Adding a space of 100dp height
-        Spacer(modifier = Modifier.padding(2.dp))
-
-        // Displaying the mDate value in the Text
-        Text(text = "Fecha de nacimiento: ${mDate.value}", textAlign = TextAlign.Center)
-    }
 }

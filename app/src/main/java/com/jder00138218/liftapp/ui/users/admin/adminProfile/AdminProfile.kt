@@ -10,6 +10,8 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowForward
 import androidx.compose.material3.Button
@@ -24,6 +26,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -61,16 +64,15 @@ fun AdminProfile(navController: NavController){
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             AdminHeaderBarBackArrowDumbell(title = "Perfil", navController = navController, backOnClick = {navController.popBackStack()})
-            Column(modifier = Modifier
-                .fillMaxWidth()
-                .fillMaxHeight(0.7f),
-                verticalArrangement = Arrangement.SpaceBetween,
-                horizontalAlignment = Alignment.CenterHorizontally) {
 
+                Column(modifier = Modifier
+                    .fillMaxHeight(0.85f)
+                    .fillMaxWidth()
+                    .verticalScroll(rememberScrollState()),
+                verticalArrangement = Arrangement.SpaceEvenly) {
                 AccountCard(navController, detailUser)
                 LogoutCard(navController,app)
-            }
-
+                }
             Menu(navController)
         }
 
@@ -163,7 +165,7 @@ fun LogoutCard(navController: NavController,app:LiftAppApplication) {
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
-                text = "Cerrar sesión",
+                text = stringResource(R.string.cerrar_sesi_n),
                 color = Color.Black,
                 style = androidx.compose.ui.text.TextStyle(
                     fontSize = 16.sp,
@@ -182,7 +184,7 @@ fun LogoutCard(navController: NavController,app:LiftAppApplication) {
             ) {
                 Icon(
                     imageVector = Icons.Default.ArrowForward,
-                    contentDescription = "Logout",
+                    contentDescription = stringResource(R.string.logout),
                     tint = Color.White
                 )
             }

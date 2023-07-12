@@ -14,6 +14,7 @@ import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import androidx.navigation.NavHostController
 import com.jder00138218.liftapp.LiftAppApplication
+import com.jder00138218.liftapp.R
 import com.jder00138218.liftapp.network.ApiResponse
 import com.jder00138218.liftapp.network.dto.exercise.exercise
 import com.jder00138218.liftapp.network.dto.lift.lift
@@ -59,7 +60,7 @@ class LiftDetailViewModel(private val liftRepository: LiftRepository): ViewModel
                         )
                     }
                     )
-            Toast.makeText(context, "Registro Eliminado", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, context.getString(R.string.registro_eliminado), Toast.LENGTH_SHORT).show()
             navController.popBackStack()
 
         }

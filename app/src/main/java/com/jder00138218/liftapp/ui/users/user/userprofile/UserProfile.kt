@@ -25,6 +25,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -66,12 +67,12 @@ fun UserProfile(navController: NavController){
         ) {
             Column(modifier = Modifier
                 .fillMaxWidth()
-                .fillMaxHeight(0.90f)
+                .fillMaxHeight(0.95f)
                 .verticalScroll(rememberScrollState()),
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.SpaceBetween){
 
-                    HeaderBarBackArrowDumbell(title = "Perfil", navController, backOnClick = {navController.navigate(Rutas.DashboardUser.ruta)})
+                    HeaderBarBackArrowDumbell(title = stringResource(R.string.perfil), navController, backOnClick = {navController.navigate(Rutas.DashboardUser.ruta)})
                     UserAccountCard(navController, detailUser)
                     UserLogoutCard(navController, app)
                 }
@@ -96,7 +97,7 @@ fun UserAccountCard(navController: NavController, detailUser: user) {
             modifier = Modifier.padding(16.dp)
         ) {
             Text(
-                text = "Cuenta",
+                text = stringResource(R.string.cuenta),
                 style = TextStyle(
                     fontSize = 18.sp,
                     fontWeight = FontWeight.Bold
@@ -117,7 +118,7 @@ fun UserAccountCard(navController: NavController, detailUser: user) {
                 colors = ButtonDefaults.buttonColors(containerColor = Color.White)
             ) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
-                    Text("Informacion personal",  color = Color.Black)
+                    Text(stringResource(R.string.informacion_personal),  color = Color.Black)
                     Icon(
                         imageVector = Icons.Default.ArrowForward,
                         contentDescription = null,
@@ -137,7 +138,7 @@ fun UserAccountCard(navController: NavController, detailUser: user) {
                 colors = ButtonDefaults.buttonColors(containerColor = Color.White)
             ) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
-                    Text("Historial",  color = Color.Black)
+                    Text(stringResource(R.string.historial),  color = Color.Black)
                     Icon(
                         imageVector = Icons.Default.ArrowForward,
                         contentDescription = null,
@@ -157,7 +158,7 @@ fun UserAccountCard(navController: NavController, detailUser: user) {
                 colors = ButtonDefaults.buttonColors(containerColor = Color.White)
             ) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
-                    Text("Amigos",  color = Color.Black)
+                    Text(stringResource(R.string.amigos),  color = Color.Black)
                     Icon(
                         imageVector = Icons.Default.ArrowForward,
                         contentDescription = null,
@@ -186,7 +187,7 @@ fun UserLogoutCard(navController: NavController, app:LiftAppApplication) {
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
-                text = "Cerrar sesión",
+                text = stringResource(R.string.cerrar_sesi_n),
                 color = Color.Black,
                 style = TextStyle(
                     fontSize = 16.sp,
@@ -206,7 +207,7 @@ fun UserLogoutCard(navController: NavController, app:LiftAppApplication) {
             ) {
                 Icon(
                     imageVector = Icons.Default.ArrowForward,
-                    contentDescription = "Logout",
+                    contentDescription = stringResource(R.string.logout),
                     tint = Color.White
                 )
             }

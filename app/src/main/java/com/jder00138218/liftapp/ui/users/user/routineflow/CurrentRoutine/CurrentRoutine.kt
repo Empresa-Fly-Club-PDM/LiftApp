@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -32,6 +33,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -40,6 +42,7 @@ import androidx.navigation.NavController
 import com.jder00138218.liftapp.R
 import com.jder00138218.liftapp.network.dto.exercise.exercise
 import com.jder00138218.liftapp.ui.navigation.Rutas
+import com.jder00138218.liftapp.ui.users.user.ExerciseCardUser
 import com.jder00138218.liftapp.ui.users.user.HeaderBarBackArrowDumbell
 import com.jder00138218.liftapp.ui.users.user.UserBottomMenu
 import com.jder00138218.liftapp.ui.users.user.routinedetail.viewmodel.RoutineDetailViewModel
@@ -48,7 +51,7 @@ import kotlinx.coroutines.delay
 @Composable
 fun CurrentRoutine(navController: NavController){
     val navBackStackEntry = navController.currentBackStackEntry
-    val routineid = navBackStackEntry?.arguments?.getInt("id")
+    val routineid = navBackStackEntry?.arguments?.getInt(stringResource(R.string.id))
     val vm: RoutineDetailViewModel = viewModel(
         factory = RoutineDetailViewModel.Factory
     )
@@ -74,7 +77,7 @@ fun CurrentRoutine(navController: NavController){
             Column(modifier = Modifier.fillMaxWidth(),
             ) {
             }
-            HeaderBarBackArrowDumbell("Rutina", navController, backOnClick = { navController.popBackStack() })
+            HeaderBarBackArrowDumbell(stringResource(R.string.rutina), navController, backOnClick = { navController.popBackStack() })
 
             Timer(routineid,vm)
             LazyColumn(
@@ -83,10 +86,9 @@ fun CurrentRoutine(navController: NavController){
                     .fillMaxHeight(0.7f)
             ) {
                 items(vm.exercises) { index ->
-                    CardExercise(
-                        index,
-                        navController
-                    )
+                    var url = "rutas_register_lift/${index.id}/${index.name}"
+                    ExerciseCardUser(index, url, navController)
+                    Spacer(modifier = Modifier.height(8.dp))
                 }
             }
             ButtonEndRoutine(routineid,viewmodel = vm, navController = navController )
@@ -105,100 +107,11 @@ fun ButtonEndRoutine(id:Int?, viewmodel: RoutineDetailViewModel, navController: 
             containerColor = colorResource(id = R.color.buttonRed)
         )
     ) {
-        Text(text = "Finalizar rutina")
+        Text(text = stringResource(R.string.finalizar_rutina))
 
     }
 
 }
-
-
-@Composable
-fun CardExercise(exercise: exercise, navController: NavController) {
-    Card( // this
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(8.dp)
-            .clickable {
-                navController.navigate(route = "rutas_register_lift/${exercise.id}/${exercise.name}")
-            },
-        colors = CardDefaults.cardColors(
-            containerColor = colorResource(id = R.color.card)
-        )
-    ) {
-
-        Box(
-            modifier = Modifier
-                .padding(16.dp),
-            contentAlignment = Alignment.Center
-        ) {
-            Column(modifier = Modifier.fillMaxWidth(1f)) {
-
-                Row() {
-                    Text(
-                        text = exercise.name,
-                        fontWeight = FontWeight.Bold,
-                        modifier = Modifier.weight(1f)
-                    )
-                    Icon(
-                        painter = painterResource(id = R.drawable.pesa),
-                        contentDescription = "Verify Icon",
-                        modifier = Modifier.size(20.dp)
-                    )
-                }
-
-
-                Row(
-                    modifier = Modifier
-                        .padding(8.dp)
-                        .fillMaxWidth(1f),
-                    horizontalArrangement = Arrangement.Start
-                ) {
-                    ItemEx(exercise)
-                    com.jder00138218.liftapp.ui.users.user.routineflow.StartRoutine.ItemExRight(exercise)
-                }
-
-            }
-        }
-
-
-    }
-}
-
-
-@Composable
-fun ItemEx(exercise: exercise) {
-    Card(
-        colors = CardDefaults.cardColors(
-            containerColor = Color.White
-        ), modifier = Modifier
-            .padding(4.dp)
-            .size(width = 160.dp, height = 60.dp)
-    ) {
-        Column(Modifier.padding(8.dp)) {
-            Text(text = "Musculo", color = Color.Red)
-            Text(text = exercise.muscle, color = Color(R.color.gray_text))
-        }
-    }
-
-}
-
-@Composable
-fun ItemExRight(exercise: exercise) {
-    Card(
-        colors = CardDefaults.cardColors(
-            containerColor = Color.White
-        ), modifier = Modifier
-            .padding(4.dp)
-            .size(width = 160.dp, height = 60.dp)
-    ) {
-        Column(Modifier.padding(8.dp)) {
-            Text(text = exercise.type, color = Color.Red)
-            Text(text = "${exercise.reps}x${exercise.sets}", color = Color(R.color.gray_text))
-        }
-    }
-
-}
-
 private fun formatTime(seconds: Int): String {
     val hours = seconds / 3600
     val minutes = (seconds % 3600) / 60
@@ -230,7 +143,9 @@ fun Timer(routineid:Int?, vm: RoutineDetailViewModel) {
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
-            text = if(isRunning){formatTime(vm._time)}else{"Tiempo agotado"},
+            text = if(isRunning){formatTime(vm._time)}else{
+                            stringResource(R.string.tiempo_agotado)
+                        },
             modifier = Modifier.padding(bottom = 16.dp),
             fontSize = 32.sp,
             color = if(isRunning){Color.Black}else{Color.Red},

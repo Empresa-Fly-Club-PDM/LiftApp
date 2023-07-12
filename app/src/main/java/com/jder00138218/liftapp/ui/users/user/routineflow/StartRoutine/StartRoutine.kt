@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -28,12 +29,14 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.jder00138218.liftapp.R
 import com.jder00138218.liftapp.network.dto.exercise.exercise
+import com.jder00138218.liftapp.ui.users.user.ExerciseCardUser
 import com.jder00138218.liftapp.ui.users.user.HeaderBarBackArrowAdd
 import com.jder00138218.liftapp.ui.users.user.HeaderBarBackArrowDumbell
 import com.jder00138218.liftapp.ui.users.user.UserBottomMenu
@@ -42,7 +45,7 @@ import com.jder00138218.liftapp.ui.users.user.routinedetail.viewmodel.RoutineDet
 @Composable
 fun StartRoutine(navController:NavController){
     val navBackStackEntry = navController.currentBackStackEntry
-    val routineid = navBackStackEntry?.arguments?.getInt("id")
+    val routineid = navBackStackEntry?.arguments?.getInt(stringResource(R.string.id))
     val vm: RoutineDetailViewModel = viewModel(
         factory = RoutineDetailViewModel.Factory
     )
@@ -64,7 +67,7 @@ fun StartRoutine(navController:NavController){
         )
         {
 
-            HeaderBarBackArrowDumbell("Empezar rutina", navController, backOnClick = { navController.popBackStack() })
+            HeaderBarBackArrowDumbell(stringResource(R.string.empezar_rutina), navController, backOnClick = { navController.popBackStack() })
 
 
             LazyColumn(
@@ -73,7 +76,9 @@ fun StartRoutine(navController:NavController){
                     .fillMaxHeight(0.6f)
             ) {
                 items(vm.exercises) { index ->
-                    CardExercise(index)
+                    var url = ""
+                    ExerciseCardUser(index, url, navController)
+                    Spacer(modifier = Modifier.height(8.dp))
                 }
             }
             ButtonDeleteRoutine(routineid,viewmodel = vm, navController = navController )
@@ -93,7 +98,7 @@ fun ButtonDeleteRoutine(id:Int?, viewmodel: RoutineDetailViewModel, navControlle
             containerColor = colorResource(id = R.color.buttonGren)
         )
     ) {
-        Text(text = " Iniciar rutina")
+        Text(text = stringResource(R.string.iniciar_rutina))
 
     }
 
@@ -128,7 +133,7 @@ fun CardExercise(exercise: exercise) {
                     )
                     Icon(
                         painter = painterResource(id = R.drawable.pesa),
-                        contentDescription = "Verify Icon",
+                        contentDescription = stringResource(R.string.verify_icon),
                         modifier = Modifier.size(20.dp)
                     )
                 }
@@ -162,7 +167,7 @@ fun ItemEx(exercise: exercise) {
             .size(width = 160.dp, height = 60.dp)
     ) {
         Column(Modifier.padding(8.dp)) {
-            Text(text = "Musculo", color = Color.Red)
+            Text(text = stringResource(R.string.musculo), color = Color.Red)
             Text(text = exercise.muscle, color = Color(R.color.gray_text))
         }
     }

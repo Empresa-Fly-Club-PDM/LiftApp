@@ -125,13 +125,12 @@ fun FieldsDetaileCreate(navController: NavHostController, updateUserExerciseView
 @Composable
 fun ButtonsUpdate(id: Int?, viewmodel: UpdateUserExerciseViewModel, navController: NavHostController) {
     val context = LocalContext.current
-    Row() {
+    Column(modifier = Modifier.fillMaxWidth()) {
         Button(
             onClick = {
                 viewmodel.onUpdate(navController,context,id)
             }, modifier = Modifier
                 .height(60.dp)
-                .width(175.dp)
                 .fillMaxWidth(), colors = ButtonDefaults.buttonColors(
                 containerColor = colorResource(id = R.color.buttonGray)
             )
@@ -157,7 +156,6 @@ fun ButtonsUpdate(id: Int?, viewmodel: UpdateUserExerciseViewModel, navControlle
                 viewmodel.deleteExercise(id, navController,context)
             }, modifier = Modifier
                 .height(60.dp)
-                .width(175.dp)
                 .fillMaxWidth(), colors = ButtonDefaults.buttonColors(
                 containerColor = Color.Red
             )
@@ -178,7 +176,7 @@ fun FieldName(viewmodel: UpdateUserExerciseViewModel) {
             viewmodel._name= newValue
         },
         modifier = Modifier
-            .width(350.dp)
+            .fillMaxWidth()
             .clip(RoundedCornerShape(4.dp))
             .border(
                 width = 1.dp,
@@ -210,7 +208,7 @@ fun FieldMuscle(viewmodel: UpdateUserExerciseViewModel) {
             viewmodel._muscle= newValue
         },
         modifier = Modifier
-            .width(350.dp)
+            .fillMaxWidth()
             .clip(RoundedCornerShape(4.dp))
             .border(
                 width = 1.dp,
@@ -250,7 +248,7 @@ fun FieldType(viewmodel: UpdateUserExerciseViewModel){
                 ExposedDropdownMenuDefaults.TrailingIcon(expanded = isExpanded)
             }, modifier = Modifier
                 .menuAnchor()
-                .width(350.dp)
+                .fillMaxWidth()
                 .clip(RoundedCornerShape(4.dp))
                 .border(
                     width = 1.dp,
@@ -306,7 +304,7 @@ fun FieldDifficulty(viewmodel: UpdateUserExerciseViewModel){
                 ExposedDropdownMenuDefaults.TrailingIcon(expanded = isExpanded)
             }, modifier = Modifier
                 .menuAnchor()
-                .width(350.dp)
+                .fillMaxWidth()
                 .clip(RoundedCornerShape(4.dp))
                 .border(
                     width = 1.dp,
@@ -354,7 +352,7 @@ fun FieldDescription(viewmodel: UpdateUserExerciseViewModel) {
             viewmodel._description=newValue
         },
         modifier = Modifier
-            .width(350.dp)
+            .fillMaxWidth()
             .clip(RoundedCornerShape(4.dp))
             .border(
                 width = 1.dp,
@@ -387,7 +385,7 @@ fun FieldSets(viewmodel: UpdateUserExerciseViewModel) {
             viewmodel._sets=newValue
         },
         modifier = Modifier
-            .width(350.dp)
+            .fillMaxWidth()
             .clip(RoundedCornerShape(4.dp))
             .border(
                 width = 1.dp,
@@ -419,7 +417,7 @@ fun FieldReps(viewmodel: UpdateUserExerciseViewModel) {
             viewmodel._reps=newValue
         },
         modifier = Modifier
-            .width(350.dp)
+            .fillMaxWidth()
             .clip(RoundedCornerShape(4.dp))
             .border(
                 width = 1.dp,

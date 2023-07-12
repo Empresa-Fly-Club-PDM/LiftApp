@@ -82,7 +82,8 @@ fun DashboardAdminScreen(navController: NavController) {
                         .fillMaxWidth()
                 ) {
                     items(vm.exercises) { index ->
-                        CardExercise(index, navController)
+                        var url = "ruta_admin_exercise_details/" + index.id
+                        ExerciseCardAdmin(index, url, navController)
                     }
                 }
             }

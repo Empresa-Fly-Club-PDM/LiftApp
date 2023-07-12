@@ -7,5 +7,5 @@ sealed class AdminUpdateExerciseUIStatus{
     object Resume : AdminUpdateExerciseUIStatus()
     class Error(val exception: Exception) : AdminUpdateExerciseUIStatus()
     data class ErrorWithMessage(val message: String) : AdminUpdateExerciseUIStatus()
-    data class Success(val token: String) : AdminUpdateExerciseUIStatus()
+    data class Success(val State: String) : AdminUpdateExerciseUIStatus()
 }

@@ -158,7 +158,7 @@ fun NavigationGraph(){
         composable(route = Rutas.RoutineExerciseDetail.ruta,
             arguments = listOf(navArgument("id"){
                 type = NavType.IntType
-            }, navArgument("routinetest"){
+            }, navArgument("routineid"){
                 type = NavType.IntType
             })
             ){

@@ -22,23 +22,6 @@ object RetrofitInstance {
         this.token = token
     }
 
-    class NullOnEmptyConverterFactory : Converter.Factory() {
-        override fun responseBodyConverter(
-            type: Type,
-            annotations: Array<out Annotation>,
-            retrofit: Retrofit
-        ): Converter<ResponseBody, *> {
-            val delegate: Converter<ResponseBody, *> = retrofit.nextResponseBodyConverter<Any?>(
-                this, type, annotations
-            )
-            return Converter<ResponseBody, Any?> { body ->
-                when (body.contentLength() == 0L) {
-                    true -> null
-                    else -> delegate.convert(body)
-                }
-            }
-        }
-    }
 
     private val retrofit = Retrofit.Builder()
         .baseUrl(BASE_URL)

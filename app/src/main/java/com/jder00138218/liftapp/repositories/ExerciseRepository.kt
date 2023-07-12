@@ -33,9 +33,8 @@ class ExerciseRepository(private val api:ExerciseService) {
             val response = api.deleteExercise(id)
             return ApiResponse.Success(response.toString())
         } catch (e: HttpException) {
-
-            if (e.code() == 410) {
-                return ApiResponse.ErrorWithMessage("Eliminado correctamente")
+            if (e.code() == 500) {
+                return ApiResponse.ErrorWithMessage("El ejercicio es usado en una rutina")
             }
             return ApiResponse.Error(e)
         } catch (e: IOException) {

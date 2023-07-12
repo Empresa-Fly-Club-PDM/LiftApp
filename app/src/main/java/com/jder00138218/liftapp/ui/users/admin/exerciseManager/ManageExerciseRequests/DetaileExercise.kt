@@ -79,10 +79,14 @@ fun DetaileExercise(navController: NavHostController) {
                 ) {
 
                 AdminHeaderBarBackArrowDumbell(title = stringResource(R.string.descripcion_de_la_solicitud), navController = navController, backOnClick = {navController.popBackStack()})
-
-                UserInfoSection(name = detailExercise.user.nombrecompleto, detailExercise.user.points)
-                FieldsDetaile(detailExercise,detailExerciseViewmodel,navController)
-                ButtonsDetaile(detailExercise.id,detailExerciseViewmodel, navController)
+                Column(modifier = Modifier
+                    .fillMaxHeight(0.85f)
+                    .fillMaxWidth()
+                    .verticalScroll(rememberScrollState())) {
+                    UserInfoSection(name = detailExercise.user.nombrecompleto, detailExercise.user.points)
+                    FieldsDetaile(detailExercise,detailExerciseViewmodel,navController)
+                    ButtonsDetaile(detailExercise.id,detailExerciseViewmodel, navController)
+                }
                 Menu(navController)
             }
         }
@@ -94,9 +98,7 @@ fun DetaileExercise(navController: NavHostController) {
 @Composable
 fun FieldsDetaile(exercise: exercise,detailExerciseViewmodel: DetailExerciseViewmodel,navController: NavHostController) {
     Column(modifier = Modifier
-        .fillMaxWidth()
-        .fillMaxHeight(0.5f)
-        .verticalScroll(rememberScrollState()),
+        .fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally) {
         FieldDetaile(exercise.name)
         Spacer(modifier = Modifier.padding(2.dp))
@@ -119,7 +121,7 @@ fun FieldsDetaile(exercise: exercise,detailExerciseViewmodel: DetailExerciseView
 fun UserInfoSection(name: String, score: Int){
     Column(modifier = Modifier
         .fillMaxWidth()
-        .padding(8.dp)
+        .padding(4.dp)
     ) {
         Text(text = stringResource(R.string.usuario) + name, fontWeight = FontWeight.Bold)
         Text(text = stringResource(R.string.puntuacion) +score, fontWeight = FontWeight.Light)
@@ -129,14 +131,13 @@ fun UserInfoSection(name: String, score: Int){
 @Composable
 fun ButtonsDetaile(id: Int? , detailExerciseViewmodel: DetailExerciseViewmodel,navController: NavHostController) {
     val context = LocalContext.current
-    Row() {
+   Column() {
         Button(
             onClick = {
                 detailExerciseViewmodel.denyExercise(id,navController,context)
                 detailExerciseViewmodel._loading.value=true
             }, modifier = Modifier
                 .height(60.dp)
-                .width(175.dp)
                 .fillMaxWidth(), colors = ButtonDefaults.buttonColors(
                 containerColor = colorResource(id = R.color.buttonGray)
             )
@@ -155,14 +156,13 @@ fun ButtonsDetaile(id: Int? , detailExerciseViewmodel: DetailExerciseViewmodel,n
             }
 
         }
-
+        Spacer(modifier = Modifier.height(8.dp))
         Button(
             onClick = {
                       detailExerciseViewmodel.verifyExercise(id,navController,context)
                         detailExerciseViewmodel._loadingVerification.value=true
             }, modifier = Modifier
                 .height(60.dp)
-                .width(175.dp)
                 .fillMaxWidth(), colors = ButtonDefaults.buttonColors(
                 containerColor = colorResource(id = R.color.buttonGren)
             )
@@ -193,7 +193,7 @@ fun FieldDetaile(name: String) {
         readOnly = true,
         onValueChange = { },
         modifier = Modifier
-            .width(350.dp)
+            .fillMaxWidth()
             .clip(RoundedCornerShape(4.dp))
             .border(
                 width = 1.dp,

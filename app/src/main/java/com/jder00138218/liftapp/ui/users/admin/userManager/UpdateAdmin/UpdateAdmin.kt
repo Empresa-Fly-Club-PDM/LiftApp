@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -82,8 +83,14 @@ fun UpdateAdmin(navController: NavHostController) {
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             AdminHeaderBarBackArrowDumbell(title = stringResource(R.string.informacion_personal), navController = navController, backOnClick = {navController.popBackStack()})
+            Column(modifier = Modifier
+                .fillMaxHeight(0.85f)
+                .fillMaxWidth()
+                .verticalScroll(rememberScrollState()),
+            verticalArrangement = Arrangement.SpaceEvenly) {
             CreateAdminFields(updateAdminViewModel,navController)
             ButtonsUpdate(userid,updateAdminViewModel,navController)
+            }
             Menu(navController)
         }
 
@@ -95,8 +102,7 @@ fun UpdateAdmin(navController: NavHostController) {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CreateAdminFields(viewmodel: UpdateAdminViewModel, navController: NavHostController) {
-    Column(modifier = Modifier
-        .verticalScroll(rememberScrollState()),
+    Column(modifier = Modifier,
         horizontalAlignment = Alignment.CenterHorizontally) {
         FieldName(viewmodel)
         Spacer(modifier = Modifier.padding(2.dp))
@@ -113,13 +119,12 @@ fun CreateAdminFields(viewmodel: UpdateAdminViewModel, navController: NavHostCon
 @Composable
 fun ButtonsUpdate(id: Int?, updateAdminViewModel: UpdateAdminViewModel, navController: NavHostController) {
     val context = LocalContext.current
-    Row() {
+    Column() {
         Button(
             onClick = {updateAdminViewModel.onUpdate(id,navController,context)
                 updateAdminViewModel._loading.value=true
             }, modifier = Modifier
                 .height(60.dp)
-                .width(175.dp)
                 .fillMaxWidth(), colors = ButtonDefaults.buttonColors(
                 containerColor = colorResource(id = R.color.buttonGray)
             )
@@ -138,11 +143,12 @@ fun ButtonsUpdate(id: Int?, updateAdminViewModel: UpdateAdminViewModel, navContr
             }
         }
 
+        Spacer(modifier = Modifier.padding(8.dp))
+
         Button(
             onClick = {updateAdminViewModel.deleteUser(id, navController,context)
             }, modifier = Modifier
                 .height(60.dp)
-                .width(175.dp)
                 .fillMaxWidth(), colors = ButtonDefaults.buttonColors(
                 containerColor = Color.Red
             )
@@ -161,7 +167,7 @@ fun FieldName(viewmodel: UpdateAdminViewModel) {
             viewmodel._nombrecompleto= newValue
         },
         modifier = Modifier
-            .width(350.dp)
+            .fillMaxWidth()
             .clip(RoundedCornerShape(4.dp))
             .border(
                 width = 1.dp,
@@ -193,7 +199,7 @@ fun FieldEmail(viewmodel: UpdateAdminViewModel) {
             viewmodel._email= newValue
         },
         modifier = Modifier
-            .width(350.dp)
+            .fillMaxWidth()
             .clip(RoundedCornerShape(4.dp))
             .border(
                 width = 1.dp,
@@ -230,7 +236,7 @@ fun FieldPassword(viewModel: UpdateAdminViewModel) {
             viewModel._password = newValue
         },
         modifier = Modifier
-            .width(350.dp)
+            .fillMaxWidth()
             .clip(RoundedCornerShape(4.dp))
             .background(colorResource(id = R.color.field))
             .border(
@@ -280,7 +286,7 @@ fun FieldConfirmPassword(viewModel: UpdateAdminViewModel) {
             viewModel._confirmpassowrd = newValue
         },
         modifier = Modifier
-            .width(350.dp)
+            .fillMaxWidth()
             .clip(RoundedCornerShape(4.dp))
             .background(colorResource(id = R.color.field))
             .border(

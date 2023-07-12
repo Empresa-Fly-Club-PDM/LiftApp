@@ -367,7 +367,7 @@ fun AdminHeaderBarBackArrowDumbell(title: String,  navController: NavController,
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(16.dp),
+            .padding(4.dp),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {

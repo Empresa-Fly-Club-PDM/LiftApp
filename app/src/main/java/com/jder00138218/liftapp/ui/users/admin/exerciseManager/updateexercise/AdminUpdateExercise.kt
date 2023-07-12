@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -58,6 +59,9 @@ import com.jder00138218.liftapp.ui.navigation.Rutas
 import com.jder00138218.liftapp.ui.users.admin.AdminHeaderBarBackArrowDumbell
 import com.jder00138218.liftapp.ui.users.admin.Menu
 import com.jder00138218.liftapp.ui.users.admin.exerciseManager.CreateExercise.viewmodel.CreateExerciseViewmodel
+import com.jder00138218.liftapp.ui.users.admin.exerciseManager.ManageExerciseRequests.ButtonsDetaile
+import com.jder00138218.liftapp.ui.users.admin.exerciseManager.ManageExerciseRequests.FieldsDetaile
+import com.jder00138218.liftapp.ui.users.admin.exerciseManager.ManageExerciseRequests.UserInfoSection
 import com.jder00138218.liftapp.ui.users.admin.exerciseManager.ManageExerciseRequests.viewModel.DetailExerciseViewmodel
 import com.jder00138218.liftapp.ui.users.admin.exerciseManager.updateexercise.viewmodel.AdminUpdateExerciseViewModel
 
@@ -82,8 +86,14 @@ fun AdminUpdateExercise(navController: NavHostController) {
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             AdminHeaderBarBackArrowDumbell(title = stringResource(R.string.detalle_de_ejercicio), navController = navController, backOnClick = {navController.popBackStack()})
-            FieldsDetaileCreate(navController,adminUpdateExerciseViewModel)
-            ButtonsUpdate(exerciseid,adminUpdateExerciseViewModel,navController)
+            Column(modifier = Modifier
+                .fillMaxHeight(0.85f)
+                .fillMaxWidth()
+                .verticalScroll(rememberScrollState())) {
+                FieldsDetaileCreate(navController,adminUpdateExerciseViewModel)
+                ButtonsUpdate(exerciseid,adminUpdateExerciseViewModel,navController)
+            }
+
             Menu(navController)
         }
 
@@ -95,8 +105,7 @@ fun AdminUpdateExercise(navController: NavHostController) {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun FieldsDetaileCreate(navController: NavHostController,adminUpdateExerciseViewModel: AdminUpdateExerciseViewModel) {
-    Column(modifier = Modifier
-        .verticalScroll(rememberScrollState()),
+    Column(modifier = Modifier,
         horizontalAlignment = Alignment.CenterHorizontally) {
         FieldName(adminUpdateExerciseViewModel)
         Spacer(modifier = Modifier.padding(2.dp))
@@ -119,14 +128,13 @@ fun FieldsDetaileCreate(navController: NavHostController,adminUpdateExerciseView
 @Composable
 fun ButtonsUpdate(id: Int?, adminUpdateExerciseViewModel: AdminUpdateExerciseViewModel, navController: NavHostController) {
     val context = LocalContext.current
-    Row() {
+    Column() {
         Button(
             onClick = {
                 adminUpdateExerciseViewModel.isLoadingUpdate.value = true
                       adminUpdateExerciseViewModel.onUpdate(navController,context,id)
             }, modifier = Modifier
                 .height(60.dp)
-                .width(175.dp)
                 .fillMaxWidth(), colors = ButtonDefaults.buttonColors(
                 containerColor = colorResource(id = R.color.buttonGray)
             )
@@ -143,14 +151,13 @@ fun ButtonsUpdate(id: Int?, adminUpdateExerciseViewModel: AdminUpdateExerciseVie
                 Text(text = stringResource(R.string.editar))
             }
         }
-
+        Spacer(modifier = Modifier.padding(8.dp))
         Button(
             onClick = {
                 adminUpdateExerciseViewModel.isLoadingDelete.value = true
                 adminUpdateExerciseViewModel.deleteExercise(id, navController,context)
             }, modifier = Modifier
                 .height(60.dp)
-                .width(175.dp)
                 .fillMaxWidth(), colors = ButtonDefaults.buttonColors(
                 containerColor = Color.Red
             )
@@ -179,7 +186,7 @@ fun FieldName(adminUpdateExerciseViewModel: AdminUpdateExerciseViewModel) {
             adminUpdateExerciseViewModel._name= newValue
         },
         modifier = Modifier
-            .width(350.dp)
+            .fillMaxWidth()
             .clip(RoundedCornerShape(4.dp))
             .border(
                 width = 1.dp,
@@ -211,7 +218,7 @@ fun FieldMuscle(adminUpdateExerciseViewModel: AdminUpdateExerciseViewModel) {
             adminUpdateExerciseViewModel._muscle= newValue
         },
         modifier = Modifier
-            .width(350.dp)
+            .fillMaxWidth()
             .clip(RoundedCornerShape(4.dp))
             .border(
                 width = 1.dp,
@@ -251,7 +258,7 @@ fun FieldType(adminUpdateExerciseViewModel: AdminUpdateExerciseViewModel){
                 ExposedDropdownMenuDefaults.TrailingIcon(expanded = isExpanded)
             }, modifier = Modifier
                 .menuAnchor()
-                .width(350.dp)
+                .fillMaxWidth()
                 .clip(RoundedCornerShape(4.dp))
                 .border(
                     width = 1.dp,
@@ -307,7 +314,7 @@ fun FieldDifficulty(adminUpdateExerciseViewModel: AdminUpdateExerciseViewModel){
                 ExposedDropdownMenuDefaults.TrailingIcon(expanded = isExpanded)
             }, modifier = Modifier
                 .menuAnchor()
-                .width(350.dp)
+                .fillMaxWidth()
                 .clip(RoundedCornerShape(4.dp))
                 .border(
                     width = 1.dp,
@@ -355,7 +362,7 @@ fun FieldDescription(adminUpdateExerciseViewModel: AdminUpdateExerciseViewModel)
             adminUpdateExerciseViewModel._description=newValue
         },
         modifier = Modifier
-            .width(350.dp)
+            .fillMaxWidth()
             .clip(RoundedCornerShape(4.dp))
             .border(
                 width = 1.dp,
@@ -388,7 +395,7 @@ fun FieldSets(adminUpdateExerciseViewModel: AdminUpdateExerciseViewModel) {
             adminUpdateExerciseViewModel._sets=newValue
         },
         modifier = Modifier
-            .width(350.dp)
+            .fillMaxWidth()
             .clip(RoundedCornerShape(4.dp))
             .border(
                 width = 1.dp,

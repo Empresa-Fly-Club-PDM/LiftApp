@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -87,8 +88,14 @@ fun CreateAdmin(navController: NavHostController) {
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             AdminHeaderBarBackArrowDumbell(title = stringResource(R.string.nuevo_administrador), navController = navController, backOnClick = {navController.popBackStack()})
-            CreateAdminFields(createAdminViewModel,navController)
-            ButtonsCreateAdmin(createAdminViewModel,navController)
+            Column(modifier = Modifier
+                .fillMaxHeight(0.85f)
+                .fillMaxWidth()
+                .verticalScroll(rememberScrollState()),
+                verticalArrangement = Arrangement.SpaceEvenly) {
+                CreateAdminFields(createAdminViewModel,navController)
+                ButtonsCreateAdmin(createAdminViewModel,navController)
+            }
             Menu(navController)
         }
 
@@ -100,8 +107,7 @@ fun CreateAdmin(navController: NavHostController) {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CreateAdminFields(viewmodel: CreateAdminViewModel, navController: NavHostController) {
-    Column(modifier = Modifier
-        .verticalScroll(rememberScrollState()),
+    Column(modifier = Modifier,
         horizontalAlignment = Alignment.CenterHorizontally) {
         FieldName(viewmodel)
         Spacer(modifier = Modifier.padding(2.dp))
@@ -160,7 +166,7 @@ fun FieldName(viewmodel: CreateAdminViewModel) {
             viewmodel.nombrecompleto= newValue
         },
         modifier = Modifier
-            .width(350.dp)
+            .fillMaxWidth()
             .clip(RoundedCornerShape(4.dp))
             .border(
                 width = 1.dp,
@@ -194,7 +200,7 @@ fun FieldEmail(viewmodel: CreateAdminViewModel) {
             viewmodel.email= newValue
         },
         modifier = Modifier
-            .width(350.dp)
+            .fillMaxWidth()
             .clip(RoundedCornerShape(4.dp))
             .border(
                 width = 1.dp,
@@ -234,7 +240,7 @@ fun FieldPassword(viewModel: CreateAdminViewModel) {
             viewModel.password = newValue
         },
         modifier = Modifier
-            .width(350.dp)
+            .fillMaxWidth()
             .clip(RoundedCornerShape(4.dp))
             .background(colorResource(id = R.color.field))
             .border(
@@ -286,7 +292,7 @@ fun FieldConfirmPassword(viewModel: CreateAdminViewModel) {
             viewModel.confirmpassword = newValue
         },
         modifier = Modifier
-            .width(350.dp)
+            .fillMaxWidth()
             .clip(RoundedCornerShape(4.dp))
             .background(colorResource(id = R.color.field))
             .border(

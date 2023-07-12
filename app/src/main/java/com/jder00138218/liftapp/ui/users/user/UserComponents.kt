@@ -96,7 +96,7 @@ fun ExerciseCardUser(exercise: exercise, ruta: String, navController: NavControl
                     Icon(painter = painterResource(id = R.drawable.shield_done),
                     contentDescription = stringResource(R.string.verify_icon),
                     modifier = Modifier
-                        .size(20.dp)
+                        .size(30.dp)
                         .weight(1f))
                 }else{
                     Icon(painter = painterResource(id = R.drawable.pesa),

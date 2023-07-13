@@ -21,6 +21,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextField
@@ -38,6 +39,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
@@ -50,14 +52,14 @@ import androidx.navigation.NavHostController
 import com.jder00138218.liftapp.R
 import com.jder00138218.liftapp.network.dto.exercise.exercise
 import com.jder00138218.liftapp.ui.navigation.Rutas
+import com.jder00138218.liftapp.ui.users.admin.AdminHeaderBarBackArrowDumbell
 import com.jder00138218.liftapp.ui.users.admin.Menu
 import com.jder00138218.liftapp.ui.users.admin.exerciseManager.ManageExerciseRequests.viewModel.DetailExerciseViewmodel
 
 @Composable
 fun DetaileExercise(navController: NavHostController) {
     val navBackStackEntry = navController.currentBackStackEntry
-    val exerciseid = navBackStackEntry?.arguments?.getInt("id")
-    Log.d("idlog",exerciseid.toString())
+    val exerciseid = navBackStackEntry?.arguments?.getInt(stringResource(R.string.id))
     val detailExerciseViewmodel:DetailExerciseViewmodel = viewModel(
         factory = DetailExerciseViewmodel.Factory
     )
@@ -72,20 +74,19 @@ fun DetaileExercise(navController: NavHostController) {
     ) {
             Column(modifier = Modifier
                 .fillMaxSize(),
-                verticalArrangement = Arrangement.SpaceBetween
+                verticalArrangement = Arrangement.SpaceBetween,
+                horizontalAlignment = Alignment.CenterHorizontally
                 ) {
 
-                Text(
-                    text = "Descripcion de la Solicitud",
-                    color = Color.Black,
-                    style = TextStyle(
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 24.sp
-                    )
-                )
-                UserInfoSection(name = detailExercise.user.nombrecompleto, detailExercise.user.points)
-                FieldsDetaile(detailExercise,detailExerciseViewmodel,navController)
-                ButtonsDetaile(detailExercise.id,detailExerciseViewmodel, navController)
+                AdminHeaderBarBackArrowDumbell(title = stringResource(R.string.descripcion_de_la_solicitud), navController = navController, backOnClick = {navController.popBackStack()})
+                Column(modifier = Modifier
+                    .fillMaxHeight(0.85f)
+                    .fillMaxWidth()
+                    .verticalScroll(rememberScrollState())) {
+                    UserInfoSection(name = detailExercise.user.nombrecompleto, detailExercise.user.points)
+                    FieldsDetaile(detailExercise,detailExerciseViewmodel,navController)
+                    ButtonsDetaile(detailExercise.id,detailExerciseViewmodel, navController)
+                }
                 Menu(navController)
             }
         }
@@ -97,9 +98,8 @@ fun DetaileExercise(navController: NavHostController) {
 @Composable
 fun FieldsDetaile(exercise: exercise,detailExerciseViewmodel: DetailExerciseViewmodel,navController: NavHostController) {
     Column(modifier = Modifier
-        .fillMaxWidth()
-        .fillMaxHeight(0.5f)
-        .verticalScroll(rememberScrollState())) {
+        .fillMaxWidth(),
+        horizontalAlignment = Alignment.CenterHorizontally) {
         FieldDetaile(exercise.name)
         Spacer(modifier = Modifier.padding(2.dp))
         FieldDetaile(exercise.muscle)
@@ -121,44 +121,69 @@ fun FieldsDetaile(exercise: exercise,detailExerciseViewmodel: DetailExerciseView
 fun UserInfoSection(name: String, score: Int){
     Column(modifier = Modifier
         .fillMaxWidth()
-        .padding(8.dp)
+        .padding(4.dp)
     ) {
-        Text(text = "Usuario: " + name, fontWeight = FontWeight.Bold)
-        Text(text = "Puntuacion: " +score, fontWeight = FontWeight.Light)
+        Text(text = stringResource(R.string.usuario) + name, fontWeight = FontWeight.Bold)
+        Text(text = stringResource(R.string.puntuacion) +score, fontWeight = FontWeight.Light)
     }
 }
 
 @Composable
 fun ButtonsDetaile(id: Int? , detailExerciseViewmodel: DetailExerciseViewmodel,navController: NavHostController) {
     val context = LocalContext.current
-    Row() {
+   Column() {
         Button(
             onClick = {
                 detailExerciseViewmodel.denyExercise(id,navController,context)
+                detailExerciseViewmodel._loading.value=true
+                detailExerciseViewmodel.isVerifyEnabled.value=false
             }, modifier = Modifier
                 .height(60.dp)
-                .width(175.dp)
                 .fillMaxWidth(), colors = ButtonDefaults.buttonColors(
                 containerColor = colorResource(id = R.color.buttonGray)
-            )
+            ),
+            enabled = detailExerciseViewmodel.isDenyEnabled.value
         ) {
+            if (detailExerciseViewmodel._loading.value) {
+                // Show loading animation when isLoading is true
+                CircularProgressIndicator(
+                    modifier = Modifier
+                        .size(36.dp)
+                        .padding(end = 8.dp),
+                    color = Color.White
+                )
+            } else {
 
-            Text(text = " Descartar")
+            Text(text = stringResource(R.string.descartar))
+            }
 
         }
-
+        Spacer(modifier = Modifier.height(8.dp))
         Button(
             onClick = {
                       detailExerciseViewmodel.verifyExercise(id,navController,context)
+                        detailExerciseViewmodel._loadingVerification.value=true
+                detailExerciseViewmodel.isDenyEnabled.value=false
             }, modifier = Modifier
                 .height(60.dp)
-                .width(175.dp)
                 .fillMaxWidth(), colors = ButtonDefaults.buttonColors(
-                containerColor = Color.Red
-            )
+                containerColor = colorResource(id = R.color.buttonGren)
+            ),
+            enabled = detailExerciseViewmodel.isVerifyEnabled.value
         ) {
 
-            Text(text = "Verificar")
+            if (detailExerciseViewmodel._loadingVerification.value) {
+                // Show loading animation when isLoading is true
+                CircularProgressIndicator(
+                    modifier = Modifier
+                        .size(36.dp)
+                        .padding(end = 8.dp),
+                    color = Color.White
+                )
+            } else {
+
+                Text(text = stringResource(R.string.verificar))
+            }
 
         }
     }
@@ -172,7 +197,7 @@ fun FieldDetaile(name: String) {
         readOnly = true,
         onValueChange = { },
         modifier = Modifier
-            .width(350.dp)
+            .fillMaxWidth()
             .clip(RoundedCornerShape(4.dp))
             .border(
                 width = 1.dp,
@@ -186,7 +211,7 @@ fun FieldDetaile(name: String) {
             Icon(
                 modifier = Modifier.size(16.dp),
                 painter = painterResource(id = R.drawable.pesa),
-                contentDescription = "Icon field"
+                contentDescription = stringResource(R.string.icon_field)
             )
         },
         keyboardOptions = KeyboardOptions(

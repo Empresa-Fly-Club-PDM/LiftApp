@@ -8,19 +8,15 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.APPLICATION_KEY
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import androidx.navigation.NavHostController
-import com.jder00138218.liftapp.RetrofitApplication
+import com.jder00138218.liftapp.LiftAppApplication
+import com.jder00138218.liftapp.R
 import com.jder00138218.liftapp.network.ApiResponse
 import com.jder00138218.liftapp.repositories.ExerciseRepository
-import com.jder00138218.liftapp.ui.login.LoginUiStatus
-import com.jder00138218.liftapp.ui.login.decodeHS512TokenWithoutVerification
-import com.jder00138218.liftapp.ui.login.getRoleFromTokenPayload
-import com.jder00138218.liftapp.ui.login.viewmodel.LoginViewModel
 import com.jder00138218.liftapp.ui.navigation.Rutas
 import com.jder00138218.liftapp.ui.users.admin.exerciseManager.CreateExercise.CreateExerciseUIStatus
 import kotlinx.coroutines.launch
@@ -34,6 +30,8 @@ class CreateExerciseViewmodel(private val exerciseRepository: ExerciseRepository
     private var _sets by mutableStateOf("")
     private var _type by mutableStateOf("")
     val _status = MutableLiveData<CreateExerciseUIStatus>(CreateExerciseUIStatus.Resume)
+    val isLoadingCreate = mutableStateOf(false)
+    val _loading = mutableStateOf(false)
 
     var description: String
         get() = _description
@@ -94,11 +92,12 @@ class CreateExerciseViewmodel(private val exerciseRepository: ExerciseRepository
 
 
     fun onCreate(navController: NavHostController,context: Context) {
-        val app = context.applicationContext as RetrofitApplication
+        val app = context.applicationContext as LiftAppApplication
         val userid = app.getUserId()
         if (!validateData()) {
-            _status.value = CreateExerciseUIStatus.ErrorWithMessage("Verificar Imformation")
-            Toast.makeText(context, "Verificar campos vacios", Toast.LENGTH_SHORT).show()
+            _status.value = CreateExerciseUIStatus.ErrorWithMessage(context.getString(R.string.verificar_imformation))
+            Toast.makeText(context, context.getString(R.string.verificar_campos_vacios), Toast.LENGTH_SHORT).show()
+            isLoadingCreate.value = false
             return
         }
 
@@ -109,20 +108,19 @@ class CreateExerciseViewmodel(private val exerciseRepository: ExerciseRepository
         val status = _status.value
         when (status) {
             is CreateExerciseUIStatus.Error -> {
-                Log.d("tag", "Error")
-                Toast.makeText(context, "Error en inicio de sesión", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, context.getString(R.string.error_en_inicio_de_sesi_n), Toast.LENGTH_SHORT).show()
             }
             is CreateExerciseUIStatus.ErrorWithMessage -> {
-                Toast.makeText(context, "Verificar datos ingresados", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, context.getString(R.string.verificar_datos_ingresados), Toast.LENGTH_SHORT).show()
             }
             is CreateExerciseUIStatus.Success -> {
-                Toast.makeText(context, "Ejercicio creado exitosamente", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, context.getString(R.string.ejercicio_creado_exitosamente), Toast.LENGTH_SHORT).show()
                 navController.navigate(route = Rutas.AdminVerifyExercise.ruta)
             }
             else -> {
-                Log.d("tag","failure")
             }
         }
+        isLoadingCreate.value = false
     }
 
     private fun validateData(): Boolean {
@@ -157,7 +155,7 @@ class CreateExerciseViewmodel(private val exerciseRepository: ExerciseRepository
     companion object {
         val Factory = viewModelFactory {
             initializer {
-                val app = this[APPLICATION_KEY] as RetrofitApplication
+                val app = this[APPLICATION_KEY] as LiftAppApplication
                 CreateExerciseViewmodel(app.exerciseRepository)
             }
         }

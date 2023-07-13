@@ -3,7 +3,6 @@ package com.jder00138218.liftapp.ui.users.admin.exerciseManager.ManageExerciseRe
 import android.content.Context
 import android.util.Log
 import android.widget.Toast
-import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -12,11 +11,11 @@ import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import androidx.navigation.NavHostController
-import com.jder00138218.liftapp.RetrofitApplication
+import com.jder00138218.liftapp.LiftAppApplication
+import com.jder00138218.liftapp.R
 import com.jder00138218.liftapp.network.ApiResponse
 import com.jder00138218.liftapp.network.dto.exercise.exercise
 import com.jder00138218.liftapp.repositories.DetailExerciseRepository
-import com.jder00138218.liftapp.ui.login.LoginUiStatus
 import com.jder00138218.liftapp.ui.navigation.Rutas
 import com.jder00138218.liftapp.ui.users.admin.exerciseManager.ManageExerciseRequests.DetailUIStatus
 import kotlinx.coroutines.launch
@@ -24,6 +23,11 @@ import kotlinx.coroutines.launch
 class DetailExerciseViewmodel(private val detailExerciseRepository: DetailExerciseRepository): ViewModel() {
     private var _exercise = mutableStateOf<exercise>(exercise())
     val _status = MutableLiveData<DetailUIStatus>(DetailUIStatus.Resume)
+    val _loading = mutableStateOf(false)
+    val _loadingVerification = mutableStateOf(false)
+    val isDenyEnabled = mutableStateOf(true)
+    val isVerifyEnabled = mutableStateOf(true)
+
 
     val exercise: exercise
         get() = _exercise.value
@@ -36,7 +40,6 @@ class DetailExerciseViewmodel(private val detailExerciseRepository: DetailExerci
         viewModelScope.launch {
             addExercise(detailExerciseRepository.getDetailExercise(id))
         }
-        Log.d("checkexercise",_exercise.toString())
     }
 
      fun denyExercise(id:Int?,navController: NavHostController,context:Context) {
@@ -48,9 +51,10 @@ class DetailExerciseViewmodel(private val detailExerciseRepository: DetailExerci
                         is ApiResponse.Success -> DetailUIStatus.Success(
                             response.data
                         )
+
                     }
                     )
-            Toast.makeText(context, "Ejercicio denegado y descartado", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, context.getString(R.string.ejercicio_denegado_y_descartado), Toast.LENGTH_SHORT).show()
             navController.navigate(Rutas.DashboardAdmin.ruta)
 
         }
@@ -66,7 +70,8 @@ class DetailExerciseViewmodel(private val detailExerciseRepository: DetailExerci
                         )
                     }
                     )
-            Toast.makeText(context, "Ejercicio Verificado", Toast.LENGTH_SHORT).show()
+            _loading.value=false
+            Toast.makeText(context, context.getString(R.string.ejercicio_verificado), Toast.LENGTH_SHORT).show()
             navController.navigate(Rutas.DashboardAdmin.ruta)
 
         }
@@ -75,7 +80,7 @@ class DetailExerciseViewmodel(private val detailExerciseRepository: DetailExerci
     companion object {
         val Factory = viewModelFactory {
             initializer {
-                val app = this[APPLICATION_KEY] as RetrofitApplication
+                val app = this[APPLICATION_KEY] as LiftAppApplication
                 DetailExerciseViewmodel(app.detailExerciseRepository)
             }
         }

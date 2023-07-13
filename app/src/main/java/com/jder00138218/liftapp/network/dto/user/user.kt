@@ -9,7 +9,7 @@ data class user(
     val genero: String = "",
     val fechanac: String = "",
     val weight: Int = 0,
-    val height: Double = 0.0,
+    val height: Int = 0,
     val enabledstate: Boolean = false,
     val points: Int = 0,
     val role: String = "",

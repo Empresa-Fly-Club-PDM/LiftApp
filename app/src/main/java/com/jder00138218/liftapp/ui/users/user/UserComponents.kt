@@ -1,11 +1,14 @@
 package com.jder00138218.liftapp.ui.users.user
 
+import android.content.Context
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -54,6 +57,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.VerticalAlignmentLine
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
@@ -64,18 +68,412 @@ import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.jder00138218.liftapp.R
+import com.jder00138218.liftapp.network.dto.exercise.exercise
+import com.jder00138218.liftapp.network.dto.lift.lift
+import com.jder00138218.liftapp.network.dto.user.user
+import com.jder00138218.liftapp.ui.navigation.Rutas
 
+@Composable
+fun FriendNameCard(userName: String){
+    Card(modifier = Modifier
+        .fillMaxWidth()
+        .height(64.dp)
+        , colors = CardDefaults.cardColors(
+            containerColor = Color.White
+        ), elevation = CardDefaults.cardElevation(
+            defaultElevation = 10.dp
+        )) {
+        Row(modifier = Modifier
+            .fillMaxWidth()
+            .height(64.dp)
+            .padding(8.dp),
+            verticalAlignment = Alignment.CenterVertically) {
+            Column(modifier = Modifier
+                .height(64.dp)
+                .fillMaxWidth(),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center) {
+                Text(text = userName, style = TextStyle(
+                    fontWeight = FontWeight.Bold
+                ), color = Color.Black)
+            }
+        }
+    }
+}
+@Composable
+fun DataRow3Elements(detailUser: user){
+    Row(modifier = Modifier
+        .fillMaxWidth()
+        .height(64.dp), horizontalArrangement = Arrangement.SpaceEvenly, verticalAlignment = Alignment.CenterVertically) {
+        Card(modifier = Modifier
+            .weight(1f)
+            .height(56.dp)
+            , colors = CardDefaults.cardColors(
+                containerColor = Color.White
+            ), elevation = CardDefaults.cardElevation(
+                defaultElevation = 10.dp
+            )) {
+            Column(modifier = Modifier
+                .fillMaxWidth()
+                .fillMaxHeight(),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
+            ) {
+                Text(text = "Altura", color = Color.Gray)
+                Text(text = detailUser.height.toString(), color = Color.Red)
+            }
+        }
+        Spacer(modifier = Modifier.padding(8.dp))
+        Card(modifier = Modifier
+            .weight(1f)
+            .height(56.dp)
+            , colors = CardDefaults.cardColors(
+                containerColor = Color.White
+            ), elevation = CardDefaults.cardElevation(
+                defaultElevation = 10.dp
+            )) {
+            Column(modifier = Modifier
+                .fillMaxWidth()
+                .fillMaxHeight(),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
+            ) {
+                Text(text = "Peso", color = Color.Gray)
+                Text(text = detailUser.weight.toString(), color = Color.Red)
+            }
+        }
+        Spacer(modifier = Modifier.padding(8.dp))
+        Card(modifier = Modifier
+            .weight(1f)
+            .height(56.dp)
+            , colors = CardDefaults.cardColors(
+                containerColor = Color.White
+            ), elevation = CardDefaults.cardElevation(
+                defaultElevation = 10.dp
+            )) {
+            Column(modifier = Modifier
+                .fillMaxWidth()
+                .fillMaxHeight(),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
+            ) {
+                Text(text = "Edad", color = Color.Gray)
+                Text(text = calculateAge(detailUser.fechanac).toString() + stringResource(R.string.a_os), color = Color.Red)
+            }
+        }
+    }
+}
+@Composable
+fun DataRow2Elements(detailUser: user, context: Context){
+    Row(modifier = Modifier
+        .fillMaxWidth()
+        .height(64.dp), horizontalArrangement = Arrangement.SpaceEvenly, verticalAlignment = Alignment.CenterVertically) {
+        Card(modifier = Modifier
+            .weight(1f)
+            .height(56.dp)
+            , colors = CardDefaults.cardColors(
+                containerColor = Color.White
+            ), elevation = CardDefaults.cardElevation(
+                defaultElevation = 10.dp
+            )) {
+            Column(modifier = Modifier
+                .fillMaxWidth()
+                .fillMaxHeight(),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
+            ) {
+                Text(text = "Puntaje", color = Color.Gray)
+                Text(text = detailUser.points.toString(), color = Color.Red)
+            }
+        }
+        Spacer(modifier = Modifier.padding(8.dp))
+        Card(modifier = Modifier
+            .weight(1f)
+            .height(56.dp)
+            , colors = CardDefaults.cardColors(
+                containerColor = Color.White
+            ), elevation = CardDefaults.cardElevation(
+                defaultElevation = 10.dp
+            )) {
+            Column(modifier = Modifier
+                .fillMaxWidth()
+                .fillMaxHeight(),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
+            ) {
+                Text(text = "Nivel", color = Color.Gray)
+                Text(text = getRank(detailUser.points, context), color = Color.Red)
+            }
+        }
 
+    }
+}
+@Composable
+fun BestLiftCard(bestLift: lift?, navController: NavController){
+    Card(modifier = Modifier
+        .fillMaxWidth()
+        .height(120.dp)
+        , colors = CardDefaults.cardColors(
+            containerColor = colorResource(id = R.color.bcCard)
+        ), elevation = CardDefaults.cardElevation(
+            defaultElevation = 10.dp
+        )) {
+        Column(modifier = Modifier
+            .fillMaxHeight()
+            .fillMaxWidth(),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
+        ) {
+            Row(modifier = Modifier
+                .fillMaxWidth()
+                .padding(8.dp),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically) {
+                Text(text = "Mejor levantamiento", color = Color.Black,style = TextStyle(
+                    fontWeight = FontWeight.Bold))
+                Text(text = "${bestLift?.weight} lb", color = Color.Black,style = TextStyle(
+                    fontWeight = FontWeight.Bold, fontSize = 24.sp))
+            }
+            Button(
+                onClick = { navController.navigate(route = Rutas.UserRanking.ruta) },
+                shape = RoundedCornerShape(8.dp),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color.White
+                ),
+                modifier = Modifier
+                    .padding(8.dp)
+                    .fillMaxWidth()
+                    .height(48.dp)
+            ) {
+                Text(text = stringResource(R.string.rankings), color = Color.Red)
+            }
+        }
+    }
+}
+@Composable
+fun ExerciseCardUser(exercise: exercise, ruta: String, navController: NavController){
 
+    val isVerified = exercise.verified
 
+    Card(modifier = Modifier.fillMaxWidth().clickable {
+        navController.navigate(route = ruta)
+    }, colors = CardDefaults.cardColors(
+        containerColor = colorResource(id = R.color.card)
+    )) {
+        Column(modifier = Modifier
+            .fillMaxWidth()
+            .padding(16.dp)) {
+            Row(modifier = Modifier
+                .fillMaxWidth()
+                .padding(8.dp),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                Text(text = exercise.name, softWrap = true, modifier = Modifier.weight(1f), textAlign = TextAlign.Center)
+                if(isVerified){
+                    Icon(painter = painterResource(id = R.drawable.shield_done),
+                    contentDescription = stringResource(R.string.verify_icon),
+                    modifier = Modifier
+                        .size(30.dp)
+                        .weight(1f))
+                }else{
+                    Icon(painter = painterResource(id = R.drawable.pesa),
+                        contentDescription = stringResource(R.string.pesa_icon),
+                        modifier = Modifier
+                            .size(20.dp)
+                            .weight(1f))
+                }
+
+            }
+            Row(modifier = Modifier
+                .fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                Card(modifier = Modifier
+                    .weight(1f)
+                    .height(56.dp),
+                    colors = CardDefaults.cardColors(
+                        containerColor = Color.White
+                    )
+                ) {
+                    Column(modifier = Modifier
+                        .fillMaxWidth()
+                        .fillMaxHeight(),
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.Center,
+                    ) {
+                        Row(modifier = Modifier
+                            .fillMaxWidth()
+                            , horizontalArrangement = Arrangement.Center, verticalAlignment = Alignment.CenterVertically) {
+                            Text(text = stringResource(id = R.string.musculo), softWrap = true, modifier = Modifier, textAlign = TextAlign.Center, color = Color.Red)
+                        }
+                        Row(modifier = Modifier
+                            .fillMaxWidth()
+                            , horizontalArrangement = Arrangement.Center, verticalAlignment = Alignment.CenterVertically) {
+                            Text(text = exercise.muscle, softWrap = true, modifier = Modifier, textAlign = TextAlign.Center, color = Color.Black)
+                        }
+                    }
+
+                }
+                Spacer(modifier = Modifier.width(16.dp))
+                Card(modifier = Modifier
+                    .weight(1f)
+                    .height(56.dp),
+                    colors = CardDefaults.cardColors(
+                        containerColor = Color.White
+                    )
+                ) {
+                    Column(modifier = Modifier
+                        .fillMaxWidth()
+                        .fillMaxHeight(),
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.Center
+                    ) {
+                        Row(modifier = Modifier
+                            .fillMaxWidth()
+                            , horizontalArrangement = Arrangement.Center, verticalAlignment = Alignment.CenterVertically) {
+                            Text(text = exercise.type, softWrap = true, modifier = Modifier, textAlign = TextAlign.Center, color = Color.Red)
+                        }
+                        Row(modifier = Modifier
+                            .fillMaxWidth()
+                            , horizontalArrangement = Arrangement.Center, verticalAlignment = Alignment.CenterVertically) {
+                            Text(text = "${exercise.sets} x ${exercise.reps}", softWrap = true, modifier = Modifier, textAlign = TextAlign.Center, color = Color.Black)
+                        }
+                    }
+
+                }
+
+            }
+        }
+
+    }
+
+}
+
+@Composable
+fun ExerciseCardUserNoClick(exercise: exercise, navController: NavController){
+
+    val isVerified = exercise.verified
+
+    Card(modifier = Modifier.fillMaxWidth(), colors = CardDefaults.cardColors(
+        containerColor = colorResource(id = R.color.card)
+    )) {
+        Column(modifier = Modifier
+            .fillMaxWidth()
+            .padding(16.dp)) {
+            Row(modifier = Modifier
+                .fillMaxWidth()
+                .padding(8.dp),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                Text(text = exercise.name, softWrap = true, modifier = Modifier.weight(1f), textAlign = TextAlign.Center)
+                if(isVerified){
+                    Icon(painter = painterResource(id = R.drawable.shield_done),
+                        contentDescription = stringResource(R.string.verify_icon),
+                        modifier = Modifier
+                            .size(30.dp)
+                            .weight(1f))
+                }else{
+                    Icon(painter = painterResource(id = R.drawable.pesa),
+                        contentDescription = stringResource(R.string.pesa_icon),
+                        modifier = Modifier
+                            .size(20.dp)
+                            .weight(1f))
+                }
+
+            }
+            Row(modifier = Modifier
+                .fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                Card(modifier = Modifier
+                    .weight(1f)
+                    .height(56.dp),
+                    colors = CardDefaults.cardColors(
+                        containerColor = Color.White
+                    )
+                ) {
+                    Column(modifier = Modifier
+                        .fillMaxWidth()
+                        .fillMaxHeight(),
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.Center,
+                    ) {
+                        Row(modifier = Modifier
+                            .fillMaxWidth()
+                            , horizontalArrangement = Arrangement.Center, verticalAlignment = Alignment.CenterVertically) {
+                            Text(text = stringResource(id = R.string.musculo), softWrap = true, modifier = Modifier, textAlign = TextAlign.Center, color = Color.Red)
+                        }
+                        Row(modifier = Modifier
+                            .fillMaxWidth()
+                            , horizontalArrangement = Arrangement.Center, verticalAlignment = Alignment.CenterVertically) {
+                            Text(text = exercise.muscle, softWrap = true, modifier = Modifier, textAlign = TextAlign.Center, color = Color.Black)
+                        }
+                    }
+
+                }
+                Spacer(modifier = Modifier.width(16.dp))
+                Card(modifier = Modifier
+                    .weight(1f)
+                    .height(56.dp),
+                    colors = CardDefaults.cardColors(
+                        containerColor = Color.White
+                    )
+                ) {
+                    Column(modifier = Modifier
+                        .fillMaxWidth()
+                        .fillMaxHeight(),
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.Center
+                    ) {
+                        Row(modifier = Modifier
+                            .fillMaxWidth()
+                            , horizontalArrangement = Arrangement.Center, verticalAlignment = Alignment.CenterVertically) {
+                            Text(text = exercise.type, softWrap = true, modifier = Modifier, textAlign = TextAlign.Center, color = Color.Red)
+                        }
+                        Row(modifier = Modifier
+                            .fillMaxWidth()
+                            , horizontalArrangement = Arrangement.Center, verticalAlignment = Alignment.CenterVertically) {
+                            Text(text = "${exercise.sets} x ${exercise.reps}", softWrap = true, modifier = Modifier, textAlign = TextAlign.Center, color = Color.Black)
+                        }
+                    }
+
+                }
+
+            }
+        }
+
+    }
+
+}
+@Composable
+fun UserProfileInfoRow(text: String) {
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = Modifier
+            .fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceBetween,
+    ) {
+
+        Text(
+            text = text,
+            modifier = Modifier.padding(start = 16.dp),
+            style = TextStyle(color = Color.Black, fontSize = 16.sp)
+        )
+    }
+}
 // Search Bar
 @Preview
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SearchBar(){
 
-    var text by remember { mutableStateOf("search...") }
+    var text by remember { mutableStateOf("Buscar..") }
     OutlinedTextField(value = text, onValueChange = { newText: String ->
         text = newText }, modifier = Modifier
         .padding(horizontal = 8.dp)
@@ -88,47 +486,49 @@ fun SearchBar(){
     )
 }
 
-@Preview
+
 @Composable
-fun UserBottomMenu() {
+fun UserBottomMenu(navController: NavController) {
     Row(
         modifier = Modifier
             .fillMaxWidth(),
-        horizontalArrangement = Arrangement.SpaceBetween
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.Bottom
     ) {
         Button(
-            onClick = { /* Acción del primer botón */ },
+            onClick = {navController.navigate(route = Rutas.DashboardUser.ruta)},
             modifier = Modifier
-                .weight(1f)
-               , colors = ButtonDefaults.buttonColors(
+                .weight(1f),
+            colors = ButtonDefaults.buttonColors(
                 containerColor = Color.White
             )
         ) {
             Icon(
                 painter = painterResource(R.drawable.inbox),
-                contentDescription = "Imbox icon",
-                tint = Color.Red,
+                contentDescription = stringResource(R.string.inbox_icon),
+                tint = Color.Gray,
                 modifier = Modifier.size(20.dp)
             )
         }
 
         Button(
-            onClick = { /* Acción del segundo botón */ },
+            onClick = {navController.navigate(route = Rutas.UserProfile.ruta)},
             modifier = Modifier
-                .weight(1f), colors = ButtonDefaults.buttonColors(
+                .weight(1f)
+            , colors = ButtonDefaults.buttonColors(
                 containerColor = Color.White
             )
         ) {
             Icon(
                 painter = painterResource(R.drawable.profile),
-                contentDescription = "Profile icon",
+                contentDescription = stringResource(R.string.profile_icon),
                 tint = colorResource(id = R.color.gray_text),
                 modifier = Modifier.size(20.dp)
             )
         }
 
         Button(
-            onClick = { /* Acción del tercer botón */ },
+            onClick = {navController.navigate(route = Rutas.UserExercises.ruta)},
             modifier = Modifier
                 .weight(1f), colors = ButtonDefaults.buttonColors(
                 containerColor = Color.White
@@ -136,7 +536,7 @@ fun UserBottomMenu() {
         ) {
             Icon(
                 painter = painterResource(R.drawable.pesa),
-                contentDescription = "Pesa icon",
+                contentDescription = stringResource(R.string.pesa_icon),
                 tint = colorResource(id = R.color.gray_text),
                 modifier = Modifier.size(30.dp)
             )
@@ -145,10 +545,10 @@ fun UserBottomMenu() {
 }
 
 @Composable
-fun HeaderBarBackArrowAdd(title: String) {
+fun HeaderBarBackArrowAdd(title: String, navController: NavController, addOnClick: () ->Unit, backOnClick: () -> Unit) {
     var iconHeader = Icons.Outlined.Add
 
-    if(title == "Ranking"){
+    if(title == stringResource(R.string.ranking)){
         iconHeader = Icons.Outlined.Search
     }
 
@@ -160,11 +560,11 @@ fun HeaderBarBackArrowAdd(title: String) {
         verticalAlignment = Alignment.CenterVertically
     ) {
         IconButton(
-            onClick = { /* Handle back button click */ }
+            onClick = {backOnClick()}
         ) {
             Icon(
                 Icons.Default.ArrowBack,
-                contentDescription = "Back"
+                contentDescription = stringResource(R.string.back)
             )
         }
 
@@ -176,17 +576,17 @@ fun HeaderBarBackArrowAdd(title: String) {
         )
 
         IconButton(
-            onClick = { /* Handle back button click */ }
+            onClick = {addOnClick()}
         ) {
             Icon(
                 imageVector = iconHeader,
-                contentDescription = "Add"
+                contentDescription = stringResource(R.string.add)
             )
         }
     }
 }
 @Composable
-fun HeaderBarBackArrowCheck(title: String){
+fun HeaderBarBackArrowCheck(title: String, navController: NavController, backOnClick: () -> Unit, checkOnClick: () -> Unit){
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -195,11 +595,11 @@ fun HeaderBarBackArrowCheck(title: String){
         verticalAlignment = Alignment.CenterVertically
     ) {
         IconButton(
-            onClick = { /* Handle back button click */ }
+            onClick = { backOnClick() }
         ) {
             Icon(
                 Icons.Default.ArrowBack,
-                contentDescription = "Back"
+                contentDescription = stringResource(R.string.back)
             )
         }
 
@@ -211,32 +611,32 @@ fun HeaderBarBackArrowCheck(title: String){
         )
 
         IconButton(
-            onClick = { /* Handle back button click */ },
+            onClick = { checkOnClick()},
 
         ) {
             Icon(
                 Icons.Default.Check,
-                contentDescription = "Back"
+                contentDescription = stringResource(R.string.back)
             )
         }
     }
 }
 
 @Composable
-fun HeaderBarBackArrowDumbell(title: String){
+fun HeaderBarBackArrowDumbell(title: String, navController: NavController, backOnClick: () -> Unit){
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(16.dp),
+            .padding(8.dp),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
         IconButton(
-            onClick = { /* Handle back button click */ }
+            onClick = { backOnClick()}
         ) {
             Icon(
                 Icons.Default.ArrowBack,
-                contentDescription = "Back"
+                contentDescription = stringResource(R.string.back)
             )
         }
 
@@ -253,7 +653,7 @@ fun HeaderBarBackArrowDumbell(title: String){
             ) {
             Icon(
                 painter = painterResource(R.drawable.pesa),
-                contentDescription = "Pesa icon",
+                contentDescription = stringResource(R.string.pesa_icon),
                 tint = colorResource(id = R.color.gray_text),
                 modifier = Modifier.size(30.dp)
             )
@@ -268,7 +668,7 @@ fun CustomInputField(hint: String){
         value = "",
         onValueChange = { },
         modifier = Modifier
-            .width(350.dp)
+            .fillMaxWidth()
             .clip(RoundedCornerShape(4.dp))
             .border(
                 width = 1.dp,
@@ -282,7 +682,7 @@ fun CustomInputField(hint: String){
             Icon(
                 modifier = Modifier.size(16.dp),
                 painter = painterResource(id = R.drawable.pesa),
-                contentDescription = "Icon field"
+                contentDescription = stringResource(R.string.pesa_icon)
             )
         },
         keyboardOptions = KeyboardOptions(
@@ -312,7 +712,7 @@ fun CustomSelectField(){
                 ExposedDropdownMenuDefaults.TrailingIcon(expanded = isExpanded)
             }, modifier = Modifier
                 .menuAnchor()
-                .width(350.dp)
+                .fillMaxWidth()
                 .clip(RoundedCornerShape(4.dp))
                 .border(
                     width = 1.dp,
@@ -320,27 +720,27 @@ fun CustomSelectField(){
                 )// With padding show border color
                 .background(colorResource(id = R.color.field)),
                 colors = TextFieldDefaults.textFieldColors(containerColor = colorResource(id = R.color.field)) ,
-                placeholder = { Text(text = "Dificultad", color = Color(R.color.gray_text)) },
+                placeholder = { Text(text = stringResource(R.string.dificultad), color = Color(R.color.gray_text)) },
                 leadingIcon = {
                     Icon(
                         modifier = Modifier.size(16.dp),
                         painter = painterResource(id = R.drawable.pesa),
-                        contentDescription = "Icon field"
+                        contentDescription = stringResource(R.string.icon_field)
                     )
                 })
 
             ExposedDropdownMenu(expanded = isExpanded, onDismissRequest = { isExpanded = false }) {
-                DropdownMenuItem(text = { Text(text = "Bajo") },
+                DropdownMenuItem(text = { Text(text = stringResource(R.string.back)) },
                     onClick = {
                         isExpanded = false
                         option = "Alto"
                     })
-                DropdownMenuItem(text = { Text(text = "Medio") },
+                DropdownMenuItem(text = { Text(text = stringResource(R.string.medio)) },
                     onClick = {
                         isExpanded = false
                         option = "Medio"
                     })
-                DropdownMenuItem(text = { Text(text = "Alto") },
+                DropdownMenuItem(text = { Text(text = stringResource(R.string.alto)) },
                     onClick = {
                         isExpanded = false
                         option = "Alto"
@@ -370,7 +770,7 @@ fun CustomTypeSelectField(){
                 ExposedDropdownMenuDefaults.TrailingIcon(expanded = isExpanded)
             }, modifier = Modifier
                 .menuAnchor()
-                .width(350.dp)
+                .fillMaxWidth()
                 .clip(RoundedCornerShape(4.dp))
                 .border(
                     width = 1.dp,
@@ -378,42 +778,42 @@ fun CustomTypeSelectField(){
                 )// With padding show border color
                 .background(colorResource(id = R.color.field)),
                 colors = TextFieldDefaults.textFieldColors(containerColor = colorResource(id = R.color.field)) ,
-                placeholder = { Text(text = "Tipo", color = Color(R.color.gray_text)) },
+                placeholder = { Text(text = stringResource(R.string.tipo), color = Color(R.color.gray_text)) },
                 leadingIcon = {
                     Icon(
                         modifier = Modifier.size(16.dp),
                         painter = painterResource(id = R.drawable.pesa),
-                        contentDescription = "Icon field"
+                        contentDescription = stringResource(R.string.pesa_icon)
                     )
                 })
 
             ExposedDropdownMenu(expanded = isExpanded, onDismissRequest = { isExpanded = false }) {
-                DropdownMenuItem(text = { Text(text = "Pecho") },
+                DropdownMenuItem(text = { Text(text = stringResource(R.string.pecho)) },
                     onClick = {
                         isExpanded = false
                         option = "Alto"
                     })
-                DropdownMenuItem(text = { Text(text = "Piernas") },
+                DropdownMenuItem(text = { Text(text = stringResource(R.string.piernas)) },
                     onClick = {
                         isExpanded = false
                         option = "Medio"
                     })
-                DropdownMenuItem(text = { Text(text = "Espalda") },
+                DropdownMenuItem(text = { Text(text = stringResource(R.string.espalda)) },
                     onClick = {
                         isExpanded = false
                         option = "Alto"
                     })
-                DropdownMenuItem(text = { Text(text = "Hombros") },
+                DropdownMenuItem(text = { Text(text = stringResource(R.string.hombros)) },
                     onClick = {
                         isExpanded = false
                         option = "Hombros"
                     })
-                DropdownMenuItem(text = { Text(text = "Cardio") },
+                DropdownMenuItem(text = { Text(text = stringResource(R.string.cardio)) },
                     onClick = {
                         isExpanded = false
                         option = "Alto"
                     })
-                DropdownMenuItem(text = { Text(text = "Abdomen") },
+                DropdownMenuItem(text = { Text(text = stringResource(R.string.abdomen)) },
                     onClick = {
                         isExpanded = false
                         option = "Alto"
@@ -424,46 +824,6 @@ fun CustomTypeSelectField(){
 
 }
 
-@Composable
-fun CardExercise() {
-    Card( // this
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(8.dp),
-        colors = CardDefaults.cardColors(
-            containerColor = colorResource(id = R.color.card)
-        )
-    ) {
-
-        Box(
-            modifier = Modifier
-                .padding(16.dp),
-            contentAlignment = Alignment.Center
-        ) {
-            Column(modifier = Modifier.fillMaxWidth(1f)) {
-
-                Row() {
-                    Text(text = "Juan Daniel Escobar Rivera", fontWeight = FontWeight.Bold)
-                    // Icon
-                }
-
-
-                Row(
-                    modifier = Modifier
-                        .padding(8.dp)
-                        .fillMaxWidth(1f),
-                    horizontalArrangement = Arrangement.Start
-                ) {
-                    ItemEx()
-                    ItemEx()
-                }
-
-            }
-        }
-
-
-    }
-}
 
 @Composable
 fun ItemEx() {
@@ -475,8 +835,8 @@ fun ItemEx() {
             .size(width = 160.dp, height = 60.dp)
     ) {
         Column(Modifier.padding(8.dp)) {
-            Text(text = "Press de banca", color = Color.Red)
-            Text(text = "Pecho", color = Color(R.color.gray_text))
+            Text(text = stringResource(R.string.press_de_banca), color = Color.Red)
+            Text(text = stringResource(R.string.pecho), color = Color(R.color.gray_text))
         }
     }
 

@@ -1,7 +1,6 @@
 package com.jder00138218.liftapp.ui.register
 
-import android.content.Context
-import android.util.Log
+import android.app.DatePickerDialog
 import android.widget.DatePicker
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -18,14 +17,22 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExposedDropdownMenuBox
+import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -35,28 +42,27 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.jder00138218.liftapp.R
-import com.jder00138218.liftapp.RetrofitApplication
-import com.jder00138218.liftapp.ui.login.LoginUiStatus
-import com.jder00138218.liftapp.ui.login.decodeHS512TokenWithoutVerification
-import com.jder00138218.liftapp.ui.login.getRoleFromTokenPayload
-import com.jder00138218.liftapp.ui.login.viewmodel.LoginViewModel
-import com.jder00138218.liftapp.ui.navigation.Rutas
-import com.jder00138218.liftapp.ui.users.admin.Menu
 import com.jder00138218.liftapp.ui.register.viewmodel.RegisterViewModel
+import com.jder00138218.liftapp.ui.users.user.HeaderBarBackArrowDumbell
+import java.util.Calendar
+import java.util.Date
 
 
 @Composable
@@ -69,84 +75,98 @@ fun RegisterScreen(navController: NavHostController) {
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .padding(8.dp)
+
     ) {
-
-        Box(modifier = Modifier.fillMaxSize()) {
-
             Column( // 1
                 Modifier
-                    .align(Alignment.TopCenter)
-                    .fillMaxHeight(0.1f)
-                    .fillMaxWidth(),
-                horizontalAlignment = Alignment.CenterHorizontally
+                    .fillMaxHeight()
+                    .fillMaxWidth()
+                    .padding(8.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
             ) {
-                Text(
-                    text = "Crear Cuenta",
-                    color = Color.Black,
-                    style = TextStyle(
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 24.sp
+                Column(modifier = Modifier
+                    .fillMaxWidth()
+                    .fillMaxHeight()
+                    .verticalScroll(rememberScrollState()),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Text(
+                        text = stringResource(R.string.crear_cuenta),
+                        color = Color.Black,
+                        style = TextStyle(
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 24.sp
+                        )
                     )
-                )
+                    FieldsRegister(registerViewModel, navController)
+                    Spacer(modifier = Modifier.padding(vertical = 8.dp))
+                    Button(onClick = {navController.popBackStack()}, colors = ButtonDefaults.buttonColors(
+                        containerColor = Color.White
+                    ), modifier = Modifier
+                        .height(60.dp)
+                        .fillMaxWidth(), elevation = ButtonDefaults.buttonElevation(
+                        defaultElevation = 10.dp
+                    )) {
+                        Text(text = "Regresar a inicio", color = Color.Black)
+                    }
+                    Spacer(modifier = Modifier.padding(vertical = 8.dp))
+                }
+
             }
-
-
-            Column( // 2
-                Modifier
-                    .align(Alignment.Center)
-                    .fillMaxHeight(0.9f)
-                    .fillMaxWidth(),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                FieldsRegister(registerViewModel, navController)
-            }
-
-        }
-
     }
 }
 
 
 @Composable
 fun FieldsRegister(registerViewModel: RegisterViewModel, navController: NavHostController) {
-    FieldDetaile("Nombre completo", registerViewModel)
+    Spacer(modifier = Modifier.padding(16.dp))
+    FieldDetaile(stringResource(R.string.nombre_completo), registerViewModel)
     Spacer(modifier = Modifier.padding(2.dp))
-    FieldDetaile("Correo", registerViewModel)
+    FieldDetaile(stringResource(R.string.correo), registerViewModel)
     Spacer(modifier = Modifier.padding(2.dp))
-    Fieldpassword("Contraseña", registerViewModel)
+    Fieldpassword(stringResource(R.string.contrase_a), registerViewModel)
     Spacer(modifier = Modifier.padding(2.dp))
-    Fieldpassword("Verificar contraseña", registerViewModel)
+    Fieldpassword(stringResource(R.string.verificar_contrase_a), registerViewModel)
     Spacer(modifier = Modifier.padding(2.dp))
-    FieldDetaile("Genero", registerViewModel)
+    GenreDropDownMenu(registerViewModel)
     Spacer(modifier = Modifier.padding(2.dp))
-    FieldDetaile("Fecha de nacimiento", registerViewModel)
+    DateInputField(registerViewModel)
     Spacer(modifier = Modifier.padding(2.dp))
     GroupPE(registerViewModel)
     Spacer(modifier = Modifier.padding(2.dp))
     ButtonsDetaile(registerViewModel, navController)
     Spacer(modifier = Modifier.padding(2.dp))
-    Text(text = "Por favor revisar los datos", color = Color.Red)
 
 }
 
+
 @Composable
 fun ButtonsDetaile(viewModel: RegisterViewModel, navController: NavHostController) {
-
-    Row(modifier = Modifier.padding(8.dp)) {
+    val context = LocalContext.current
+    Row(modifier = Modifier) {
         Button(
             onClick = {
-                viewModel.onRegister()
-                handleUiStatus(viewModel, navController)
+                viewModel.onRegister(navController, context)
+
             }, modifier = Modifier
                 .height(60.dp)
                 .fillMaxWidth(), colors = ButtonDefaults.buttonColors(
                 containerColor = Color.Red
             )
         ) {
-
-            Text(text = "Registrar")
-
+            if (viewModel._loading.value) {
+                // Show loading animation when isLoading is true
+                CircularProgressIndicator(
+                    modifier = Modifier
+                        .size(36.dp)
+                        .padding(end = 8.dp),
+                    color = Color.White
+                )
+            } else {
+                Text(text = stringResource(R.string.registrar))
+            }
         }
     }
 }
@@ -156,29 +176,28 @@ fun ButtonsDetaile(viewModel: RegisterViewModel, navController: NavHostControlle
 fun FieldDetaile(name: String, viewModel: RegisterViewModel) {
 
     var namelUser by remember { mutableStateOf(viewModel.email) }
-    var genreUser by remember { mutableStateOf(viewModel.genre) }
-    var dateUser by remember { mutableStateOf(viewModel.date) }
     var emailUser by remember { mutableStateOf(viewModel.email) }
 
     var colorPH = Color(R.color.gray_text)
     var iconId = R.drawable.icon_message
     var value = ""
-    var validTextfield = true;
     var type = KeyboardType.Text
     var valueChange: ((String) -> Unit)? = null
+    var tint = colorResource(id = R.color.gray_text)
 
 
-    if (name == "Nombre completo") {
-        colorPH = Color.Red
+    if (name == stringResource(R.string.nombre_completo)) {
+        colorPH = Color.Gray
         iconId = R.drawable.profile
         value = namelUser
+        tint = colorResource(id = R.color.buttonGray)
         valueChange = { newValue ->
             namelUser = newValue
             viewModel.name = newValue
         }
     }
 
-    if (name == "Correo") {
+    if (name == stringResource(R.string.correo)) {
         value = emailUser
         type = KeyboardType.Text
         valueChange = { newValue ->
@@ -187,31 +206,13 @@ fun FieldDetaile(name: String, viewModel: RegisterViewModel) {
         }
     }
 
-    if (name == "Genero") {
-        iconId = R.drawable.user
-        value = genreUser
-        valueChange = { newValue ->
-            genreUser = newValue
-            viewModel.genre = newValue
-        }
-    }
-
-    if (name == "Fecha de nacimiento") {
-        iconId = R.drawable.calendar
-        value = dateUser
-        validTextfield = false
-        valueChange = { newValue ->
-            dateUser = newValue
-            viewModel.date = newValue
-        }
-    }
-
 
     OutlinedTextField(
         value = value,
         onValueChange = valueChange ?: {},
         modifier = Modifier
-            .width(350.dp)
+            .fillMaxWidth()
+            .padding(8.dp)// Modified
             .clip(RoundedCornerShape(4.dp))
             .border(
                 width = 1.dp,
@@ -228,8 +229,8 @@ fun FieldDetaile(name: String, viewModel: RegisterViewModel) {
             Icon(
                 modifier = Modifier.size(16.dp),
                 painter = painterResource(id = iconId),
-                contentDescription = "Icon field",
-                tint = colorResource(id = R.color.gray_text)
+                contentDescription = stringResource(R.string.icon_field),
+                tint = tint
             )
         },
         keyboardOptions = KeyboardOptions(
@@ -240,19 +241,20 @@ fun FieldDetaile(name: String, viewModel: RegisterViewModel) {
 
 }
 
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Fieldpassword(name: String, viewModel: RegisterViewModel) {
 
     var passwordUser by remember { mutableStateOf(viewModel.password) }
+    var passwordUserVde by remember { mutableStateOf(viewModel.passwordVe) }
     var isVisible by remember { mutableStateOf(viewModel.isVisiblePaswd) }
     var value = ""
     var valueChange: ((String) -> Unit)? = null
     var colorId = colorResource(id = R.color.gray_text)
+    var tint = colorResource(id = R.color.buttonGray)
 
-    if (name != "Contraseña") {
-        colorId = Color.Red
+    if (name != stringResource(R.string.contrase_a)) {
+        colorId = Color.Gray
         value = passwordUser
         valueChange = { newValue ->
             passwordUser = newValue
@@ -260,14 +262,15 @@ fun Fieldpassword(name: String, viewModel: RegisterViewModel) {
         }
     }
 
-    if (name != "Verificar contraseña") {
-        colorId = Color.Red
-        value = passwordUser
+    if (name != stringResource(R.string.verificar_contrase_a)) {
+        colorId = Color.Gray
+        value = passwordUserVde
         valueChange = { newValue ->
-            passwordUser = newValue
-            viewModel.password = newValue
+            passwordUserVde = newValue
+            viewModel.passwordVe = newValue
         }
     }
+
 
     val visualTransformation =
         if (isVisible) VisualTransformation.None else PasswordVisualTransformation()
@@ -276,7 +279,8 @@ fun Fieldpassword(name: String, viewModel: RegisterViewModel) {
         value = value,
         onValueChange = valueChange ?: {},
         modifier = Modifier
-            .width(350.dp)
+            .fillMaxWidth()
+            .padding(8.dp)
             .clip(RoundedCornerShape(4.dp))
             .border(
                 width = 1.dp,
@@ -293,8 +297,8 @@ fun Fieldpassword(name: String, viewModel: RegisterViewModel) {
             Icon(
                 modifier = Modifier.size(16.dp),
                 painter = painterResource(id = R.drawable.icon_password),
-                contentDescription = "Icon field",
-                tint = colorResource(id = R.color.gray_text)
+                contentDescription = stringResource(R.string.icon_field),
+                tint = tint
             )
         },
         trailingIcon = {
@@ -304,7 +308,7 @@ fun Fieldpassword(name: String, viewModel: RegisterViewModel) {
                     .size(16.dp)
                     .clickable { isVisible = !isVisible },
                 painter = painterResource(id = R.drawable.icon_hide),
-                contentDescription = "Hide Icon",
+                contentDescription = stringResource(R.string.hide_icon),
                 tint = colorResource(id = R.color.gray_text)
             )
         },
@@ -319,13 +323,12 @@ fun Fieldpassword(name: String, viewModel: RegisterViewModel) {
 @Composable
 fun GroupPE(viewModel: RegisterViewModel) {
 
-    FieldDetaileWB(name = "Peso", viewModel)
+    FieldDetaileWB(name = stringResource(R.string.peso), viewModel)
     Spacer(modifier = Modifier.padding(2.dp))
-    FieldDetaileWB(name = "Estatura", viewModel)
+    FieldDetaileWB(name = stringResource(R.string.estatura), viewModel)
 
 }
 
-// TODO -> FIX FIELDS WITH NUMBERS
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun FieldDetaileWB(name: String, viewModel: RegisterViewModel) {
@@ -337,9 +340,9 @@ fun FieldDetaileWB(name: String, viewModel: RegisterViewModel) {
     var type = KeyboardType.Number
     var valueChange: ((String) -> Unit)? = null
 
-    if (name == "Peso") {
-        iconId = R.drawable.swap
-        textB = "CM"
+    if (name == stringResource(R.string.peso)) {
+        iconId = R.drawable.weight
+        textB = stringResource(R.string.lb)
         value = weigthUser
         valueChange = { newValue ->
             weigthUser = newValue
@@ -347,14 +350,14 @@ fun FieldDetaileWB(name: String, viewModel: RegisterViewModel) {
         }
     }
 
-    if (name == "Estatura") {
+    if (name == stringResource(R.string.estatura)) {
         iconId = R.drawable.swap
-        textB = "CM"
+        textB = stringResource(R.string.cm)
         type = KeyboardType.Number
         value = heigthUser
         valueChange = { newValue ->
             heigthUser = newValue
-            viewModel.heigth = newValue.toDoubleOrNull() ?: 0.0
+            viewModel.heigth = newValue.toIntOrNull() ?: 0
         }
     }
 
@@ -370,7 +373,8 @@ fun FieldDetaileWB(name: String, viewModel: RegisterViewModel) {
                 value = newValue
             },
             modifier = Modifier
-                .width(280.dp)
+                .fillMaxWidth(0.8f)
+                .padding(8.dp)
                 .clip(RoundedCornerShape(4.dp))
                 .border(
                     width = 1.dp,
@@ -386,7 +390,7 @@ fun FieldDetaileWB(name: String, viewModel: RegisterViewModel) {
                 Icon(
                     modifier = Modifier.size(16.dp),
                     painter = painterResource(id = iconId),
-                    contentDescription = "Icon field",
+                    contentDescription = stringResource(R.string.icon_field),
                     tint = colorResource(id = R.color.gray_text)
                 )
             },
@@ -400,7 +404,7 @@ fun FieldDetaileWB(name: String, viewModel: RegisterViewModel) {
             onClick = { /* Acción del botón */ },
             shape = RoundedCornerShape(15.dp),
             modifier = Modifier
-                .width(68.dp)
+                .fillMaxWidth()
                 .height(60.dp)
                 .padding(1.dp),
             colors = ButtonDefaults.buttonColors(
@@ -416,32 +420,132 @@ fun FieldDetaileWB(name: String, viewModel: RegisterViewModel) {
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun DateInputField(viewModel: RegisterViewModel) {
 
-fun handleUiStatus(
-    viewModel: RegisterViewModel,
-    navController: NavHostController,
-) {
-    val status = viewModel.status.value
+    var dateUser by remember { mutableStateOf(viewModel.date) }
 
-    when (status) {
+    // Fetching the Local Context
+    val mContext = LocalContext.current
 
-        is RegisterUiStatus.Error -> {
-            Log.d("tag", "Error")
-            // TODO() -> Toast.makeText(requireContext(), "An error has occurred", Toast.LENGTH_SHORT).show()
-        }
+    // Declaring integer values
+    // for year, month and day
+    val mYear: Int
+    val mMonth: Int
+    val mDay: Int
 
-        is RegisterUiStatus.ErrorWithMessage -> {
-            //  TODO() -> Toast.makeText(requireContext(), status.message, Toast.LENGTH_SHORT).show()
-            Log.d("tag", "Error with message")
-        }
+    // Initializing a Calendar
+    val mCalendar = Calendar.getInstance()
 
-        is RegisterUiStatus.Success -> {
-            viewModel.clearStatus()
-            viewModel.clearData()
-            navController.navigate(route = Rutas.Login.ruta)
-        }
+    // Fetching current year, month and day
+    mYear = mCalendar.get(Calendar.YEAR)
+    mMonth = mCalendar.get(Calendar.MONTH)
+    mDay = mCalendar.get(Calendar.DAY_OF_MONTH)
 
-        else -> {}
+    mCalendar.time = Date()
+
+    // Declaring a string value to
+    // store date in string format
+    val mDate = remember { mutableStateOf("") }
+
+    // Declaring DatePickerDialog and setting
+    // initial values as current values (present year, month and day)
+    val mDatePickerDialog = DatePickerDialog(
+        mContext,
+        { _: DatePicker, mYear: Int, mMonth: Int, mDayOfMonth: Int ->
+            mDate.value = "$mDayOfMonth/${mMonth + 1}/$mYear"
+        }, mYear, mMonth, mDay
+    )
+        Button(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(60.dp),
+            shape = RoundedCornerShape(15.dp),
+            onClick = {
+                mDatePickerDialog.show()
+            }, colors = ButtonDefaults.buttonColors(
+                containerColor = Color.Red
+            )
+        ) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(8.dp),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceEvenly
+            ) {
+                Text(
+                    text = stringResource(R.string.fecha_de_nacimiento) +mDate.value,
+                    textAlign = TextAlign.Start,
+                    modifier = Modifier.fillMaxWidth(0.8f)
+                )
+                Icon(
+                    painter = painterResource(id = R.drawable.calendar_days),
+                    contentDescription = stringResource(R.string.calendar)
+                )
+            }
     }
+    viewModel.date = mDate.value;
 }
 
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun GenreDropDownMenu(viewModel: RegisterViewModel) {
+    var isExpanded by remember {
+        mutableStateOf(false)
+    }
+    var type by remember {
+        mutableStateOf(viewModel.genre)
+    }
+
+    Column(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        ExposedDropdownMenuBox(expanded = isExpanded, onExpandedChange = { isExpanded = it }) {
+            TextField(value = type, onValueChange = { newValue ->
+                type = newValue
+                viewModel.genre = newValue
+            }, readOnly = true, trailingIcon = {
+                ExposedDropdownMenuDefaults.TrailingIcon(expanded = isExpanded)
+            }, modifier = Modifier
+                .fillMaxWidth()
+                .menuAnchor()
+                .fillMaxWidth()
+                .clip(RoundedCornerShape(4.dp))
+                .border(
+                    width = 1.dp,
+                    color = colorResource(id = R.color.field)
+                )// With padding show border color
+                .background(colorResource(id = R.color.field)),
+                colors = TextFieldDefaults.textFieldColors(containerColor = colorResource(id = R.color.field)),
+                placeholder = { Text(text = stringResource(R.string.genero), color = Color(R.color.gray_text)) },
+                leadingIcon = {
+                    Icon(
+                        modifier = Modifier.size(16.dp),
+                        painter = painterResource(id = R.drawable.user),
+                        contentDescription = stringResource(R.string.icon_field)
+                    )
+                })
+
+            ExposedDropdownMenu(expanded = isExpanded, onDismissRequest = { isExpanded = false }) {
+                DropdownMenuItem(text = { Text(text = stringResource(R.string.masculino)) },
+                    onClick = {
+                        isExpanded = false
+                        viewModel.genre = "Masculino"
+                        type = viewModel.genre
+                    })
+                DropdownMenuItem(text = { Text(text = stringResource(R.string.femenino)) },
+                    onClick = {
+                        isExpanded = false
+                        viewModel.genre = "Femenino"
+                        type = viewModel.genre
+
+                    })
+
+            }
+        }
+    }
+}

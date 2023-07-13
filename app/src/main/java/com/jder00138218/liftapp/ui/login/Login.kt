@@ -1,8 +1,8 @@
 package com.jder00138218.liftapp.ui.login
 
 
-import android.content.Context
-import android.util.Log
+import SessionManager
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -21,13 +21,13 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -47,25 +47,14 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.withStyle
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.jder00138218.liftapp.R
-import com.jder00138218.liftapp.RetrofitApplication
-import com.jder00138218.liftapp.network.dto.user.user
 import com.jder00138218.liftapp.ui.login.viewmodel.LoginViewModel
 import com.jder00138218.liftapp.ui.navigation.Rutas
-import java.nio.charset.StandardCharsets
 
-import io.jsonwebtoken.Claims
-import io.jsonwebtoken.Jws
-import io.jsonwebtoken.JwtException
-import io.jsonwebtoken.Jwts
-import io.jsonwebtoken.SignatureAlgorithm
-import io.jsonwebtoken.security.Keys
 import org.json.JSONObject
-import java.security.Key
 
 import java.util.Base64
 
@@ -76,6 +65,23 @@ fun LoginScreen(navController: NavHostController) {
     val loginViewModel: LoginViewModel = viewModel(
         factory = LoginViewModel.Factory
     )
+
+    val context = LocalContext.current
+
+    val sessionManager = remember { SessionManager(context) }
+    val savedEmail = sessionManager.email
+    val savedPassword = sessionManager.password
+
+    if (savedEmail != null && savedPassword != null) {
+        loginViewModel.email = savedEmail
+        loginViewModel.password = savedPassword
+        loginViewModel.onLogin(navController, LocalContext.current)
+        sessionManager.clearSession()
+    }
+    BackHandler(enabled = true) {
+        navController.navigate(Rutas.Login.ruta)
+    }
+
 
     Box(
         modifier = Modifier
@@ -118,23 +124,35 @@ fun Login(modifier: Modifier, viewModel: LoginViewModel, navController: NavHostC
 
 @Composable
 fun SingIn(viewModel: LoginViewModel, modifier: Modifier, navController: NavHostController) {
-    // TODO -> FIX VALIDATION STATUS
     val context = LocalContext.current
+
     Button(
         onClick = {
+            viewModel._loading.value=true
             viewModel.onLogin(navController, context)
         }, modifier = modifier
             .height(60.dp)
             .width(300.dp)
             .fillMaxWidth(), colors = ButtonDefaults.buttonColors(containerColor = Color.Red))
     {
-        Row() {
-            Icon(
-                modifier = Modifier.size(24.dp),
-                painter = painterResource(id = R.drawable.icon_login),
-                contentDescription = "Icon login"
-            )
-            Text(text = " Ingresar")
+        Row {
+            if (viewModel._loading.value) {
+                // Show loading animation when isLoading is true
+                CircularProgressIndicator(
+                    modifier = Modifier
+                        .size(36.dp)
+                        .padding(end = 8.dp),
+                    color = Color.White
+                )
+            } else {
+                Icon(
+                    modifier = Modifier.size(24.dp),
+                    painter = painterResource(id = R.drawable.icon_login),
+                    contentDescription = "Icon login"
+                )
+
+                Text(text = stringResource(R.string.ingresar_txg))
+            }
         }
 
     }
@@ -172,9 +190,9 @@ fun decodeHS512TokenWithoutVerification(token: String): String {
 @Composable
 fun Register(modifier: Modifier, navController: NavHostController) {
     Row(modifier = modifier) {
-        Text(text = "¿Aun no tienes cuenta?")
+        Text(text = stringResource(R.string.aun_no_tienes_cuenta))
         Text(
-            text = " Registrate",
+            text = stringResource(R.string.registrate),
             color = Color.Red,
             modifier = Modifier.clickable { navController.navigate(route = Rutas.Register.ruta) })
         Spacer(modifier = Modifier.padding(8.dp))
@@ -195,7 +213,7 @@ fun OrSpacer(modifier: Modifier) {
             thickness = 1.dp
         )
         Text(
-            text = "Or",
+            text = stringResource(R.string.o),
             modifier = Modifier.padding(horizontal = 8.dp)
         )
         Divider(
@@ -211,7 +229,7 @@ fun OrSpacer(modifier: Modifier) {
 fun HeaderImage(modifier: Modifier) {
     Image(
         painter = painterResource(id = R.drawable.logoliftapp),
-        contentDescription = "Image of lift app",
+        contentDescription = stringResource(R.string.image_of_lift_app),
         modifier = modifier
     )
 }
@@ -236,14 +254,14 @@ fun FieldEmail(viewModel: LoginViewModel) {
                 color = colorResource(id = R.color.field)
             )
             .background(colorResource(id = R.color.field)),
-        placeholder = { Text(text = "Email", color = Color(R.color.gray_text)) },
+        placeholder = { Text(text = stringResource(R.string.email), color = Color(R.color.gray_text)) },
         singleLine = true,
         maxLines = 1,
         leadingIcon = {
             Icon(
                 modifier = Modifier.size(16.dp),
                 painter = painterResource(id = R.drawable.icon_message),
-                contentDescription = "Icon Email"
+                contentDescription = stringResource(R.string.icon_email)
             )
         },
         keyboardOptions = KeyboardOptions(
@@ -277,7 +295,7 @@ fun FieldPassword(viewModel: LoginViewModel) {
                 width = 1.dp,
                 color = colorResource(id = R.color.field)
             ),
-        placeholder = { Text(text = "Password", color = Color(R.color.gray_text)) },
+        placeholder = { Text(text = stringResource(R.string.password), color = Color(R.color.gray_text)) },
         singleLine = true,
         maxLines = 1,
         leadingIcon = {
@@ -285,7 +303,7 @@ fun FieldPassword(viewModel: LoginViewModel) {
                 modifier = Modifier
                     .size(16.dp),
                 painter = painterResource(id = R.drawable.icon_password),
-                contentDescription = "Icon Password",
+                contentDescription = stringResource(R.string.icon_password),
             )
         },
         trailingIcon = {
@@ -295,7 +313,7 @@ fun FieldPassword(viewModel: LoginViewModel) {
                     .size(16.dp)
                     .clickable { isVisible = !isVisible },
                 painter = painterResource(id = R.drawable.icon_hide),
-                contentDescription = "Hide Icon"
+                contentDescription = stringResource(R.string.hide_icon)
             )
         },
         keyboardOptions = KeyboardOptions(

@@ -2,6 +2,7 @@ package com.jder00138218.liftapp.ui.recovery.forgotPasword
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -63,11 +64,10 @@ fun BlockFields(recoveryViewModel: RecoveryViewModel, navController: NavHostCont
             .padding(8.dp)
     ) {
 
-        Box(modifier = Modifier.fillMaxSize()) {
-
             Column(
-                Modifier.align(Alignment.TopCenter),
-                horizontalAlignment = Alignment.CenterHorizontally
+                Modifier.fillMaxSize(),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
             ) {
                 Text(
                     text = stringResource(R.string.olvido_su_contrase_a),
@@ -77,22 +77,20 @@ fun BlockFields(recoveryViewModel: RecoveryViewModel, navController: NavHostCont
                         fontSize = 24.sp
                     )
                 )
-            }
-
-            Column(Modifier.align(Alignment.Center)) {
-                Text(text = stringResource(R.string.ingrese_su_correo_para_la_recuperaci_n))
                 Spacer(modifier = Modifier.padding(8.dp))
                 FieldEmail(recoveryViewModel)
-
-            }
-
-            Column(
-                Modifier.align(Alignment.BottomCenter),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
+                Spacer(modifier = Modifier.padding(24.dp))
                 Confirm(Modifier.align(Alignment.CenterHorizontally), recoveryViewModel, navController)
+                Spacer(modifier = Modifier.padding(8.dp))
+                Button(onClick = {navController.popBackStack()}, colors = ButtonDefaults.buttonColors(
+                    containerColor = Color.White
+                ), modifier = Modifier.height(60.dp)
+                    .width(300.dp), elevation = ButtonDefaults.buttonElevation(
+                    defaultElevation = 10.dp
+                )) {
+                    Text(text = "Regresar a ingreso", color = Color.Black)
+                }
             }
-        }
     }
 }
 
@@ -144,6 +142,8 @@ fun Confirm(modifier: Modifier, viewModel: RecoveryViewModel, navController: Nav
             .width(300.dp)
             .fillMaxWidth(), colors = ButtonDefaults.buttonColors(
             containerColor = Color.Red
+        ), elevation = ButtonDefaults.buttonElevation(
+            defaultElevation = 10.dp
         )
     ) {
         Row() {

@@ -4,6 +4,7 @@ import android.content.Context
 import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -24,6 +25,8 @@ import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -79,9 +82,6 @@ fun RankingUsers(navController: NavController ) {
     val handleAddOnClick = {
         navController.navigate(route = Rutas.UserCreateRoutine.ruta)
     }
-    val handleBackOnClick = {
-        navController.navigate(route = Rutas.DashboardUser.ruta)
-    }
 
     Box(
         modifier = Modifier
@@ -93,7 +93,7 @@ fun RankingUsers(navController: NavController ) {
         Column(modifier = Modifier.fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.SpaceBetween) {
-            HeaderBarBackArrowAdd(stringResource(R.string.ranking), navController, addOnClick = handleAddOnClick, backOnClick = handleBackOnClick)
+            HeaderBarBackArrowAdd(stringResource(R.string.ranking), navController, addOnClick = handleAddOnClick, backOnClick = {navController.popBackStack()})
 
             OutlinedTextField(value = text, onValueChange = { newText: String ->
                 text = newText
@@ -126,6 +126,7 @@ fun RankingUsers(navController: NavController ) {
                 LazyColumn(modifier = Modifier.fillMaxHeight(0.7f)){
                     items(rankinViewModel.users) {
                         RankingInfoRow(it, navController = navController, context)
+                        Spacer(modifier = Modifier.padding(vertical = 8.dp))
                     }
             }
             }
@@ -137,22 +138,32 @@ fun RankingUsers(navController: NavController ) {
 @Composable
 fun RankingInfoRow(user: user, navController: NavController, context:Context){
 
-    Row(modifier = Modifier
+    Card(modifier = Modifier
         .fillMaxWidth()
-        .padding(8.dp),
-        horizontalArrangement = Arrangement.SpaceBetween) {
-        Column(modifier = Modifier
-            .fillMaxHeight(), 
-        horizontalAlignment = Alignment.Start,
-        verticalArrangement = Arrangement.Center) {
-            Text(text = user.nombrecompleto)
-            Text(text = getRank(user.points,context))
-        }
-        IconButton(onClick = {navController.navigate("rutas_friend_profile/${user.id}")}) {
-            Icon(
-                imageVector = Icons.Default.Info,
-                contentDescription = stringResource(R.string.addfriend)
-            )
+        .height(64.dp)
+        .clickable{navController.navigate("rutas_friend_profile/${user.id}")},
+        colors = CardDefaults.cardColors(
+            containerColor = Color.White
+        ), elevation = CardDefaults.cardElevation(
+            defaultElevation = 10.dp
+        )) {
+        Row(modifier = Modifier
+            .fillMaxWidth()
+            .padding(8.dp),
+            horizontalArrangement = Arrangement.SpaceBetween) {
+            Column(modifier = Modifier
+                .fillMaxHeight(),
+                horizontalAlignment = Alignment.Start,
+                verticalArrangement = Arrangement.Center) {
+                Text(text = user.nombrecompleto)
+                Text(text = getRank(user.points,context))
+            }
+            IconButton(onClick = {navController.navigate("rutas_friend_profile/${user.id}")}) {
+                Icon(
+                    imageVector = Icons.Default.Info,
+                    contentDescription = stringResource(R.string.addfriend)
+                )
+            }
         }
     }
 

@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.AP
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
+import androidx.navigation.NavController
 import com.jder00138218.liftapp.LiftAppApplication
 import com.jder00138218.liftapp.network.dto.exercise.exercise
 import com.jder00138218.liftapp.repositories.ExerciseRepository
@@ -19,10 +20,10 @@ class VerifiedExercisesViewModel(private val exerciseRepository: ExerciseReposit
     val exercises: List<exercise>
         get() = _exercises
 
-    fun getVeriedEercises(query:String) {
+    fun getVeriedEercises(query:String,navController:NavController) {
         viewModelScope.launch {
             _exercises.clear()
-            _exercises.addAll(exerciseRepository.getVerified(query))
+            _exercises.addAll(exerciseRepository.getVerified(query, navController))
         }
         _loading.value = false
     }

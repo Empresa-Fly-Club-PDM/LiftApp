@@ -45,6 +45,7 @@ import androidx.navigation.NavHostController
 import com.jder00138218.liftapp.R
 import com.jder00138218.liftapp.ui.login.viewmodel.LoginViewModel
 import com.jder00138218.liftapp.ui.recovery.viewmodel.RecoveryViewModel
+import com.jder00138218.liftapp.ui.users.user.HeaderBarBackArrowDumbell
 
 
 @Composable
@@ -69,6 +70,7 @@ fun BlockFields(recoveryViewModel: RecoveryViewModel, navController: NavHostCont
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center
             ) {
+
                 Text(
                     text = stringResource(R.string.olvido_su_contrase_a),
                     color = Color.Black,

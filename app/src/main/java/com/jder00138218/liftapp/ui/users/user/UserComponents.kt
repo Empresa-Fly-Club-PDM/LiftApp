@@ -352,6 +352,105 @@ fun ExerciseCardUser(exercise: exercise, ruta: String, navController: NavControl
     }
 
 }
+
+@Composable
+fun ExerciseCardUserNoClick(exercise: exercise, navController: NavController){
+
+    val isVerified = exercise.verified
+
+    Card(modifier = Modifier.fillMaxWidth(), colors = CardDefaults.cardColors(
+        containerColor = colorResource(id = R.color.card)
+    )) {
+        Column(modifier = Modifier
+            .fillMaxWidth()
+            .padding(16.dp)) {
+            Row(modifier = Modifier
+                .fillMaxWidth()
+                .padding(8.dp),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                Text(text = exercise.name, softWrap = true, modifier = Modifier.weight(1f), textAlign = TextAlign.Center)
+                if(isVerified){
+                    Icon(painter = painterResource(id = R.drawable.shield_done),
+                        contentDescription = stringResource(R.string.verify_icon),
+                        modifier = Modifier
+                            .size(30.dp)
+                            .weight(1f))
+                }else{
+                    Icon(painter = painterResource(id = R.drawable.pesa),
+                        contentDescription = stringResource(R.string.pesa_icon),
+                        modifier = Modifier
+                            .size(20.dp)
+                            .weight(1f))
+                }
+
+            }
+            Row(modifier = Modifier
+                .fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                Card(modifier = Modifier
+                    .weight(1f)
+                    .height(56.dp),
+                    colors = CardDefaults.cardColors(
+                        containerColor = Color.White
+                    )
+                ) {
+                    Column(modifier = Modifier
+                        .fillMaxWidth()
+                        .fillMaxHeight(),
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.Center,
+                    ) {
+                        Row(modifier = Modifier
+                            .fillMaxWidth()
+                            , horizontalArrangement = Arrangement.Center, verticalAlignment = Alignment.CenterVertically) {
+                            Text(text = stringResource(id = R.string.musculo), softWrap = true, modifier = Modifier, textAlign = TextAlign.Center, color = Color.Red)
+                        }
+                        Row(modifier = Modifier
+                            .fillMaxWidth()
+                            , horizontalArrangement = Arrangement.Center, verticalAlignment = Alignment.CenterVertically) {
+                            Text(text = exercise.muscle, softWrap = true, modifier = Modifier, textAlign = TextAlign.Center, color = Color.Black)
+                        }
+                    }
+
+                }
+                Spacer(modifier = Modifier.width(16.dp))
+                Card(modifier = Modifier
+                    .weight(1f)
+                    .height(56.dp),
+                    colors = CardDefaults.cardColors(
+                        containerColor = Color.White
+                    )
+                ) {
+                    Column(modifier = Modifier
+                        .fillMaxWidth()
+                        .fillMaxHeight(),
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.Center
+                    ) {
+                        Row(modifier = Modifier
+                            .fillMaxWidth()
+                            , horizontalArrangement = Arrangement.Center, verticalAlignment = Alignment.CenterVertically) {
+                            Text(text = exercise.type, softWrap = true, modifier = Modifier, textAlign = TextAlign.Center, color = Color.Red)
+                        }
+                        Row(modifier = Modifier
+                            .fillMaxWidth()
+                            , horizontalArrangement = Arrangement.Center, verticalAlignment = Alignment.CenterVertically) {
+                            Text(text = "${exercise.sets} x ${exercise.reps}", softWrap = true, modifier = Modifier, textAlign = TextAlign.Center, color = Color.Black)
+                        }
+                    }
+
+                }
+
+            }
+        }
+
+    }
+
+}
 @Composable
 fun UserProfileInfoRow(text: String) {
     Row(

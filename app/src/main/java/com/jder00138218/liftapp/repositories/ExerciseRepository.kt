@@ -1,10 +1,12 @@
 package com.jder00138218.liftapp.repositories
 
+import androidx.navigation.NavController
 import com.jder00138218.liftapp.network.ApiResponse
 import com.jder00138218.liftapp.network.dto.exercise.PostVerifiedExerciseRequest
 import com.jder00138218.liftapp.network.dto.exercise.exercise
 import com.jder00138218.liftapp.network.dto.login.LoginRequest
 import com.jder00138218.liftapp.network.services.ExerciseService
+import com.jder00138218.liftapp.ui.navigation.Rutas
 import retrofit2.HttpException
 import java.io.IOException
 
@@ -18,9 +20,14 @@ class ExerciseRepository(private val api:ExerciseService) {
         val exercises: List<exercise> = api.getPersonalExercises(id,query)
         return exercises
     }
-    suspend fun getVerified(query:String):List<exercise>{
-        val exercises: List<exercise> = api.getVerified(query)
-        return exercises
+    suspend fun getVerified(query:String, navController: NavController):List<exercise>{
+        try{
+            val exercises: List<exercise> = api.getVerified(query)
+            return exercises
+        }catch (e:IOException){
+            navController.navigate(Rutas.ForgotPss.ruta)
+            return emptyList()
+        }
     }
 
     suspend fun getDetailExercise(id:Int?): exercise {
@@ -31,11 +38,10 @@ class ExerciseRepository(private val api:ExerciseService) {
     suspend fun deleteExercise(id:Int?): ApiResponse<String> {
         try {
             val response = api.deleteExercise(id)
-            return ApiResponse.Success(response.toString())
+            return ApiResponse.Success("Done")
         } catch (e: HttpException) {
-
-            if (e.code() == 410) {
-                return ApiResponse.ErrorWithMessage("Eliminado correctamente")
+            if (e.code() == 500) {
+                return ApiResponse.ErrorWithMessage("El ejercicio está siendo utilizado")
             }
             return ApiResponse.Error(e)
         } catch (e: IOException) {

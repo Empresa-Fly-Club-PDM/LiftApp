@@ -4,6 +4,8 @@ import SessionManager
 import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
+import androidx.compose.ui.platform.LocalContext
+import androidx.navigation.NavController
 import com.jder00138218.liftapp.network.retrofit.RetrofitInstance
 import com.jder00138218.liftapp.repositories.CredentialsRepository
 import com.jder00138218.liftapp.repositories.DetailExerciseRepository
@@ -13,10 +15,11 @@ import com.jder00138218.liftapp.repositories.RoutineRepository
 import com.jder00138218.liftapp.repositories.UserRepository
 import retrofit2.Retrofit
 
-class LiftAppApplication: Application() {
+class   LiftAppApplication: Application() {
     private val prefs: SharedPreferences by lazy {
         getSharedPreferences("Retrofit", Context.MODE_PRIVATE)
     }
+
 
     //Servicio para login
     private fun getApiService() = with(RetrofitInstance){

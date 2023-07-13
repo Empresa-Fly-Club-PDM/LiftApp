@@ -2,6 +2,8 @@ package com.jder00138218.liftapp.ui.navigation
 
 sealed  class Rutas(var ruta : String) {
 
+    //Error
+    object page404:Rutas("ruta_404")
     //auth
     object Login:Rutas("ruta_login")
     object Register:Rutas("ruta_register")

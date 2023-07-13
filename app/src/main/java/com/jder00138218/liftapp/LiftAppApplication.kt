@@ -13,7 +13,7 @@ import com.jder00138218.liftapp.repositories.RoutineRepository
 import com.jder00138218.liftapp.repositories.UserRepository
 import retrofit2.Retrofit
 
-class LiftAppApplication: Application() {
+class   LiftAppApplication: Application() {
     private val prefs: SharedPreferences by lazy {
         getSharedPreferences("Retrofit", Context.MODE_PRIVATE)
     }

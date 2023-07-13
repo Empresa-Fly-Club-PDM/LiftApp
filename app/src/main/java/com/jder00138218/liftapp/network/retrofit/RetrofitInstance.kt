@@ -1,5 +1,8 @@
 package com.jder00138218.liftapp.network.retrofit
 
+import SessionManager
+import androidx.compose.ui.platform.LocalContext
+import androidx.navigation.Navigation.findNavController
 import com.jder00138218.liftapp.network.services.AuthService
 import com.jder00138218.liftapp.network.services.ExerciseService
 import com.jder00138218.liftapp.network.services.LiftService
@@ -11,7 +14,9 @@ import okhttp3.ResponseBody
 import retrofit2.Converter
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.io.IOException
 import java.lang.reflect.Type
+import java.net.SocketTimeoutException
 
 const val BASE_URL = "https://liftapp.pro/"
 object RetrofitInstance {
@@ -28,9 +33,13 @@ object RetrofitInstance {
         .client(
             OkHttpClient.Builder()
                 .addInterceptor{chain->
-                    chain.proceed(chain.request().newBuilder().also{
-                        it.addHeader("Authorization", "Bearer $token")
-                    }.build())
+                    try {
+                        chain.proceed(chain.request().newBuilder().also{
+                            it.addHeader("Authorization", "Bearer $token")
+                        }.build())
+                    } catch (e: SocketTimeoutException) {
+                        throw IOException("Request timeout", e)
+                    }
                 }.build()
         )
         .addConverterFactory(GsonConverterFactory.create())

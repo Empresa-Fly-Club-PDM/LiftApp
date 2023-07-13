@@ -28,7 +28,7 @@ interface ExerciseService {
     @PUT("ejercicio/edit/{id}")
     suspend fun editExercise(@Body updatedExercise:PostVerifiedExerciseRequest,@Path("id") id:Int?):Response<Void>
     @DELETE("ejercicio/delete/{id}")
-    suspend fun deleteExercise(@Path("id") id: Int?):Response<Void>
+    suspend fun deleteExercise(@Path("id") id: Int?)
     @GET("ejercicio/get/users/{id}")
     suspend fun getPersonalExercises(@Path("id") id:Int?,@Query("query")query:String):List<exercise>
     @POST("ejercicio/post/user/personal/{id}")

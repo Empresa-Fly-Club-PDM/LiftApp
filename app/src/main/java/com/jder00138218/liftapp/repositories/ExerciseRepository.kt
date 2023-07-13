@@ -31,10 +31,10 @@ class ExerciseRepository(private val api:ExerciseService) {
     suspend fun deleteExercise(id:Int?): ApiResponse<String> {
         try {
             val response = api.deleteExercise(id)
-            return ApiResponse.Success(response.toString())
+            return ApiResponse.Success("Done")
         } catch (e: HttpException) {
             if (e.code() == 500) {
-                return ApiResponse.ErrorWithMessage("El ejercicio es usado en una rutina")
+                return ApiResponse.ErrorWithMessage("El ejercicio está siendo utilizado")
             }
             return ApiResponse.Error(e)
         } catch (e: IOException) {

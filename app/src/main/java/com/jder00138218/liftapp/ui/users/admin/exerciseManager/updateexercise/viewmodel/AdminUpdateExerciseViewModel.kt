@@ -117,11 +117,29 @@ class AdminUpdateExerciseViewModel(private val exerciseRepository: ExerciseRepos
                         )
                     }
                     )
-            Toast.makeText(context, context.getString(R.string.ejercicio_eliminado), Toast.LENGTH_SHORT).show()
-            isLoadingDelete.value = true
-            navController.navigate(Rutas.AdminVerifyExercise.ruta)
-
+            handleDeleteStatus(navController,context)
         }
+    }
+    fun handleDeleteStatus(navController: NavHostController,context:Context) {
+        val status = _status.value
+        when (status) {
+            is AdminUpdateExerciseUIStatus.Error -> {
+                Toast.makeText(context, context.getString(R.string.ejercicio_eliminado), Toast.LENGTH_SHORT).show()
+                navController.navigate(route = Rutas.AdminVerifyExercise.ruta)
+                isLoadingDelete.value = true
+            }
+            is AdminUpdateExerciseUIStatus.ErrorWithMessage -> {
+                Toast.makeText(context, "Ejercicio Está Siendo utilizado", Toast.LENGTH_SHORT).show()
+                navController.navigate(route = Rutas.AdminVerifyExercise.ruta)
+                isLoadingDelete.value = true
+            }
+            is AdminUpdateExerciseUIStatus.Success -> {
+                Toast.makeText(context, context.getString(R.string.error), Toast.LENGTH_SHORT).show()
+            }
+            else -> {
+            }
+        }
+        isLoadingDelete.value = true
     }
     private fun validateData(): Boolean {
         when {

@@ -39,6 +39,7 @@ class UpdateUserExerciseViewModel (private val exerciseRepository: ExerciseRepos
     val isLoadingDelete = mutableStateOf(false)
 
 
+
     val exercise: exercise
         get() = _exercise.value
 
@@ -125,12 +126,11 @@ class UpdateUserExerciseViewModel (private val exerciseRepository: ExerciseRepos
             is AdminUpdateExerciseUIStatus.Error -> {
                 Toast.makeText(context, context.getString(R.string.ejercicio_eliminado), Toast.LENGTH_SHORT).show()
                 navController.navigate(route = Rutas.UserExercises.ruta)
-                isLoadingDelete.value = true
+
             }
             is AdminUpdateExerciseUIStatus.ErrorWithMessage -> {
                 Toast.makeText(context, "Ejercicio Está Siendo utilizado", Toast.LENGTH_SHORT).show()
                 navController.navigate(route = Rutas.UserExercises.ruta)
-                isLoadingDelete.value = true
             }
             is AdminUpdateExerciseUIStatus.Success -> {
                 Toast.makeText(context, context.getString(R.string.error), Toast.LENGTH_SHORT).show()
@@ -138,7 +138,7 @@ class UpdateUserExerciseViewModel (private val exerciseRepository: ExerciseRepos
             else -> {
             }
         }
-        isLoadingDelete.value = true
+        isLoadingDelete.value = false
     }
     private fun validateData(): Boolean {
         when {

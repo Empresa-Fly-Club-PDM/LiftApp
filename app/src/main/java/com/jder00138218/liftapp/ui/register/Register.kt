@@ -17,10 +17,13 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuBox
@@ -82,28 +85,36 @@ fun RegisterScreen(navController: NavHostController) {
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center
             ) {
-                Text(
-                    text = stringResource(R.string.crear_cuenta),
-                    color = Color.Black,
-                    style = TextStyle(
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 24.sp
+                Column(modifier = Modifier
+                    .fillMaxWidth()
+                    .fillMaxHeight()
+                    .verticalScroll(rememberScrollState()),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Text(
+                        text = stringResource(R.string.crear_cuenta),
+                        color = Color.Black,
+                        style = TextStyle(
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 24.sp
+                        )
                     )
-                )
-
-                FieldsRegister(registerViewModel, navController)
-                Button(onClick = {navController.popBackStack()}, colors = ButtonDefaults.buttonColors(
-                    containerColor = Color.White
-                ), modifier = Modifier.height(60.dp)
-                    .fillMaxWidth(), elevation = ButtonDefaults.buttonElevation(
-                    defaultElevation = 10.dp
-                )) {
-                    Text(text = "Regresar a inicio", color = Color.Black)
+                    FieldsRegister(registerViewModel, navController)
+                    Spacer(modifier = Modifier.padding(vertical = 8.dp))
+                    Button(onClick = {navController.popBackStack()}, colors = ButtonDefaults.buttonColors(
+                        containerColor = Color.White
+                    ), modifier = Modifier
+                        .height(60.dp)
+                        .fillMaxWidth(), elevation = ButtonDefaults.buttonElevation(
+                        defaultElevation = 10.dp
+                    )) {
+                        Text(text = "Regresar a inicio", color = Color.Black)
+                    }
+                    Spacer(modifier = Modifier.padding(vertical = 8.dp))
                 }
+
             }
-
-
-
     }
 }
 
@@ -134,7 +145,7 @@ fun FieldsRegister(registerViewModel: RegisterViewModel, navController: NavHostC
 @Composable
 fun ButtonsDetaile(viewModel: RegisterViewModel, navController: NavHostController) {
     val context = LocalContext.current
-    Row(modifier = Modifier.padding(8.dp)) {
+    Row(modifier = Modifier) {
         Button(
             onClick = {
                 viewModel.onRegister(navController, context)
@@ -145,9 +156,17 @@ fun ButtonsDetaile(viewModel: RegisterViewModel, navController: NavHostControlle
                 containerColor = Color.Red
             )
         ) {
-
-            Text(text = stringResource(R.string.registrar))
-
+            if (viewModel._loading.value) {
+                // Show loading animation when isLoading is true
+                CircularProgressIndicator(
+                    modifier = Modifier
+                        .size(36.dp)
+                        .padding(end = 8.dp),
+                    color = Color.White
+                )
+            } else {
+                Text(text = stringResource(R.string.registrar))
+            }
         }
     }
 }
@@ -354,7 +373,7 @@ fun FieldDetaileWB(name: String, viewModel: RegisterViewModel) {
                 value = newValue
             },
             modifier = Modifier
-                .fillMaxWidth(0.9f)
+                .fillMaxWidth(0.8f)
                 .padding(8.dp)
                 .clip(RoundedCornerShape(4.dp))
                 .border(
@@ -385,7 +404,7 @@ fun FieldDetaileWB(name: String, viewModel: RegisterViewModel) {
             onClick = { /* Acción del botón */ },
             shape = RoundedCornerShape(15.dp),
             modifier = Modifier
-                .width(68.dp)
+                .fillMaxWidth()
                 .height(60.dp)
                 .padding(1.dp),
             colors = ButtonDefaults.buttonColors(

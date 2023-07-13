@@ -24,6 +24,8 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.IconButtonColors
+import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -122,15 +124,16 @@ fun FriendInfoRow(name: String, rank:String, id:Int?, navController: NavControll
                 ,
                 horizontalAlignment = Alignment.Start,
                 verticalArrangement = Arrangement.Center) {
-                Text(text = name)
-                Text(text = rank)
+                Text(text = name, color = Color.Black)
+                Text(text = rank, color = Color.Black)
             }
             IconButton(onClick = {
                 navController.navigate("rutas_friend_profile/${id}")
-            }) {
+            },  ) {
                 Icon(
                     imageVector = Icons.Default.Info,
-                    contentDescription = stringResource(R.string.viewuser)
+                    contentDescription = stringResource(R.string.viewuser),
+                    tint = Color.Black
                 )
             }
 

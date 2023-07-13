@@ -64,6 +64,7 @@ fun AddUserExercise(navController: NavHostController) {
         factory = AddUserExercisesViewModel.Factory
     )
 
+
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -78,13 +79,38 @@ fun AddUserExercise(navController: NavHostController) {
             FieldsDetaileCreate(addUserExercisesViewModel,navController)
 
             Column(modifier = Modifier.fillMaxWidth()) {
-                ButtonsCreate(addUserExercisesViewModel,navController)
                 Button(
-                    onClick = {addUserExercisesViewModel.onVerify(navController, context)}, modifier = Modifier
+                    onClick = {addUserExercisesViewModel.onCreate(navController, context)
+                        addUserExercisesViewModel.isRequestEnabled.value = false
+                    }, modifier = Modifier
+                        .height(60.dp)
+                        .fillMaxWidth(), colors = ButtonDefaults.buttonColors(
+                        containerColor = colorResource(id = R.color.buttonGren)
+                    ),
+                    enabled = addUserExercisesViewModel.isConfirmEnabled.value
+                ) {
+                    if (addUserExercisesViewModel._loading.value) {
+                        // Show loading animation when isLoading is true
+                        CircularProgressIndicator(
+                            modifier = Modifier
+                                .size(36.dp)
+                                .padding(end = 8.dp),
+                            color = Color.White
+                        )
+                    } else {
+
+                        Text(text = stringResource(R.string.confirmar))
+                    }
+                }
+                Button(
+                    onClick = {addUserExercisesViewModel.onVerify(navController, context)
+                              addUserExercisesViewModel.isConfirmEnabled.value = false}, modifier = Modifier
                         .height(60.dp)
                         .fillMaxWidth(), colors = ButtonDefaults.buttonColors(
                         containerColor = colorResource(id = R.color.buttonGray)
-                    )
+                    ),
+                    enabled = addUserExercisesViewModel.isRequestEnabled.value
+
                 ) {
                     if (addUserExercisesViewModel._loadingVerification.value) {
                         // Show loading animation when isLoading is true
@@ -135,28 +161,8 @@ fun FieldsDetaileCreate(viewmodel:AddUserExercisesViewModel, navController: NavH
 }
 
 @Composable
-fun ButtonsCreate(addUserExercisesViewModel: AddUserExercisesViewModel, navController: NavHostController) { val context = LocalContext.current
-    Button(
-        onClick = {addUserExercisesViewModel.onCreate(navController, context)
-        }, modifier = Modifier
-            .height(60.dp)
-            .fillMaxWidth(), colors = ButtonDefaults.buttonColors(
-            containerColor = colorResource(id = R.color.buttonGren)
-        )
-    ) {
-        if (addUserExercisesViewModel._loading.value) {
-            // Show loading animation when isLoading is true
-            CircularProgressIndicator(
-                modifier = Modifier
-                    .size(36.dp)
-                    .padding(end = 8.dp),
-                color = Color.White
-            )
-        } else {
+fun ButtonsCreate(addUserExercisesViewModel: AddUserExercisesViewModel, navController: NavHostController, confirmEnabled: Boolean) { val context = LocalContext.current
 
-            Text(text = stringResource(R.string.confirmar))
-        }
-    }
 
 }
 

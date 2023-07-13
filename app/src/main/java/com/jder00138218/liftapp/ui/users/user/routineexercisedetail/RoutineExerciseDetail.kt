@@ -85,10 +85,12 @@ fun RoutineExerciseDetail(navController: NavHostController, alternativenavcontro
             verticalArrangement = Arrangement.SpaceBetween,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-
             HeaderBarBackArrowDumbell(title = stringResource(R.string.detalle_del_ejercicio), navController = alternativenavcontroller, backOnClick = {navController.popBackStack()})
-            FieldsDetaile(detailExercise,detailExerciseViewmodel,navController)
-            ButtonsRoutineExerciseDetaile(detailExercise.id,routineid,routineExerciseDetailViewModel, navController)
+            Column(modifier = Modifier.fillMaxWidth().fillMaxHeight(0.85f).verticalScroll(rememberScrollState())) {
+                FieldsDetaile(detailExercise,detailExerciseViewmodel,navController)
+                ButtonsRoutineExerciseDetaile(detailExercise.id,routineid,routineExerciseDetailViewModel, navController)
+            }
+
             UserBottomMenu(navController)
         }
     }
@@ -101,8 +103,7 @@ fun RoutineExerciseDetail(navController: NavHostController, alternativenavcontro
 fun FieldsDetaile(exercise: exercise,detailExerciseViewmodel: DetailExerciseViewmodel,navController: NavHostController) {
     Column(modifier = Modifier
         .fillMaxWidth()
-        .fillMaxHeight(0.5f)
-        .verticalScroll(rememberScrollState()),
+        .fillMaxHeight(0.5f),
         horizontalAlignment = Alignment.CenterHorizontally) {
         FieldDetaile(exercise.name)
         Spacer(modifier = Modifier.padding(2.dp))
@@ -129,7 +130,7 @@ fun ButtonsRoutineExerciseDetaile(idexc: Int?,idrut:Int? , routineExerciseDetail
             onClick = {routineExerciseDetailViewModel.removeExercise(idexc,idrut,navController,context)
             routineExerciseDetailViewModel._loading.value = true}, modifier = Modifier
                 .height(60.dp)
-                .width(350.dp)
+                .fillMaxWidth()
                 .fillMaxWidth(), colors = ButtonDefaults.buttonColors(
                 containerColor = colorResource(id = R.color.buttonRed)
             )
@@ -160,7 +161,7 @@ fun FieldDetaile(name: String) {
         readOnly = true,
         onValueChange = { },
         modifier = Modifier
-            .width(350.dp)
+            .fillMaxWidth()
             .clip(RoundedCornerShape(4.dp))
             .border(
                 width = 1.dp,

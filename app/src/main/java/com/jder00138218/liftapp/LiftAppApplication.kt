@@ -20,7 +20,6 @@ class   LiftAppApplication: Application() {
         getSharedPreferences("Retrofit", Context.MODE_PRIVATE)
     }
 
-
     //Servicio para login
     private fun getApiService() = with(RetrofitInstance){
         setToken(getToken())
@@ -59,27 +58,27 @@ class   LiftAppApplication: Application() {
     fun getUserId():Int? = USER_ID
 
     val credentialsRepository: CredentialsRepository by lazy {
-        CredentialsRepository(getApiService())
+        CredentialsRepository(getApiService(), MainActivity.navController)
     }
 
     val detailExerciseRepository: DetailExerciseRepository by lazy {
-        DetailExerciseRepository(getVerifyDenyExerciseService())
+        DetailExerciseRepository(getVerifyDenyExerciseService(), MainActivity.navController)
     }
 
     val exerciseRepository: ExerciseRepository by lazy{
-        ExerciseRepository(getExerciseService())
+        ExerciseRepository(getExerciseService(), MainActivity.navController)
     }
 
     val userRepository:UserRepository by lazy{
-        UserRepository(getUserRepository())
+        UserRepository(getUserRepository(), MainActivity.navController)
     }
 
     val liftRepository:LiftRepository by lazy{
-        LiftRepository(getLiftRepoistory())
+        LiftRepository(getLiftRepoistory(), MainActivity.navController)
     }
 
     val routineRepository:RoutineRepository by lazy{
-        RoutineRepository(getRoutineService())
+        RoutineRepository(getRoutineService(), MainActivity.navController)
     }
 
 

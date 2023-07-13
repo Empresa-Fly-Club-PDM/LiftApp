@@ -20,6 +20,7 @@ import com.jder00138218.liftapp.network.retrofit.RetrofitInstance
 import com.jder00138218.liftapp.ui.users.admin.DashboardAdminScreen
 import com.jder00138218.liftapp.ui.login.LoginScreen
 import com.jder00138218.liftapp.ui.navigation.Rutas
+import com.jder00138218.liftapp.ui.page404.page404
 import com.jder00138218.liftapp.ui.recovery.forgotPasword.Recovery
 import com.jder00138218.liftapp.ui.register.RegisterScreen
 import com.jder00138218.liftapp.ui.theme.LiftAppTheme
@@ -67,12 +68,16 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
+    companion object {
+        lateinit var navController: NavController
+    }
 }
 
 @Preview(showBackground = true)
 @Composable
 fun NavigationGraph(){
     val navController: NavHostController = rememberNavController()
+    MainActivity.navController = navController
     NavHost(navController = navController, startDestination =  Rutas.Login.ruta){
         composable(route = Rutas.Login.ruta){
             LoginScreen(navController)
@@ -231,6 +236,9 @@ fun NavigationGraph(){
             })
             ){
             LiftDetail(navController)
+        }
+        composable(route= Rutas.page404.ruta){
+            page404(navController)
         }
     }
 }

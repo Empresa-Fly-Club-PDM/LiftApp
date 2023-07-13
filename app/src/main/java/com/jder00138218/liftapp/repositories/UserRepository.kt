@@ -1,5 +1,6 @@
 package com.jder00138218.liftapp.repositories
 
+import androidx.navigation.NavController
 import com.jder00138218.liftapp.network.ApiResponse
 import com.jder00138218.liftapp.network.dto.exercise.PostVerifiedExerciseRequest
 import com.jder00138218.liftapp.network.dto.exercise.exercise
@@ -7,32 +8,63 @@ import com.jder00138218.liftapp.network.dto.register.RegisterRequest
 import com.jder00138218.liftapp.network.dto.user.PostUserRequest
 import com.jder00138218.liftapp.network.dto.user.user
 import com.jder00138218.liftapp.network.services.UserService
+import com.jder00138218.liftapp.ui.navigation.Rutas
 import kotlinx.coroutines.delay
 import retrofit2.HttpException
 import java.io.IOException
+import java.net.SocketTimeoutException
 
-class UserRepository (private val api: UserService){
+class UserRepository (private val api: UserService, private val navController: NavController){
     suspend fun getAllAdmins(query:String):List<user>{
-        val users: List<user> = api.getAllAdmins(query)
-        return users
+        try{
+            val users: List<user> = api.getAllAdmins(query)
+            return users
+        }catch (e: SocketTimeoutException) {
+            navController.navigate(Rutas.page404.ruta)
+            return emptyList()
+        }
+
     }
     suspend fun getRanking(query:String):List<user>{
-        val users: List<user> = api.getRanking(query)
-        return users
+        try{
+            val users: List<user> = api.getRanking(query)
+            return users
+        }catch (e: SocketTimeoutException) {
+            navController.navigate(Rutas.page404.ruta)
+            return emptyList()
+        }
     }
 
     suspend fun searchForfriend(id:Int?, query:String):List<user>{
-        val users: List<user> = api.searchForFriends(id,query)
-        return users
+        try{
+            val users: List<user> = api.searchForFriends(id,query)
+            return users
+        }catch (e: SocketTimeoutException) {
+            navController.navigate(Rutas.page404.ruta)
+            return emptyList()
+        }
+
     }
 
     suspend fun getMyFriends(id:Int?):List<user>{
-        val users: List<user> = api.getMyFriends(id)
-        return users
+        try{
+            val users: List<user> = api.getMyFriends(id)
+            return users
+        }catch (e: SocketTimeoutException) {
+            navController.navigate(Rutas.page404.ruta)
+            return emptyList()
+        }
+
     }
     suspend fun getUserDetails(id:Int?):user{
-        val userdetails: user = api.getUserDetails(id)
-        return userdetails
+        try{
+            val userdetails: user = api.getUserDetails(id)
+            return userdetails
+        }catch (e: SocketTimeoutException) {
+            navController.navigate(Rutas.page404.ruta)
+            return user()
+        }
+
     }
 
     suspend fun deleteUser(id:Int?): ApiResponse<String> {
@@ -46,6 +78,9 @@ class UserRepository (private val api: UserService){
             }
             return ApiResponse.Error(e)
         } catch (e: IOException) {
+            return ApiResponse.Error(e)
+        }catch (e: SocketTimeoutException) {
+            navController.navigate(Rutas.page404.ruta)
             return ApiResponse.Error(e)
         }
     }
@@ -62,6 +97,9 @@ class UserRepository (private val api: UserService){
             return ApiResponse.Error(e)
         } catch (e: IOException) {
             return ApiResponse.Error(e)
+        }catch (e: SocketTimeoutException) {
+            navController.navigate(Rutas.page404.ruta)
+            return ApiResponse.Error(e)
         }
     }
     suspend fun createUser(nombrecompleto: String,email: String,password: String): ApiResponse<String> {
@@ -75,6 +113,9 @@ class UserRepository (private val api: UserService){
             }
             return ApiResponse.Error(e)
         } catch (e: IOException) {
+            return ApiResponse.Error(e)
+        }catch (e: SocketTimeoutException) {
+            navController.navigate(Rutas.page404.ruta)
             return ApiResponse.Error(e)
         }
     }
@@ -90,6 +131,9 @@ class UserRepository (private val api: UserService){
             return ApiResponse.Error(e)
         } catch (e: IOException) {
             return ApiResponse.Error(e)
+        }catch (e: SocketTimeoutException) {
+            navController.navigate(Rutas.page404.ruta)
+            return ApiResponse.Error(e)
         }
     }
 
@@ -104,6 +148,9 @@ class UserRepository (private val api: UserService){
             }
             return ApiResponse.Error(e)
         } catch (e: IOException) {
+            return ApiResponse.Error(e)
+        }catch (e: SocketTimeoutException) {
+            navController.navigate(Rutas.page404.ruta)
             return ApiResponse.Error(e)
         }
     }

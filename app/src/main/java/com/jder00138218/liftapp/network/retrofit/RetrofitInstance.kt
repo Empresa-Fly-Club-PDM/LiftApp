@@ -34,13 +34,9 @@ object RetrofitInstance {
         .client(
             OkHttpClient.Builder()
                 .addInterceptor{chain->
-                    try {
                         chain.proceed(chain.request().newBuilder().also{
                             it.addHeader("Authorization", "Bearer $token")
                         }.build())
-                    } catch (e: SocketTimeoutException) {
-                        throw IOException("Request timeout", e)
-                    }
                 }.build()
         )
         .addConverterFactory(GsonConverterFactory.create())

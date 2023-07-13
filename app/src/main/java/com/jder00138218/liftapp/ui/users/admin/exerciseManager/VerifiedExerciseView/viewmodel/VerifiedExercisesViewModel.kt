@@ -23,7 +23,7 @@ class VerifiedExercisesViewModel(private val exerciseRepository: ExerciseReposit
     fun getVeriedEercises(query:String,navController:NavController) {
         viewModelScope.launch {
             _exercises.clear()
-            _exercises.addAll(exerciseRepository.getVerified(query, navController))
+            _exercises.addAll(exerciseRepository.getVerified(query))
         }
         _loading.value = false
     }

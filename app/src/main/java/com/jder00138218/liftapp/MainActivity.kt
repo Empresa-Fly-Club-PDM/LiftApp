@@ -16,6 +16,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.jder00138218.liftapp.network.retrofit.RetrofitInstance
 import com.jder00138218.liftapp.ui.users.admin.DashboardAdminScreen
 import com.jder00138218.liftapp.ui.login.LoginScreen
 import com.jder00138218.liftapp.ui.navigation.Rutas
@@ -61,13 +62,11 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-
-                   NavigationGraph()
+                    NavigationGraph()
                  }
             }
         }
     }
-
 }
 
 @Preview(showBackground = true)

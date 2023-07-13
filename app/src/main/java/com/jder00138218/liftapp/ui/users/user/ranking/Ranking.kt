@@ -58,6 +58,7 @@ import com.jder00138218.liftapp.network.dto.user.user
 import com.jder00138218.liftapp.ui.navigation.Rutas
 import com.jder00138218.liftapp.ui.users.admin.Menu
 import com.jder00138218.liftapp.ui.users.user.HeaderBarBackArrowAdd
+import com.jder00138218.liftapp.ui.users.user.HeaderBarBackArrowDumbell
 import com.jder00138218.liftapp.ui.users.user.SearchBar
 import com.jder00138218.liftapp.ui.users.user.UserBottomMenu
 import com.jder00138218.liftapp.ui.users.user.ranking.viewmodel.RankinViewModel
@@ -93,7 +94,7 @@ fun RankingUsers(navController: NavController ) {
         Column(modifier = Modifier.fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.SpaceBetween) {
-            HeaderBarBackArrowAdd(stringResource(R.string.ranking), navController, addOnClick = handleAddOnClick, backOnClick = {navController.popBackStack()})
+            HeaderBarBackArrowDumbell(stringResource(R.string.ranking), navController, backOnClick = {navController.popBackStack()})
 
             OutlinedTextField(value = text, onValueChange = { newText: String ->
                 text = newText
@@ -155,13 +156,14 @@ fun RankingInfoRow(user: user, navController: NavController, context:Context){
                 .fillMaxHeight(),
                 horizontalAlignment = Alignment.Start,
                 verticalArrangement = Arrangement.Center) {
-                Text(text = user.nombrecompleto)
-                Text(text = getRank(user.points,context))
+                Text(text = user.nombrecompleto, color = Color.Black)
+                Text(text = getRank(user.points,context), color = Color.Black)
             }
             IconButton(onClick = {navController.navigate("rutas_friend_profile/${user.id}")}) {
                 Icon(
                     imageVector = Icons.Default.Info,
-                    contentDescription = stringResource(R.string.addfriend)
+                    contentDescription = stringResource(R.string.addfriend),
+                    tint = Color.Black
                 )
             }
         }

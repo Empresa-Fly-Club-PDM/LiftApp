@@ -136,11 +136,13 @@ fun ButtonsDetaile(id: Int? , detailExerciseViewmodel: DetailExerciseViewmodel,n
             onClick = {
                 detailExerciseViewmodel.denyExercise(id,navController,context)
                 detailExerciseViewmodel._loading.value=true
+                detailExerciseViewmodel.isVerifyEnabled.value=false
             }, modifier = Modifier
                 .height(60.dp)
                 .fillMaxWidth(), colors = ButtonDefaults.buttonColors(
                 containerColor = colorResource(id = R.color.buttonGray)
-            )
+            ),
+            enabled = detailExerciseViewmodel.isDenyEnabled.value
         ) {
             if (detailExerciseViewmodel._loading.value) {
                 // Show loading animation when isLoading is true
@@ -161,11 +163,13 @@ fun ButtonsDetaile(id: Int? , detailExerciseViewmodel: DetailExerciseViewmodel,n
             onClick = {
                       detailExerciseViewmodel.verifyExercise(id,navController,context)
                         detailExerciseViewmodel._loadingVerification.value=true
+                detailExerciseViewmodel.isDenyEnabled.value=false
             }, modifier = Modifier
                 .height(60.dp)
                 .fillMaxWidth(), colors = ButtonDefaults.buttonColors(
                 containerColor = colorResource(id = R.color.buttonGren)
-            )
+            ),
+            enabled = detailExerciseViewmodel.isVerifyEnabled.value
         ) {
 
             if (detailExerciseViewmodel._loadingVerification.value) {

@@ -25,6 +25,8 @@ class DetailExerciseViewmodel(private val detailExerciseRepository: DetailExerci
     val _status = MutableLiveData<DetailUIStatus>(DetailUIStatus.Resume)
     val _loading = mutableStateOf(false)
     val _loadingVerification = mutableStateOf(false)
+    val isDenyEnabled = mutableStateOf(true)
+    val isVerifyEnabled = mutableStateOf(true)
 
 
     val exercise: exercise

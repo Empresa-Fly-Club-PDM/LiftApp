@@ -154,6 +154,7 @@ fun ButtonsUpdate(id: Int?, viewmodel: UpdateUserExerciseViewModel, navControlle
         Button(
             onClick = {
                 viewmodel.deleteExercise(id, navController,context)
+                viewmodel.isLoadingDelete.value = true
             }, modifier = Modifier
                 .height(60.dp)
                 .fillMaxWidth(), colors = ButtonDefaults.buttonColors(
@@ -161,8 +162,18 @@ fun ButtonsUpdate(id: Int?, viewmodel: UpdateUserExerciseViewModel, navControlle
             )
         ) {
 
-            Text(text = stringResource(R.string.eliminar))
+            if (viewmodel.isLoadingDelete.value) {
+                // Show loading animation when isLoading is true
+                CircularProgressIndicator(
+                    modifier = Modifier
+                        .size(36.dp)
+                        .padding(end = 8.dp),
+                    color = Color.White
+                )
+            } else {
 
+                Text(text = stringResource(R.string.eliminar))
+            }
         }
     }
 }

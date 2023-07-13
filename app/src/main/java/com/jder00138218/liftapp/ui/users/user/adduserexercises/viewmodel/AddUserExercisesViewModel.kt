@@ -36,6 +36,8 @@ class AddUserExercisesViewModel(private val exerciseRepository: ExerciseReposito
     val _status = MutableLiveData<AddUserExercisesUIStatus>(AddUserExercisesUIStatus.Resume)
     val _loading = mutableStateOf(false)
     val _loadingVerification = mutableStateOf(false)
+    val isConfirmEnabled = mutableStateOf(true)
+    val isRequestEnabled = mutableStateOf(true)
 
     var description: String
         get() = _description

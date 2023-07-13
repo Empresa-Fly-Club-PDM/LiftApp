@@ -34,6 +34,8 @@ class AdminUpdateExerciseViewModel(private val exerciseRepository: ExerciseRepos
     val _status = MutableLiveData<AdminUpdateExerciseUIStatus>(AdminUpdateExerciseUIStatus.Resume)
     val isLoadingUpdate = mutableStateOf(false)
     val isLoadingDelete = mutableStateOf(false)
+    val isConfirmEnabled = mutableStateOf(true)
+    val isRequestEnabled = mutableStateOf(true)
 
 
 

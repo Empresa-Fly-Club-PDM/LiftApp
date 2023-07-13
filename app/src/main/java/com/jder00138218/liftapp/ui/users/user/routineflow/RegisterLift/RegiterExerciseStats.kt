@@ -14,10 +14,13 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextField
@@ -67,43 +70,47 @@ fun RegisterExerciseStats(navController: NavHostController){
         .fillMaxSize()
         .background(Color.White)) {
         Column(modifier = Modifier
-            .fillMaxSize()
-            .padding(8.dp)) {
-            Row(modifier = Modifier
-                .fillMaxWidth()
-                .fillMaxHeight(0.1f)) {
-                HeaderBarBackArrowDumbell(title = stringResource(R.string.detalles_del_ejercicio), navController, backOnClick = {navController.popBackStack()})
-            }
+            .fillMaxWidth()
+            .fillMaxHeight()
+            .padding(8.dp),
+        verticalArrangement = Arrangement.SpaceBetween) {
+
             Column(modifier = Modifier
                 .fillMaxWidth()
-                .fillMaxHeight(0.9f),
-                verticalArrangement = Arrangement.SpaceBetween
-            ){
-                Column(modifier = Modifier
-                    .fillMaxWidth(),
-                    horizontalAlignment = Alignment.CenterHorizontally) {
+                .fillMaxHeight(0.85f)
+                .verticalScroll(
+                    rememberScrollState()
+                ),
+            verticalArrangement = Arrangement.SpaceBetween) {
+                HeaderBarBackArrowDumbell(title = stringResource(R.string.detalles_del_ejercicio), navController, backOnClick = {navController.popBackStack()})
+                Column() {
                     ExerciseNameInputField(exercisename)
-                    Spacer(modifier = Modifier.height(8.dp))
+                    Spacer(modifier = Modifier.height(2.dp))
                     AchivedWeight(viewmodel)
-                    Spacer(modifier = Modifier.height(8.dp))
+                    Spacer(modifier = Modifier.height(2.dp))
                     AchivedReps(viewmodel)
                 }
-
-                Button(modifier = Modifier.fillMaxWidth() , onClick = {viewmodel.onCreate(exerciseid,app.getUserId(),navController,context)}, colors = ButtonDefaults.buttonColors(containerColor = colorResource(
+                Button(modifier = Modifier
+                    .fillMaxWidth()
+                    .height(60.dp) , onClick = {viewmodel.onCreate(exerciseid,app.getUserId(),navController,context) }, colors = ButtonDefaults.buttonColors(containerColor = colorResource(
                     id = R.color.buttonGren
                 ), contentColor = Color.White)) {
-                    Text(text = stringResource(R.string.registrar_peso))
+                    if(viewmodel._loading.value){
+                        CircularProgressIndicator(
+                            modifier = Modifier
+                                .size(36.dp)
+                                .padding(end = 8.dp),
+                            color = Color.White
+                        )
+
+                    }else{
+                        Text(text = stringResource(R.string.registrar_peso))
+                    }
                 }
             }
 
-            Column(modifier = Modifier
-                .fillMaxHeight()
-                .fillMaxWidth()
-                .background(Color.White),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Bottom) {
-                UserBottomMenu(navController)
-            }
+            Spacer(modifier = Modifier.padding(vertical = 8.dp))
+            UserBottomMenu(navController)
         }
     }
 }
@@ -115,7 +122,7 @@ fun ExerciseNameInputField(hint: String?){
         value = hint.toString(),
         onValueChange = { },
         modifier = Modifier
-            .width(350.dp)
+            .fillMaxWidth()
             .clip(RoundedCornerShape(4.dp))
             .border(
                 width = 1.dp,
@@ -147,7 +154,7 @@ fun AchivedWeight(viewmodel:RegisterExerciseStatsViewModel){
             weight = newValue
             viewmodel.weight= newValue},
         modifier = Modifier
-            .width(350.dp)
+            .fillMaxWidth()
             .clip(RoundedCornerShape(4.dp))
             .border(
                 width = 1.dp,
@@ -180,7 +187,7 @@ fun AchivedReps(viewmodel: RegisterExerciseStatsViewModel){
             reps = newValue
             viewmodel.reps= newValue},
         modifier = Modifier
-            .width(350.dp)
+            .fillMaxWidth()
             .clip(RoundedCornerShape(4.dp))
             .border(
                 width = 1.dp,

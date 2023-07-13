@@ -137,15 +137,16 @@ fun FindFriendInfoRow(name: String, id:Int,rank:String, navController: NavContro
                 ,
                 horizontalAlignment = Alignment.Start,
                 verticalArrangement = Arrangement.Center) {
-                Text(text = name)
-                Text(text = rank)
+                Text(text = name, color = Color.Black)
+                Text(text = rank, color = Color.Black)
             }
             IconButton(onClick = {
                 Log.d("data",app.getUserId().toString()+id.toString())
                 findFriendsViewModel.adFriend(app.getUserId(),id, navController,context)}) {
                 Icon(
                     imageVector = Icons.Default.Add,
-                    contentDescription = stringResource(R.string.addfriend)
+                    contentDescription = stringResource(R.string.addfriend),
+                    tint = Color.Black
                 )
             }
 

@@ -41,6 +41,7 @@ class RegisterViewModel(private val repository: CredentialsRepository) : ViewMod
     private var _height by mutableStateOf(0)
     private var _isVisiblePaswd by mutableStateOf(false)
     private var _status = mutableStateOf<RegisterUiStatus>(RegisterUiStatus.Resume)
+    val _loading = mutableStateOf(false)
 
     val status: State<RegisterUiStatus>
         get() = _status
@@ -119,6 +120,7 @@ class RegisterViewModel(private val repository: CredentialsRepository) : ViewMod
                         is ApiResponse.Success -> RegisterUiStatus.Success
                     }
                     )
+            _loading.value = false
             handleUiStatus(navController, context)
         }
     }
@@ -164,6 +166,7 @@ class RegisterViewModel(private val repository: CredentialsRepository) : ViewMod
 
             return
         } else {
+            _loading.value=true
             register(name, email, password, genre, date, weigth, heigth, navController, context)
         }
 

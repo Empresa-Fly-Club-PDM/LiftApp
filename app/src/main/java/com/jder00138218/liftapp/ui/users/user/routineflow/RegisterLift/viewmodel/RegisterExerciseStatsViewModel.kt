@@ -25,6 +25,7 @@ class RegisterExerciseStatsViewModel(private val liftRepository: LiftRepository)
     private var _weight by mutableStateOf("")
     private var _reps by mutableStateOf("")
     val _status = MutableLiveData<RegisteRexerciseUIStatus>(RegisteRexerciseUIStatus.Resume)
+    val _loading = mutableStateOf(false)
 
     var weight: String
         get() = _weight
@@ -43,9 +44,12 @@ class RegisterExerciseStatsViewModel(private val liftRepository: LiftRepository)
         when (status) {
             is RegisteRexerciseUIStatus.Error -> {
                 Toast.makeText(context, context.getString(R.string.error_en_registro), Toast.LENGTH_SHORT).show()
+                _loading.value = false
+
             }
             is RegisteRexerciseUIStatus.ErrorWithMessage -> {
                 Toast.makeText(context, context.getString(R.string.verificar_datos_ingresados), Toast.LENGTH_SHORT).show()
+                _loading.value = false
             }
             is RegisteRexerciseUIStatus.Success -> {
                 Toast.makeText(context, context.getString(R.string.registro_exitoso), Toast.LENGTH_SHORT).show()
@@ -54,6 +58,7 @@ class RegisterExerciseStatsViewModel(private val liftRepository: LiftRepository)
             else -> {
             }
         }
+        _loading.value = false
     }
 
     private fun create(weight: Int,reps:Int,exerciseid:Int?,userid:Int?,navController: NavHostController,context:Context) {
@@ -77,6 +82,7 @@ class RegisterExerciseStatsViewModel(private val liftRepository: LiftRepository)
             Toast.makeText(context, context.getString(R.string.verificar_information), Toast.LENGTH_SHORT).show()
             return
         }else{
+            _loading.value = true
             create(weight.toInt(), reps.toInt(),exerciseid,userid, navController, context)
         }
 

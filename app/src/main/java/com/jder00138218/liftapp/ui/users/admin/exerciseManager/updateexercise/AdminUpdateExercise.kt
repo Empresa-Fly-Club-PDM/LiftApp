@@ -427,7 +427,7 @@ fun FieldReps(adminUpdateExerciseViewModel: AdminUpdateExerciseViewModel) {
             adminUpdateExerciseViewModel._reps=newValue
         },
         modifier = Modifier
-            .width(350.dp)
+            .fillMaxWidth()
             .clip(RoundedCornerShape(4.dp))
             .border(
                 width = 1.dp,

@@ -99,52 +99,51 @@ fun CreateRoutine(navController: NavHostController){
 
             Column(modifier = Modifier
                 .fillMaxWidth()
+                .fillMaxHeight(0.85f)
                 .verticalScroll(rememberScrollState()),
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.SpaceBetween) {
                 NameInputField(createRoutineViewModel)
-                Spacer(modifier = Modifier.height(8.dp))
+                Spacer(modifier = Modifier.height(2.dp))
                 DifficultyInputField(createRoutineViewModel)
-                Spacer(modifier = Modifier.height(8.dp))
+                Spacer(modifier = Modifier.height(2.dp))
                 TagInputField(createRoutineViewModel)
+                Spacer(modifier = Modifier.height(2.dp))
+                CustomHourInputField(createRoutineViewModel)
+                Spacer(modifier = Modifier.height(2.dp))
+                CustomMinuteInputField(createRoutineViewModel)
                 Spacer(modifier = Modifier.height(8.dp))
-                TimeSelector(createRoutineViewModel)
-            }
 
-            Button(modifier = Modifier
-                .fillMaxWidth()
-                .height(60.dp), onClick = {createRoutineViewModel.onCreate(navController, context,app.getUserId()) }, colors = ButtonDefaults.buttonColors(containerColor = colorResource(
-                id = R.color.buttonGren
-            ), contentColor = Color.White)) {
+                Button(modifier = Modifier
+                    .fillMaxWidth()
+                    .height(60.dp), onClick = {createRoutineViewModel.onCreate(navController, context,app.getUserId()) }, colors = ButtonDefaults.buttonColors(containerColor = colorResource(
+                    id = R.color.buttonGren
+                ), contentColor = Color.White)) {
 
-                if (createRoutineViewModel._loading.value) {
-                    // Show loading animation when isLoading is true
-                    CircularProgressIndicator(
-                        modifier = Modifier
-                            .size(36.dp)
-                            .padding(end = 8.dp),
-                        color = Color.White
-                    )
-                } else {
+                    if (createRoutineViewModel._loading.value) {
+                        // Show loading animation when isLoading is true
+                        CircularProgressIndicator(
+                            modifier = Modifier
+                                .size(36.dp)
+                                .padding(end = 8.dp),
+                            color = Color.White
+                        )
+                    } else {
 
-                    Text(text = stringResource(id = R.string.confirmar))
+                        Text(text = stringResource(id = R.string.confirmar))
+                    }
                 }
+                Spacer(modifier = Modifier.height(8.dp))
             }
+
+
 
             UserBottomMenu(navController)
         }
     }
 }
 
-@Composable
-fun TimeSelector(viewmodel: CreateRoutineViewModel){
-    Row(modifier = Modifier
-        .fillMaxWidth(),
-    horizontalArrangement = Arrangement.Center) {
-        CustomHourInputField(viewmodel)
-        CustomMinuteInputField(viewmodel)
-    }
-}
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CustomHourInputField(viewmodel: CreateRoutineViewModel){
@@ -155,7 +154,7 @@ fun CustomHourInputField(viewmodel: CreateRoutineViewModel){
             hour = newValue
             viewmodel.hour= newValue },
         modifier = Modifier
-            .width(175.dp)
+            .fillMaxWidth()
             .clip(RoundedCornerShape(4.dp))
             .border(
                 width = 1.dp,
@@ -181,7 +180,7 @@ fun CustomMinuteInputField(viewmodel: CreateRoutineViewModel){
             minutes = newValue
             viewmodel.minute= newValue },
         modifier = Modifier
-            .width(175.dp)
+            .fillMaxWidth()
             .clip(RoundedCornerShape(4.dp))
             .border(
                 width = 1.dp,
@@ -209,7 +208,7 @@ fun NameInputField(viewmodel:CreateRoutineViewModel){
             viewmodel.name= newValue
         },
         modifier = Modifier
-            .width(350.dp)
+            .fillMaxWidth()
             .clip(RoundedCornerShape(4.dp))
             .border(
                 width = 1.dp,
@@ -254,7 +253,7 @@ fun DifficultyInputField(viewmodel: CreateRoutineViewModel){
                 ExposedDropdownMenuDefaults.TrailingIcon(expanded = isExpanded)
             }, modifier = Modifier
                 .menuAnchor()
-                .width(350.dp)
+                .fillMaxWidth()
                 .clip(RoundedCornerShape(4.dp))
                 .border(
                     width = 1.dp,
@@ -309,7 +308,7 @@ fun TagInputField(viewmodel:CreateRoutineViewModel){
             viewmodel.tag= newValue
         },
         modifier = Modifier
-            .width(350.dp)
+            .fillMaxWidth()
             .clip(RoundedCornerShape(4.dp))
             .border(
                 width = 1.dp,

@@ -36,6 +36,8 @@ class UpdateUserExerciseViewModel (private val exerciseRepository: ExerciseRepos
     var _type by mutableStateOf("")
     val _status = MutableLiveData<AdminUpdateExerciseUIStatus>(AdminUpdateExerciseUIStatus.Resume)
     val _loading = mutableStateOf(false)
+    val isLoadingDelete = mutableStateOf(false)
+
 
     val exercise: exercise
         get() = _exercise.value
@@ -103,7 +105,7 @@ class UpdateUserExerciseViewModel (private val exerciseRepository: ExerciseRepos
         _loading.value=false
     }
 
-    fun deleteExercise(id:Int?, navController: NavHostController, context: Context) {
+    fun deleteExercise(id:Int?,navController: NavHostController,context:Context) {
         viewModelScope.launch {
             _status.value = (
                     when (val response = exerciseRepository.deleteExercise(id)) {
@@ -114,10 +116,29 @@ class UpdateUserExerciseViewModel (private val exerciseRepository: ExerciseRepos
                         )
                     }
                     )
-            Toast.makeText(context, context.getString(R.string.ejercicio_eliminado), Toast.LENGTH_SHORT).show()
-            navController.navigate(Rutas.UserExercises.ruta)
-
+            handleDeleteStatus(navController,context)
         }
+    }
+    fun handleDeleteStatus(navController: NavHostController,context:Context) {
+        val status = _status.value
+        when (status) {
+            is AdminUpdateExerciseUIStatus.Error -> {
+                Toast.makeText(context, context.getString(R.string.ejercicio_eliminado), Toast.LENGTH_SHORT).show()
+                navController.navigate(route = Rutas.UserExercises.ruta)
+                isLoadingDelete.value = true
+            }
+            is AdminUpdateExerciseUIStatus.ErrorWithMessage -> {
+                Toast.makeText(context, "Ejercicio Está Siendo utilizado", Toast.LENGTH_SHORT).show()
+                navController.navigate(route = Rutas.UserExercises.ruta)
+                isLoadingDelete.value = true
+            }
+            is AdminUpdateExerciseUIStatus.Success -> {
+                Toast.makeText(context, context.getString(R.string.error), Toast.LENGTH_SHORT).show()
+            }
+            else -> {
+            }
+        }
+        isLoadingDelete.value = true
     }
     private fun validateData(): Boolean {
         when {

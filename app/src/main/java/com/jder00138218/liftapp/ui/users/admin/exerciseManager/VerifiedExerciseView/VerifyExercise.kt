@@ -61,7 +61,7 @@ fun VerifyExercises(navController: NavController) {
         factory = VerifiedExercisesViewModel.Factory
     )
     LaunchedEffect(Unit, block = {
-        vm.getVeriedEercises("")
+        vm.getVeriedEercises("", navController)
     })
     val handleAddOnClick = {
         navController.navigate(route = Rutas.AdminCreateExercise.ruta)

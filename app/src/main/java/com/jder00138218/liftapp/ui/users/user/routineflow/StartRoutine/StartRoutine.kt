@@ -37,6 +37,7 @@ import androidx.navigation.NavController
 import com.jder00138218.liftapp.R
 import com.jder00138218.liftapp.network.dto.exercise.exercise
 import com.jder00138218.liftapp.ui.users.user.ExerciseCardUser
+import com.jder00138218.liftapp.ui.users.user.ExerciseCardUserNoClick
 import com.jder00138218.liftapp.ui.users.user.HeaderBarBackArrowAdd
 import com.jder00138218.liftapp.ui.users.user.HeaderBarBackArrowDumbell
 import com.jder00138218.liftapp.ui.users.user.UserBottomMenu
@@ -76,8 +77,7 @@ fun StartRoutine(navController:NavController){
                     .fillMaxHeight(0.6f)
             ) {
                 items(vm.exercises) { index ->
-                    var url = ""
-                    ExerciseCardUser(index, url, navController)
+                    ExerciseCardUserNoClick(index, navController)
                     Spacer(modifier = Modifier.height(8.dp))
                 }
             }

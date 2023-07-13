@@ -57,6 +57,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.jder00138218.liftapp.R
 import com.jder00138218.liftapp.ui.register.viewmodel.RegisterViewModel
+import com.jder00138218.liftapp.ui.users.user.HeaderBarBackArrowDumbell
 import java.util.Calendar
 import java.util.Date
 
@@ -83,14 +84,7 @@ fun RegisterScreen(navController: NavHostController) {
                     .fillMaxWidth(),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Text(
-                    text = stringResource(R.string.crear_cuenta),
-                    color = Color.Black,
-                    style = TextStyle(
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 24.sp
-                    )
-                )
+                HeaderBarBackArrowDumbell(title = stringResource(R.string.crear_cuenta), navController, backOnClick = {navController.popBackStack()})
             }
 
 
@@ -112,6 +106,7 @@ fun RegisterScreen(navController: NavHostController) {
 
 @Composable
 fun FieldsRegister(registerViewModel: RegisterViewModel, navController: NavHostController) {
+    Spacer(modifier = Modifier.padding(16.dp))
     FieldDetaile(stringResource(R.string.nombre_completo), registerViewModel)
     Spacer(modifier = Modifier.padding(2.dp))
     FieldDetaile(stringResource(R.string.correo), registerViewModel)
@@ -500,6 +495,7 @@ fun GenreDropDownMenu(viewModel: RegisterViewModel) {
             }, modifier = Modifier
                 .width(350.dp)
                 .menuAnchor()
+                .fillMaxWidth()
                 .clip(RoundedCornerShape(4.dp))
                 .border(
                     width = 1.dp,

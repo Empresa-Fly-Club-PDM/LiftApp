@@ -5,9 +5,11 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -40,6 +42,7 @@ import com.jder00138218.liftapp.ui.users.admin.AdminHeaderBarBackArrowDumbell
 import com.jder00138218.liftapp.ui.users.admin.AdminProfileInfoRow
 import com.jder00138218.liftapp.ui.users.admin.Menu
 import com.jder00138218.liftapp.ui.users.admin.adminProfile.viewmodel.AdminProfileViewModel
+import com.jder00138218.liftapp.ui.users.user.FriendNameCard
 import com.jder00138218.liftapp.ui.users.user.HeaderBarBackArrowDumbell
 import com.jder00138218.liftapp.ui.users.user.UserBottomMenu
 import com.jder00138218.liftapp.ui.users.user.UserProfileInfoRow
@@ -56,25 +59,25 @@ fun UserProfile(navController: NavController){
     val detailUser = userProfileViewModel.user
     Box(modifier = Modifier
         .fillMaxSize()
-        .padding(8.dp)
         .background(Color.White)
     ){
 
         Column(modifier = Modifier
-            .fillMaxSize(),
-            verticalArrangement = Arrangement.SpaceBetween,
-            horizontalAlignment = Alignment.CenterHorizontally
+            .fillMaxWidth()
+            .fillMaxHeight(),
+            verticalArrangement = Arrangement.SpaceBetween
         ) {
+            HeaderBarBackArrowDumbell(title = stringResource(R.string.perfil), navController, backOnClick = {navController.navigate(Rutas.DashboardUser.ruta)})
             Column(modifier = Modifier
                 .fillMaxWidth()
-                .fillMaxHeight(0.95f)
-                .verticalScroll(rememberScrollState()),
+                .fillMaxHeight(0.90f)
+                .verticalScroll(rememberScrollState())
+                .padding(8.dp),
                 horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.SpaceBetween){
-
-                    HeaderBarBackArrowDumbell(title = stringResource(R.string.perfil), navController, backOnClick = {navController.navigate(Rutas.DashboardUser.ruta)})
-                    UserAccountCard(navController, detailUser)
-                    UserLogoutCard(navController, app)
+                verticalArrangement = Arrangement.Center){
+                FriendNameCard(userName = detailUser.nombrecompleto)
+                Spacer(modifier = Modifier.padding(8.dp))
+                UserAccountCard(navController, detailUser, app)
                 }
             UserBottomMenu(navController)
         }
@@ -82,10 +85,11 @@ fun UserProfile(navController: NavController){
 }
 
 @Composable
-fun UserAccountCard(navController: NavController, detailUser: user) {
+fun UserAccountCard(navController: NavController, detailUser: user, app: LiftAppApplication) {
     Card(
         modifier = Modifier
-            .fillMaxWidth(),
+            .fillMaxWidth()
+            .fillMaxHeight(),
         colors = CardDefaults.cardColors(
             containerColor = Color.White,
         ),
@@ -94,26 +98,18 @@ fun UserAccountCard(navController: NavController, detailUser: user) {
         )
     ) {
         Column(
-            modifier = Modifier.padding(16.dp)
+            modifier = Modifier
+                .padding(16.dp)
+                .fillMaxHeight()
+                .fillMaxWidth()
         ) {
-            Text(
-                text = stringResource(R.string.cuenta),
-                style = TextStyle(
-                    fontSize = 18.sp,
-                    fontWeight = FontWeight.Bold
-
-                ),
-                color = Color.Black,
-                modifier = Modifier.padding(bottom = 16.dp)
-            )
-
-            UserProfileInfoRow(text = detailUser.nombrecompleto)
+            Spacer(modifier = Modifier.height(8.dp))
             Button(
                 onClick = {navController.navigate(Rutas.UpdateUser.ruta)},
                 modifier = Modifier
                     .fillMaxWidth()
                     .background(Color.White)
-                    .padding(8.dp),
+                    ,
                 elevation = ButtonDefaults.buttonElevation(2.dp),
                 colors = ButtonDefaults.buttonColors(containerColor = Color.White)
             ) {
@@ -127,13 +123,12 @@ fun UserAccountCard(navController: NavController, detailUser: user) {
                     )
                 }
             }
-
+            Spacer(modifier = Modifier.height(8.dp))
             Button(
                 onClick = {navController.navigate(Rutas.UserHistory.ruta)},
                 modifier = Modifier
                     .fillMaxWidth()
-                    .background(Color.White)
-                    .padding(8.dp),
+                    .background(Color.White),
                 elevation = ButtonDefaults.buttonElevation(2.dp),
                 colors = ButtonDefaults.buttonColors(containerColor = Color.White)
             ) {
@@ -147,13 +142,12 @@ fun UserAccountCard(navController: NavController, detailUser: user) {
                     )
                 }
             }
-
+            Spacer(modifier = Modifier.height(8.dp))
             Button(
                 onClick = {navController.navigate(route = Rutas.FriendsMenu.ruta)},
                 modifier = Modifier
                     .fillMaxWidth()
-                    .background(Color.White)
-                    .padding(8.dp),
+                    .background(Color.White),
                 elevation = ButtonDefaults.buttonElevation(2.dp),
                 colors = ButtonDefaults.buttonColors(containerColor = Color.White)
             ) {
@@ -167,49 +161,32 @@ fun UserAccountCard(navController: NavController, detailUser: user) {
                     )
                 }
             }
-        }
-    }
-}
-
-@Composable
-fun UserLogoutCard(navController: NavController, app:LiftAppApplication) {
-    Card(
-        modifier = Modifier
-            .fillMaxWidth(),
-
-        ) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .background(colorResource(id = R.color.card))
-                .padding(8.dp),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Text(
-                text = stringResource(R.string.cerrar_sesi_n),
-                color = Color.Black,
-                style = TextStyle(
-                    fontSize = 16.sp,
-                    fontWeight = FontWeight.Bold
-                )
-            )
-
+            Spacer(modifier = Modifier.height(8.dp))
             Button(
                 onClick = { app.saveAuthToken("user_token")
                     app.sessionManager.clearSession()
                     navController.navigate(Rutas.Login.ruta)
-                          },
+                },
                 modifier = Modifier,
                 colors = ButtonDefaults.buttonColors(containerColor = colorResource(
                     id = R.color.buttonRed)
-                )
+                ),
+                elevation = ButtonDefaults.buttonElevation(2.dp)
             ) {
-                Icon(
-                    imageVector = Icons.Default.ArrowForward,
-                    contentDescription = stringResource(R.string.logout),
-                    tint = Color.White
-                )
+                Row(modifier = Modifier
+                    .fillMaxHeight()
+                    .fillMaxWidth()
+                    .padding(8.dp),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(text = stringResource(id = R.string.cerrar_sesi_n))
+                    Icon(
+                        imageVector = Icons.Default.ArrowForward,
+                        contentDescription = stringResource(R.string.logout),
+                        tint = Color.White
+                    )
+                }
             }
         }
     }

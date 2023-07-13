@@ -1,5 +1,6 @@
 package com.jder00138218.liftapp.ui.users.user
 
+import android.content.Context
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -70,8 +71,187 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.jder00138218.liftapp.R
 import com.jder00138218.liftapp.network.dto.exercise.exercise
+import com.jder00138218.liftapp.network.dto.lift.lift
+import com.jder00138218.liftapp.network.dto.user.user
 import com.jder00138218.liftapp.ui.navigation.Rutas
 
+@Composable
+fun FriendNameCard(userName: String){
+    Card(modifier = Modifier
+        .fillMaxWidth()
+        .height(64.dp)
+        , colors = CardDefaults.cardColors(
+            containerColor = Color.White
+        ), elevation = CardDefaults.cardElevation(
+            defaultElevation = 10.dp
+        )) {
+        Row(modifier = Modifier
+            .fillMaxWidth()
+            .height(64.dp)
+            .padding(8.dp),
+            verticalAlignment = Alignment.CenterVertically) {
+            Column(modifier = Modifier
+                .height(64.dp)
+                .fillMaxWidth(),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center) {
+                Text(text = userName, style = TextStyle(
+                    fontWeight = FontWeight.Bold
+                ), color = Color.Black)
+            }
+        }
+    }
+}
+@Composable
+fun DataRow3Elements(detailUser: user){
+    Row(modifier = Modifier
+        .fillMaxWidth()
+        .height(64.dp), horizontalArrangement = Arrangement.SpaceEvenly, verticalAlignment = Alignment.CenterVertically) {
+        Card(modifier = Modifier
+            .weight(1f)
+            .height(56.dp)
+            , colors = CardDefaults.cardColors(
+                containerColor = Color.White
+            ), elevation = CardDefaults.cardElevation(
+                defaultElevation = 10.dp
+            )) {
+            Column(modifier = Modifier
+                .fillMaxWidth()
+                .fillMaxHeight(),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
+            ) {
+                Text(text = "Altura", color = Color.Gray)
+                Text(text = detailUser.height.toString(), color = Color.Red)
+            }
+        }
+        Spacer(modifier = Modifier.padding(8.dp))
+        Card(modifier = Modifier
+            .weight(1f)
+            .height(56.dp)
+            , colors = CardDefaults.cardColors(
+                containerColor = Color.White
+            ), elevation = CardDefaults.cardElevation(
+                defaultElevation = 10.dp
+            )) {
+            Column(modifier = Modifier
+                .fillMaxWidth()
+                .fillMaxHeight(),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
+            ) {
+                Text(text = "Peso", color = Color.Gray)
+                Text(text = detailUser.weight.toString(), color = Color.Red)
+            }
+        }
+        Spacer(modifier = Modifier.padding(8.dp))
+        Card(modifier = Modifier
+            .weight(1f)
+            .height(56.dp)
+            , colors = CardDefaults.cardColors(
+                containerColor = Color.White
+            ), elevation = CardDefaults.cardElevation(
+                defaultElevation = 10.dp
+            )) {
+            Column(modifier = Modifier
+                .fillMaxWidth()
+                .fillMaxHeight(),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
+            ) {
+                Text(text = "Edad", color = Color.Gray)
+                Text(text = calculateAge(detailUser.fechanac).toString() + stringResource(R.string.a_os), color = Color.Red)
+            }
+        }
+    }
+}
+@Composable
+fun DataRow2Elements(detailUser: user, context: Context){
+    Row(modifier = Modifier
+        .fillMaxWidth()
+        .height(64.dp), horizontalArrangement = Arrangement.SpaceEvenly, verticalAlignment = Alignment.CenterVertically) {
+        Card(modifier = Modifier
+            .weight(1f)
+            .height(56.dp)
+            , colors = CardDefaults.cardColors(
+                containerColor = Color.White
+            ), elevation = CardDefaults.cardElevation(
+                defaultElevation = 10.dp
+            )) {
+            Column(modifier = Modifier
+                .fillMaxWidth()
+                .fillMaxHeight(),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
+            ) {
+                Text(text = "Puntaje", color = Color.Gray)
+                Text(text = detailUser.points.toString(), color = Color.Red)
+            }
+        }
+        Spacer(modifier = Modifier.padding(8.dp))
+        Card(modifier = Modifier
+            .weight(1f)
+            .height(56.dp)
+            , colors = CardDefaults.cardColors(
+                containerColor = Color.White
+            ), elevation = CardDefaults.cardElevation(
+                defaultElevation = 10.dp
+            )) {
+            Column(modifier = Modifier
+                .fillMaxWidth()
+                .fillMaxHeight(),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
+            ) {
+                Text(text = "Nivel", color = Color.Gray)
+                Text(text = getRank(detailUser.points, context), color = Color.Red)
+            }
+        }
+
+    }
+}
+@Composable
+fun BestLiftCard(bestLift: lift?, navController: NavController){
+    Card(modifier = Modifier
+        .fillMaxWidth()
+        .height(120.dp)
+        , colors = CardDefaults.cardColors(
+            containerColor = colorResource(id = R.color.bcCard)
+        ), elevation = CardDefaults.cardElevation(
+            defaultElevation = 10.dp
+        )) {
+        Column(modifier = Modifier
+            .fillMaxHeight()
+            .fillMaxWidth(),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
+        ) {
+            Row(modifier = Modifier
+                .fillMaxWidth()
+                .padding(8.dp),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically) {
+                Text(text = "Mejor levantamiento", color = Color.Black,style = TextStyle(
+                    fontWeight = FontWeight.Bold))
+                Text(text = "${bestLift?.weight} lb", color = Color.Black,style = TextStyle(
+                    fontWeight = FontWeight.Bold, fontSize = 24.sp))
+            }
+            Button(
+                onClick = { navController.navigate(route = Rutas.UserRanking.ruta) },
+                shape = RoundedCornerShape(8.dp),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color.White
+                ),
+                modifier = Modifier
+                    .padding(8.dp)
+                    .fillMaxWidth()
+                    .height(48.dp)
+            ) {
+                Text(text = stringResource(R.string.rankings), color = Color.Red)
+            }
+        }
+    }
+}
 @Composable
 fun ExerciseCardUser(exercise: exercise, ruta: String, navController: NavController){
 

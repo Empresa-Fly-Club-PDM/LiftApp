@@ -38,6 +38,10 @@ import androidx.navigation.NavController
 import com.jder00138218.liftapp.R
 import com.jder00138218.liftapp.network.dto.lift.lift
 import com.jder00138218.liftapp.network.dto.user.user
+import com.jder00138218.liftapp.ui.users.user.BestLiftCard
+import com.jder00138218.liftapp.ui.users.user.DataRow2Elements
+import com.jder00138218.liftapp.ui.users.user.DataRow3Elements
+import com.jder00138218.liftapp.ui.users.user.FriendNameCard
 import com.jder00138218.liftapp.ui.users.user.HeaderBarBackArrowDumbell
 import com.jder00138218.liftapp.ui.users.user.UserBottomMenu
 import com.jder00138218.liftapp.ui.users.user.friendprofile.viewmodel.FriendProfileLiftViewModel
@@ -68,38 +72,46 @@ fun FriendProfile(navController: NavController) {
             .background(color = Color.White)
     ) {
 
-        Column(modifier = Modifier
-            .fillMaxSize()
-            .padding(8.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.SpaceBetween) {
-
             Column(modifier = Modifier
                 .fillMaxWidth()
-                .fillMaxHeight(0.8f)
+                .padding(8.dp)
+                .fillMaxHeight()
                 .verticalScroll(rememberScrollState()),
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.SpaceBetween){
 
                 HeaderBarBackArrowDumbell(title = stringResource(R.string.perfil_amigo), navController = navController, backOnClick = {navController.popBackStack()})
-                Text(
-                    text = detailUser.nombrecompleto,
-                    color = Color.Black,
-                    style = TextStyle(
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 24.sp
+                FriendNameCard(userName = detailUser.nombrecompleto)
+                Spacer(modifier = Modifier.padding(vertical = 8.dp))
+                Image(
+                    painter = painterResource(id = com.jder00138218.liftapp.ui.users.user.gentRankDrawable(
+                        detailUser.points
                     )
+                    ),
+                    contentDescription = stringResource(R.string.image_level),
+                    modifier = Modifier
+                        .width(250.dp)
+                        .height(180.dp)
                 )
-                MainInfoUser(detailUser, detailHighligt, navController, context)
+                Spacer(modifier = Modifier.padding(vertical = 8.dp))
+                DataRow3Elements(detailUser = detailUser)
+                Spacer(modifier = Modifier.padding(vertical = 8.dp))
+                DataRow2Elements(detailUser = detailUser, context = context)
+                Spacer(modifier = Modifier.padding(vertical = 8.dp))
+                BestLiftCard(bestLift = detailHighligt, navController = navController)
+                Spacer(modifier = Modifier.padding(vertical = 8.dp))
+                UserBottomMenu(navController)
             }
 
-            UserBottomMenu(navController)
-        }
+
 
     }
 
 
 }
+
+
+
 
 @Composable
 fun MainInfoUser(detailUser: user, detailLift: lift?, navController: NavController, context:Context) {

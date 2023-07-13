@@ -72,33 +72,37 @@ fun RegisterScreen(navController: NavHostController) {
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .padding(8.dp)
+
     ) {
-
-        Box(modifier = Modifier.fillMaxSize()) {
-
             Column( // 1
                 Modifier
-                    .align(Alignment.TopCenter)
-                    .fillMaxHeight(0.1f)
-                    .fillMaxWidth(),
-                horizontalAlignment = Alignment.CenterHorizontally
+                    .fillMaxHeight()
+                    .fillMaxWidth()
+                    .padding(8.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
             ) {
-                HeaderBarBackArrowDumbell(title = stringResource(R.string.crear_cuenta), navController, backOnClick = {navController.popBackStack()})
-            }
+                Text(
+                    text = stringResource(R.string.crear_cuenta),
+                    color = Color.Black,
+                    style = TextStyle(
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 24.sp
+                    )
+                )
 
-
-            Column( // 2
-                Modifier
-                    .align(Alignment.Center)
-                    .fillMaxHeight(0.9f)
-                    .fillMaxWidth(),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
                 FieldsRegister(registerViewModel, navController)
+                Button(onClick = {navController.popBackStack()}, colors = ButtonDefaults.buttonColors(
+                    containerColor = Color.White
+                ), modifier = Modifier.height(60.dp)
+                    .fillMaxWidth(), elevation = ButtonDefaults.buttonElevation(
+                    defaultElevation = 10.dp
+                )) {
+                    Text(text = "Regresar a inicio", color = Color.Black)
+                }
             }
 
-        }
+
 
     }
 }
@@ -350,7 +354,7 @@ fun FieldDetaileWB(name: String, viewModel: RegisterViewModel) {
                 value = newValue
             },
             modifier = Modifier
-                .fillMaxWidth(0.8f)
+                .fillMaxWidth(0.9f)
                 .padding(8.dp)
                 .clip(RoundedCornerShape(4.dp))
                 .border(
@@ -434,27 +438,10 @@ fun DateInputField(viewModel: RegisterViewModel) {
             mDate.value = "$mDayOfMonth/${mMonth + 1}/$mYear"
         }, mYear, mMonth, mDay
     )
-
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(8.dp),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.Center
-    ) {
-
-
-        Text(
-            text = stringResource(R.string.fecha_de_nacimiento) +mDate.value,
-            textAlign = TextAlign.Center,
-            modifier = Modifier.fillMaxWidth(0.8f)
-        )
-        Spacer(modifier = Modifier.padding(2.dp))
-
         Button(
             modifier = Modifier
-                .width(70.dp)
-                .height(30.dp),
+                .fillMaxWidth()
+                .height(60.dp),
             shape = RoundedCornerShape(15.dp),
             onClick = {
                 mDatePickerDialog.show()
@@ -462,11 +449,23 @@ fun DateInputField(viewModel: RegisterViewModel) {
                 containerColor = Color.Red
             )
         ) {
-            Icon(
-                painter = painterResource(id = R.drawable.calendar_days),
-                contentDescription = stringResource(R.string.calendar)
-            )
-        }
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(8.dp),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceEvenly
+            ) {
+                Text(
+                    text = stringResource(R.string.fecha_de_nacimiento) +mDate.value,
+                    textAlign = TextAlign.Start,
+                    modifier = Modifier.fillMaxWidth(0.8f)
+                )
+                Icon(
+                    painter = painterResource(id = R.drawable.calendar_days),
+                    contentDescription = stringResource(R.string.calendar)
+                )
+            }
     }
     viewModel.date = mDate.value;
 }
@@ -493,7 +492,7 @@ fun GenreDropDownMenu(viewModel: RegisterViewModel) {
             }, readOnly = true, trailingIcon = {
                 ExposedDropdownMenuDefaults.TrailingIcon(expanded = isExpanded)
             }, modifier = Modifier
-                .width(350.dp)
+                .fillMaxWidth()
                 .menuAnchor()
                 .fillMaxWidth()
                 .clip(RoundedCornerShape(4.dp))
